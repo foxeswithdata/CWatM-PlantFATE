@@ -252,10 +252,10 @@ class soil(object):
             return copy
 
         if self.use_PF:
-
+            
             self.model.plantFATE = []
-            for i in range(len(self.var.transpiration_plantFATE)):
-
+            for i in range(len(self.var.transpiration_plantFATE)): 
+                
                 #plantFATE_cluster = 7
                 #biodiversity_scenario = 'low'
 
@@ -522,13 +522,6 @@ class soil(object):
                 0.0,
             )
 
-            # ta0 => soil evaporation from top soil
-            ta0 = (
-                    self.var.w1[forest_RU_idx]-self.var.soil_evap #TODO evap self.var.transpiration_plantFATE
-            )
-
-            self.var.w1[forest_RU_idx] -= ta0
-
             CWatM_w_in_plantFATE_cells = (
                 self.var.w1[forest_RU_idx]
                 + self.var.w2[forest_RU_idx]
@@ -581,15 +574,19 @@ class soil(object):
 
         # -------------------------------------------------------------
         # Actual potential bare soil evaporation - upper layer
-        self.var.actBareSoilEvap[No] = np.minimum(self.var.potBareSoilEvap,np.maximum(0.,self.var.w1[No] - self.var.wres1[No]))
-        self.var.actBareSoilEvap[No] = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0., self.var.actBareSoilEvap[No])
+            
+        if self.use_PF and No == forest_RU_idx:
+            ta0 = np.minimum(self.var.soil_evap, w1[forest_RU_idx])
+            self.var.actBareSoilEvap[No] = ta0
+        else:
+            self.var.actBareSoilEvap[No] = np.minimum(self.var.potBareSoilEvap,np.maximum(0.,self.var.w1[No] - self.var.wres1[No]))
+            self.var.actBareSoilEvap[No] = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0., self.var.actBareSoilEvap[No])
 
         # no bare soil evaporation in the inundated paddy field
         if coverType == 'irrPaddy':
             self.var.actBareSoilEvap[No] = np.where(self.var.topwater > 0., 0., self.var.actBareSoilEvap[No])
 
-        self.var.w1[No] = self.var.w1[No] - self.var.actBareSoilEvap[No]
-
+        self.var.w1[No] -= self.var.actBareSoilEvap[No]
 
         # -------------------------------------------------------------
 
