@@ -14,11 +14,11 @@ class PFatePatch:
         self.time_unit_base = self.process_time_units()
         self.tcurrent = 0
         self.time = []
-        self.swp = []
-        self.swc = []
-        self.smi = []
-        self.se = []
-        self.trans = []
+        self.swp = [] # Soil Water Potential Output for testing
+        self.swc = [] # Soil Water Content for testing
+        # self.smi = [] # Soil Moisture Index (?) for testing
+        self.se = [] # Soil evaporation for testing
+        self.trans = [] # Transpiration for testing
         self.acclimation_forcing = self.read_acclimation_file(acclim_forcing_file)
 
     def read_acclimation_file(self, file):
@@ -35,7 +35,10 @@ class PFatePatch:
         photosynthetic_photon_flux_density,
         temperature,
         net_radiation,
-        topsoil_volumetric_water_content
+        topsoil_volumetric_water_content,
+        topsoil_moisture_wilting_point,
+        topsoil_fieldcapacity,
+        albedo
     ):
         self.patch.update_climate(
             368.9, # co2 - need to make it better
@@ -50,17 +53,17 @@ class PFatePatch:
                                          368.9,
                                          self.acclimation_forcing.loc[index_acclim, 'temp.C.'],
                                          self.acclimation_forcing.loc[index_acclim, 'vpd'],
-                                         self.calculate_photosynthetic_photon_flux_density(self.acclimation_forcing.loc[index_acclim, 'shortwave.W.m2.']),
+                                         self.calculate_photosynthetic_photon_flux_density(self.acclimation_forcing.loc[index_acclim, 'shortwave.W.m2.'], albedo),
                                          soil_water_potential)
         self.patch.simulate_to(self.tcurrent)
         trans = self.patch.props.fluxes.trans / 365
         potential_soil_evaporation = self.patch.props.fluxes.pe_soil
-        soil_evaporation = self.calculate_actual_soil_evaporation(potential_soil_evaporation, topsoil_volumetric_water_content)
+        soil_evaporation = self.calculate_actual_soil_evaporation(potential_soil_evaporation, topsoil_volumetric_water_content, topsoil_moisture_wilting_point, topsoil_fieldcapacity)
         evapotranspiration = trans + soil_evaporation
         self.trans.append(trans)
         self.se.append(soil_evaporation)
         # return evapotranspiration, soil_specific_depletion_1, soil_specific_depletion_2, soil_specific_depletion_3
-        return evapotranspiration, 0, 0, 0
+        return trans, soil_evaporation, 0, 0, 0
 
 
     def first_step(
@@ -126,7 +129,7 @@ class PFatePatch:
 
         self.swp.append(soil_water_potential)
         self.swc.append(soil_moisture_layer_1 + soil_moisture_layer_2 + soil_moisture_layer_3)
-        self.smi.append(self.calculate)
+        # self.smi.append(self.calculate)
         self.se.append(0)
         self.trans.append(0)
         self.time.append(datestart)
@@ -352,7 +355,8 @@ class PFatePatch:
 
 
         (
-            evapotranspiration,
+            transpiration,
+            soil_evaporation,
             soil_specific_depletion_1,
             soil_specific_depletion_2,
             soil_specific_depletion_3,
@@ -362,7 +366,10 @@ class PFatePatch:
             photosynthetic_photon_flux_density,
             temperature,
             net_radiation,
-            soil_moisture_layer_1
+            soil_moisture_layer_1,
+            soil_moisture_wilting_point_1,
+            soil_moisture_field_capacity_1,
+            albedo
         )
 
         self.swp.append(soil_water_potential)
@@ -388,10 +395,11 @@ class PFatePatch:
             # write the DataFrame to a CSV file
             df.to_csv('Soil_Water.csv')
 
-        evapotranspiration = evapotranspiration / 1000  # kg H2O/m2/day to m/day
+        transpiration = transpiration / 1000  # kg H2O/m2/day to m/day
 
         return (
-            evapotranspiration,
+            transpiration,
+            soil_evaporation,
             soil_specific_depletion_1,
             soil_specific_depletion_2,
             soil_specific_depletion_3,
@@ -400,12 +408,17 @@ class PFatePatch:
     def finalize(self):
 
         # create a Pandas DataFrame from the dictionary
-        df = pd.DataFrame(data={'Time': range(1, len(self.swp)),
-                'SWP': self.swp})
-        print(df)
-        # write the DataFrame to a CSV file
-        df.to_csv('SWP.csv')
-        print(self.swp)
+        if(len(self.swp) > 0):
+            df = pd.DataFrame(data={'Time': list(range(1, len(self.swp) + 1)),
+                                    'SWP': self.swp,
+                                    'SWC': self.swc,
+                                    'SE': self.se,
+                                    'trans': self.trans,
+                                    })
+
+            # write the DataFrame to a CSV file
+            df.to_csv('SWP.csv')
+
         print("closing patch")
         self.patch.close()
 

@@ -551,6 +551,7 @@ class soil(object):
             #ta2 = np.maximum(np.minimum(ta2, self.var.w2[forest_RU_idx] - self.var.wwp2[forest_RU_idx]), 0.0)
             #ta3 = np.maximum(np.minimum(ta3, self.var.w3[forest_RU_idx] - self.var.wwp3[forest_RU_idx]), 0.0)
 
+            ta0 = np.maximum(self.var.soil_evap, 0.0)
             ta1 = np.maximum(np.minimum(ta1, self.var.w1[forest_RU_idx]), 0.0)
             ta2 = np.maximum(np.minimum(ta2, self.var.w2[forest_RU_idx]), 0.0)
             ta3 = np.maximum(np.minimum(ta3, self.var.w3[forest_RU_idx]), 0.0)
@@ -576,7 +577,7 @@ class soil(object):
         # Actual potential bare soil evaporation - upper layer
             
         if self.use_PF and No == forest_RU_idx:
-            ta0 = np.minimum(self.var.soil_evap, w1[forest_RU_idx])
+            ta0 = np.minimum(self.var.soil_evap, self.var.w1[forest_RU_idx])
             self.var.actBareSoilEvap[No] = ta0
         else:
             self.var.actBareSoilEvap[No] = np.minimum(self.var.potBareSoilEvap,np.maximum(0.,self.var.w1[No] - self.var.wres1[No]))
@@ -844,6 +845,9 @@ class soil(object):
 
         # ---------------------------------------------------------------------------------------------
         # total actual transpiration
+        if not 'ta0' in locals():
+            ta0 = 0.0
+
         self.var.actTransTotal[No] = ta0 + ta1 + ta2 + ta3
 
         self.var.actTransTotal_forest = self.var.actTransTotal[0] * self.var.fracVegCover[0]

@@ -101,8 +101,7 @@ class CWATModel_dyn(DynamicModel):
 
         self.waterquality1.dynamic()
 
-        for m in range(len(self.model.plantFATE)):
-            self.model.plantFATE[m].finalise()
+
 
 
         # calculate Total water storage (tws) [m] as a sum of
@@ -188,3 +187,7 @@ class CWATModel_dyn(DynamicModel):
         #report(decompress(runoff), "c:\work\output\dirsum.map")
         #report(decompress(self.sumsum_Precipitation), "c:\work\output\prsum.map")
         #report(decompress(runoff), "c:\work\output/runoff.map")
+
+    def finilize(self):
+        for m in range(len(self.soil_module.model.plantFATE)):
+            self.soil_module.model.plantFATE[m].finalize()

@@ -44,6 +44,8 @@ class ModelFrame:
         while self.currentStep <= self._model.lastStep:
             self.step()
 
+        self._model.finilize()
+
 
 
 
