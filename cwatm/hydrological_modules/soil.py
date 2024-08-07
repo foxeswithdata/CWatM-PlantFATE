@@ -267,7 +267,8 @@ class soil(object):
 
                 # Using the same input plantFATE ini file for all CWatM-cells
                 self.model.plantFATE.append(pf.PFatePatch(cbinding('plantFATE_init_file'),
-                                                          cbinding('plantFATE_acclim_file')))
+                                                          cbinding('plantFATE_acclim_file'),
+                                                          checkOption('plantFATE_use_acclim_forcing')))
 
         return None
 
@@ -468,12 +469,19 @@ class soil(object):
                     "soil_moisture_field_capacity_3": self.var.wfc3[forest_RU_idx][m],  # this is not used for now
                     "temperature": self.var.Tavg[m], #- 273.15,  # K to C
                     "relative_humidity": self.var.Qair[m],
-                    "shortwave_radiation_downwelling": self.var.Rsds[m],
-                    "longwave_radiation_net": self.var.RLN,
-                    "albedo": self.var.albedoLand
+                    "shortwave_radiation_downwelling": self.var.Rsds[m] / self.var.WtoMJ,
+                    "longwave_radiation_net": self.var.RLN[m] / self.var.WtoMJ,
+                    "albedo": self.var.albedoLand[m]
                 }
-
-
+                # print("\n")
+                # print("albedo")
+                # print(self.var.albedoLand[m])
+                # print("shortwave radiation")
+                # print(self.var.Rsds[m] / self.var.WtoMJ)
+                # print("Temperature")
+                # print(self.var.Tavg[m])
+                # print("Rel humidity")
+                # print(self.var.Qair[m])
 
                 if dateVar['newStart']:
                     self.model.plantFATE[m].first_step(
@@ -495,7 +503,8 @@ class soil(object):
                         _,
                         _,
                         _,
-                    ) = self.model.plantFATE[m].step(dateVar['currDate'], **plantFATE_data)
+                    ) = self.model.plantFATE[m].step(curr_time = dateVar['currDate'],
+                                                     **plantFATE_data)
 
             print('self.var.transpiration_plantFATE in soil.py', self.var.transpiration_plantFATE)
             #print('TaMax in soil.py', TaMax)
@@ -560,6 +569,7 @@ class soil(object):
             #print('self.var.transpiration_plantFATE', self.var.transpiration_plantFATE)
             #assert [ta1[i]+ta2[i]+ta3[i] for i in range(len(self.var.transpiration_plantFATE))] == self.var.transpiration_plantFATE
         else:
+            # print(self.var.w1[No] + self.var.w2[No] + self.var.w3[No])
             ta1 = np.maximum(np.minimum(TaMax * self.var.adjRoot[0][No], self.var.w1[No] - self.var.wwp1[No]), 0.0)
             ta2 = np.maximum(np.minimum(TaMax * self.var.adjRoot[1][No], self.var.w2[No] - self.var.wwp2[No]), 0.0)
             ta3 = np.maximum(np.minimum(TaMax * self.var.adjRoot[2][No], self.var.w3[No] - self.var.wwp3[No]), 0.0)
@@ -577,8 +587,16 @@ class soil(object):
         # Actual potential bare soil evaporation - upper layer
             
         if self.use_PF and No == forest_RU_idx:
+            ta0_orig = np.minimum(self.var.potBareSoilEvap,np.maximum(0.,self.var.w1[No] - self.var.wres1[No]))
+            ta0_orig = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0., ta0_orig)
+
             ta0 = np.minimum(self.var.soil_evap, self.var.w1[forest_RU_idx])
-            self.var.actBareSoilEvap[No] = ta0
+            self.var.actBareSoilEvap[No] = ta0_orig
+            #
+            # print("original")
+            # print(ta0_orig)
+            # print("PF")
+            # print(ta0)
         else:
             self.var.actBareSoilEvap[No] = np.minimum(self.var.potBareSoilEvap,np.maximum(0.,self.var.w1[No] - self.var.wres1[No]))
             self.var.actBareSoilEvap[No] = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0., self.var.actBareSoilEvap[No])

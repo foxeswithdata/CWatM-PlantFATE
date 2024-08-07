@@ -9,17 +9,38 @@ from pypfate import Clim
 # Module will be moved to plantFATE package eventually and called from there
 
 class PFatePatch:
-    def __init__(self, param_file, acclim_forcing_file):
+    def __init__(self, param_file, acclim_forcing_file, use_acclim):
         self.patch = patch(str(param_file))
         self.time_unit_base = self.process_time_units()
         self.tcurrent = 0
         self.time = []
         self.swp = [] # Soil Water Potential Output for testing
         self.swc = [] # Soil Water Content for testing
-        # self.smi = [] # Soil Moisture Index (?) for testing
+        self.smi = [] # Soil Moisture Index for testing
         self.se = [] # Soil evaporation for testing
         self.trans = [] # Transpiration for testing
-        self.acclimation_forcing = self.read_acclimation_file(acclim_forcing_file)
+        self.gpp = []
+        self.npp = []
+        self.gs = []
+        self.leaf_mass = []
+        self.stem_mass = []
+        self.croot_mass = []
+        self.froot_mass = []
+        self.biomass_tot = []
+        self.basal_area = []
+        self.lai = []
+        self.temp = []
+        self.rel_hum = []
+        self.swrd = []
+        self.lwrn = []
+        self.vpd = []
+        self.ppfd = []
+        self.nr = []
+
+        self.use_acclim = use_acclim
+        if(use_acclim):
+            self.acclimation_forcing = self.read_acclimation_file(acclim_forcing_file)
+            self.use_acclim = use_acclim
 
     def read_acclimation_file(self, file):
         df = pd.read_csv(file)
@@ -46,22 +67,45 @@ class PFatePatch:
             vapour_pressure_deficit * 1000,
             photosynthetic_photon_flux_density,
             soil_water_potential,
-            net_radiation
+            net_radiation,
         )
-        index_acclim = self.acclimation_forcing.index[self.acclimation_forcing['date_jul'] == self.tcurrent].tolist()
-        self.patch.update_climate_acclim(self.tcurrent,
+
+        self.temp.append(temperature)
+        self.vpd.append(vapour_pressure_deficit * 1000)
+        self.ppfd.append(photosynthetic_photon_flux_density)
+        self.nr.append(net_radiation)
+
+        if(self.use_acclim):
+            index_acclim = self.acclimation_forcing.index[self.acclimation_forcing['date_jul'] == self.tcurrent].tolist()
+            self.patch.update_climate_acclim(self.tcurrent,
                                          368.9,
                                          self.acclimation_forcing.loc[index_acclim, 'temp.C.'],
                                          self.acclimation_forcing.loc[index_acclim, 'vpd'],
                                          self.calculate_photosynthetic_photon_flux_density(self.acclimation_forcing.loc[index_acclim, 'shortwave.W.m2.'], albedo),
                                          soil_water_potential)
+
         self.patch.simulate_to(self.tcurrent)
-        trans = self.patch.props.fluxes.trans / 365
+        trans = self.patch.props.fluxes.trans
         potential_soil_evaporation = self.patch.props.fluxes.pe_soil
-        soil_evaporation = self.calculate_actual_soil_evaporation(potential_soil_evaporation, topsoil_volumetric_water_content, topsoil_moisture_wilting_point, topsoil_fieldcapacity)
+        soil_evaporation = self.calculate_actual_soil_evaporation(potential_soil_evaporation,
+                                                                  topsoil_volumetric_water_content,
+                                                                  topsoil_moisture_wilting_point,
+                                                                  topsoil_fieldcapacity)
         evapotranspiration = trans + soil_evaporation
         self.trans.append(trans)
         self.se.append(soil_evaporation)
+        self.smi.append((topsoil_volumetric_water_content - topsoil_moisture_wilting_point)/(topsoil_fieldcapacity - topsoil_moisture_wilting_point))
+        self.gpp.append(self.patch.props.fluxes.gpp)
+        self.npp.append(self.patch.props.fluxes.npp)
+        self.gs.append(self.patch.props.fluxes.gs)
+        self.leaf_mass.append(self.patch.props.structure.leaf_mass)
+        self.stem_mass.append(self.patch.props.structure.stem_mass)
+        self.croot_mass.append(self.patch.props.structure.croot_mass)
+        self.froot_mass.append(self.patch.props.structure.froot_mass)
+        self.biomass_tot.append(self.patch.props.structure.biomass)
+        self.basal_area.append(self.patch.props.structure.basal_area)
+        self.lai.append(self.patch.props.structure.lai)
+
         # return evapotranspiration, soil_specific_depletion_1, soil_specific_depletion_2, soil_specific_depletion_3
         return trans, soil_evaporation, 0, 0, 0
 
@@ -112,14 +156,6 @@ class PFatePatch:
             longwave_radiation_net,
             albedo)  # W/m2, daily mean
 
-        newclim = Clim()
-        newclim.tc = temperature #- 273.15  # C
-        newclim.ppfd_max = photosynthetic_photon_flux_density * 4
-        newclim.ppfd = photosynthetic_photon_flux_density
-        newclim.vpd = vapour_pressure_deficit * 1000  # kPa -> Pa
-        newclim.swp = soil_water_potential  # MPa
-
-
         # Convert time to proper units according to the time unit base
         datestart = datetime(tstart.year, tstart.month, tstart.day)
         datediff = datestart - self.time_unit_base
@@ -127,12 +163,12 @@ class PFatePatch:
 
 
 
-        self.swp.append(soil_water_potential)
-        self.swc.append(soil_moisture_layer_1 + soil_moisture_layer_2 + soil_moisture_layer_3)
-        # self.smi.append(self.calculate)
-        self.se.append(0)
-        self.trans.append(0)
-        self.time.append(datestart)
+        # self.swp.append(soil_water_potential)
+        # self.swc.append(soil_moisture_layer_1 + soil_moisture_layer_2 + soil_moisture_layer_3)
+        # # self.smi.append(self.calculate)
+        # self.se.append(0)
+        # self.trans.append(0)
+        # self.time.append(datestart)
         self.patch.init(datediff, datediff + 1000)
         self.tcurrent = datediff
         self.patch.update_climate(368.9,
@@ -141,8 +177,9 @@ class PFatePatch:
                                   photosynthetic_photon_flux_density,
                                   soil_water_potential,
                                   net_radiation)
-        index_acclim = self.acclimation_forcing.index[self.acclimation_forcing['date_jul'] == self.tcurrent].tolist()
-        self.patch.update_climate_acclim(self.tcurrent,
+        if(self.use_acclim):
+            index_acclim = self.acclimation_forcing.index[self.acclimation_forcing['date_jul'] == self.tcurrent].tolist()
+            self.patch.update_climate_acclim(self.tcurrent,
                                          368.9,
                                          self.acclimation_forcing.loc[index_acclim, 'temp.C.'],
                                          self.acclimation_forcing.loc[index_acclim, 'vpd'],
@@ -239,7 +276,6 @@ class PFatePatch:
         return photosynthetic_photon_flux_density
 
     def calculate_net_radiation(self, shortwave_radiation_downwelling, longwave_radiation_net, albedo):
-        # TODO calculate this value
         net_radiation = shortwave_radiation_downwelling * (1-albedo) - longwave_radiation_net # W/m2
         return net_radiation
 
@@ -293,6 +329,13 @@ class PFatePatch:
         )
 
         net_radiation = self.calculate_net_radiation(shortwave_radiation_downwelling, longwave_radiation_net, albedo)
+
+        # print("Shortwave Downwelling")
+        # print(shortwave_radiation_downwelling)
+        # print("PPFD")
+        # print(photosynthetic_photon_flux_density)
+        # print("NR")
+        # print(net_radiation)
 
         return (
             soil_water_potential,
@@ -408,16 +451,31 @@ class PFatePatch:
     def finalize(self):
 
         # create a Pandas DataFrame from the dictionary
+
         if(len(self.swp) > 0):
             df = pd.DataFrame(data={'Time': list(range(1, len(self.swp) + 1)),
                                     'SWP': self.swp,
                                     'SWC': self.swc,
                                     'SE': self.se,
                                     'trans': self.trans,
+                                    'SMI': self.smi,
+                                    'GPP': self.gpp,
+                                    'NPP': self.npp,
+                                    'gs': self.gs,
+                                    'leaf_mass' : self.leaf_mass,
+                                    'stem_mass' : self.stem_mass,
+                                    'croot_mass': self.croot_mass,
+                                    'froot_mass': self.froot_mass,
+                                    'biomass' : self.biomass_tot,
+                                    'basal_area': self.basal_area,
+                                    'LAI': self.lai,
+                                    'temp' : self.temp,
+                                    'VPD' : self.vpd,
+                                    'PPFD' : self.ppfd,
+                                    'NR' : self.nr,
                                     })
-
             # write the DataFrame to a CSV file
-            df.to_csv('SWP.csv')
+            df.to_csv('data_out.csv')
 
         print("closing patch")
         self.patch.close()
