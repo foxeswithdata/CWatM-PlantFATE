@@ -123,7 +123,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#settings-file">Settings file</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#components-of-the-settings-file">Components of the settings file</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#general-flags">General flags</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">NetCDF meta data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">NetCDF meta data</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#path-of-data-output">Path of data, output</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#defining-the-modeling-area">Defining the modeling area</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#defining-the-time">Defining the time</a></li>
@@ -136,7 +136,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#complete-settings-file">Complete settings file</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">NetCDF meta data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id4">NetCDF meta data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#output-meta-netcdf-information">Output Meta NetCDF information</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#name-and-location-of-the-netcdf-meta-data-file">Name and location of the NetCDF meta data file</a></li>
 </ul>
@@ -149,7 +149,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#storing-initial-variables">Storing initial variables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#warm-start">Warm start</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id6">Set up a cold start in the settingsfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Set up a cold start in the settingsfile</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#rst-initialcondition">Initial conditions</a></li>
@@ -248,84 +248,84 @@
            <div itemprop="articleBody">
             
   <div class="section" id="setup-of-the-model">
-<h1><a class="toc-backref" href="#id8"><span class="section-number">4. </span>Setup of the model</a><a class="headerlink" href="#setup-of-the-model" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id7"><span class="section-number">4. </span>Setup of the model</a><a class="headerlink" href="#setup-of-the-model" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#setup-of-the-model" id="id8">Setup of the model</a></p>
+<li><p><a class="reference internal" href="#setup-of-the-model" id="id7">Setup of the model</a></p>
 <ul>
-<li><p><a class="reference internal" href="#setup-python-version" id="id9">Setup python version</a></p>
+<li><p><a class="reference internal" href="#setup-python-version" id="id8">Setup python version</a></p>
 <ul>
-<li><p><a class="reference internal" href="#python" id="id10">Python</a></p></li>
-<li><p><a class="reference internal" href="#external-libraries" id="id11">External libraries</a></p></li>
-<li><p><a class="reference internal" href="#installing" id="id12">Installing</a></p></li>
-<li><p><a class="reference internal" href="#c-libraries" id="id13">C++ libraries</a></p>
+<li><p><a class="reference internal" href="#python" id="id9">Python</a></p></li>
+<li><p><a class="reference internal" href="#external-libraries" id="id10">External libraries</a></p></li>
+<li><p><a class="reference internal" href="#installing" id="id11">Installing</a></p></li>
+<li><p><a class="reference internal" href="#c-libraries" id="id12">C++ libraries</a></p>
 <ul>
-<li><p><a class="reference internal" href="#pre-compiled-c-libraries" id="id14">Pre-compiled C++ libraries</a></p></li>
-<li><p><a class="reference internal" href="#compiling-a-version" id="id15">Compiling a version</a></p></li>
+<li><p><a class="reference internal" href="#pre-compiled-c-libraries" id="id13">Pre-compiled C++ libraries</a></p></li>
+<li><p><a class="reference internal" href="#compiling-a-version" id="id14">Compiling a version</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#error-and-exeption-handling" id="id16">Error and exeption handling</a></p></li>
-<li><p><a class="reference internal" href="#test-the-python-version" id="id17">Test the Python version</a></p></li>
-<li><p><a class="reference internal" href="#run-the-python-version" id="id18">Run the Python version</a></p>
+<li><p><a class="reference internal" href="#error-and-exeption-handling" id="id15">Error and exeption handling</a></p></li>
+<li><p><a class="reference internal" href="#test-the-python-version" id="id16">Test the Python version</a></p></li>
+<li><p><a class="reference internal" href="#run-the-python-version" id="id17">Run the Python version</a></p>
 <ul>
-<li><p><a class="reference internal" href="#flags" id="id19">Flags</a></p></li>
+<li><p><a class="reference internal" href="#flags" id="id18">Flags</a></p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#netcdf-meta-data" id="id20">NetCDF meta data</a></p></li>
-<li><p><a class="reference internal" href="#test-the-data" id="id21">Test the data</a></p></li>
-<li><p><a class="reference internal" href="#settings-file" id="id22">Settings file</a></p>
+<li><p><a class="reference internal" href="#netcdf-meta-data" id="id19">NetCDF meta data</a></p></li>
+<li><p><a class="reference internal" href="#test-the-data" id="id20">Test the data</a></p></li>
+<li><p><a class="reference internal" href="#settings-file" id="id21">Settings file</a></p>
 <ul>
-<li><p><a class="reference internal" href="#components-of-the-settings-file" id="id23">Components of the settings file</a></p>
+<li><p><a class="reference internal" href="#components-of-the-settings-file" id="id22">Components of the settings file</a></p>
 <ul>
-<li><p><a class="reference internal" href="#general-flags" id="id24">General flags</a></p></li>
-<li><p><a class="reference internal" href="#id4" id="id25">NetCDF meta data</a></p></li>
-<li><p><a class="reference internal" href="#path-of-data-output" id="id26">Path of data, output</a></p></li>
-<li><p><a class="reference internal" href="#defining-the-modeling-area" id="id27">Defining the modeling area</a></p></li>
-<li><p><a class="reference internal" href="#defining-the-time" id="id28">Defining the time</a></p></li>
-<li><p><a class="reference internal" href="#initial-conditions" id="id29">Initial conditions</a></p></li>
-<li><p><a class="reference internal" href="#output" id="id30">Output</a></p></li>
-<li><p><a class="reference internal" href="#reading-information" id="id31">Reading information</a></p></li>
+<li><p><a class="reference internal" href="#general-flags" id="id23">General flags</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id24">NetCDF meta data</a></p></li>
+<li><p><a class="reference internal" href="#path-of-data-output" id="id25">Path of data, output</a></p></li>
+<li><p><a class="reference internal" href="#defining-the-modeling-area" id="id26">Defining the modeling area</a></p></li>
+<li><p><a class="reference internal" href="#defining-the-time" id="id27">Defining the time</a></p></li>
+<li><p><a class="reference internal" href="#initial-conditions" id="id28">Initial conditions</a></p></li>
+<li><p><a class="reference internal" href="#output" id="id29">Output</a></p></li>
+<li><p><a class="reference internal" href="#reading-information" id="id30">Reading information</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#sections-of-information" id="id32">Sections of information</a></p></li>
-<li><p><a class="reference internal" href="#complete-settings-file" id="id33">Complete settings file</a></p></li>
+<li><p><a class="reference internal" href="#sections-of-information" id="id31">Sections of information</a></p></li>
+<li><p><a class="reference internal" href="#complete-settings-file" id="id32">Complete settings file</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#id5" id="id34">NetCDF meta data</a></p>
+<li><p><a class="reference internal" href="#id4" id="id33">NetCDF meta data</a></p>
 <ul>
-<li><p><a class="reference internal" href="#output-meta-netcdf-information" id="id35">Output Meta NetCDF information</a></p></li>
-<li><p><a class="reference internal" href="#name-and-location-of-the-netcdf-meta-data-file" id="id36">Name and location of the NetCDF meta data file</a></p></li>
+<li><p><a class="reference internal" href="#output-meta-netcdf-information" id="id34">Output Meta NetCDF information</a></p></li>
+<li><p><a class="reference internal" href="#name-and-location-of-the-netcdf-meta-data-file" id="id35">Name and location of the NetCDF meta data file</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#initialisation" id="id37">Initialisation</a></p>
+<li><p><a class="reference internal" href="#initialisation" id="id36">Initialisation</a></p>
 <ul>
-<li><p><a class="reference internal" href="#example-of-soil-moisture" id="id38">Example of soil moisture</a></p></li>
-<li><p><a class="reference internal" href="#cold-start" id="id39">Cold start</a></p>
+<li><p><a class="reference internal" href="#example-of-soil-moisture" id="id37">Example of soil moisture</a></p></li>
+<li><p><a class="reference internal" href="#cold-start" id="id38">Cold start</a></p>
 <ul>
-<li><p><a class="reference internal" href="#set-up-a-cold-start-in-the-settingsfile" id="id40">Set up a cold start in the settingsfile</a></p></li>
+<li><p><a class="reference internal" href="#set-up-a-cold-start-in-the-settingsfile" id="id39">Set up a cold start in the settingsfile</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#storing-initial-variables" id="id41">Storing initial variables</a></p></li>
-<li><p><a class="reference internal" href="#warm-start" id="id42">Warm start</a></p>
+<li><p><a class="reference internal" href="#storing-initial-variables" id="id40">Storing initial variables</a></p></li>
+<li><p><a class="reference internal" href="#warm-start" id="id41">Warm start</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id6" id="id43">Set up a cold start in the settingsfile</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id42">Set up a cold start in the settingsfile</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#rst-initialcondition" id="id44">Initial conditions</a></p></li>
+<li><p><a class="reference internal" href="#rst-initialcondition" id="id43">Initial conditions</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#model-output" id="id45">Model Output</a></p>
+<li><p><a class="reference internal" href="#model-output" id="id44">Model Output</a></p>
 <ul>
-<li><p><a class="reference internal" href="#time-depending-and-non-depending-output-maps" id="id46">Time depending and non depending output maps</a></p></li>
-<li><p><a class="reference internal" href="#or-time-series-at-specified-points" id="id47">Or time series at specified points</a></p></li>
-<li><p><a class="reference internal" href="#output-variables" id="id48">Output variables</a></p></li>
-<li><p><a class="reference internal" href="#daily-monthly-at-the-end-or-average" id="id49">Daily, monthly - at the end or average</a></p></li>
-<li><p><a class="reference internal" href="#time-series-as-point-infomation-or-catchment-sum-or-average" id="id50">Time series as point infomation or catchment sum or average</a></p></li>
-<li><p><a class="reference internal" href="#most-important-output-variables-a-selection" id="id51">Most important output variables - a selection</a></p></li>
-<li><p><a class="reference internal" href="#output-variables-starting-a-list" id="id52">Output variables - starting a list</a></p></li>
+<li><p><a class="reference internal" href="#time-depending-and-non-depending-output-maps" id="id45">Time depending and non depending output maps</a></p></li>
+<li><p><a class="reference internal" href="#or-time-series-at-specified-points" id="id46">Or time series at specified points</a></p></li>
+<li><p><a class="reference internal" href="#output-variables" id="id47">Output variables</a></p></li>
+<li><p><a class="reference internal" href="#daily-monthly-at-the-end-or-average" id="id48">Daily, monthly - at the end or average</a></p></li>
+<li><p><a class="reference internal" href="#time-series-as-point-infomation-or-catchment-sum-or-average" id="id49">Time series as point infomation or catchment sum or average</a></p></li>
+<li><p><a class="reference internal" href="#most-important-output-variables-a-selection" id="id50">Most important output variables - a selection</a></p></li>
+<li><p><a class="reference internal" href="#output-variables-starting-a-list" id="id51">Output variables - starting a list</a></p></li>
 </ul>
 </li>
 </ul>
@@ -333,9 +333,9 @@
 </ul>
 </div>
 <div class="section" id="setup-python-version">
-<span id="rst-setupdoc"></span><h2><a class="toc-backref" href="#id9">Setup python version</a><a class="headerlink" href="#setup-python-version" title="Permalink to this headline">¶</a></h2>
+<span id="rst-setupdoc"></span><h2><a class="toc-backref" href="#id8">Setup python version</a><a class="headerlink" href="#setup-python-version" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="python">
-<h3><a class="toc-backref" href="#id10">Python</a><a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Python</a><a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
 <p>CWatM requires having <a class="reference external" href="https://www.python.org/downloads/">Python</a>.
 Downloading Python and the required Python packages is covered in our <a class="reference external" href="https://youtu.be/l3OW9b32SVo">YouTube tutorial</a>.</p>
 <div class="admonition note">
@@ -348,16 +348,18 @@ Downloading Python and the required Python packages is covered in our <a class="
 </div>
 </div>
 <div class="section" id="external-libraries">
-<h3><a class="toc-backref" href="#id11">External libraries</a><a class="headerlink" href="#external-libraries" title="Permalink to this headline">¶</a></h3>
-<p>These five Python packages are needed:</p>
+<h3><a class="toc-backref" href="#id10">External libraries</a><a class="headerlink" href="#external-libraries" title="Permalink to this headline">¶</a></h3>
+<p>These six Python packages are needed:</p>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="http://www.numpy.org">NumPy</a></p></li>
 <li><p><a class="reference external" href="https://www.scipy.org">SciPy</a></p></li>
 <li><p><a class="reference external" href="https://pypi.python.org/pypi/netCDF4">netCDF4</a></p></li>
 <li><p><a class="reference external" href="https://pypi.org/project/pandas">pandas</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/xmipy">xmipy</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/openpyxl">openpyxl</a></p></li>
 </ol>
-<p>These four libraries can be installed with pip, conda, or downloaded at <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs">Unofficial Windows Binaries for Python Extension Packages</a></p>
-<ol class="arabic simple" start="5">
+<p>These six libraries can be installed with pip, conda, or downloaded at <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs">Unofficial Windows Binaries for Python Extension Packages</a></p>
+<ol class="arabic simple" start="7">
 <li><p><a class="reference external" href="http://www.gdal.org">GDAL</a></p></li>
 </ol>
 <div class="admonition note">
@@ -365,11 +367,18 @@ Downloading Python and the required Python packages is covered in our <a class="
 <div class="line-block">
 <div class="line"><strong>Troublemaker GDAL</strong></div>
 <div class="line">Installing GDAL via pip can be troublesome. We recommend downloading the library from</div>
-<div class="line"><a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs">Unofficial Windows Binaries for Python Extension Packages</a></div>
-<div class="line">as GDAL-3.0.4-cp311-cp311m-win_amd64.whl (depending on your Python version) and installing as:</div>
+<div class="line"><a class="reference external" href="https://github.com/cgohlke/geospatial-wheels/releases">Christoph Gohkles github page - geospatial-wheels</a></div>
+<div class="line">as GDAL-3.9.2-cp312-cp312m-win_amd64.whl (depending on your Python version) and installing as:</div>
 <div class="line">pip install C:/Users/XXXXX/Downloads/GDAL-3.0.4-cp37-cp37m-win_amd64.whl</div>
 <div class="line"><br /></div>
 <div class="line">Sometimes problems occur if you have installed GDAL separately (or a software did, like QGIS)</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line"><strong>Numpy version 2.0</strong></div>
+<div class="line">the branch:develop version work now with Numpy 2.x</div>
 </div>
 </div>
 <p>These additional packages are used for the post-processing Notebooks (in CWatM/Toolkit)</p>
@@ -378,14 +387,13 @@ Downloading Python and the required Python packages is covered in our <a class="
 <li><p><a class="reference external" href="https://pypi.org/project/plotly/">plotly</a></p></li>
 <li><p><a class="reference external" href="https://pypi.org/project/XlsxWriter/">XlsxWriter</a></p></li>
 </ul>
-<p>These additional packages are used for CWatM-MODFLOW</p>
+<p>These additional package are used for CWatM-MODFLOW</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.usgs.gov/software/flopy-python-package-creating-running-and-post-processing-modflow-based-models">FloPy</a></p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/xmipy">xmipy</a></p></li>
 </ul>
 </div>
 <div class="section" id="installing">
-<h3><a class="toc-backref" href="#id12">Installing</a><a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">Installing</a><a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h3>
 <p>CWatM can be cloned through our <a class="reference external" href="https://github.com/iiasa/CWatM">CWatM GitHub repository</a>.</p>
 <p>For those new to GitHub, we recommend using <a class="reference external" href="https://desktop.github.com/">GitHub desktop</a>.</p>
 <p>Getting CWatM with GitHub desktop is covered in our <a class="reference external" href="https://youtu.be/9JMBwo4eESk">YouTube tutorial</a>.</p>
@@ -393,10 +401,10 @@ Downloading Python and the required Python packages is covered in our <a class="
 <a class="reference external" href="https://github.com/iiasa/CWatM-Earth-30min">CWatM-Earth-30min GitHub repository</a>.</p>
 </div>
 <div class="section" id="c-libraries">
-<h3><a class="toc-backref" href="#id13">C++ libraries</a><a class="headerlink" href="#c-libraries" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">C++ libraries</a><a class="headerlink" href="#c-libraries" title="Permalink to this headline">¶</a></h3>
 <p>For the computational time demanding parts e.g. routing, CWatM comes with a C++ library. A pre-compiled version is included for Windows and Linux. Normally, you don’t have to do anything and the pre-compiled version should just work.</p>
 <div class="section" id="pre-compiled-c-libraries">
-<h4><a class="toc-backref" href="#id14">Pre-compiled C++ libraries</a><a class="headerlink" href="#pre-compiled-c-libraries" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id13">Pre-compiled C++ libraries</a><a class="headerlink" href="#pre-compiled-c-libraries" title="Permalink to this headline">¶</a></h4>
 <div class="line-block">
 <div class="line"><strong>Windows and CYGWIN_NT-6.1</strong></div>
 <div class="line">a compiled version is provided and CWatM is detecting automatically which system is running and which compiled version is needed</div>
@@ -413,11 +421,11 @@ Downloading Python and the required Python packages is covered in our <a class="
 </div>
 </div>
 <div class="section" id="compiling-a-version">
-<h4><a class="toc-backref" href="#id15">Compiling a version</a><a class="headerlink" href="#compiling-a-version" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id14">Compiling a version</a><a class="headerlink" href="#compiling-a-version" title="Permalink to this headline">¶</a></h4>
 <p>C++ sourcecode is in <em>../cwatm/hydrological_modules/routing_reservoirs/t5.cpp</em></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>A compiled version is already provided for Windows and Linux.</p>
+<p>A compiled version is already provided for Windows and Linux and Apple.</p>
 </div>
 <p><strong>Windows</strong></p>
 <p>A compiled version is provided, but maybe you have a faster compiler than the “Minimalist GNU for Windows” or “Microsoft Visual Studio 14.0” we used.</p>
@@ -458,12 +466,12 @@ Downloading Python and the required Python packages is covered in our <a class="
 </div>
 </div>
 <div class="section" id="error-and-exeption-handling">
-<h3><a class="toc-backref" href="#id16">Error and exeption handling</a><a class="headerlink" href="#error-and-exeption-handling" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">Error and exeption handling</a><a class="headerlink" href="#error-and-exeption-handling" title="Permalink to this headline">¶</a></h3>
 <p>We try to make our program behave properly when encountering unexpected conditions. Therefore we caption a number of possible wrong inputs.</p>
 <p>If you get an output with an error number please look at <a class="reference internal" href="errorHandling.html#rst-error"><span class="std std-ref">Error handling</span></a></p>
 </div>
 <div class="section" id="test-the-python-version">
-<h3><a class="toc-backref" href="#id17">Test the Python version</a><a class="headerlink" href="#test-the-python-version" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id16">Test the Python version</a><a class="headerlink" href="#test-the-python-version" title="Permalink to this headline">¶</a></h3>
 <p>From a terminal inside the CWatM folder, Run from the command line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">run_cwatm</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
@@ -486,7 +494,7 @@ Downloading Python and the required Python packages is covered in our <a class="
 </div>
 </div>
 <div class="section" id="run-the-python-version">
-<h3><a class="toc-backref" href="#id18">Run the Python version</a><a class="headerlink" href="#run-the-python-version" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id17">Run the Python version</a><a class="headerlink" href="#run-the-python-version" title="Permalink to this headline">¶</a></h3>
 <p>Run from the command line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">run_cwatm</span><span class="o">.</span><span class="n">py</span> <span class="n">settingsfile</span> <span class="n">flags</span>
 </pre></div>
@@ -518,7 +526,7 @@ Downloading Python and the required Python packages is covered in our <a class="
 </pre></div>
 </div>
 <div class="section" id="flags">
-<h4><a class="toc-backref" href="#id19">Flags</a><a class="headerlink" href="#flags" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id18">Flags</a><a class="headerlink" href="#flags" title="Permalink to this headline">¶</a></h4>
 <p>Flags can be used to change the runtime output on the screen</p>
 <p>example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">q</span> <span class="o">--</span><span class="n">quiet</span>       <span class="n">output</span> <span class="n">progression</span> <span class="n">given</span> <span class="k">as</span> <span class="o">.</span>
@@ -534,7 +542,7 @@ Downloading Python and the required Python packages is covered in our <a class="
 </div>
 </div>
 <div class="section" id="netcdf-meta-data">
-<h2><a class="toc-backref" href="#id20">NetCDF meta data</a><a class="headerlink" href="#netcdf-meta-data" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id19">NetCDF meta data</a><a class="headerlink" href="#netcdf-meta-data" title="Permalink to this headline">¶</a></h2>
 <p>The format for spatial data for output data is netCDF.
 In the meta data file information can be added  e.g. a description of the parameter</p>
 <div class="admonition note">
@@ -543,7 +551,7 @@ In the meta data file information can be added  e.g. a description of the parame
 </div>
 </div>
 <div class="section" id="test-the-data">
-<h2><a class="toc-backref" href="#id21">Test the data</a><a class="headerlink" href="#test-the-data" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id20">Test the data</a><a class="headerlink" href="#test-the-data" title="Permalink to this headline">¶</a></h2>
 <div class="line-block">
 <div class="line">The model is only as good as the data!</div>
 <div class="line">To give out a list of data and to check the data the model can run a check.</div>
@@ -587,7 +595,7 @@ max:       maximum in 1D (or 2D)
 </div>
 </div>
 <div class="section" id="settings-file">
-<span id="rst-settingdoc"></span><h2><a class="toc-backref" href="#id22">Settings file</a><a class="headerlink" href="#settings-file" title="Permalink to this headline">¶</a></h2>
+<span id="rst-settingdoc"></span><h2><a class="toc-backref" href="#id21">Settings file</a><a class="headerlink" href="#settings-file" title="Permalink to this headline">¶</a></h2>
 <p>The settings file is controlling the CWatM run</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">######## ##          ##  ####  ######  ##    ##</span>
 <span class="linenos">2</span><span class="c1">##       ##          ## ##  ##   ##   ####  ####</span>
@@ -601,9 +609,9 @@ max:       maximum in 1D (or 2D)
 </pre></div>
 </div>
 <div class="section" id="components-of-the-settings-file">
-<h3><a class="toc-backref" href="#id23">Components of the settings file</a><a class="headerlink" href="#components-of-the-settings-file" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id22">Components of the settings file</a><a class="headerlink" href="#components-of-the-settings-file" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="general-flags">
-<h4><a class="toc-backref" href="#id24">General flags</a><a class="headerlink" href="#general-flags" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id23">General flags</a><a class="headerlink" href="#general-flags" title="Permalink to this headline">¶</a></h4>
 <p>General flags are set in the first paragraph
 For example: If Temperature data are in unit ° Celsius ot Kelvin</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">15</span><span class="k">[OPTIONS]</span>
@@ -680,8 +688,8 @@ For example: If Temperature data are in unit ° Celsius ot Kelvin</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id4">
-<h4><a class="toc-backref" href="#id25">NetCDF meta data</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id3">
+<h4><a class="toc-backref" href="#id24">NetCDF meta data</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <p>The format for spatial data for input and output data is netCDF.
 For output data the basic information are given in the settingsfile</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">102</span><span class="k">[NETCDF_ATTRIBUTES]</span>
@@ -694,7 +702,7 @@ For output data the basic information are given in the settingsfile</p>
 in the metaNetcdf.xml. See: <a class="reference internal" href="#rst-metadata"><span class="std std-ref">Output Meta NetCDF information</span></a></p>
 </div>
 <div class="section" id="path-of-data-output">
-<h4><a class="toc-backref" href="#id26">Path of data, output</a><a class="headerlink" href="#path-of-data-output" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id25">Path of data, output</a><a class="headerlink" href="#path-of-data-output" title="Permalink to this headline">¶</a></h4>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Further on the pathes can be used as placeholders</p>
@@ -711,7 +719,7 @@ in the metaNetcdf.xml. See: <a class="reference internal" href="#rst-metadata"><
 </div>
 </div>
 <div class="section" id="defining-the-modeling-area">
-<span id="rst-modelarea"></span><h4><a class="toc-backref" href="#id27">Defining the modeling area</a><a class="headerlink" href="#defining-the-modeling-area" title="Permalink to this headline">¶</a></h4>
+<span id="rst-modelarea"></span><h4><a class="toc-backref" href="#id26">Defining the modeling area</a><a class="headerlink" href="#defining-the-modeling-area" title="Permalink to this headline">¶</a></h4>
 <p>In general the input data are stored and used at global scale.
 The modeling area can be defined by:</p>
 <ul class="simple">
@@ -766,7 +774,7 @@ The modeling area can be defined by:</p>
 </div>
 </div>
 <div class="section" id="defining-the-time">
-<h4><a class="toc-backref" href="#id28">Defining the time</a><a class="headerlink" href="#defining-the-time" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id27">Defining the time</a><a class="headerlink" href="#defining-the-time" title="Permalink to this headline">¶</a></h4>
 <p>The start and end time have to be defined.
 Spin-up time is the time for warming up (results will be stored after the spin-up time)</p>
 <div class="admonition note">
@@ -792,7 +800,7 @@ Spin-up time is the time for warming up (results will be stored after the spin-u
 </div>
 </div>
 <div class="section" id="initial-conditions">
-<h4><a class="toc-backref" href="#id29">Initial conditions</a><a class="headerlink" href="#initial-conditions" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id28">Initial conditions</a><a class="headerlink" href="#initial-conditions" title="Permalink to this headline">¶</a></h4>
 <p>Initial conditions can be stored and be loaded in order to initialise a warm start of the model</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -824,7 +832,7 @@ Spin-up time is the time for warming up (results will be stored after the spin-u
 </div>
 </div>
 <div class="section" id="output">
-<span id="rst-outputone"></span><h4><a class="toc-backref" href="#id30">Output</a><a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h4>
+<span id="rst-outputone"></span><h4><a class="toc-backref" href="#id29">Output</a><a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h4>
 <dl>
 <dt>Output can be spatial/time as netCDF4 map stacks</dt><dd><div class="line-block">
 <div class="line">and/or time series at specified points</div>
@@ -886,7 +894,7 @@ OUT_TSS_AreaAvg_MonthAvg = runoff        # monthly average sum of runoff for the
 </div>
 </div>
 <div class="section" id="reading-information">
-<h4><a class="toc-backref" href="#id31">Reading information</a><a class="headerlink" href="#reading-information" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id30">Reading information</a><a class="headerlink" href="#reading-information" title="Permalink to this headline">¶</a></h4>
 <p>Information will be read in from values in the settings file
 Here the value definitions for [SNOW] is shown:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">279</span><span class="c1">#-------------------------------------------------------</span>
@@ -956,7 +964,7 @@ forest_coverFractionNC   = $(PathForest)\coverFractionInputForest366days.nc
 </div>
 </div>
 <div class="section" id="sections-of-information">
-<h3><a class="toc-backref" href="#id32">Sections of information</a><a class="headerlink" href="#sections-of-information" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id31">Sections of information</a><a class="headerlink" href="#sections-of-information" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Snow</p></li>
 <li><p>Frost</p></li>
@@ -984,7 +992,7 @@ forest_coverFractionNC   = $(PathForest)\coverFractionInputForest366days.nc
 </ul>
 </div>
 <div class="section" id="complete-settings-file">
-<span id="rst-setting"></span><h3><a class="toc-backref" href="#id33">Complete settings file</a><a class="headerlink" href="#complete-settings-file" title="Permalink to this headline">¶</a></h3>
+<span id="rst-setting"></span><h3><a class="toc-backref" href="#id32">Complete settings file</a><a class="headerlink" href="#complete-settings-file" title="Permalink to this headline">¶</a></h3>
 <p>Example of a settings file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span># ------------------------------------------------
 <span class="linenos">  2</span>
@@ -1761,10 +1769,10 @@ forest_coverFractionNC   = $(PathForest)\coverFractionInputForest366days.nc
 </div>
 </div>
 </div>
-<div class="section" id="id5">
-<h2><a class="toc-backref" href="#id34">NetCDF meta data</a><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h2><a class="toc-backref" href="#id33">NetCDF meta data</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="output-meta-netcdf-information">
-<span id="rst-metadata"></span><h3><a class="toc-backref" href="#id35">Output Meta NetCDF information</a><a class="headerlink" href="#output-meta-netcdf-information" title="Permalink to this headline">¶</a></h3>
+<span id="rst-metadata"></span><h3><a class="toc-backref" href="#id34">Output Meta NetCDF information</a><a class="headerlink" href="#output-meta-netcdf-information" title="Permalink to this headline">¶</a></h3>
 <p>The metaNetcdf.xml includes information on the output netCDF files
 e.g. description of the parameter, unit ..</p>
 <p>Example of a metaNetcdf.xml file:</p>
@@ -1792,7 +1800,7 @@ e.g. description of the parameter, unit ..</p>
 </div>
 </div>
 <div class="section" id="name-and-location-of-the-netcdf-meta-data-file">
-<h3><a class="toc-backref" href="#id36">Name and location of the NetCDF meta data file</a><a class="headerlink" href="#name-and-location-of-the-netcdf-meta-data-file" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id35">Name and location of the NetCDF meta data file</a><a class="headerlink" href="#name-and-location-of-the-netcdf-meta-data-file" title="Permalink to this headline">¶</a></h3>
 <p>In the settings file the name and location of the metadata file is given.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#-------------------------------------------------------
 [NETCDF_ATTRIBUTES]
@@ -1804,7 +1812,7 @@ metaNetcdfFile = $(FILE_PATHS:PathRoot)/cwatm/metaNetcdf.xml
 </div>
 </div>
 <div class="section" id="initialisation">
-<span id="rst-meta"></span><h2><a class="toc-backref" href="#id37">Initialisation</a><a class="headerlink" href="#initialisation" title="Permalink to this headline">¶</a></h2>
+<span id="rst-meta"></span><h2><a class="toc-backref" href="#id36">Initialisation</a><a class="headerlink" href="#initialisation" title="Permalink to this headline">¶</a></h2>
 <p>CWatM needs to have estimates of the initial state of the internal storage variables, e.g. the amount of water stored in snow, soil, groundwater etc.</p>
 <p>There are two possibilities:</p>
 <ol class="arabic simple">
@@ -1818,7 +1826,7 @@ metaNetcdfFile = $(FILE_PATHS:PathRoot)/cwatm/metaNetcdf.xml
 <li><p>using the stored variables to restart every day with the values from the previous day (forecasting mode)</p></li>
 </ul>
 <div class="section" id="example-of-soil-moisture">
-<h3><a class="toc-backref" href="#id38">Example of soil moisture</a><a class="headerlink" href="#example-of-soil-moisture" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id37">Example of soil moisture</a><a class="headerlink" href="#example-of-soil-moisture" title="Permalink to this headline">¶</a></h3>
 <p>The next figure shows the impact of different initial condition on the soil moisture of the lower soil.
 In one of the simulations the soil is initially almost completely saturated. In another simulation the soil is completely dry and the third simulation starts with initial conditions in between the two extremes.</p>
 <p>In the beginning the effect of different initial condition can be seen clearly. But after one year the three curves converge. The <strong>memory</strong> of the lower soil goes back for about one year.</p>
@@ -1835,11 +1843,11 @@ We propose a warm-up of several decades. The longer the better.</p>
 <p>Figure: Simulation of groundwater storage with different initial conditions</p>
 </div>
 <div class="section" id="cold-start">
-<h3><a class="toc-backref" href="#id39">Cold start</a><a class="headerlink" href="#cold-start" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id38">Cold start</a><a class="headerlink" href="#cold-start" title="Permalink to this headline">¶</a></h3>
 <p>For a <strong>cold start</strong> the values of the storage variables are unknown and set to a “first” guess.
 A list of variables and their default value for a <strong>cold start</strong> is given below in: <a class="reference internal" href="#rst-initialcondition"><span class="std std-ref">Initial conditions</span></a></p>
 <div class="section" id="set-up-a-cold-start-in-the-settingsfile">
-<h4><a class="toc-backref" href="#id40">Set up a cold start in the settingsfile</a><a class="headerlink" href="#set-up-a-cold-start-in-the-settingsfile" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id39">Set up a cold start in the settingsfile</a><a class="headerlink" href="#set-up-a-cold-start-in-the-settingsfile" title="Permalink to this headline">¶</a></h4>
 <p>In the settings file the option: <strong>load_initial</strong> has to be set on <strong>False</strong></p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">145</span><span class="c1">#-------------------------------------------------------</span>
 <span class="linenos">146</span><span class="k">[INITITIAL CONDITIONS]</span>
@@ -1862,7 +1870,7 @@ A list of variables and their default value for a <strong>cold start</strong> is
 </div>
 </div>
 <div class="section" id="storing-initial-variables">
-<h3><a class="toc-backref" href="#id41">Storing initial variables</a><a class="headerlink" href="#storing-initial-variables" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id40">Storing initial variables</a><a class="headerlink" href="#storing-initial-variables" title="Permalink to this headline">¶</a></h3>
 <p>In the settings file the option <strong>save_initial</strong> has to be set to <strong>True</strong></p>
 <p>The name of the initial netCDF4 file has to be put in <strong>initsave</strong></p>
 <p>and one or more dates have to be specified in StepInit</p>
@@ -1875,15 +1883,15 @@ A list of variables and their default value for a <strong>cold start</strong> is
 </div>
 </div>
 <div class="section" id="warm-start">
-<h3><a class="toc-backref" href="#id42">Warm start</a><a class="headerlink" href="#warm-start" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id41">Warm start</a><a class="headerlink" href="#warm-start" title="Permalink to this headline">¶</a></h3>
 <p>CWatM can write internal variables to a netCDF file for choosen timesteps. These netCDF files can be used as the initial conditions for a suceeding simulation.</p>
 <p>This is useful for establishing a steady-state after a long-term run and then using this steady-state for succeding simulations or for an every day run (forecasting mode)</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>If the parameters are changed after a run(especially the groundwater, lakes and reservoir parameters) the stored initial values do not represent the conditions of the storage variables. Stored initial conditions should <strong>not</strong> be used as initial values for a model run with another set of parameters. If you do this during calibration, you will not be able to reproduce the calibration results!</p>
 </div>
-<div class="section" id="id6">
-<h4><a class="toc-backref" href="#id43">Set up a cold start in the settingsfile</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id5">
+<h4><a class="toc-backref" href="#id42">Set up a cold start in the settingsfile</a><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <p>In the settings file the option: <strong>load_initial</strong> has to be set on <strong>True</strong>
 And define the name of the netcdf4 file in <strong>initLoad</strong></p>
 <div class="admonition note">
@@ -1903,7 +1911,7 @@ And define the name of the netcdf4 file in <strong>initLoad</strong></p>
 </div>
 </div>
 <div class="section" id="rst-initialcondition">
-<span id="id7"></span><h3><a class="toc-backref" href="#id44">Initial conditions</a><a class="headerlink" href="#rst-initialcondition" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3><a class="toc-backref" href="#id43">Initial conditions</a><a class="headerlink" href="#rst-initialcondition" title="Permalink to this headline">¶</a></h3>
 <table class="colwidths-given docutils align-default">
 <colgroup>
 <col style="width: 8%" />
@@ -2094,7 +2102,7 @@ And define the name of the netcdf4 file in <strong>initLoad</strong></p>
 </div>
 </div>
 <div class="section" id="model-output">
-<span id="rst-outputtwo"></span><h2><a class="toc-backref" href="#id45">Model Output</a><a class="headerlink" href="#model-output" title="Permalink to this headline">¶</a></h2>
+<span id="rst-outputtwo"></span><h2><a class="toc-backref" href="#id44">Model Output</a><a class="headerlink" href="#model-output" title="Permalink to this headline">¶</a></h2>
 <p>An advantage of <strong>CWatM</strong> is the full flexibility of the output variables.</p>
 <ul class="simple">
 <li><p>All parameters and variables can be used for output as maps or time series.</p></li>
@@ -2102,7 +2110,7 @@ And define the name of the netcdf4 file in <strong>initLoad</strong></p>
 <li><p>all variables maps are stored as netcdf and the meta data information can be added</p></li>
 </ul>
 <div class="section" id="time-depending-and-non-depending-output-maps">
-<h3><a class="toc-backref" href="#id46">Time depending and non depending output maps</a><a class="headerlink" href="#time-depending-and-non-depending-output-maps" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id45">Time depending and non depending output maps</a><a class="headerlink" href="#time-depending-and-non-depending-output-maps" title="Permalink to this headline">¶</a></h3>
 <div class="line-block">
 <div class="line">Output maps will be produced as spatial maps, stack of spatial maps (over time)</div>
 <div class="line">Format: <a class="reference external" href="http://www.unidata.ucar.edu/software/netcdf/">netCDF</a></div>
@@ -2119,7 +2127,7 @@ And define the name of the netcdf4 file in <strong>initLoad</strong></p>
 </ul>
 </div>
 <div class="section" id="or-time-series-at-specified-points">
-<h3><a class="toc-backref" href="#id47">Or time series at specified points</a><a class="headerlink" href="#or-time-series-at-specified-points" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id46">Or time series at specified points</a><a class="headerlink" href="#or-time-series-at-specified-points" title="Permalink to this headline">¶</a></h3>
 <div class="line-block">
 <div class="line">Timeseries are procuded as ASCII files, which can be read with every text editor</div>
 <div class="line">or with <a class="reference external" href="http://pcraster.geo.uu.nl/projects/developments/aguila/">PCRaster Aquila</a></div>
@@ -2141,7 +2149,7 @@ And define the name of the netcdf4 file in <strong>initLoad</strong></p>
 </div>
 </div>
 <div class="section" id="output-variables">
-<h3><a class="toc-backref" href="#id48">Output variables</a><a class="headerlink" href="#output-variables" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id47">Output variables</a><a class="headerlink" href="#output-variables" title="Permalink to this headline">¶</a></h3>
 <p>Output can be every global defined variable in the model
 Variable are e.g. Precipitation, runoff, baseflow</p>
 <p>but also not so common variables as:</p>
@@ -2153,7 +2161,7 @@ Variable are e.g. Precipitation, runoff, baseflow</p>
 </ul>
 </div>
 <div class="section" id="daily-monthly-at-the-end-or-average">
-<h3><a class="toc-backref" href="#id49">Daily, monthly - at the end or average</a><a class="headerlink" href="#daily-monthly-at-the-end-or-average" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id48">Daily, monthly - at the end or average</a><a class="headerlink" href="#daily-monthly-at-the-end-or-average" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>per day</p></li>
 <li><p>total month, average month, end of month</p></li>
@@ -2186,7 +2194,7 @@ OUT_TSS_AnnualTot = runoff
 </div>
 </div>
 <div class="section" id="time-series-as-point-infomation-or-catchment-sum-or-average">
-<h3><a class="toc-backref" href="#id50">Time series as point infomation or catchment sum or average</a><a class="headerlink" href="#time-series-as-point-infomation-or-catchment-sum-or-average" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id49">Time series as point infomation or catchment sum or average</a><a class="headerlink" href="#time-series-as-point-infomation-or-catchment-sum-or-average" title="Permalink to this headline">¶</a></h3>
 <p>As standard time series can include values of the specific cell as defined in the settings file as <em>Gauges</em>
 But time series can also show the area sum or area average of the upstream catchment from the specific cell</p>
 <p>for example</p>
@@ -2203,7 +2211,7 @@ But time series can also show the area sum or area average of the upstream catch
 </div>
 </div>
 <div class="section" id="most-important-output-variables-a-selection">
-<h3><a class="toc-backref" href="#id51">Most important output variables - a selection</a><a class="headerlink" href="#most-important-output-variables-a-selection" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id50">Most important output variables - a selection</a><a class="headerlink" href="#most-important-output-variables-a-selection" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Variable name    : Description</span>
 <span class="n">discharge</span>         <span class="p">:</span> <span class="n">river</span> <span class="n">discharge</span>
 <span class="n">runoff</span>            <span class="p">:</span> <span class="n">runoff</span>
@@ -2218,7 +2226,7 @@ But time series can also show the area sum or area average of the upstream catch
 </div>
 </div>
 <div class="section" id="output-variables-starting-a-list">
-<h3><a class="toc-backref" href="#id52">Output variables - starting a list</a><a class="headerlink" href="#output-variables-starting-a-list" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id51">Output variables - starting a list</a><a class="headerlink" href="#output-variables-starting-a-list" title="Permalink to this headline">¶</a></h3>
 <div class="line-block">
 <div class="line">A list of variables can be produced by using:</div>
 <div class="line">grep -d recurse ‘self.var.’ *.py</div>
