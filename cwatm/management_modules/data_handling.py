@@ -340,6 +340,8 @@ def loadsetclone(self,name):
        mapC = maskfrompoint(mask2D, xleft, yup) + 1
        area = np.sum(loadmap('CellArea')) * 1e-6
        print("Number of cells in catchment: %6i = %7.0f km2" % (np.sum(mask2D), area))
+       if Flags['maskmap']:
+           return mask2D, xleft, yup
 
     # if the final results map should be cover up with some mask:
     if "coverresult" in binding:

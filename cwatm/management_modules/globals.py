@@ -222,10 +222,10 @@ platform1 = platform.uname()[0]
 
 # ----------------------------------
 FlagName = ['quiet', 'veryquiet', 'loud',
-            'checkfiles', 'printtime','warranty','calib','warm']
+            'checkfiles', 'printtime','warranty','calib','warm','gui']
 Flags = {'quiet': False, 'veryquiet': False, 'loud': False,
          'check': False, 'printtime': False, 'warranty': False, 'use': False,
-         'test': False,'calib': False,'warm': False}
+         'test': False,'calib': False,'warm': False,'gui':False,'maskmap':False}
 
 
 
@@ -302,7 +302,7 @@ def globalFlags(setting, arg,settingsfile,Flags):
     settingsfile.append(setting)
 
     try:
-        opts, args = getopt.getopt(arg, 'qvlchtwk0', FlagName)
+        opts, args = getopt.getopt(arg, 'qvlchtwk0gm', FlagName)
     except getopt.GetoptError:
         Flags['use'] = True
         return
@@ -324,9 +324,12 @@ def globalFlags(setting, arg,settingsfile,Flags):
         if o in ('-k', '--calib'):
             Flags['calib'] = True
             Flags['warm'] = False
-
         if o in ('-0', '--warm'):
             Flags['warm'] = True
+        if o in ('-g', '--gui'):
+            Flags['gui'] = True
+        if o in ('-m', '--maskmap'):
+            Flags['maskmap'] = True
     # if testing from pytest
     if "pytest" in sys.modules:
         Flags['test'] = True

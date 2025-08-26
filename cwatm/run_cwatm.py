@@ -196,7 +196,10 @@ def CWATMexe2(settings,meteo):
 
 
     CWATM = CWATModel()
+    # if GUI calls to check the maskmap
+    if Flags['maskmap']:  return
     CWATM.var.meteo = meteo
+
     stCWATM = ModelFrame(CWATM, firstTimestep=dateVar["intStart"], lastTimeStep=dateVar["intEnd"])
 
     start_time = datetime.datetime.now().time()
@@ -294,11 +297,15 @@ def headerinfo():
     versioning['version'] = __version__
     versioning['platform'] = platform1
 
+    s = "CWATM - Community Water Model " + __version__ + " Date: " + versioning['lastdate'] + "\n"
+    s += "International Institute of Applied Systems Analysis (IIASA)\n"
+    s += "Running under platform: " + platform1 + "\n"
+    s += "-----------------------------------------------------------\n"
+
     if not (Flags['veryquiet']) and not (Flags['quiet']):
-        print("CWATM - Community Water Model ", __version__, " Date: ", versioning['lastdate'], " ")
-        print("International Institute of Applied Systems Analysis (IIASA)")
-        print("Running under platform: ", platform1)
-        print("-----------------------------------------------------------")
+        print (s)
+
+    return s
 
 def mainwarm(settings, args, meteo):
     success = False
@@ -308,7 +315,17 @@ def mainwarm(settings, args, meteo):
     globalFlags(settings, args, settingsfile, Flags)
     Flags['warm'] = True
 
-    headerinfo()
+    s = headerinfo()
+
+    if Flags['gui']:
+        Flags['warm'] = False
+        if Flags['maskmap']:
+            CWATMexe2(settingsfile[0], meteo)
+            return dateVar['maskmap']
+        else:
+            success, last_dis = CWATMexe2(settingsfile[0], meteo)
+            return success, last_dis
+
     
     if isinstance(meteo, np.ndarray):
         success, last_dis = CWATMexe2(settingsfile[0],meteo)

@@ -114,7 +114,7 @@ class outputTssMap(object):
 
                             else:
                                 # TimeoutputTimeseries(binding[tss], self.var, outpoints, noHeader=Flags['noheader'])
-                                #info.append(os.path.join(outDir[sec], str(var) + "_daily.tss"))
+                                #info.append(os.path.join(outDimpontr[sec], str(var) + "_daily.tss"))
                                 newcsvformat = True
                                 suffix = ".csv"
                                 if 'reportOldTss' in option:
@@ -646,6 +646,17 @@ class outputTssMap(object):
         # ***** WRITING RESULTS: TIME SERIES *************************
         # ************************************************************
         self.var.firstout = firstout(self.var.discharge)
+
+        if Flags['gui']:
+            # if CWatM is started from a GUI - update the progress clock
+            if hasattr(self.var, 'meteo') and hasattr(self.var.meteo, 'progress_clock'):
+                # Calculate progress percentage based on dates
+                total_days = dateVar['intEnd'] - dateVar['intStart'] + 1
+                current_day = dateVar['curr'] - dateVar['intStart'] + 1
+                progress_percent = min(100, max(0, int((current_day / total_days) * 100)))
+                self.var.meteo.progress_clock.setValue(progress_percent)
+
+
 
         if Flags['loud']:
             print("\r%-6i %10s %10.2f     " %(dateVar['currStart'],dateVar['currDatestr'],self.var.firstout), end='')

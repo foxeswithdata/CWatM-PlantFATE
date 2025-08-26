@@ -136,9 +136,15 @@ class CWATModel_ini(DynamicModel):
         if "modflow_coupling" in option:
             self.var.modflow = checkOption('modflow_coupling')
 
+        # if GUI calls to check the maskmap - using datevar for transporting
+        if Flags['maskmap']:
+            dateVar['maskmap'] = loadsetclone(self, 'MaskMap')
+            return
+
         ## MakMap: the maskmap is flexible e.g. col,row,x1,y1  or x1,x2,y1,y2
         # set the maskmap
         self.MaskMap = loadsetclone(self, 'MaskMap')
+
         # run intial misc to get all global variables
         self.misc_module.initial()
         self.init_module.initial()

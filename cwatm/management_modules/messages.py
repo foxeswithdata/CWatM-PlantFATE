@@ -34,7 +34,8 @@ class CWATMError(Warning):
             errornumber = int(msg[6:9])
         except:
             errornumber = 100
-        sys.exit(errornumber)
+        #sys.exit(errornumber)
+        print("CWatM errornumber: " + str(errornumber))
 
 
 class CWATMFileError(CWATMError):
@@ -69,7 +70,8 @@ class CWATMFileError(CWATMError):
             errornumber = int(msg[6:9])
         except:
             errornumber = 100
-        sys.exit(errornumber)
+        print ("CWatM errornumber: " + str(errornumber))
+        #sys.exit(errornumber)
 
 class CWATMDirError(CWATMError):
     """
@@ -103,7 +105,8 @@ class CWATMDirError(CWATMError):
             errornumber = int(msg[6:9])
         except:
             errornumber = 100
-        sys.exit(errornumber)
+        #sys.exit(errornumber)
+        print("CWatM errornumber: " + str(errornumber))
 
 
 class CWATMWarning(Warning):
