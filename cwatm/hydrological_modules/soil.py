@@ -170,32 +170,21 @@ class soil(object):
         for layer,property  in soilDepthLayer:
             vars(self.var)[layer] = np.tile(globals.inZero, (self.var.soilLayers, 1))
 
-        # first soil layer = 5 cm
+        # first soil layer = 5 cm to represent a shallow soil layer which can be used to compare with remote sensing data
         self.var.soildepth[0] = 0.05 + globals.inZero
-        # second soul layer minimum 5cm
+        # second soil layer minimum 5cm (for calculation purpose). 2nd soli layer = soildepth - 1st soil layer of 5 cm
         self.var.soildepth[1] = np.maximum(0.05, loadmap('StorDepth1') - self.var.soildepth[0])
 
-        # soil depth[1] is inc/decr by a calibration factor
-        #self.var.soildepth[1] =  self.var.soildepth[1] * loadmap('soildepth_factor')
-        #self.var.soildepth[1] = np.maximum(0.05, self.var.soildepth[1])
-
-        # corrected by the calibration factor, total soil depth stays the same
-        #self.var.soildepth[2] = loadmap('StorDepth2') + (1. - loadmap('soildepth_factor') * self.var.soildepth[1])
-        #self.var.soildepth[2] = loadmap('StorDepth2') * loadmap('soildepth_factor')
+        # third soildepth minimum 5cm (to calculation purpose).
         self.var.soildepth[2] = loadmap('StorDepth2')
         self.var.soildepth[2] = np.maximum(0.05, self.var.soildepth[2])
 
         # Calibration
+        # a calibration soil factor can multiply the 2nd and 3rd soillayer thickness
         soildepth_factor =  loadmap('soildepth_factor')
         self.var.soildepth[1] = self.var.soildepth[1] * soildepth_factor
         self.var.soildepth[2] = self.var.soildepth[2] * soildepth_factor
         self.var.soildepth12 = self.var.soildepth[1] + self.var.soildepth[2]
-
-        ii= 0
-
-        # report("C:/work/output2/soil.map", self.var.soildepth12)
-
-
 
         # This is here, as groundwater.py is not called if MODFLOW is used
         self.var.pumping_actual = globals.inZero.copy()
@@ -203,8 +192,7 @@ class soil(object):
         self.var.baseflow = globals.inZero.copy()
 
         if 'gw_depth_observations' in binding:
-            self.var.gwdepth_observations = readnetcdfWithoutTime(cbinding('gw_depth_observations'),
-                                                                  value='Groundwater depth')
+            self.var.gwdepth_observations = readnetcdfWithoutTime(cbinding('gw_depth_observations'), value='Groundwater depth')
         if 'gw_depth_sim_obs' in binding:
             self.var.gwdepth_adjuster = loadmap('gw_depth_sim_obs')
 

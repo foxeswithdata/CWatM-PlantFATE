@@ -28,7 +28,7 @@ def pytest_configure(config):
         date = run_cwatm.__date__
 
     except:
-        runcwatm = "../run_cwatm.py"
+        runcwatm = "../../run_cwatm.py"
         authors = ""
         version = ""
         date = ""
@@ -44,6 +44,7 @@ def pytest_configure(config):
     #config._metadata = None
     #config.getoption('cwatm')
     #config.option
+    ii =1
 
 #@pytest.mark.optionalhook
 #def pytest_html_results_summary(prefix, summary, postfix):

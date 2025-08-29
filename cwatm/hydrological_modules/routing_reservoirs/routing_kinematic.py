@@ -130,7 +130,7 @@ class routing_kinematic(object):
         self.model = model
         self.lakes_reservoirs_module = lakes_reservoirs(model)
 
-    def catchment(self, point):
+    def catchment(self, point,ldd):
         """
         Get the catchment from "global"  LDD and a point
 
@@ -138,10 +138,6 @@ class routing_kinematic(object):
         * calculate catchment upstream of point
         """
 
-        ldd = loadmap('Ldd')
-        #self.var.lddCompress, dirshort, self.var.dirUp, self.var.dirupLen, self.var.dirupID, self.var.downstruct, self.var.catchment, self.var.dirDown, self.var.lendirDown = defLdd2(ldd)
-
-        # decompressing ldd from 1D -> 2D
         dmap = maskinfo['maskall'].copy()
         dmap[~maskinfo['maskflat']] = ldd[:]
         ldd2D = dmap.reshape(maskinfo['shape']).astype(np.int64)
@@ -154,10 +150,8 @@ class routing_kinematic(object):
         lddOrder[maskinfo['mask']] = -1
         lddOrder = np.array(lddOrder.data, dtype=np.int64)
 
-        dirshort = lddshort(ldd2D, lddOrder)
+        lddCompress, dirshort = lddrepair(ldd2D, lddOrder)
         dirUp, dirupLen, dirupID = dirUpstream(dirshort)
-
-
 
         c1 = catchment1(dirUp, point)
 
@@ -273,7 +267,16 @@ class routing_kinematic(object):
         # ChannelAlpha for kinematic wave
         alpTermChan = (self.var.chanMan / (np.sqrt(self.var.chanGrad))) ** self.var.beta
         self.var.alpPower = self.var.beta / 1.5
-        self.var.channelAlpha = alpTermChan * (self.var.chanWettedPerimeterAlpha ** self.var.alpPower) *2.5
+
+        """
+        The 2.5 factor seems to be a bug (some leftover from a test).
+        It will remain because all calibration are done with this factor.
+        The factor chanman is also 4.6050393 (chanman = 1 is in real: 4.605)
+        """
+        self.var.channelAlpha = alpTermChan * (self.var.chanWettedPerimeterAlpha ** self.var.alpPower) * 2.5
+        ca = 2.5 * self.var.chanMan *  ((1/np.sqrt(self.var.chanGrad)) ** self.var.beta) *  (self.var.chanWettedPerimeterAlpha ** self.var.alpPower)
+
+
         self.var.invchannelAlpha = 1. / self.var.channelAlpha
 
         # -----------------------------------------------

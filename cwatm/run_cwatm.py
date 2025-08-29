@@ -33,6 +33,7 @@ from cwatm import __author__, __version__, __date__, __copyright__, __maintainer
 
 # to work with some versions of Linux  - a workaround with pyexpat is needed
 from pyexpat import *
+import traceback
 
 import os
 import numpy as np
@@ -48,8 +49,6 @@ import scipy
 import netCDF4
 from osgeo import gdal
 from osgeo import osr
-
-
 
 from cwatm.management_modules.configuration import globalFlags, settingsfile, versioning, platform1, parse_configuration, read_metanetcdf, dateVar, CWATMRunInfo, outputDir, timeMesSum, timeMesString, globalclear, calibclear
 from cwatm.management_modules.data_handling import Flags, cbinding
@@ -120,7 +119,7 @@ def CWATMexe(settings):
     # read all the possible option for modelling and for generating output
     # read the settings file with all information about the catchments(s)
     # read the meta data information for netcdf outputfiles
-    read_metanetcdf(cbinding('metaNetcdfFile'), 'metaNetcdfFile')
+    read_metanetcdf('metaNetcdf.xml')
 
     # os.chdir(outputDir[0])
     # this prevent from using relative path in settings!
@@ -323,8 +322,13 @@ def mainwarm(settings, args, meteo):
             CWATMexe2(settingsfile[0], meteo)
             return dateVar['maskmap']
         else:
-            success, last_dis = CWATMexe2(settingsfile[0], meteo)
-            return success, last_dis
+            try:
+                success, last_dis = CWATMexe2(settingsfile[0], meteo)
+                return success, last_dis
+            except Exception as e:
+                # return in a controlled way with success = False
+                traceback.print_exc()
+                return False, 0
 
     
     if isinstance(meteo, np.ndarray):
@@ -352,8 +356,13 @@ def main(settings, args):
         meteo,success, last_dis = CWATMexe(settingsfile[0])
         return meteo,success, last_dis
     else:
-        success, last_dis = CWATMexe(settingsfile[0])
-        return success, last_dis
+        try:
+            success, last_dis = CWATMexe(settingsfile[0])
+            return success, last_dis
+        except Exception as e:
+            # return in a controlled way with success = False
+            traceback.print_exc()
+            return False, 0
 
 
 def parse_args():

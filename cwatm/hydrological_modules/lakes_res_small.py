@@ -122,9 +122,7 @@ class lakes_res_small(object):
 
             # lake storage ini
             self.var.smalllakeLevel = divideValues(self.var.smalllakeVolumeM3, self.var.smalllakeArea)
-
             self.var.smalllakeStorage = self.var.smalllakeVolumeM3.copy()
-
 
             testStorage = "minStorage" in binding
             if testStorage:

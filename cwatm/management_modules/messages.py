@@ -38,6 +38,7 @@ class CWATMError(Warning):
         print("CWatM errornumber: " + str(errornumber))
 
 
+
 class CWATMFileError(CWATMError):
     """
     The error handling class

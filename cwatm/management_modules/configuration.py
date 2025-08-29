@@ -13,6 +13,7 @@ from cwatm.management_modules.globals import *
 import configparser
 import re
 import xml.dom.minidom
+import pathlib
 from cwatm.management_modules.messages import *
 
 import os
@@ -164,7 +165,7 @@ def parse_configuration(settingsFileName):
      # Output directory is stored in a separat global array
 
 
-def read_metanetcdf(metaxml, name):
+def read_metanetcdf(name):
     """
     Read the metadata for netcdf output files
     unit, long name, standard name and additional information
@@ -173,43 +174,35 @@ def read_metanetcdf(metaxml, name):
     :param name: file name information
     :return: List with metadata information: metaNetcdfVar
     """
+
+    metaxml = os.path.join(pathlib.Path(__file__).parent.resolve().parent.resolve(), name)
     if os.path.isfile(metaxml):
         try:
             metaparse = xml.dom.minidom.parse(metaxml)
         except:
             msg = "Error 303: using option file: " + metaxml
             raise CWATMError(msg)
+
+
+        # running through all output variable
+        # if an output variable is not defined here the standard metadata is used
+        # unit = "undefined", standard name = long name = variable name
+        meta = metaparse.getElementsByTagName("CWATM")[0]
+
+        for metavar in meta.getElementsByTagName("metanetcdf"):
+            d = {}
+            for key in list(metavar.attributes.keys()):
+                if key != 'varname':
+                    d[key] = metavar.attributes[key].value
+            key = metavar.attributes['varname'].value
+            metaNetcdfVar[key] = d
+
     else:
-        msg = "Cannot find option file: " + metaxml +"\n"
-        path, name = os.path.split(metaxml)
-        #metaxml = os.path.join(os.getcwd(), name)
-        # using program name
-        metaxml = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])),'cwatm', name)
-        if os.path.isfile(metaxml):
-            msg += "Using file: " + metaxml + " instead."
-            print(CWATMWarning(msg))
-        else:
-            msg = "Error 304: Cannot find alternative option file: " + metaxml
-            raise CWATMFileError(metaxml, msg, sname = name)
+        msg = "Error 304: cannot find file: " + metaxml
+        raise CWATMError(msg)
 
-        try:
-            metaparse = xml.dom.minidom.parse(metaxml)
-        except:
-            msg = "Error 305: Error using alternative option file: " + metaxml
-            raise CWATMError(msg)
 
-    # running through all output variable
-    # if an output variable is not defined here the standard metadata is used
-    # unit = "undefined", standard name = long name = variable name
-    meta = metaparse.getElementsByTagName("CWATM")[0]
-
-    for metavar in meta.getElementsByTagName("metanetcdf"):
-        d = {}
-        for key in list(metavar.attributes.keys()):
-            if key != 'varname':
-                d[key] = metavar.attributes[key].value
-        key = metavar.attributes['varname'].value
-        metaNetcdfVar[key] = d
+    ii=1
 
 
 

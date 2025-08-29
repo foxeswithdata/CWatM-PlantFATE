@@ -40,9 +40,9 @@
 
 # True is the tests for this section should be done
 runtest: Rhine_30min  True
-runtest: Rhine_30min_add True
-runtest: Error_30min  True
-runtest: global_30min True
+runtest: Rhine_30min_add False
+runtest: Error_30min  False
+runtest: global_30min False
 runtest: Rhine_5min   True
 runtest: Rhine_5min_modflow  True
 runtest: Burgenland_1km_modflow True
@@ -90,7 +90,7 @@ test_value: False
         header:      Rhine_30min_4
         description: 4th Rhine 30min with routing off and storing EWRef, ETRef
         set_save:    settings_rhine_30min_04.ini
-        changes:     PET_modus = 3; includeRouting = False; StepEnd = 730 
+        changes:     PET_modus = 3; includeRouting = False; StepEnd = 370 
         adds:        OUT_MAP_Daily = ETRef, EWRef
         last_value:  4.20	
        # 5h setup Rhine

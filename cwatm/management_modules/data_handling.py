@@ -135,6 +135,7 @@ def valuecell( coordx, coordstr, returnmap = True):
             raise CWATMError(msg)
 
 
+
     null = np.zeros((maskmapAttr['row'], maskmapAttr['col']))
     null[null == 0] = -9999
 
@@ -267,7 +268,6 @@ def loadsetclone(self,name):
                 mapnp = np.array(nf1.variables[value][0:nrRows, 0:nrCols])
             nf1.close()
             setmaskmapAttr( x, y, nrCols, nrRows, cellSize)
-
             flagmap = True
 
         except:
@@ -336,7 +336,8 @@ def loadsetclone(self,name):
        outpoints[outpoints < 0] = 0
 
        print("Create catchment from point and river network")
-       mask2D, xleft, yup = self.routing_kinematic_module.catchment(outpoints)
+       ldd = compressArray(mapnp)
+       mask2D, xleft, yup = self.routing_kinematic_module.catchment(outpoints,ldd)
        mapC = maskfrompoint(mask2D, xleft, yup) + 1
        area = np.sum(loadmap('CellArea')) * 1e-6
        print("Number of cells in catchment: %6i = %7.0f km2" % (np.sum(mask2D), area))
