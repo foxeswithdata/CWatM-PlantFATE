@@ -342,7 +342,8 @@ def mainwarm(settings, args, meteo):
 
 def main(settings, args):
     success = False
-    if Flags['test']: globalclear()
+    if "pytest" in sys.modules: globalclear()
+    #if Flags['test']: globalclear()
 
     globalFlags(settings, args, settingsfile, Flags)
     if Flags['use']:

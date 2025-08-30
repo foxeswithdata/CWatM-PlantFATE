@@ -352,6 +352,10 @@ def loadsetclone(self,name):
             cover[cover > 1] = False
             cover[cover == 1] = True
             coverresult[1] = cover
+    else:
+        coverresult[0] = False
+        coverresult[1] = []
+
 
     return mapC
 
