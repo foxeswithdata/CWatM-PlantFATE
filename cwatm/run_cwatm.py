@@ -42,6 +42,7 @@ import glob
 import sys
 import time
 import datetime
+import subprocess
 
 import numpy
 import pandas
@@ -56,6 +57,7 @@ from cwatm.management_modules.timestep import checkifDate
 from cwatm.management_modules.dynamicModel import ModelFrame
 from cwatm.cwatm_model import CWATModel
 from cwatm.management_modules.globals import *
+from cwatm.version import *
 
 if "modflow_coupling" in option:
     if checkOption('modflow_coupling'):
@@ -263,40 +265,26 @@ def headerinfo():
     in order to give more information of the settingsfile and the version of cwatm
     this information is put in the result files .tss and .nc
     """
+    versioning['git'] = get_version_info()
+
+    #github_hash = versioning['git']['git_hash']
+    #local_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode().strip()
+    #test = local_hash.startswith(github_hash) or github_hash.startswith(local_hash)
 
     versioning['exe'] = __file__
-    realPath = os.path.dirname(os.path.realpath(versioning['exe']))
-    """
-    if Flags['calib'] or Flags['warm']:
-        versioning['lastdate'] = "01.06.2021"
-        __date__ = versioning['lastdate']
-        versioning['lastfile'] = "___"
-    else:
-        i = 0
-        for (dirpath, _, filenames) in os.walk(realPath):
-            for file in filenames:
-                if file[-3:] == ".py":
-                    i += 1
-                    file1 = dirpath + "/" + file
-                    if i == 1:
-                        lasttime = os.path.getmtime(file1)
-                        lastfile = file
-                    else:
-                        if os.path.getmtime(file1) > lasttime:
-                            lasttime = os.path.getmtime(file1)
-                            lastfile = file
-        versioning['lastdate'] = datetime.datetime.fromtimestamp(lasttime).strftime("%Y/%m/%d %H:%M")
-        __date__ = versioning['lastdate']
-        versioning['lastfile'] = lastfile
-    """
-    versioning['lastdate'] = "21.12.2024"
+    versioning['lastdate'] = versioning['git'] ['build_timestamp'][0:10]
     __date__ = versioning['lastdate']
-    versioning['lastfile'] = "___"  
-    
+    versioning['lastfile'] = "___"
+
+
+    realPath = os.path.dirname(os.path.realpath(versioning['exe']))
+
+
     versioning['version'] = __version__
     versioning['platform'] = platform1
+    hash = versioning['git']['git_branch'] + " " + versioning['git']['git_short_hash']
 
-    s = "CWATM - Community Water Model " + __version__ + " Date: " + versioning['lastdate'] + "\n"
+    s = "CWATM - Community Water Model Version: " + hash + ", Date: " + versioning['lastdate'] + "\n"
     s += "International Institute of Applied Systems Analysis (IIASA)\n"
     s += "Running under platform: " + platform1 + "\n"
     s += "-----------------------------------------------------------\n"

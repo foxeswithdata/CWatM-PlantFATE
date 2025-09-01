@@ -1508,7 +1508,7 @@ def writenetcdf(netfile,prename,addname,varunits,inputmap, timeStamp, posCnt, fl
         settings = os.path.realpath(settingsfile[0])
         nf1.settingsfile = settings + ": " + xtime.ctime(os.path.getmtime(settings))
         nf1.run_created = xtime.ctime(xtime.time())
-        nf1.Source_Software = 'CWATM Python: ' + versioning['exe']
+        nf1.Source_Software = 'CWatM Python: ' + versioning['exe'] + " Git Branch:" + versioning['git']["git_branch"] + " Hash:" + versioning['git']["git_hash"]
         nf1.Platform = versioning['platform']
         nf1.Version = versioning['version']  + ": " + versioning['lastfile']  + " " + versioning['lastdate']
         nf1.institution = cbinding ("institution")

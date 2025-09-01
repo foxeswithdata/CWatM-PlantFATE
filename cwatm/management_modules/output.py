@@ -409,7 +409,7 @@ class outputTssMap(object):
             # outputFile.write("timeseries " + self._spatialDatatype.lower() + "\n")
             header = "Timeseries," + "settingsfile: " + os.path.realpath(settingsfile[0]) + ",Runnning date: " + xtime.ctime(
                 xtime.time())
-            header += ",CWATM: " + versioning['exe'] + " last change:" + versioning['lastdate']
+            header += ",CWATM: " + versioning['exe'] + " Git Branch:" + versioning['git']["git_branch"] + " Hash:" + versioning['git']["git_hash"]
             try:
                 import git
                 header += ",git commit: " + git.Repo(search_parent_directories=True).head.object.hexsha
