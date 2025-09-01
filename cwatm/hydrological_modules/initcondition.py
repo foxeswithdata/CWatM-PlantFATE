@@ -18,31 +18,6 @@ class initcondition(object):
     """
     READ/WRITE INITIAL CONDITIONS
     all initial condition can be stored at the end of a run to be used as a **warm** start for a following up run
-
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    modflow                                Flag: True if modflow_coupling = True in settings file                  --   
-    Crops_names                            Internal: List of specific crops                                        --   
-    includeCrops                           1 when includeCrops=True in Settings, 0 otherwise                       bool 
-    Crops                                  Internal: List of specific crops and Kc/Ky parameters                   --   
-    includeDesal                                                                                                   --   
-    unlimitedDesal                                                                                                 --   
-    desalAnnualCap                                                                                                 --   
-    reservoir_transfers                    [['Giving reservoir'][i], ['Receiving reservoir'][i], ['Fraction of li  array
-    wwt_def                                                                                                        --   
-    wastewater_to_reservoirs                                                                                       --   
-    loadInit                               Flag: if true initial conditions are loaded                             --   
-    initLoadFile                           load file name of the initial condition data                            --   
-    saveInit                               Flag: if true initial conditions are saved                              --   
-    saveInitFile                           save file name of the initial condition data                            --   
-    coverTypes                             land cover types - forest - grassland - irrPaddy - irrNonPaddy - water  --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
 

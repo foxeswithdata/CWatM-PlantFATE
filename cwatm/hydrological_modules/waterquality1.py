@@ -17,29 +17,6 @@ class waterquality1(object):
     WATER QUALITY 1
 
     calculates water quality variables e.g. travel time, velocity, water temperature
-
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    cellArea                               Area of cell                                                            m2   
-    DtSec                                  number of seconds per timestep (default = 86400)                        s    
-    Tavg                                   Input, average air Temperature                                          K    
-    discharge                              Channel discharge                                                       m3/s 
-    chanLength                             Input, Channel length                                                   m    
-    totalCrossSectionArea                                                                                          --   
-    waterquality                                                                                                   --   
-    celllength                             Cell length, defined as the square root of cell area                    m    
-    downdist                                                                                                       --   
-    travelDistance                                                                                                 --   
-    travelTime                                                                                                     --   
-    waterLevel                                                                                                     --   
-    waterTemperature                                                                                               --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):

@@ -20,24 +20,6 @@ class sealed_water(object):
         smaller rivers, ponds, and wetlands. For example, in a cell, lakes, reservoirs, and channels may make 10%,
         while the water land class makes up 20%. This is one way of allowing evaporation to happen on these
         other surfaces, although limited by the days' precipitation.
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    modflow                                Flag: True if modflow_coupling = True in settings file                  --   
-    availWaterInfiltration                 quantity of water reaching the soil after interception, more snowmelt   m    
-    EWRef                                  potential evaporation rate from water surface                           m    
-    actualET                               simulated evapotranspiration from soil, flooded area and vegetation     m    
-    directRunoff                           Simulated surface runoff                                                m    
-    openWaterEvap                          Simulated evaporation from open areas                                   m    
-    actTransTotal                          Total actual transpiration from the three soil layers                   m    
-    actBareSoilEvap                        Simulated evaporation from the first soil layer                         m    
-    capillar                               Flow from groundwater to the third CWATM soil layer. Used with MODFLOW  m    
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
@@ -71,12 +53,5 @@ class sealed_water(object):
             # open water evaporation is removed from the rivers, lakes, and reservoirs later
             self.var.actualET[No] = self.var.actualET[No] +  self.var.openWaterEvap[No]
 
-        if checkOption('calcWaterBalance') and (No>3):
-            self.model.waterbalance_module.waterBalanceCheck(
-                [self.var.availWaterInfiltration[No] ],  # In
-                [self.var.directRunoff[No], self.var.actTransTotal[No], self.var.actBareSoilEvap[No], self.var.openWaterEvap[No]],  # Out
-                [globals.inZero],  # prev storage
-                [globals.inZero],
-                "NoSoil", False)
 
 

@@ -18,25 +18,6 @@ class waterdemand_livestock:
 
     calculating water demand -
     livestock based on precalculated maps
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    domesticTime                           Monthly' when domesticTimeMonthly = True, and 'Yearly' otherwise.       str  
-    livestockTime                                                                                                  --   
-    livVar                                                                                                         --   
-    uselivestock                           True if uselivestock=True in Settings, False otherwise                  bool 
-    pot_livestockConsumption                                                                                       --   
-    InvCellArea                            Inverse of cell area of each simulated mesh                             1/m2 
-    M3toM                                  Coefficient to change units                                             --   
-    demand_unit                                                                                                    --   
-    livestockDemand                                                                                                --   
-    liv_efficiency                                                                                                 --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
     def __init__(self, model):
         self.var = model.var

@@ -14,28 +14,6 @@ from cwatm.management_modules.data_handling import *
 class interception(object):
     """
     INTERCEPTION
-
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    snowEvap                               total evaporation from snow for a snow layers                           m    
-    potTranspiration                       Potential transpiration (after removing of evaporation)                 m    
-    interceptCap                           interception capacity of vegetation                                     m    
-    interceptEvap                          simulated evaporation from water intercepted by vegetation              m    
-    minInterceptCap                        Maximum interception read from file for forest and grassland land cove  m    
-    interceptStor                          simulated vegetation interception storage                               m    
-    availWaterInfiltration                 quantity of water reaching the soil after interception, more snowmelt   m    
-    twothird                               2/3                                                                     --   
-    EWRef                                  potential evaporation rate from water surface                           m    
-    SnowMelt                               total snow melt from all layers                                         m    
-    Rain                                   Precipitation less snow                                                 m    
-    actualET                               simulated evapotranspiration from soil, flooded area and vegetation     m    
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
@@ -63,11 +41,6 @@ class interception(object):
         else:
             self.var.interceptCap[No] = self.var.minInterceptCap[No] 
         """
-
-        if checkOption('calcWaterBalance'):
-            prevState = self.var.interceptStor[No].copy()
-
-
 
         # Rain instead Pr, because snow is substracted later
         # assuming that all interception storage is used the other time step
@@ -102,15 +75,4 @@ class interception(object):
         self.var.actualET[No] = self.var.interceptEvap[No]  + self.var.snowEvap + self.var.iceEvap
 
 
-
-        #if (dateVar['curr'] == 15):
-        #    ii=1
-
-        if checkOption('calcWaterBalance'):
-            self.model.waterbalance_module.waterBalanceCheck(
-               [self.var.Rain, self.var.SnowMelt, self.var.IceMelt],  # In
-               [self.var.availWaterInfiltration[No], self.var.interceptEvap[No]],  # Out
-               [prevState],  # prev storage
-               [self.var.interceptStor[No]],
-               "Interception", False)
 

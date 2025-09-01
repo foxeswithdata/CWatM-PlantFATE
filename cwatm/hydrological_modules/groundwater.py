@@ -14,27 +14,6 @@ from cwatm.management_modules.data_handling import *
 class groundwater(object):
     """
     GROUNDWATER
-
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    modflow                                Flag: True if modflow_coupling = True in settings file                  --   
-    load_initial                           Settings initLoad holds initial conditions for variables                input
-    storGroundwater                        Groundwater storage (non-fossil). This is primarily used when not usin  m    
-    specificYield                          groundwater reservoir parameters (if ModFlow is not used) used to comp  m    
-    recessionCoeff                         groundwater storage times this coefficient gives baseflow               frac 
-    readAvlStorGroundwater                 same as storGroundwater but equal to 0 when inferior to a treshold      m    
-    prestorGroundwater                     storGroundwater at the beginning of each step                           m    
-    sum_gwRecharge                         groundwater recharge                                                    m    
-    baseflow                               simulated baseflow (= groundwater discharge to river)                   m    
-    capillar                               Flow from groundwater to the third CWATM soil layer. Used with MODFLOW  m    
-    nonFossilGroundwaterAbs                Non-fossil groundwater abstraction. Used primarily without MODFLOW.     m    
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
@@ -83,11 +62,6 @@ class groundwater(object):
         Calculate groundwater storage and baseflow
         """
 
-        if checkOption('calcWaterBalance'):
-            self.var.prestorGroundwater = self.var.storGroundwater.copy()
-
-        # WATER DEMAND
-
         # update storGoundwater after self.var.nonFossilGroundwaterAbs
         self.var.storGroundwater = np.maximum(0., self.var.storGroundwater - self.var.nonFossilGroundwaterAbs)
         # PS: We assume only local groundwater abstraction can happen (only to satisfy water demand within a cell).
@@ -110,15 +84,6 @@ class groundwater(object):
         # to avoid small values and to avoid excessive abstractions from dry groundwater
         tresholdStorGroundwater = 0.00001  # 0.01 mm
         self.var.readAvlStorGroundwater = np.where(self.var.storGroundwater > tresholdStorGroundwater, self.var.storGroundwater - tresholdStorGroundwater,0.0)
-
-
-        if checkOption('calcWaterBalance'):
-            self.model.waterbalance_module.waterBalanceCheck(
-                [self.var.sum_gwRecharge ],            # In
-                [self.var.baseflow,self.var.nonFossilGroundwaterAbs],           # Out
-                [self.var.prestorGroundwater],                                  # prev storage
-                [self.var.storGroundwater],
-                "Ground", False)
 
 
 

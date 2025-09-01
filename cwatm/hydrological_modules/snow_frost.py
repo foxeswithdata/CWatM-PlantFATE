@@ -15,68 +15,9 @@ class snow_frost(object):
 
     """
     RAIN AND SNOW
-
     Domain: snow calculations evaluated for center points of up to 7 sub-pixel
     snow zones 1 -7 which each occupy a part of the pixel surface
-
-    Variables *snow* and *rain* at end of this module are the pixel-average snowfall and rain
-
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    load_initial                           Settings initLoad holds initial conditions for variables                input
-    fracGlacierCover                                                                                               --   
-    DtDay                                  seconds in a timestep (default=86400)                                   s
-    dzRel                                  relative elevation above flood plains (max elevation above plain)       m
-    Precipitation                          Precipitation (input for the model)                                     m    
-    Tavg                                   Input, average air Temperature                                          K    
-    SnowMelt                               total snow melt from all layers                                         m    
-    Rain                                   Precipitation less snow                                                 m    
-    prevSnowCover                          snow cover of previous day (only for water balance)                     m    
-    SnowCover                              snow cover (sum over all layers)                                        m    
-    numberSnowLayersFloat                                                                                          --
-    numberSnowLayers                       Number of snow layers (up to 10)                                        --   
-    glaciertransportZone                   Number of layers which can be mimiced as glacier transport zone         --   
-    frac_snow_redistribution                                                                                       --
-    DeltaTSnow                             Temperature lapse rate x std. deviation of elevation                    °C   
-    SnowDayDegrees                         day of the year to degrees: 360/365.25 = 0.9856                         --   
-    SeasonalSnowMeltSin                                                                                            --   
-    excludeGlacierArea                                                                                             --   
-    summerSeasonStart                      day when summer season starts = 165                                     --   
-    IceDayDegrees                          days of summer (15th June-15th Sept.) to degree: 180/(259-165)          --   
-    SnowSeason                             seasonal melt factor                                                    m (Ce
-    TempSnowLow                            Temperature below which all precipitation is snow                       °C   
-    TempSnowHigh                           Temperature above which all precipitation is rain                       °C   
-    TempSnow                               Average temperature at which snow melts                                 °C   
-    SnowFactor                             Multiplier applied to precipitation that falls as snow                  --   
-    SnowMeltCoef                           Snow melt coefficient - default: 0.004                                  --   
-    IceMeltCoef                            Ice melt coefficnet - default  0.007                                    --   
-    TempMelt                               Average temperature at which snow melts                                 °C   
-    SnowCoverS                             snow cover for each layer                                               m    
-    Kfrost                                 Snow depth reduction coefficient, (HH, p. 7.28)                         m-1  
-    Afrost                                 Daily decay coefficient, (Handbook of Hydrology, p. 7.28)               --   
-    FrostIndexThreshold                    Degree Days Frost Threshold (stops infiltration, percolation and capil  --   
-    SnowWaterEquivalent                    Snow water equivalent, (based on snow density of 450 kg/m3) (e.g. Tarb  --   
-    FrostIndex                             FrostIndex - Molnau and Bissel (1983), A Continuous Frozen Ground Inde  --   
-    extfrostindex                          Flag for second frostindex                                              --   
-    FrostIndexThreshold2                   FrostIndex2 - Molnau and Bissel (1983), A Continuous Frozen Ground Ind  --   
-    frostInd1                              forstindex 1                                                            --   
-    frostInd2                              frostindex 2                                                            --   
-    frostindexS                            array for frostindex                                                    --   
-    Snow                                   Snow (equal to a part of Precipitation)                                 m    
-    snow_redistributed_previous                                                                                    --   
-    SnowM1                                                                                                         --   
-    IceM1                                                                                                          --   
-    fracVegCover                           Fraction of specific land covers (0=forest, 1=grasslands, etc.)         %    
-    =====================================  ======================================================================  =====
-
-
-    **Functions**
     """
-
 
     def __init__(self, model):
         self.var = model.var
@@ -242,8 +183,7 @@ class snow_frost(object):
         References:
             Molnau and Bissel (1983, A Continuous Frozen Ground Index for Flood Forecasting. In: Maidment, Handbook of Hydrology, p. 7.28, 7.55)
         """
-        if checkOption('calcWaterBalance'):
-            self.var.prevSnowCover = self.var.SnowCover.copy()
+
         # sinus shaped function between the
         # annual minimum (December 21st) and annual maximum (June 21st) for the northern hemisphere
         # annual maximum (December 21st) and annual minimum (June 21st) for the northern hemisphere
@@ -465,16 +405,6 @@ class snow_frost(object):
             self.var.precipitation_sn = self.var.Snow1 + self.var.Rain1
 
 
-
-
-        # DEBUG Snow
-        if checkOption('calcWaterBalance'):
-            self.model.waterbalance_module.waterBalanceCheck(
-                [self.var.Snow],  # In
-                [self.var.SnowMelt, self.var.IceMelt],  # Out
-                [self.var.prevSnowCover],   # prev storage
-                [self.var.SnowCover],
-                "Snow1", False)
 
         # ---------------------------------------------------------------------------------
         # Dynamic part of frost index

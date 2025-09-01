@@ -29,42 +29,6 @@ class runoff_concentration(object):
     see also:
 
     http://stackoverflow.com/questions/24040984/transformation-using-triangular-weighting-function-in-python
-
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    load_initial                           Settings initLoad holds initial conditions for variables                input
-    leakageIntoRunoff                      Canal leakage leading to runoff                                         m    
-    fracGlacierCover                                                                                               --   
-    sum_interflow                                                                                                  --   
-    cellArea                               Area of cell                                                            m2   
-    coverTypes                             land cover types - forest - grassland - irrPaddy - irrNonPaddy - water  --   
-    runoff                                                                                                         --   
-    includeGlaciers                                                                                                --   
-    includeOnlyGlaciersMelt                                                                                        --   
-    GlacierMelt                                                                                                    --   
-    GlacierRain                                                                                                    --   
-    runoff_peak                            peak time of runoff in seconds for each land use class                  s    
-    tpeak_interflow                        peak time of interflow                                                  s    
-    tpeak_baseflow                         peak time of baseflow                                                   s    
-    tpeak_glaciers                                                                                                 --   
-    maxtime_runoff_conc                    maximum time till all flow is at the outlet                             s    
-    runoff_conc                            runoff after concentration - triangular-weighting method                m    
-    gridcell_storage                                                                                               --   
-    sum_landSurfaceRunoff                  Runoff concentration above the soil more interflow including all landc  m    
-    landSurfaceRunoff                      Runoff concentration above the soil more interflow                      m    
-    directRunoffGlacier                                                                                            --   
-    directRunoff                           Simulated surface runoff                                                m    
-    interflow                              Simulated flow reaching runoff instead of groundwater                   m    
-    baseflow                               simulated baseflow (= groundwater discharge to river)                   m    
-    fracVegCover                           Fraction of specific land covers (0=forest, 1=grasslands, etc.)         %    
-    prergridcell                                                                                                   --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
@@ -238,9 +202,6 @@ class runoff_concentration(object):
             # -------------------------------------------------------
             # runoff concentration: triangular-weighting method
 
-            if checkOption('calcWaterBalance'):
-                self.var.prergridcell = self.var.gridcell_storage.copy()
-
             # shifting array
             self.var.runoff_conc = np.roll(self.var.runoff_conc, -1,axis=0)
             self.var.runoff_conc[self.var.maxtime_runoff_conc-1] = globals.inZero
@@ -269,28 +230,6 @@ class runoff_concentration(object):
             self.var.gridcell_storage = self.var.gridcell_storage - self.var.runoff_conc[0] + self.var.runoff
             sumnewrunoff = self.var.runoff.copy()
             self.var.runoff = self.var.runoff_conc[0].copy()
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [sumnewrunoff],  # In
-                    [self.var.runoff_conc[0]],  # Out
-                    [self.var.prergridcell],  # prev storage
-                    [self.var.gridcell_storage],
-                    "runoff-conc1", False)
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [self.var.sum_landSurfaceRunoff, self.var.baseflow],  # In
-                    [self.var.runoff_conc[0]],  # Out
-                    [self.var.prergridcell],  # prev storage
-                    [self.var.gridcell_storage],
-                    "runoff-conc2", False)
-
-
-
-
-
-
 
 
 
