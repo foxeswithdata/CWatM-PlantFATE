@@ -449,7 +449,7 @@ class lakes_reservoirs(object):
                         # test if reservoir is found -> later on maqke a new one
                         if resindex[0].size > 0:
                             resindex = resindex[0].tolist()[0]
-                            if int(self.var.reservoir_info[i][4]) >0: self.var.waterBodyTypC[resindex] = int(self.var.reservoir_info[i][4])
+                            if not np.isnan(self.var.reservoir_info[i][4]) and int(self.var.reservoir_info[i][4]) >0: self.var.waterBodyTypC[resindex] = int(self.var.reservoir_info[i][4])
 
                             if float(self.var.reservoir_info[i][6]) >0: self.var.lakeAreaC[resindex] = float(self.var.reservoir_info[i][6]) * 1000 * 1000
                             if float(self.var.reservoir_info[i][7]) > 0: self.var.lakeDis0C[resindex] = float(self.var.reservoir_info[i][7])
