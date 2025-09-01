@@ -70,9 +70,27 @@ jobs:
             print(f"  Last Committer: {info['committer_name']} <{info['committer_email']}>")
         EOF
     
-    - name: Verify version file created
+    - name: Commit version file back to repo
       run: |
-        echo "Version file generated successfully:"
-        ls -la cwatm/version.py
-        echo "Content preview:"
-        head -20 cwatm/version.py
+        # Configure git
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        
+        # Add the version file
+        git add cwatm/version.py
+        
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "No changes to version file - already up to date"
+        else
+          echo "Committing updated version file with git hash ${GITHUB_SHA:0:7}"
+          git commit -m "Auto-update version.py with git hash ${GITHUB_SHA:0:7} [skip ci]"
+          git push
+          echo "Version file updated successfully!"
+        fi
+        
+        # Show the updated content
+        echo "Updated version file content:"
+        head -15 cwatm/version.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

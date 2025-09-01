@@ -1,0 +1,32 @@
+"""
+CWATM Version Information
+
+"""
+
+__git_hash__ = "9af88a92b7d8c8316aba63e2593ed739e3c1d696"
+__git_short_hash__ = "9af88a9"
+__git_branch__ = "develop"
+__build_timestamp__ = "2025-09-01 09:30:05 UTC"
+__committer_name__ = "Peter Burek"
+__committer_email__ = "burek@iiasa.ac.at"
+
+def get_version_info():
+    """Return version information as a dictionary"""
+    return {
+        'git_hash': __git_hash__,
+        'git_short_hash': __git_short_hash__,
+        'git_branch': __git_branch__,
+        'build_timestamp': __build_timestamp__,
+        'committer_name': __committer_name__,
+        'committer_email': __committer_email__
+    }
+
+def print_version_info():
+    """Print version information"""
+    info = get_version_info()
+    print(f"CWATM Version Information:")
+    print(f"  Git Hash: {info['git_hash']}")
+    print(f"  Short Hash: {info['git_short_hash']}")
+    print(f"  Branch: {info['git_branch']}")
+    print(f"  Build Time: {info['build_timestamp']}")
+    print(f"  Last Committer: {info['committer_name']} <{info['committer_email']}>")
