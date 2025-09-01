@@ -19,34 +19,6 @@ class waterdemand_domestic:
 
     calculating water demand -
     domenstic based on precalculated maps
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    domesticTime                           Monthly' when domesticTimeMonthly = True, and 'Yearly' otherwise.       str  
-    domWithdrawalVar                       Input, domesticWithdrawalvarname, variable name for netCDF              str  
-    domConsumptionVar                      Input, domesticConsuptionvarname, variable name for netCDF              str  
-    domestic_agent_SW_request_month_m3     map of domestic agent surface water request, in million m3 per month    Mm3  
-    domestic_agent_GW_request_month_m3     map of domestic agent groundwater request, in million m3 per month      Mm3  
-    InvCellArea                            Inverse of cell area of each simulated mesh                             1/m2 
-    M3toM                                  Coefficient to change units                                             --   
-    activate_domestic_agents               Input, True if activate_domestic_agents = True                          bool 
-    domesticDemand                         Domestic demand                                                         m    
-    swAbstractionFraction_domestic         With domestic agents, derived from surface water over total water requ  %    
-    demand_unit                                                                                                    --   
-    pot_domesticConsumption                                                                                        --   
-    sectorSourceAbstractionFractions                                                                               --   
-    swAbstractionFraction_Channel_Domesti  Input, Fraction of Domestic demands to be satisfied with Channel        %    
-    swAbstractionFraction_Lift_Domestic    Input, Fraction of Domestic demands to be satisfied with Lift           %    
-    swAbstractionFraction_Res_Domestic     Input, Fraction of Domestic demands to be satisfied with Reservoirs     %    
-    swAbstractionFraction_Lake_Domestic    Input, Fraction of Domestic demands to be satisfied with Lake           %    
-    gwAbstractionFraction_Domestic         Fraction of domestic water demand to be satisfied by groundwater        %    
-    dom_efficiency                                                                                                 --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):

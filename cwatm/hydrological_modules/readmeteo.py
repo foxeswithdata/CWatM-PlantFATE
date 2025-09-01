@@ -17,68 +17,6 @@ class readmeteo(object):
     READ METEOROLOGICAL DATA
 
     reads all meteorological data from netcdf4 files
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    DtDay                                  seconds in a timestep (default=86400)                                   s    
-    con_precipitation                      conversion factor for precipitation                                     --   
-    con_e                                  conversion factor for evaporation                                       --   
-    ETRef                                  potential evapotranspiration rate from reference crop                   m    
-    Precipitation                          Precipitation (input for the model)                                     m    
-    only_radiation                                                                                                  --
-    TMin                                   minimum air temperature                                                 K    
-    TMax                                   maximum air temperature                                                 K    
-    Tavg                                   Input, average air Temperature                                          K    
-    Rsds                                   short wave downward surface radiation fluxes                            W/m2 
-    EAct                                                                                                           --   
-    Psurf                                  Instantaneous surface pressure                                          Pa   
-    Qair                                   specific humidity                                                       kg/kg
-    Rsdl                                   long wave downward surface radiation fluxes                             W/m2 
-    Wind                                   wind speed                                                              m/s  
-    EWRef                                  potential evaporation rate from water surface                           m    
-    meteomapsscale                         if meteo maps have the same extend as the other spatial static maps ->  --   
-    meteodown                              if meteo maps should be downscaled                                      --   
-    InterpolationMethod                                                                                            --   
-    buffer                                                                                                         --   
-    preMaps                                choose between steady state precipitation maps for steady state modflo  --   
-    tempMaps                               choose between steady state temperature maps for steady state modflow   --   
-    evaTMaps                               choose between steady state ETP water maps for steady state modflow or  --   
-    eva0Maps                               choose between steady state ETP reference maps for steady state modflo  --   
-    glaciermeltMaps                                                                                                --   
-    glacierrainMaps                                                                                                --   
-    wc2_tavg                               High resolution WorldClim map for average temperature                   K    
-    wc4_tavg                               upscaled to low resolution WorldClim map for average temperature        K    
-    wc2_tmin                               High resolution WorldClim map for min temperature                       K    
-    wc4_tmin                               upscaled to low resolution WorldClim map for min temperature            K    
-    wc2_tmax                               High resolution WorldClim map for max temperature                       K    
-    wc4_tmax                               upscaled to low resolution WorldClim map for max temperature            K    
-    wc2_prec                               High resolution WorldClim map for precipitation                         m    
-    wc4_prec                               upscaled to low resolution WorldClim map for precipitation              m    
-    xcoarse_prec                                                                                                   --   
-    ycoarse_prec                                                                                                   --   
-    xfine_prec                                                                                                     --   
-    yfine_prec                                                                                                     --   
-    meshlist_prec                                                                                                  --   
-    xcoarse_tavg                                                                                                   --   
-    ycoarse_tavg                                                                                                   --   
-    xfine_tavg                                                                                                     --   
-    yfine_tavg                                                                                                     --   
-    meshlist_tavg                                                                                                  --   
-    meteo                                                                                                          --   
-    prec                                   precipitation in m                                                      m    
-    temp                                   average temperature in Celsius deg                                      °C   
-    WtoMJ                                  Conversion factor from [W] to [MJ] for radiation: 86400 * 1E-6          --   
-    includeGlaciers                                                                                                --   
-    includeOnlyGlaciersMelt                                                                                        --   
-    GlacierMelt                                                                                                    --   
-    GlacierRain                                                                                                    --   
-    =====================================  ======================================================================  =====
-
-
-    **Functions**
     """
 
     def __init__(self, model):
@@ -269,59 +207,9 @@ class readmeteo(object):
 
         # read dem for making a anomolydem between high resolution dem and low resoultion dem
 
-        """
-        # for downscaling1
-        dem = loadmap('Elevation', compress = False, cut = False)
-        demHigh = dem[cutmapFine[2]*6:cutmapFine[3]*6, cutmapFine[0]*6:cutmapFine[1]*6]
-        rows = demHigh.shape[0]
-        cols = demHigh.shape[1]
-        dem2 = demHigh.reshape(rows/6,6,cols/6,6)
-        dem3 = np.average(dem2, axis=(1, 3))
-        demLow = np.kron(dem3, np.ones((6, 6)))
-
-        demAnomaly = demHigh - demLow
-        self.var.demHigh = compressArray(demHigh[cutmapVfine[2]:cutmapVfine[3], cutmapVfine[0]:cutmapVfine[1]],pcr = False)
-        self.var.demAnomaly = compressArray(demAnomaly[cutmapVfine[2]:cutmapVfine[3], cutmapVfine[0]:cutmapVfine[1]],pcr = False)
-        """
-
 # --------------------------------------------------------------------------
 # --------------------------------------------------------------------------
 
-    #def downscaling1(self,input, downscale = 0):
-        """
-        Downscaling based on elevation correction for temperature and pressure
-
-        :param input:
-        :param downscale: 0 for no change, 1: for temperature change 6 deg per 1km , 2 for psurf
-        :return: input - downscaled input data
-
-        """
-        """
-        # if meteo maps have the same extend as the other spatial static maps -> meteomapsscale = True
-        if not self.var.meteomapsscale:
-            down1 = np.kron(input, np.ones((6, 6)))
-            down2 = down1[cutmapVfine[2]:cutmapVfine[3], cutmapVfine[0]:cutmapVfine[1]].astype(np.float64)
-            down3 = compressArray(down2)
-            if downscale == 0:
-                input = down3
-
-            if downscale == 1:
-                # temperature scaling 6 deg per 1000m difference in altitude
-                # see overview in Minder et al 2010 - http://onlinelibrary.wiley.com/doi/10.1029/2009JD013493/full
-                tempdiff = -0.006 * self.var.demAnomaly
-                input = down3 + tempdiff
-            if downscale == 2:
-                # psurf correction
-                # https://www.sandhurstweather.org.uk/barometric.pdf
-                # factor = exp(-elevation / (Temp x 29.263)  Temp in deg K
-                demLow = self.var.demHigh - self.var.demAnomaly
-                tavgK = self.var.Tavg + 273.15
-                factor1 = np.exp(-1 * demLow / (tavgK * 29.263))
-                factor2 = np.exp(-1 * self.var.demHigh / (tavgK * 29.263))
-                sealevelpressure = down3 / factor1
-                input = sealevelpressure * factor2
-        return input
-        """
 
     # def downscaling2_peter(self,input, downscaleName = "", wc2 = 0 , wc4 = 0, x=None, y=None, xfine=None, yfine=None, meshlist=None, downscale = 0):
     #     """
@@ -421,6 +309,7 @@ class readmeteo(object):
         if self.var.InterpolationMethod == 'bilinear' and (downscale == 1 or downscale == 2):
 
             buffer1, buffer2, buffer3, buffer4 = MaskMapBoundaries
+            buffer = buffer1
             #if 1: does not touch boundaries of meteo input map, if 0 touches boundary of input map
             # to perform bilinear interpolation a buffer around the maskmap is needed, if maskmap touches bounary of input map an artifical buffer has to be created by duplicating the last row/column
             if buffer1 == 0:
@@ -456,7 +345,7 @@ class readmeteo(object):
           # this is creating an array resoint times bigger than input, by copying each item resoint times in x and y direction
             down3 = np.kron(input, np.ones((resoint, resoint)))
         else:
-            down3 = np.kron(input[buffer:-buffer, buffer:-buffer], np.ones((resoint, resoint)))
+            down3 = np.kron(input[buffer2:buffer1, buffer4:buffer3], np.ones((resoint, resoint)))
 
 
         if downscale == 0:
@@ -492,11 +381,11 @@ class readmeteo(object):
                         wc2 = wc1[int(np.floor((cutmapGlobal[2] - buffer) * reso)):int(
                                     np.ceil((cutmapGlobal[3] + buffer) * reso)),int(np.floor((cutmapGlobal[0]) * reso)) : int(np.ceil((cutmapGlobal[1] + buffer * 2) * reso))]
                     else:
-                        wc2 = wc1[int(np.floor((cutmapGlobal[2] - buffer) * reso)):int(
-                                    np.ceil((cutmapGlobal[3] + buffer) * reso)),
-                                      int(np.floor((cutmapGlobal[0] - buffer) * reso)):int(
-                                          np.ceil((cutmapGlobal[1] + buffer) * reso))]
-                else:
+                        wc2 = wc1[int(np.floor((cutmapGlobal[2] - buffer2) * reso)):int(
+                                    np.ceil((cutmapGlobal[3] + buffer1) * reso)),
+                                      int(np.floor((cutmapGlobal[0] - buffer4) * reso)):int(
+                                          np.ceil((cutmapGlobal[1] + buffer3) * reso))]
+                else: # non bilinear
                     wc2 = wc1[(cutmapGlobal[2] - buffer) * resoint: (cutmapGlobal[3] + buffer) * resoint,
                           (cutmapGlobal[0] - buffer) * resoint: (cutmapGlobal[1] + buffer) * resoint]
                 rows = wc2.shape[0]
@@ -558,7 +447,7 @@ class readmeteo(object):
                 quotSmooth = quotSmooth.reshape(len(xfine), len(yfine), order='F')
                 crop = int(resoint/2)
                 quotSmooth = quotSmooth[crop:-crop, crop:-crop]
-                down1 = wc2[buffer * resoint:-buffer * resoint, buffer * resoint:-buffer * resoint] * quotSmooth
+                down1 = wc2[buffer2 * resoint:buffer1 * resoint, buffer4 * resoint:buffer3 * resoint] * quotSmooth
             elif self.var.InterpolationMethod == 'kron':
                 down1 = down3 * wc4
 

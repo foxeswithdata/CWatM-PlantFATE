@@ -26,40 +26,6 @@ class lakes_res_small(object):
         Using the **Modified Puls approach** to calculate retention of a lake
         See also: LISFLOOD manual Annex 3 (Burek et al. 2013)
 
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    load_initial                           Settings initLoad holds initial conditions for variables                input
-    smallpart                                                                                                      --   
-    smalllakeArea                                                                                                  --   
-    smalllakeDis0                                                                                                  --   
-    smalllakeA                                                                                                     --   
-    smalllakeFactor                                                                                                --   
-    smalllakeFactorSqr                                                                                             --   
-    smalllakeInflowOld                                                                                             --   
-    smalllakeOutflow                                                                                               --   
-    smalllakeLevel                                                                                                 --   
-    minsmalllakeVolumeM3                                                                                           --   
-    preSmalllakeStorage                                                                                            --   
-    smallLakedaycorrect                                                                                            --   
-    smallLakeIn                                                                                                    --   
-    smallevapWaterBody                                                                                             --   
-    smallLakeout                                                                                                   --   
-    smallrunoffDiff                                                                                                --   
-    cellArea                               Area of cell                                                            m2   
-    DtSec                                  number of seconds per timestep (default = 86400)                        s    
-    InvDtSec                                                                                                       --   
-    EWRef                                  potential evaporation rate from water surface                           m    
-    lakeEvaFactor                          a factor which increases evaporation from lake because of wind          --   
-    runoff                                                                                                         --   
-    smalllakeVolumeM3                                                                                              --   
-    smalllakeStorage                                                                                               --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
@@ -135,8 +101,6 @@ class lakes_res_small(object):
    # ----------------------------------------------------------------------------------------------------------------
 
 
-
-
     def dynamic(self):
         """
         Dynamic part to calculate outflow from small lakes and reservoirs
@@ -159,13 +123,6 @@ class lakes_res_small(object):
             # ************************************************************
             # ***** LAKE
             # ************************************************************
-
-
-            if checkOption('calcWaterBalance'):
-                self.var.preSmalllakeStorage = self.var.smalllakeStorage.copy()
-
-            #if (dateVar['curr'] == 998):
-            #    ii = 1
 
             inflowM3S = inflow / self.var.DtSec
 
@@ -211,32 +168,6 @@ class lakes_res_small(object):
             self.var.smallevapWaterBody = self.var.smallevapWaterBody / self.var.cellArea # back to [m]
             self.var.smalllakeLevel = divideValues(self.var.smalllakeVolumeM3, self.var.smalllakeArea)
 
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [inflow/self.var.cellArea ],  # In [m3]
-                    [QsmallLakeOut / self.var.cellArea ,self.var.smallevapWaterBody ]  ,  # Out
-                    [self.var.preSmalllakeStorage / self.var.cellArea, self.var.smallLakedaycorrect],  # prev storage
-                    [self.var.smalllakeStorage / self.var.cellArea],
-                    "smalllake1", False)
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [self.var.smallLakeIn],  # In [m]
-                    [QsmallLakeOut / self.var.cellArea ,self.var.smallevapWaterBody ]  ,  # Out
-                    [self.var.preSmalllakeStorage / self.var.cellArea],  # prev storage
-                    [self.var.smalllakeStorage / self.var.cellArea],
-                    "smalllake2", False)
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [inflow],  # In [m3]
-                    [lakeIn * self.var.DtSec]  ,  # Out
-                    [self.var.smallLakedaycorrect * self.var.cellArea],  # prev storage
-                    [],
-                    "smalllake3", False)
-
-
             return QsmallLakeOut
 
         # ---------------------------------------------------------------------------------------------
@@ -281,32 +212,6 @@ class lakes_res_small(object):
             self.var.smallLakeout = dynamic_smalllakes(inflow) / self.var.cellArea     # back to [m]
             self.var.runoff = self.var.smallLakeout + (1-self.var.smallpart) * self.var.runoff    # back to [m]  # with and without in m3
 
-            # ------------------------------------------------------------
-            #report(decompress(runoff_LR), "C:\work\output3/run.map")
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [self.var.smallLakeIn],  # In [m]
-                    [self.var.smallLakeout,  self.var.smallevapWaterBody],  # Out
-                    [self.var.preSmalllakeStorage / self.var.cellArea],  # prev storage
-                    [self.var.smalllakeStorage / self.var.cellArea],
-                    "smalllake1", False)
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [inflow/self.var.cellArea,self.var.smallLakedaycorrect ],  # In [m]
-                    [self.var.smallLakeout ,self.var.smallevapWaterBody ]  ,  # Out
-                    [self.var.preSmalllakeStorage / self.var.cellArea],  # prev storage
-                    [self.var.smalllakeStorage / self.var.cellArea],
-                    "smalllake7", False)
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [runoffold,  self.var.smallLakedaycorrect ],  # In [m]
-                    [self.var.runoff ,self.var.smallevapWaterBody ]  ,  # Out
-                    [self.var.preSmalllakeStorage / self.var.cellArea],  # prev storage
-                    [self.var.smalllakeStorage / self.var.cellArea],
-                    "smalllake8", False)
 
 
             return

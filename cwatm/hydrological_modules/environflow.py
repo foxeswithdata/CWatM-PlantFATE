@@ -18,22 +18,6 @@ class environflow(object):
     ENVIRONMENTAL FLOW
 
     calculates environmental flow
-
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    MAF                                    Mean of discharge for all days                                          m3/s 
-    Q90                                    10% of the lowest discharge for all days                                m3/s 
-    MMF                                    Mean of discharge for each month separately                             m3/s 
-    MQ90                                   10% of lowest discharge for each month separately                       m3/s 
-    EF_VMF                                 EF requirement with Variable Monthly Flow: Pastor et al.(2014): Accoun  m3/s 
-    cut_ef_map                             if TRUE calculated maps of environmental flow are clipped to the area   bool 
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
@@ -71,18 +55,13 @@ class environflow(object):
                 dismap = ["EFDis"]
                 multinetdf(dismap, False, startcheck = 'dateStart')
 
-
-
         self.var.MAF = 1
         self.var.Q90 = 1
         self.var.MMF = 1
         self.var.MQ90 = 1
         self.var.EF_VMF = 1
 
-
-
-
-    # --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # --------------------------------------------------------------------------
 
     # noinspection PyTypeChecker

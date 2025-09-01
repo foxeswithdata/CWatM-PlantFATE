@@ -17,22 +17,6 @@ class waterdemand_environmental_need:
 
     calculating water demand -
     environmental need based on precalculated maps done before in CWatM
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    cut_ef_map                             if TRUE calculated maps of environmental flow are clipped to the area   bool 
-    use_environflow                                                                                                --   
-    envFlowm3s                                                                                                     --   
-    M3toM                                  Coefficient to change units                                             --   
-    chanLength                             Input, Channel length                                                   m    
-    channelAlpha                                                                                                   --   
-    envFlow                                                                                                        --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):

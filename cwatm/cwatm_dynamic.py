@@ -139,15 +139,10 @@ class CWATModel_dyn(DynamicModel):
         if checkOption('includeRunoffConcentration'):
             self.var.tws = self.var.tws + self.var.gridcell_storage
 
-        # *******  Calculate CUMULATIVE MASS BALANCE ERROR  **********
-        # self.waterbalance_module.dynamic()
 
         # ------------------------------------------------------
         # End of calculation -----------------------------------
         # ------------------------------------------------------
-
-        self.waterbalance_module.checkWaterSoilGround()
-        timemeasure("Waterbalance")  # 11. timing
 
         self.environflow_module.dynamic()
         # in case environmental flow is calculated last
