@@ -43,6 +43,8 @@ import sys
 import time
 import datetime
 import subprocess
+from pathlib import Path
+
 
 import numpy
 import pandas
@@ -82,11 +84,11 @@ def usage():
     * -t --printtime   the computation time for hydrological modules are printed
 
     """
-    print('CWatM - Community Water Model')
-    print('Authors: ', __author__)
-    print('Version: ', __version__)
-    print('Date: ', __date__)
-    print('Status: ', __status__)
+    #print('CWatM - Community Water Model')
+    #print('Authors: ', __author__)
+    #print('Version: ', __version__)
+    #print('Date: ', __date__)
+    #print('Status: ', __status__)
     print("""
     Arguments list:
     settings.ini     settings file
@@ -257,7 +259,7 @@ def GNU():
     sys.exit(1)
 
 
-def headerinfo():
+def headerinfo(usage=0):
     """
     Print the information on top of each run
     
@@ -266,15 +268,12 @@ def headerinfo():
     this information is put in the result files .tss and .nc
     """
     versioning['git'] = get_version_info()
-
-    #github_hash = versioning['git']['git_hash']
-    #local_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode().strip()
-    #test = local_hash.startswith(github_hash) or github_hash.startswith(local_hash)
-
     versioning['exe'] = __file__
     versioning['lastdate'] = versioning['git'] ['build_timestamp'][0:10]
     __date__ = versioning['lastdate']
     versioning['lastfile'] = "___"
+    # versioning all input files
+    versioning['input'] = ""
 
 
     realPath = os.path.dirname(os.path.realpath(versioning['exe']))
@@ -284,10 +283,49 @@ def headerinfo():
     versioning['platform'] = platform1
     hash = versioning['git']['git_branch'] + " " + versioning['git']['git_short_hash']
 
-    s = "CWATM - Community Water Model Version: " + hash + ", Date: " + versioning['lastdate'] + "\n"
+    # test git hash agains current version
+    try:
+        repo_path = Path(__file__).parents[1]
+
+        result = subprocess.run(["git", "diff", "--name-only",
+                   versioning['git']['git_hash']],cwd=repo_path, capture_output=True, text=True, check=True)
+        all_files = [f.strip() for f in result.stdout.split('\n') if f.strip()]
+
+        # Filter for .py files and exclude version.py
+        python_files = []
+        for file_path in all_files:
+            path = Path(file_path)
+            if (path.suffix == '.py' and
+                    path.name != 'version.py' and
+                    'version.py' not in str(path)):
+                python_files.append(file_path)
+
+
+
+        if python_files !=[]:
+            veri = " dirty "
+        else:
+            veri = " verified "
+    except:
+        veri = " not checked "
+
+
+    s = "CWATM - Community Water Model Version: " + hash + veri +", Date: " + versioning['lastdate'] + "\n"
     s += "International Institute of Applied Systems Analysis (IIASA)\n"
     s += "Running under platform: " + platform1 + "\n"
-    s += "-----------------------------------------------------------\n"
+    s += "-----------------------------------------------------------"
+
+
+    if usage == 1:
+        if veri == " verified ":
+            s += "\nNo change to last git commit\n"
+        elif veri == " not checked ":
+            s += "\nGit cannot be checked\n"
+        else:
+            s += "\nChanged files to last git commit:\n"
+            for pyf in python_files:
+                s += pyf +"\n"
+
 
     if not (Flags['veryquiet']) and not (Flags['quiet']):
         print (s)
@@ -356,6 +394,7 @@ def main(settings, args):
 
 def parse_args():
     if len(sys.argv) < 2:
+        headerinfo(1)
         usage()
         sys.exit(0)
     else:

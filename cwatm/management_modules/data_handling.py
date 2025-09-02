@@ -10,6 +10,7 @@
 
 import os, glob
 import calendar
+import re
 
 #import numpy as np
 from . import globals
@@ -286,8 +287,9 @@ def loadsetclone(self,name):
                 # 10 because that includes all valid LDD values [1-9]
                 mapnp[mapnp > 10] = 0
                 mapnp[mapnp < -10] = 0
-
+                addtoversiondate(filename)
                 flagmap = True
+
 
             except:
                 raise CWATMFileError(filename,msg = "Error 201: File reading Error\n", sname=name)
@@ -397,6 +399,20 @@ def maskfrompoint(mask2D, xleft, yup):
     globals.inZero = np.zeros(maskinfo['mapC'])
     return mapC
 
+def addtoversiondate(filename,history=""):
+
+    if history !="":
+        try:
+            timestamp = re.search(r'\w{3} \w{3} \d{1,2} \d{2}:\d{2}:\d{2} \d{4}', history)
+            date1 = datetime.datetime.strptime(timestamp.group(), '%a %b %d %H:%M:%S %Y')
+        except:
+            date1 = datetime.datetime.fromtimestamp(os.path.getctime(filename))
+    else:
+        date1 = datetime.datetime.fromtimestamp(os.path.getctime(filename))
+    add = os.path.basename(filename) +" "+ date1.strftime('%d/%m/%Y %H:%M')+';'
+    versioning['input'] += add
+    ii =1
+
 
 def loadmap(name, lddflag=False,compress = True, local = False, cut = True):
     """
@@ -471,6 +487,11 @@ def loadmap(name, lddflag=False,compress = True, local = False, cut = True):
                     else:
                         mapnp = nf1.variables[value][:]
 
+            try:
+                history = nf1.getncattr('history')
+            except:
+                history = ""
+            addtoversiondate(filename,history)
             nf1.close()
 
         except:
@@ -485,6 +506,7 @@ def loadmap(name, lddflag=False,compress = True, local = False, cut = True):
                     if cut:
                         cut0, cut1, cut2, cut3 = mapattrTiff(nf2)
                         mapnp = mapnp[cut2:cut3, cut0:cut1]
+                addtoversiondate(filename)
             except:
                 msg = "Error 203: File does not exists"
                 raise CWATMFileError(filename,msg,sname=name)
@@ -964,6 +986,12 @@ def multinetdf(meteomaps, usebuffer,startcheck = 'dateBegin'):
             except:
                 datediv = 1
 
+            try:
+                history = nf1.getncattr('history')
+            except:
+                history = ""
+            addtoversiondate(filename,history)
+
             datestart = num2date(int(round(nctime[:][0],0)), units=nctime.units,calendar=nctime.calendar)
 
             # sometime daily records have a strange hour to start with -> it is changed to 0:00 to have the same record
@@ -1285,6 +1313,15 @@ def readnetcdf2(namebinding, date, useDaily='daily', value='None', addZeros = Fa
 
             if meteo: inputcounter[value] = idx
 
+    # if first day store the name and the date
+    if dateVar["curr"] == 0:
+        try:
+            history = nf1.getncattr('history')
+        except:
+            history = ""
+        addtoversiondate(filename, history)
+
+
     #checkif latitude is reversed
     turn_latitude = False
     try:
@@ -1333,7 +1370,7 @@ def readnetcdf2(namebinding, date, useDaily='daily', value='None', addZeros = Fa
     return mapC
 
 
-def readnetcdfWithoutTime(name, value="None"):
+def readnetcdfWithoutTime(name, value="None", counter=0):
     """
     load maps in netcdf format (has no time format)
 
@@ -1359,11 +1396,20 @@ def readnetcdfWithoutTime(name, value="None"):
     '''
 
     mapnp = nf1.variables[value][cutmap[2]:cutmap[3], cutmap[0]:cutmap[1]].astype(np.float64)
+    # store date
+    if counter == 0:
+        try:
+            history = nf1.getncattr('history')
+        except:
+            history = ""
+        addtoversiondate(filename, history)
+
     nf1.close()
 
     mapC = compressArray(mapnp, name=filename)
     if Flags['check']:
         checkmap(value, filename, mapnp, True, True, mapC)
+
     return mapC
 
 def readnetcdf12month(name, month,value="None"):
@@ -1433,6 +1479,13 @@ def readnetcdfInitial(name, value,default = 0.0):
 
             #mapnp = (nf1.variables[value][:].astype(np.float64))
             mapnp = nf1.variables[value][cut2:cut3, cut0:cut1].astype(np.float64)
+
+            # read creating date
+            try:
+                history = nf1.getncattr('history')
+            except:
+                history = ""
+            addtoversiondate(filename,history)
             
             nf1.close()
             mapC = compressArray(mapnp, name=filename)
@@ -1507,7 +1560,7 @@ def writenetcdf(netfile,prename,addname,varunits,inputmap, timeStamp, posCnt, fl
         # general Attributes
         settings = os.path.realpath(settingsfile[0])
         nf1.settingsfile = settings + ": " + xtime.ctime(os.path.getmtime(settings))
-        nf1.run_created = xtime.ctime(xtime.time())
+        nf1.history = "Created "+ xtime.ctime(xtime.time())
         nf1.Source_Software = 'CWatM Python: ' + versioning['exe'] + " Git Branch:" + versioning['git']["git_branch"] + " Hash:" + versioning['git']["git_hash"]
         nf1.Platform = versioning['platform']
         nf1.Version = versioning['version']  + ": " + versioning['lastfile']  + " " + versioning['lastdate']
@@ -1515,11 +1568,20 @@ def writenetcdf(netfile,prename,addname,varunits,inputmap, timeStamp, posCnt, fl
         nf1.title = cbinding ("title")
         nf1.source = 'CWATM output maps'
         nf1.Conventions = 'CF-1.6'
+
         try:
-            import git
-            nf1.git_commit = git.Repo(search_parent_directories=True).head.object.hexsha
+            nf1.git_commit = versioning['git']["git_hash"]
+            gname = os.path.basename(netfile)
+            # save the versioning of input files in discharge or ET EW maps
+            # save the settingsfile
+            if gname[0:9] == "discharge" or gname[0:1] == "E":
+                nf1.version_inputfiles = versioning['input']
+                with open(settings, 'r', encoding='utf-8') as file:
+                    nf1.version_settingsfile = file.read().splitlines()
+
         except:
             ii =1
+
 
         # put the additional genaral meta data information from the xml file into the netcdf file
         # infomation from the settingsfile comes first

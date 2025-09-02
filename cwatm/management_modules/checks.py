@@ -55,8 +55,23 @@ def checkmap(name, value, map, flagmap, flagcompress, mapC):
                 return f'{inp:.2E}'
 
     # ----------------------------------
+    # stored inputdate with date (addtoversiondate in data_handling.py)
+    inputver =versioning['input'].split(";")
+    # dictorary with each file and date
+    inputv = {}
+    for v in inputver[0:-1]:
+        vv = v.split(" ")
+        inputv[vv[0]] = vv[1] + " "+ vv[2]
+
+
     s = [name]
-    s.append(value[-37:])
+    s.append(os.path.dirname(value))
+    iv = os.path.basename(value)
+    s.append(iv)
+
+    # check for filename and get date
+    createdate = inputv.get(iv, " ")
+    s.append(createdate)
 
     if flagmap:
 
@@ -115,8 +130,8 @@ def checkmap(name, value, map, flagmap, flagcompress, mapC):
         s.append("")
 
 
-    t = ["<30","<40",">11",">11",">11",">11",">11",">11",">11",">11",">11", ">11",">11"]
-    h = ["Name","File/Value","nonMV","MV", "lon-lat","Compress","MV-comp","Zero-comp","NonZero","min","mean","max","x1","x2","x3"]
+    t = ["<30","<80","<80","<20"   ,">11",">11",">11",">11",">11",">11",">11",">11",">11", ">11",">11"]
+    h = ["Name","Path","File/Value","Create Date","nonMV","MV", "lon-lat","Compress","MV-comp","Zero-comp","NonZero","min","mean","max","x1","x2","x3"]
     if checkmap.called == 1:
         print("---------------------------------------------")
         print("nonMV:     non missing value in 2D map")
@@ -133,13 +148,13 @@ def checkmap(name, value, map, flagmap, flagcompress, mapC):
 
         for i in range(len(s)):
             if i<(len(s)-1):
-               print(f'{h[i]:{t[i]}}',end = '')
+               print(f'{h[i]:{t[i]}}',end = ',')
             else:
                print(f'{h[i]:{t[i]}}')
 
     for i in range(len(s)):
         if i < (len(s) - 1):
-            print(f'{s[i]:{t[i]}}',end = '')
+            print(f'{s[i]:{t[i]}}',end = ',')
         else:
             print(f'{s[i]:{t[i]}}')
 

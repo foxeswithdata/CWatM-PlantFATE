@@ -139,7 +139,7 @@ class CWATMRunInfo(Warning):
     """
 
     def __init__(self, outputS):
-        header = "\nCWATM Simulation Information and Setting\n"
+        header = "CWATM Simulation Information and Setting\n"
         msg = "The simulation output as specified in the settings file: " + str(outputS[0]) + " can be found in "+str(outputS[1])+"\n"
         self._msg = header + msg
     def __str__(self):
