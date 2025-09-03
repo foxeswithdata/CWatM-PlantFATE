@@ -57,6 +57,7 @@ from cwatm.management_modules.configuration import globalFlags, settingsfile, ve
 from cwatm.management_modules.data_handling import Flags, cbinding
 from cwatm.management_modules.timestep import checkifDate
 from cwatm.management_modules.dynamicModel import ModelFrame
+from cwatm.management_modules.checks import save_check
 from cwatm.cwatm_model import CWATModel
 from cwatm.management_modules.globals import *
 from cwatm.version import *
@@ -132,6 +133,9 @@ def CWATMexe(settings):
     # checks if end date is later than start date and puts both in modelSteps
     if Flags['check']:
         dateVar["intEnd"] = dateVar["intStart"]
+        versioning['check'] = ""
+        versioning['loadinput'] = True
+        versioning['refvalue'] = False
 
     CWATM = CWATModel()
     stCWATM = ModelFrame(CWATM, firstTimestep=dateVar["intStart"], lastTimeStep=dateVar["intEnd"])
@@ -188,7 +192,7 @@ def CWATMexe2(settings,meteo):
 
     """
     parse_configuration(settings)
-    read_metanetcdf(cbinding('metaNetcdfFile'), 'metaNetcdfFile')
+    read_metanetcdf('metaNetcdf.xml')
 
     checkifDate('StepStart', 'StepEnd', 'SpinUp', cbinding('PrecipitationMaps'))
     # checks if end date is later than start date and puts both in modelSteps
@@ -381,11 +385,23 @@ def main(settings, args):
 
     if Flags['calib']:
         meteo,success, last_dis = CWATMexe(settingsfile[0])
+        Flags['calib'] = False
         return meteo,success, last_dis
     else:
         try:
-            success, last_dis = CWATMexe(settingsfile[0])
-            return success, last_dis
+            if Flags['check']:
+                Flags['warm'] = False
+                versioning['checkargs'] = args
+                success, last_dis = CWATMexe(settingsfile[0])
+                save_check()
+                last_dis = versioning['check']
+                versioning.clear()
+                Flags['check'] = False
+                return success, last_dis
+
+            else:
+                success, last_dis = CWATMexe(settingsfile[0])
+                return success, last_dis
         except Exception as e:
             # return in a controlled way with success = False
             traceback.print_exc()
