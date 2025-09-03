@@ -1,4 +1,4 @@
-name: workflow for uploading Codecov
+name: workflow uploading Codecov
 on: [push]
 jobs:
   run:
@@ -24,5 +24,5 @@ jobs:
           files: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
-          token: ${{fff5b80f-bf92-4bc0-9fc3-e795db7195bd}}
+          token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
