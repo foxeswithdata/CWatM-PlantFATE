@@ -894,6 +894,8 @@ class lakes_reservoirs(object):
             # Check to prevent reservoir storage from exceeding total capacity
             # for watertyp 4: In = Out
             qResOutM3DtC = np.where(self.var.waterBodyTypC == 4, inflowC, qResOutM3DtC)
+            # for watertyp 4: No inflow (lines 951-952); no outflow
+            qResOutM3DtC = np.where(self.var.waterBodyTypC == 4, 0., qResOutM3DtC)
             # for watertyp 5: In = Out. Outflow = inflow + water that is transferred
             qResOutM3DtC = np.where(self.var.waterBodyTypC == 5, self.var.reservoirStorageM3C, qResOutM3DtC)
 
@@ -1027,7 +1029,6 @@ class lakes_reservoirs(object):
 
 
                         # -----------------------------------------
-
                         if transfer[1] > 0:
                             # There is a giver, not the ocean
                             inZero_C[giver] = -reservoir_transfer_actual
@@ -1042,10 +1043,7 @@ class lakes_reservoirs(object):
                             self.var.reservoirStorageM3C[receiver] = self.var.reservoirStorageM3C[receiver] + reservoir_transfer_actual
                             self.var.reservoir_transfers_in_M3C[receiver] += reservoir_transfer_actual
 
-                    #print(transfer[0], 'donated', reservoir_transfer_actual, 'm3 to', transfer[1])
-
-                self.var.reservoir_transfers_net_M3C += inZero_C
-
+                self.var.reservoir_transfers_net_M3C += inZero_C 
             #--------------------
 
 
@@ -1053,7 +1051,6 @@ class lakes_reservoirs(object):
             self.var.reservoirStorageM3C = np.maximum(0.0, self.var.reservoirStorageM3C)
             # New reservoir fill
             self.var.reservoirFillC = self.var.reservoirStorageM3C / self.var.resVolumeC
-
             # if  (self.var.noRoutingSteps == (NoRoutingExecuted + 1)):
             if self.var.noRoutingSteps == (NoRoutingExecuted + 1):
                 np.put(self.var.reservoirStorage, self.var.decompress_LR, self.var.reservoirStorageM3C)
