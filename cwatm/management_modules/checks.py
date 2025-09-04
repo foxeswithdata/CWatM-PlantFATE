@@ -8,7 +8,6 @@
 # Copyright:   (c) burekpe 2016
 # -------------------------------------------------------------------------
 
-
 from .globals import *
 from netCDF4 import Dataset
 
