@@ -30,10 +30,10 @@ GNU General Public License for more details
 # --------------------------------------------------
 """
 
-__author__ = "Peter Burek, Mikhail Smilovic, Jens de Bruijn, Dor Fridman, Luca Guillaumot, Yusuke Satoh, Peter Greve, Sarah Hanus, Jessica Fennel"
+__author__ = "Peter Burek, Mikhail Smilovic, Jens de Bruijn, Dor Fridman, Luca Guillaumot, Yusuke Satoh, Peter Greve, Sarah Hanus, Jessica Fennel, Carla Catania"
 __email__ = 'burek@iiasa.ac.at'
 __version__ = "1.5"
-__date__ = "01/01/2023"
-__copyright__ = "Copyright 2023, IIASA"
+__date__ = "01/08/2025"
+__copyright__ = "Copyright 2025, IIASA"
 __maintainer__ = "Water Security Research Group"
 __status__ = "Development"

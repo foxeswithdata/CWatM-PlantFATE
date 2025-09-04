@@ -524,7 +524,7 @@ class readmeteo(object):
         self.var.prec = self.var.Precipitation / self.var.con_precipitation
         # precipitation (conversion to [m] per time step)  `
         if Flags['check']:
-            checkmap(self.var.preMaps, "", self.var.Precipitation, True, True, self.var.Precipitation)
+            checkmap(self.var.preMaps, meteofiles[self.var.preMaps][flagmeteo[self.var.preMaps]][0], self.var.Precipitation)
 
 
         ZeroKelvin = 0.0
@@ -573,7 +573,7 @@ class readmeteo(object):
 
 
         if Flags['check']:
-            checkmap(self.var.tempMaps, "", self.var.Tavg, True, True, self.var.Tavg)
+            checkmap(self.var.tempMaps, meteofiles[self.var.tempMaps][flagmeteo[self.var.tempMaps]][0], self.var.Tavg)
 
         if checkOption('calc_evaporation') or self.var.snowmelt_radiation:
            # for new snow calculation radiation is needed
@@ -626,7 +626,7 @@ class readmeteo(object):
                 self.var.TMin = self.downscaling2(self.var.TMin, "downscale_wordclim_tmin", self.var.wc2_tmin, self.var.wc4_tmin, downscale=0)
 
             if Flags['check']:
-                checkmap('TminMaps', "", self.var.TMin, True, True, self.var.TMin)
+                checkmap('TminMaps', meteofiles['TminMaps'][flagmeteo['TminMaps']][0], self.var.TMin)
 
             #self.var.TMax = readnetcdf2('TmaxMaps', dateVar['currDate'], addZeros = True, zeros = ZeroKelvin, meteo = True)
             self.var.TMax = readmeteodata('TmaxMaps', dateVar['currDate'], addZeros=True, zeros=ZeroKelvin, mapsscale = self.var.meteomapsscale, buffering= self.var.buffer)
@@ -641,7 +641,8 @@ class readmeteo(object):
             else:
                 self.var.TMax = self.downscaling2(self.var.TMax, "downscale_wordclim_tmin", self.var.wc2_tmax, self.var.wc4_tmax, downscale=0)
 
-            if Flags['check']: checkmap('TmaxMaps', "", self.var.TMax, True, True, self.var.TMax)
+            if Flags['check']:
+                checkmap('TmaxMaps', meteofiles['TmaxMaps'][flagmeteo['TmaxMaps']][0], self.var.TMax)
 
             if checkOption('TemperatureInKelvin'):
                 self.var.TMin -= ZeroKelvin

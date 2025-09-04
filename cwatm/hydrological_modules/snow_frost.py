@@ -52,8 +52,8 @@ class snow_frost(object):
                  'dzRel0060','dzRel0070','dzRel0080','dzRel0090','dzRel0100']
 
         self.var.dzRel = []
-        for i in dzRel:
-            self.var.dzRel.append(readnetcdfWithoutTime(cbinding('relativeElevation'),i))
+        for i,item in enumerate(dzRel):
+            self.var.dzRel.append(readnetcdfWithoutTime(cbinding('relativeElevation'),item,i))
 
         # from relative elevation take 5 levels: 80-100% -> 90% -> id11, 60-80% -> 70% -> id9  ...
         dzSnow = \

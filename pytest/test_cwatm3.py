@@ -41,10 +41,15 @@ else:
 run_cwatm = importlib.import_module(cwatm, package=None)
 
 """
-#set = "P:/watmodel/cwatmpublic/develop/Toolkit/pytesting/settings/30min/global_30min/settings_global_30min_08.ini"
-set = "P:/watmodel/cwatmpublic/develop/Toolkit/pytesting/settings/1km/Burgenland/settings_burgenland_03.ini"
+set =  "P:/watmodel/cwatmpublic/develop/pytest/settings/1min/UpperDanube/settings_upper_1min_01.ini"
+success, last_dis = run_cwatm.main(set, ['-c'])
+set = "P:/watmodel/cwatmpublic/develop/pytest/settings/1min/Morava/settings_calibration_1min.ini"
+meteo,success, last_dis = run_cwatm.main(set, ['-lk'])
+success, last_dis = run_cwatm.mainwarm(set, ['-l'], meteo)
+#set = "P:/watmodel/cwatmpublic/develop/pytest/settings/30min/global_30min/settings_global_30min_08.ini"
+set = "P:/watmodel/cwatmpublic/develop/pytest/settings/1km/Burgenland/settings_burgenland_03.ini"
 success, last_dis = run_cwatm.main(set, ['-l'])
-set = "P:/watmodel/cwatmpublic/develop/Toolkit/pytesting/settings/1km/Bhima/settings_Bhima_01.ini"
+set = "P:/watmodel/cwatmpublic/develop/pytest/settings/1km/Bhima/settings_Bhima_01.ini"
 success, last_dis = run_cwatm.main(set, ['-l'])
 #print(run_cwatm)
 
@@ -207,7 +212,7 @@ def cwatm(info, model):
                     0        1        2       3       4         5         6
     :return: sucess of model run
     """
-    print('\n ===== ', model[0], ' =====')
+    print('\n ===== ', model[0], ' =============')
     print(" Setting file: ", model[4])
     print(" Description: ", info)
     print(" Changes: ", model[2])
@@ -220,7 +225,11 @@ def cwatm(info, model):
         success, last_dis = run_cwatm.main(model[4], ['-q'])
         assert (success == 0)
 
-
+    elif  model[4].find("calibration")> -1:
+        # test for check
+        meteo,success, last_dis = run_cwatm.main(model[4], ['-lk'])
+        success, last_dis = run_cwatm.mainwarm(model[4], ['-l'], meteo)
+        assert success
 
     elif  model[4].find("checkmap")> -1:
         # test for check
