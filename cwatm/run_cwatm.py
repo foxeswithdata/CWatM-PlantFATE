@@ -372,8 +372,9 @@ def mainwarm(settings, args, meteo):
 
 def main(settings, args):
     success = False
-    if "pytest" in sys.modules: globalclear()
-    #if Flags['test']: globalclear()
+    # Check if excution comes from pytest or from GUi -> delete all info from previous runs
+    if ("pytest" in sys.modules) or ("PySide6" in sys.modules):
+        globalclear()
 
     globalFlags(settings, args, settingsfile, Flags)
     if Flags['use']:

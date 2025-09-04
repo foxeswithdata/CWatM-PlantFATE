@@ -294,12 +294,6 @@ def loadsetclone(self,name):
             except:
                 raise CWATMFileError(filename,msg = "Error 201: File reading Error\n", sname=name)
 
-
-
-        if Flags['check']:
-            checkmap(name, filename, mapnp, flagmap, False,0)
-
-
     else:
         msg = "Error 103: Maskmap: " + filename + " is not a valid mask map nor valid coordinates nor valid point\n"
         msg +="Or there is a whitespace or undefined character in Maskmap"
@@ -329,22 +323,32 @@ def loadsetclone(self,name):
 
     globals.inZero=np.zeros(maskinfo['mapC'])
 
-    if Flags['check']:
-        checkmap("Mask+Ldd", "", np.ma.masked_array(mask,mask), flagmap, True, mapC)
-
     outpoints = 0
     if len(coord) == 2:
        outpoints = valuecell(coord, filename)
        outpoints[outpoints < 0] = 0
-
        print("Create catchment from point and river network")
        ldd = compressArray(mapnp)
        mask2D, xleft, yup = self.routing_kinematic_module.catchment(outpoints,ldd)
        mapC = maskfrompoint(mask2D, xleft, yup) + 1
+
+       if Flags['check']:
+           checkmap("MaskMap", "", ~mask2D)
+           ldd = loadmap('Ldd')
+       # load area to print out basin area
        area = np.sum(loadmap('CellArea')) * 1e-6
        print("Number of cells in catchment: %6i = %7.0f km2" % (np.sum(mask2D), area))
        if Flags['maskmap']:
            return mask2D, xleft, yup
+
+    else:
+        if Flags['check']:
+            checkmap("Mask+Ldd", "", ~mask)
+            checkmap(name, filename, mapnp)
+            checkmap("Ldd", cbinding("Ldd"), maskldd)
+
+
+
 
     # if the final results map should be cover up with some mask:
     if "coverresult" in binding:
@@ -435,7 +439,7 @@ def loadmap(name, lddflag=False,compress = True, local = False, cut = True):
         flagmap = False
         load = True
         if Flags['check']:
-            checkmap(name, filename, mapC, False, False, 0)
+            checkmap(name, filename, mapC)
     except ValueError:
         load = False
 
@@ -520,11 +524,11 @@ def loadmap(name, lddflag=False,compress = True, local = False, cut = True):
         if compress:
             mapC = compressArray(mapnp,name=filename)
             if Flags['check']:
-                checkmap(name, filename, mapnp, True, True, mapC)
+                checkmap(name, filename, mapnp)
         else:
             mapC = mapnp
-            if Flags['check']:
-                checkmap(name, filename, mapnp, True, False, 0)
+            if Flags['check'] and not(name == "Ldd"):
+                checkmap(name, filename, mapnp)
 
 
     return mapC
@@ -1218,11 +1222,11 @@ def readmeteodata(name, date, value='None', addZeros = False, zeros = 0.0,mapssc
 
         mapC = compressArray(mapnp, name=filename,zeros = zeros)
         if Flags['check']:
-            checkmap(name, filename, mapnp, True, True, mapC)
+            checkmap(name, filename, mapnp)
     else: # if static map extend not equal meteo maps -> downscaling in readmeteo
         mapC = mapnp
         if Flags['check']:
-            checkmap(name, filename, mapnp, True, False, 0)
+            checkmap(name, filename, mapnp)
 
     # increase index and check if next file
     #if (dateVar['leapYear'] == 1) and calendar.isleap(date.year):
@@ -1366,7 +1370,7 @@ def readnetcdf2(namebinding, date, useDaily='daily', value='None', addZeros = Fa
 
     mapC = compressArray(mapnp, name=filename)
     if Flags['check']:
-        checkmap(value, filename, mapnp, True, True, mapC)
+        checkmap(value, filename, mapnp)
     return mapC
 
 
@@ -1408,7 +1412,7 @@ def readnetcdfWithoutTime(name, value="None", counter=0):
 
     mapC = compressArray(mapnp, name=filename)
     if Flags['check']:
-        checkmap(value, filename, mapnp, True, True, mapC)
+        checkmap(value, filename, mapnp)
 
     return mapC
 
@@ -1437,7 +1441,7 @@ def readnetcdf12month(name, month,value="None"):
 
     mapC = compressArray(mapnp, name=filename)
     if Flags['check']:
-        checkmap(value, filename, mapnp, True, True, mapC)
+        checkmap(value, filename, mapnp)
     return mapC
 
 
@@ -1490,7 +1494,7 @@ def readnetcdfInitial(name, value,default = 0.0):
             nf1.close()
             mapC = compressArray(mapnp, name=filename)
             if Flags['check']:
-                checkmap(value, filename, mapnp, True, True, mapC)
+                checkmap(value, filename, mapnp)
             a = globals.inZero
             if mapC.shape != globals.inZero.shape:
                 msg = "Error 113: map shape is different than mask shape\n"

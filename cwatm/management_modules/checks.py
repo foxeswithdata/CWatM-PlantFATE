@@ -12,6 +12,31 @@
 from .globals import *
 from netCDF4 import Dataset
 
+def decompress(map):
+    """
+    Decompress 1D array without missing values to 2D array with missing values
+
+    :param map: numpy 1D array as input
+    :return: 2D array for displaying
+    """
+
+    dmap = maskinfo['maskall'].copy()
+    dmap[~maskinfo['maskflat']] = map[:]
+    dmap = dmap.reshape(maskinfo['shape'])
+
+    # check if integer map (like outlets, lakes etc
+    try:
+        checkint = str(map.dtype)
+    except:
+        checkint = "x"
+    if checkint == "int16" or checkint == "int32":
+        dmap[dmap.mask] = -9999
+    elif checkint == "int8":
+        dmap[dmap < 0] = 0
+    else:
+        dmap[dmap.mask] = -9999
+
+    return dmap
 
 def counted(fn):
     """
@@ -29,7 +54,7 @@ def counted(fn):
 
 
 @counted
-def checkmap(name, value, map, flagmap, flagcompress, mapC):
+def checkmap(name, value, map):
     """
     check maps if the fit to the mask map
 
@@ -98,6 +123,8 @@ def checkmap(name, value, map, flagmap, flagcompress, mapC):
 
     # ----------------------------------
     # stored inputdate with date (addtoversiondate in data_handling.py)
+    # (name, value, map):
+
     inputver =versioning['input'].split(";")
     # dictorary with each file and date
     inputv = {}
@@ -126,75 +153,81 @@ def checkmap(name, value, map, flagmap, flagcompress, mapC):
         else:
             s.append(" ")
 
-
-
-
+    # evaluate maps
+    # if it is notr a number but a map (.tif, .nc, .map)
+    flagmap = False
+    if isinstance(map, np.ndarray):
+        flagmap = True
+        mapshape = map.shape
+        # ifr compressed -> decompress
+        if len(mapshape) < 2:
+            map = decompress(map)
+            mapshape = map.shape
 
     if flagmap:
+        # if smaller than 0 or bigger than 1e20 => nan
+        map = np.where(map<-100, np.nan, map)
+        map = np.where(map > 1e20, np.nan, map)
+        mapshape = input2str(map.shape[0]) + "x" + input2str(map.shape[1])
 
-        try:
-            mapshape = input2str(map.shape[0]) + "x" + input2str(map.shape[1])
-        except:
-            mapshape = input2str(map.shape[0])
+        #maskinfo['mask']
+        # check if there are less valid cells than there should be compared to maskmap
+        # reverse maskmap -> every valid cell has a True
+        mask = ~maskinfo['mask']
+        # count number of must cells
+        numbermask = np.nansum(mask)
+        vmap = ~np.isnan(map)
+        andmap = mask & vmap
+        # count number of cell in map
+        numbermap = np.nansum(andmap)
 
-        if not(flagcompress):
-            mapshape = input2str(map.shape[0]) + "x" + input2str(map.shape[1])
-            numbernonmv = np.count_nonzero(~np.isnan(map))  # count nonmissing values
-            numbermv = np.count_nonzero(np.isnan(map))  # count missing value (np.nan)
-            #numbernan = "-"
-            #numberzero = "-"
-            numbernan = input2str(np.count_nonzero(np.isnan(map)))
-            numberzero = input2str( map.shape[0] * map.shape[1] -  np.count_nonzero(map))
-            numbernonzero = input2str(np.count_nonzero(map))
+        # if this is less the the must cell -> problem
+        valid = "True"
+        if numbermap < numbermask:
+            valid = "False"
 
-            compressF = "False"
-            minmap = map[~np.isnan(map)].min()
-            meanmap = map[~np.isnan(map)].mean()
-            maxmap = map[~np.isnan(map)].max()
 
-        else:
-            numbernonmv = np.count_nonzero(~np.isnan(mapC))  # count nonmissing values
-            numbermv = np.count_nonzero(np.isnan(mapC))  # count missing value (np.nan)
+        numbernonzero = np.count_nonzero(map)
+        numberzero = map.shape[0] * map.shape[1] - np.count_nonzero(map)
 
-            compressF ="True"
-            numbernan = input2str(np.count_nonzero(np.isnan(mapC)))
-            numberzero = input2str(mapC.shape[0] - np.count_nonzero(mapC))
-            numbernonzero = input2str(np.count_nonzero(mapC))
+        minmap = map[~np.isnan(map)].min()
+        meanmap = map[~np.isnan(map)].mean()
+        maxmap = map[~np.isnan(map)].max()
 
-            minmap = mapC[~np.isnan(mapC)].min()
-            meanmap = mapC[~np.isnan(mapC)].mean()
-            maxmap = mapC[~np.isnan(mapC)].max()
-
-        s.append(input2str(numbernonmv))
-        s.append(input2str(numbermv))
-        s.append(input2str(mapshape))
-        s.append(compressF)
-        s.append(numbernan)
-        s.append(numberzero)
-        s.append(numbernonzero)
+        s.append(mapshape)
+        s.append(input2str(int(numbermap)))
+        s.append(valid)
+        s.append(input2str(numberzero))
+        s.append(input2str(numbernonzero))
+        s.append("    ")
         s.append(input2str(minmap))
         s.append(input2str(meanmap))
         s.append(input2str(maxmap))
         s.append(os.path.dirname(value))
 
+    # if it is a number
     else:
-        s.append("-")
-        s.append("-")
-        s.append("-")
-        s.append("-")
-        s.append("-")  # CompressF
-        s.append("")
-        s.append(input2str(float(map)))
-        s.append("")
+        #s.append(input2str(float(map)))
+        for i in range(10):
+            s.append("")
 
+
+
+
+    # if it is checked against a discharge...nc
     if versioning['refvalue']:
         t = ["<30", "<80", "<20","<20","<10",">11", ">11", ">11", ">11", ">11", ">11", ">11", ">11", ">11", ">11", ">11", "<80"]
-        h = ["Name", "File/Value", "Create Date","Ref Date","Same Date", "nonMV", "MV", "lon-lat", "Compress", "MV-comp", "Zero-comp", "NonZero", "min", "mean", "max",
-             "Path"]
+        h = ["Name", "File/Value", "Create Date","Ref Date","Same Date", "x-y", "number valid", "valid", "Zero values", "NonZero","-----",
+             "min", "mean", "max", "Path"]
+    # or without comparsion
     else:
         t = ["<30","<80","<20"   ,">11",">11",">11",">11",">11",">11",">11",">11",">11", ">11",">11","<80"]
-        h = ["Name","File/Value","Create Date","nonMV","MV", "lon-lat","Compress","MV-comp","Zero-comp","NonZero","min","mean","max","Path"]
+        h = ["Name","File/Value","Create Date", "x-y", "number valid", "valid", "Zero values", "NonZero","-----",
+             "min", "mean", "max", "Path"]
+
+    # if checkmap is called for the first time
     if checkmap.called == 1:
+        """
         s1= "----\n"
         s1 += "nonMV,non missing value in 2D map\n"
         s1 += "MV,missing value in 2D map\n"
@@ -207,7 +240,9 @@ def checkmap(name, value, map, flagmap, flagcompress, mapC):
         s1 += "mean,mean in 1D (or 2D)\n"
         s1 += "max,maximum in 1D (or 2D)\n"
         s1 += "-----\n"
-
+        """
+        s1 =""
+        # put all the header (keys) in a text line
         for i in range(len(s)):
             s1 += f'{h[i]:{t[i]}}'
             if i<(len(s)-1):
@@ -217,6 +252,7 @@ def checkmap(name, value, map, flagmap, flagcompress, mapC):
         print(s1)
         versioning['check'] += s1
 
+    # put all the values in a text file
     s2 = ""
     for i in range(len(s)):
         s2 += f'{s[i]:{t[i]}}'
@@ -224,17 +260,19 @@ def checkmap(name, value, map, flagmap, flagcompress, mapC):
             s2 += ","
         else:
             s2 += "\n"
-    print (s2)
     versioning['check'] += s2
-
-    #print("%-30s%-40s%11i%11i%11i%11i%14.2f%14.2f%14.2f" %(s[0],s[1][-39:],s[2],s[3],s[8],s[7],s[4],s[5],s[6]))
-    #print("%-30s%-40s%11s%11s%11s%11s%14s%14s%14s" % (s[0], s[1][-39:], s[2], s[3], s[8], s[7], s[4], s[5], s[6]))
+    s2 = str(checkmap.called) + " " + s2
+    print (s2)
 
     return
 
 def save_check():
+    """
+    Save the checked file
+    """
 
     save = False
+    checkmap.called = 0
     args = versioning['checkargs']
     if len(args)>1:
         if len(args) > 2 and args[1][-3:] == ".nc":
@@ -244,7 +282,7 @@ def save_check():
         else:
             if args[1][-4:] == ".csv":
                 save = True
-                savefile = args[3]
+                savefile = args[1]
     if save:
         with open(savefile, 'w', encoding='utf-8') as f:
             f.write(versioning['check'])
