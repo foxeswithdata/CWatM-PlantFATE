@@ -1,13 +1,14 @@
 # Community Water Model (CWatM)
 
-[![GitHub last commit](https://img.shields.io/github/last-commit/iiasa/CWatM/develop)]
+[![GitHub last commit](https://img.shields.io/github/last-commit/iiasa/CWatM)]
 [![license](https://img.shields.io/github/license/iiasa/CWatM?color=1)](https://github.com/iiasa/CWatM/blob/version1.05/LICENSE)
-[![python](https://img.shields.io/badge/python-3.7_|_3.8_|_3.9_|_3.10|_3.11-blue?logo=python&logoColor=white)](https://github.com/iiasa/CWatM/tree/develop))
-[![pytest](https://github.com/IAMconsortium/pyam/actions/workflows/pytest.yml/badge.svg)](https://github.com/iiasa/CWatM/tree/develop))
-[![codecov](https://codecov.io/gh/iiasa/CWatM/graph/badge.svg?token=W3CAO5X4QK)](https://codecov.io/gh/iiasa/CWatM/tree/develop)
+[![python](https://img.shields.io/badge/python-3.7_|_3.8_|_3.9_|_3.10|_3.11-blue?logo=python&logoColor=white)](https://github.com/iiasa/CWatM/))
+[![pytest](https://github.com/IAMconsortium/pyam/actions/workflows/pytest.yml/badge.svg)](https://github.com/iiasa/CWatM/))
+[![codecov](https://codecov.io/gh/iiasa/CWatM/graph/badge.svg?token=W3CAO5X4QK)](https://codecov.io/gh/iiasa/CWatM/)
 [![Repo size](https://img.shields.io/github/repo-size/iiasa/CWatM)]
 [![ReadTheDocs](https://readthedocs.org/projects/pyam-iamc/badge/?version=latest)](https://cwatm.iiasa.ac.at/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3528097.svg)](https://doi.org/10.5281/zenodo.3528097)
+
 
 
 User manual and model documentation at [https://cwatm.iiasa.ac.at](https://cwatm.iiasa.ac.at).
@@ -17,21 +18,16 @@ check out our [CWatM tutorials on YouTube](https://www.youtube.com/playlist?list
 
 Our repository [CWatM-Earth-30min](https://github.com/iiasa/CWatM-Earth-30min) contains input data for CWatM at 30 arcminutes and further links to climate and higher resolution input data.
 
-# NEW - Major update of Main from the last year of development of branch: develop
+# NEW 11/09/25 - Major update of Main from the last year of development of branch: develop
 
-## FAIR model
+## FAIR model  
 
-In order to redo simulations with the same model, settingsfile and data
+"The ultimate goal of FAIR is to optimise the reuse of data. To achieve this, metadata and data should be well-described so that they can be replicated and/or combined in different settings."
+(from https://www.go-fair.org/fair-principles)
 we included a possibility to track the source of inputdata, settingsfile, model version
-- model data (global attribute: version_inputfiles) and settingsfile (global attribute: version_settingsfile) are store in discharge.nc results
+- model data used (name and date) is stored in any produced discharge netcdf (global attribute: version_inputfiles)
+- complete settingsfile is store in any discharge netcdf (global attribute: version_settingsfile)
 - version number with github hash is loaded and stored in global attribute: git_commit
-
-## FAIR model
-
-In order to redo simulations with the same model, settingsfile and data
-we included a possibility to track the source of inputdata, settingsfile, model version
-- model data and settingsfile are store in discharge.nc results
-- version number with github hash is loaded
 
 ## Waterdemand 
 
@@ -79,47 +75,6 @@ we included a possibility to track the source of inputdata, settingsfile, model 
 - Function and classes have a numpydoc description
 - Deleted preprocessing tools for Modflow -> will go to another repro
 
-## Waterdemand 
-
-- moved water transfer to reservoirs
-
-## Reservoirs
-
-- added and changed water transfer inputs in an Excel file
-- added periodical wetlands
-
-## Glaciers
-
-- added glacier coupling from OGGM
-
-## Frost
-
-- changed frost index calcualtion
-
-
-## Prepare to run inside a Graphical User interface
-
-- global variabl;es are cleared when using as test or inside a GUI
-
-
-## Pytest
-
-- pytest is located in the folder pytest
-- increased the number of test (currently 101)
-- test cannot run in github itself, because of the big size of meteodata needed
-- a test report and a codecov report is build
-- codecov xml is send to codecov webside https://app.codecov.io/gh/iiasa/CWatM/
-
-
-## Misc
-
-- updated many self.var variable in metaNetcdf.xml
-- path to metaNetcdf.xml is now fixed to be in subfolder cwatm
-- variable description is improved
-- code is checked to be PEP8 consistent 
-- Function and classes have a numpydoc description
-- Deleted preprocessing tools for Modflow -> will go to another repro
-- variable documaentation is moved to toolkit
 
 
 # Overview and scope
