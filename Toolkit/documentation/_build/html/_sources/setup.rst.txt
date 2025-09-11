@@ -8,8 +8,8 @@ Setup of the model
 
 .. _rst_setupdoc:
 
-Setup python version
-====================
+Setup python
+============
 	
 Python
 ---------------
@@ -17,32 +17,127 @@ Python
 CWatM requires having `Python <https://www.python.org/downloads/>`_.
 Downloading Python and the required Python packages is covered in our `YouTube tutorial <https://youtu.be/l3OW9b32SVo>`_.
 
-.. note:: CWatM is tested for Python 3.7+. We recommend using the most recent release.
+.. note:: CWatM is tested for Python 3.7 - 3.12. We recommend using the most recent stable release .
 
 .. warning:: a 64-bit version is necessary. This is generally the download default.
 
-External libraries
--------------------
 
-These five Python packages are needed:
+Martin Bednář from Brno University of Technology, Czech Republic wrote the following instruction to install Python and the virtual environment:
+
+
+The following text describes instructions regarding the Windows 10 operating system
+(OS). However, there might be some differences in case of different OS.
+The first step is to install the Python language in your machine. You can find the
+latest version on the official Python Website. As of October 2024, the latest version of
+Python is 3.13.0. However, it is a relatively new release, thus not all packages might be
+up to date. So scroll a bit down and download the second latest version which should
+be 3.12.7.
+
+
+Select the particular Python version and find a 64-bit version for Windows OS and click its name.
+Open the file and followrecommended instructions. Be careful during installation
+of the option to add Python into PATH environmental variable. Figure 2 shows what
+to look for during the installation. It is not the end of the world if you did not check
+this checkbox and it is possible to add Python into PATH variable later. However, try to
+do it now as it will make your life way simpler during using python. After successful
+installation open the Command Prompt (use i.e. WIN + R shortcut to open Run window
+and write cmd and hit ENTER.). If you write python -V and hit ENTER. It should return
+the Python version number you just installed.
+
+Virtual environment setup (optional)
+------------------------------------
+
+What is virtual environment
+***************************
+
+The virtual environment enables you to run a clean “separate copy” of Python. Then
+you are able to install packages into this copied python which do not collide which then
+“main” Python installed.
+For example, you install Python on your machine and then install a package named
+thebestpackage. Lets say it is a new package, thus its version would be 1.0.0. Then you
+write a code using this package’s functions. After some time you will need to update
+this package because for example in the version 1.2.0 the creator added a new feature
+you would like to use. So you update the package. However, the new version changed
+howsome existing function operated and nowyour former code does notwork properly.
+However, if you installed the first version of package in the virtual environment the
+package would remain at version 1.0.0 even if you update the package on the main
+Python because the virtual environment created a separate copy od Python.
+Therefore, the virtual environment is very usefull in controling the versions of
+packages used for your particular peace of code and if you will need and updated
+version for different code (on main Python version or in different virtual environments)
+it will remain functional. Nevertheless, the virtual environment is not necessary and
+is totally optional so if you are not interested you can simply skip this.
+
+
+How to install virtual environment
+**********************************
+
+
+There are many ways to setup an virtual environment. Two ways of setup the virtual
+environment will be described (The second one was presented in the CwatM Level A1
+Summer School). The first one is using the venv package that is built-in the Python
+since version 3.3. The usage of this package is following:
+
+1. Create a folder for your project.
+2. Open the Command Prompt inside this folder.
+3. Use command: python -m venv .venv
+
+Nowyou have create a virtual environment that is named “.venv” inside your folder.
+So, how does that command works? Firstly you tell it to use Python (python) then the
+flag -m tells python to execute a module as script and the module would be venv which
+follows. The last part is simply the name of your virtual environment. The name of
+virtual environment can be whatever you like, e. g. “my_project” or you can use a
+path to any folder you like if you do not want to create a virtual environment in the
+destination you are currently in.
+To activate the virtual environment using the venv package you need to open a Command
+Prompt inside your project folder (where the virtual environment was created)
+and use following command (“.venv” is the name of your virtual environment)::
+
+    .venv/Scripts/Activate.bat
+
+
+This will start the virtual environment and you will see its name in brackets before
+the next command line (Figure 5). After you activate the virtual environment all the
+packages you install will be installed specificaly in this activated environment and will
+not be affected by any changes in the main Python environment. To deactivate the
+virtual environment simply put in Commant Prompt the deactivate command.
+
+External libraries
+------------------
+
+These six Python packages are needed:
 
 1. `NumPy <http://www.numpy.org>`_
 2. `SciPy <https://www.scipy.org>`_
 3. `netCDF4 <https://pypi.python.org/pypi/netCDF4>`_
 4. `pandas <https://pypi.org/project/pandas>`_
+5. `xmipy <https://pypi.org/project/xmipy>`_
+6. `openpyxl <https://pypi.org/project/openpyxl>`_
 
-These four libraries can be installed with pip, conda, or downloaded at `Unofficial Windows Binaries for Python Extension Packages <http://www.lfd.uci.edu/~gohlke/pythonlibs>`_
+These six libraries can be installed with pip, conda
 
-5. `GDAL <http://www.gdal.org>`_
+7. `GDAL <http://www.gdal.org>`_
 
 .. note::
    | **Troublemaker GDAL**
    | Installing GDAL via pip can be troublesome. We recommend downloading the library from
-   | `Unofficial Windows Binaries for Python Extension Packages <http://www.lfd.uci.edu/~gohlke/pythonlibs>`_
-   | as GDAL-3.0.4-cp311-cp311m-win_amd64.whl (depending on your Python version) and installing as:
-   | pip install C:/Users/XXXXX/Downloads/GDAL-3.0.4-cp37-cp37m-win_amd64.whl
+   | `Christoph Gohkles github page - geospatial-wheels <https://github.com/cgohlke/geospatial-wheels/releases>`_
+   | as GDAL-3.9.2-cp312-cp312m-win_amd64.whl (depending on your Python version)
+   | (You have to click on show all 156 assets, to see GDAL, for older versions e.g. GDAL-3.8.4-cp311-cp311-win_amd64.whl use earlier releases e.g. v2024.2.18)
+   | and installing as:
+   | pip install C:/Users/XXXXX/Downloads/GDAL-3.9.2-cp312-cp312m-win_amd64.whl
    |
    | Sometimes problems occur if you have installed GDAL separately (or a software did, like QGIS)
+   | We tested GDAL and Numpy on ~40 computers and we could not figure out a version combination (ython, numpy, gdal)  which works all the time
+   | - on some computers: Python 3.12, Numpy 2.1 and GDAL 3.9
+   | - on others only pip install numpy==1.26, GDAL 3.8
+  
+
+.. note::
+   | **Numpy version 2.1, 2.2**
+   | the branch: develop version work now with Numpy 2.1,2.2. BUT it seems Numpy and GDAL are not good friends. 
+   | On some computer we could no work with numpy 2.x
+   | and we had to downscale to: pip install numpy==1.26
 
 These additional packages are used for the post-processing Notebooks (in CWatM/Toolkit)
 
@@ -50,14 +145,15 @@ These additional packages are used for the post-processing Notebooks (in CWatM/T
 * `plotly <https://pypi.org/project/plotly/>`_
 * `XlsxWriter <https://pypi.org/project/XlsxWriter/>`_
 
-These additional packages are used for CWatM-MODFLOW
+These additional package are used for CWatM-MODFLOW
 
 * `FloPy <https://www.usgs.gov/software/flopy-python-package-creating-running-and-post-processing-modflow-based-models>`_
-* `xmipy <https://pypi.org/project/xmipy>`_
 
 
-Installing
-------------
+
+Installing CWatM
+================
+
 CWatM can be cloned through our `CWatM GitHub repository <https://github.com/iiasa/CWatM>`_.
 
 For those new to GitHub, we recommend using `GitHub desktop <https://desktop.github.com/>`_.
@@ -87,14 +183,18 @@ For Linux Ubuntu a compiled version is provided as *t5_linux.so*. The file is in
 .. note::
     If you use another Linux version or the compiled version is not working or you have a compiler which produce faster executables please compile a version on your own.
 
+| **Mac**
+| For the new Mac M4 processor we compiled a version t5_mac.so. The old Mac should run with t5_linux.so (we are not using Mac by ourself, therefore no guaranty!)
+
+
 
 Compiling a version
-*****************************
+*******************
 
 C++ sourcecode is in *../cwatm/hydrological_modules/routing_reservoirs/t5.cpp*
 
 .. note::
-    A compiled version is already provided for Windows and Linux.
+    A compiled version is already provided for Windows and Linux and Apple.
 
 **Windows**
 
@@ -131,16 +231,33 @@ To compile with g++::
 .. warning:: Please rename your compiled version to t5_linux.so! At the moment the file t5_linux.so is compiled with Ubuntu Linux
 
 
-Error and exeption handling
----------------------------
+Installing on Mac
+*****************
 
-We try to make our program behave properly when encountering unexpected conditions. Therefore we caption a number of possible wrong inputs.
+We do not run Mac by ourself, therefore this information is from Vlad Amihaesei:
 
-If you get an output with an error number please look at :ref:`rst_error`
+Install Miniconda to run the CWATM model on a Macbook. After that, open a terminal and type conda create—n "cwatm" python=3.12.7 (you have to specify which version of Python you need to use—it took me a while to notice that). Then, type conda activate cwatm. 
+
+Install the required libraries::
+
+    conda install numpy 
+    conda install netcdf4 
+    conda install scipy
+    conda install pandas
+    conda install gdal==3.9.2 
+    conda install openpyxl 
+    conda install xmimpy
+
+
+| Go to the folder of the model, open it in the terminal, then type: conda activate cwatm 
+| Type: python run_cwatm.py
+| You might have the error of security showing that the t5_mac.so file  is not trusted. The location of that file is: ...hydrological_modules/routing_reservoirs/t5_mac_so
+| You have to go to the System Settings on the Mac:
+| System Settings -> Privacy & Security -> scroll down until you see Allow applications and choose Allow the t5_mac_so
 
 
 Test the Python version
--------------------------
+-----------------------
 
 From a terminal inside the CWatM folder, Run from the command line::
 
@@ -160,7 +277,7 @@ The output should be::
 
 
 Run the Python version
------------------------------
+----------------------
 
 Run from the command line::
 
@@ -190,8 +307,8 @@ or with more information and an overview of computational runtime::
     PathRoot = C:/CWatM Hydrologic.modeling
    
 	
-Flags
-*****
+Using Flags
+***********
 
 Flags can be used to change the runtime output on the screen
 
@@ -204,6 +321,153 @@ example::
     -h --noheader    .tss file have no header and start immediately with the time series
     -t --printtime   the computation time for hydrological modules are printed
 	-w --warranty    copyright and warranty information
+
+
+
+.. _rst_setuperror:
+
+Potential Errors
+================
+
+We try to make our program behave properly when encountering unexpected conditions. Therefore we caption a number of possible wrong inputs.
+
+If you get an output with an error number please look at :ref:`rst_error`
+
+
+Error because you did not run with Python
+--------------------------------------------
+
+if the model is causing an error with look like this::
+
+   File "run_cwatm.py", line 116
+   print("%-6s %10s %11s\n" %("Step","Date","Discharge"), end=' ')
+   SyntaxError: invalid syntax
+
+You run the model without the python command in front. Please use: python cwatm.py
+(You may have to adjust the path to your python version and to cwatm.py).
+
+
+Error because python is not added to the PATH
+---------------------------------------------
+
+If executing python return an error like this
+
+   ‘python’ is not recognized as an internal or external command
+
+You need either need to add Python to the PATH Environmental Variable or you need to start Python with full path.
+
+   c:/path_to_python/python
+
+
+Error because the path has white spaces included
+------------------------------------------------
+
+It is also possible to use paths with white spaces or dots. An easy way to avoid this is using relative paths, but is is also possible with absolute paths::
+
+    "C:/Python 37/python" "C:/CWatM Hydrologic.modeling/CWatM/run_cwatm.py" "C:/CWatM Hydrologic.modeling/settings .rhine30min.ini" -l
+    
+    But in the settingsfile do not use apostrophe:
+    PathRoot = C:/CWatM Hydrologic.modeling
+   
+
+Error because the python libraries are installed incorrectly
+------------------------------------------------------------
+
+If the model is causing an error at this stage, please check the python libraries::
+
+    python
+    import numpy
+    import scipy.ndimage
+    import gdal
+    import netCDF4
+	
+	
+Error because the settings file is not stored as utf-8 file
+-----------------------------------------------------------
+
+If the model causing an error which look like this::
+
+    UnicodeDecodeError: 'utf-8' codec can't decode byte 0x83 in position 1504: invalid start byte
+
+
+It is because the file was not stored as utf-8 (Unicode Transformation Format - 8-bit) file. This can happen if you use the Windows texteditor Wordpad or Notepad. We suggest you use Notepad++ and store the file as utf-8. Might happen too, if your language use strange characters like German Umlaut.
+
+
+Error because the references are used wrong
+-------------------------------------------
+
+In the settingsfile we use references::
+
+    [FILE_PATHS]
+    PathRoot = C:\basin
+    PathMaps = $(PathRoot)/input
+	
+	
+If you use the reference in the next section, you have to put in the section where you defined the reference. Here: FILE_PATHS::
+
+    [NETCDF_ATTRIBUTES]
+    metaNetcdfFile = $(FILE_PATHS:PathRoot)/metaNetcdf.xml
+
+
+Errors Errors Err Er E
+----------------------
+
+If you type::
+
+   python cwatm.py settings.ini -l
+
+
+You should see something like this::
+
+   E:\CWatM_rhine\source>python cwatm.py settings_rhine30min.ini -l
+   CWatM - Community Water Model  Version: 0.991  Date:  16/09/2017
+   International Institute of Applied Systems Analysis (IIASA)
+   Running under platform:  Windows
+   -----------------------------------------------------------
+   CWatM Simulation Information and Setting
+   The simulation output as specified in the settings file: settings_rhine30min.ini
+   can be found in E:/CWatM_rhine/output
+   Step         Date   Discharge
+   1      01/01/1961        4.20
+   2      02/01/1961        4.23
+   ...
+
+
+If you don't see this. Something went wrong and you might see this instead::
+
+   E:\CWatM_rhine\source>python cwatm.py settings_rhine30min.ini -l
+   CWatM - Community Water Model  Version: 0.991  Date:  16/09/2017
+   International Institute of Applied Systems Analysis (IIASA)
+   Running under platform:  Windows
+   -----------------------------------------------------------
+   ERROR 4: `E:/CWatM_rhine/cwatm_input/routing/ldd.map' does not exist in the file system,
+   and is not recognised as a supported dataset name.
+   management_modules.messages.CWatMFileError:
+   ======================== CWatM FILE ERROR ===========================
+   In  "Ldd"
+   searching: "E:/CWatM_rhine/cwatm_input/routing/ldd.map"
+   path: E:/CWatM_rhine/cwatm_input/routing does not exists
+
+| The model tries to help you on finding the error.
+| In this case it is looking for the river network map ldd.map or ldd.nc or ldd.tif
+| but it cannot find the file and not even the path to the file.
+
+Here you might change::
+
+   [FILE_PATHS]
+   PathRoot = E:/CWatM_rhine
+   PathMaps = $(PathRoot)/cwatm_input
+
+or::
+
+   [TOPOP]
+   # local drain direction map (1-9)
+   Ldd = $(FILE_PATHS:PathMaps)/routing/ldd.map
+
+But many other error can occure too! Have fun.
+
+P.s. some error we captured and we give a hint. Please look at :ref:`rst_error`
+
 
 	
 NetCDF meta data 
@@ -390,67 +654,6 @@ StepInit indicate the date(s) when initial conditions are saved::
 
 
 
-.. _rst_outputone:
-
-Output
-*******
-
-
-
-Output can be spatial/time as netCDF4 map stacks
-  | and/or time series at specified points
-
-.. note:: For additional information see :ref:`rst_outputtwo`
-
-Output can be as maps and time series:
-
-* per day [Daily]
-* total month [MonthTot],  average month [MonthAvg], end of month [MonthEnd]
-* total year  [AnnualTot], average year [AnnualAvg], end of year [AnnualEnd]
-* total sum [TotalTot], total average [TotalAvg]
-
-For each of the following sections output can be defined for different variables:
-
-* Meteo
-* Snow
-* Soil for different land cover (forest, grassland, irrigated land, paddy irrigated)
-* Water demand
-* Groundwater
-* River routing
-* Lakes and reservoirs
-
-**Or** output can be defined in the section *[output]*
-
-An output directory can be defined and for each sort of output the variable(s) can be set:
-
-| *OUT_* defines that this variable(s) are output
-| *MAP_* or *TSS_* defines if it is a spatial map or a time series of point(s)
-| *AreaSum_* or *AreaAvg_* after *TSS_* defines if the catchment sum of average upstream of the point is calculated
-| *Daily* or *MonthAvg* or .. is specifying the time
-| The variable is given after the equal sign e.g. * = discharge*
-| If more than one variable should be used for output, split with **,**
-| E.g. OUT_MAP_Daily = discharge -> daily spatial map of discharge
-
-As example output for precipitation, temperature and discharge is shown here::
-
-   # OUTPUT maps and timeseries
-   OUT_Dir = $(FILE_PATHS:PathOut)
-   OUT_MAP_Daily = 
-   OUT_MAP_MonthEnd = 
-   OUT_MAP_MonthTot = Precipitation, Tavg
-   OUT_MAP_MonthAvg = 
-
-   OUT_TSS_MonthTot = Precipitation, Tavg   # monthly total precipitation and average temperature
-   OUT_TSS_Daily = discharge                # daily discharge
-   OUT_TSS_MonthEnd = discharge
-   OUT_TSS_AnnualEnd = discharge
-
-   OUT_TSS_AreaSum_Daily = Precipitation    # daily sum of precipitation for the upstream catchment
-   OUT_TSS_AreaAvg_MonthAvg = runoff        # monthly average sum of runoff for the upstream catchment
-
-.. note:: For each variable the meta data information can be defined in :ref:`rst_metadata`
-
-
 
 
 Reading information
@@ -479,9 +682,6 @@ Variables can also be defined by spatial maps or map stacks
 	
 .. warning:: in most cases values can be replaced by map
 
-	
-| ____________________________________________________________________________________________________________
-| 
 
 Sections of information
 -----------------------
@@ -517,7 +717,6 @@ Example of a settings file:
     :linenos:
 
 
-
 NetCDF meta data
 ================
 
@@ -549,9 +748,6 @@ In the settings file the name and location of the metadata file is given.
 
 
 .. _rst_meta:
-
-
-
 
 
 
@@ -713,9 +909,10 @@ Initial conditions
    "","","Small lake inflow","from HydroLakes database","1" 
    "","","Small lake outflow","same as small lake inflow","1" 
 
-.. _rst_outputtwo:
-
    
+.. _rst_outputone:
+
+
 Model Output
 ============
 
@@ -747,8 +944,9 @@ The netCDF maps can be read with:
 Or time series at specified points
 ----------------------------------
 
-| Timeseries are procuded as ASCII files, which can be read with every text editor
-| or with `PCRaster Aquila <http://pcraster.geo.uu.nl/projects/developments/aguila/>`_
+| Timeseries are procuded as ASCII .csv files, which can be read with every text editor or Excel
+| If you need the old version .tss with you can read with `PCRaster Aquila <http://pcraster.geo.uu.nl/projects/developments/aguila/>`_
+| you need to put reportOldTss = True in [Option] (e.g. calibration still need the old version)
 
 | The specific point(s) where timeseries are provided are defined in the settings file as *Gauges*:
 | Can be several points in the format lon lat lon lat ..
@@ -766,6 +964,78 @@ Or time series at specified points
    GaugesLocal = True
 
 
+Or time series as a catchment sum or average
+--------------------------------------------
+
+As standard, time series can include values of the specific cell as defined in the settings file as *Gauges*
+But time series can also show the area sum or area average of the upstream catchment from the specific cell
+
+for example
+::
+   
+   [OUTPUT]
+   # OUTPUT maps and timeseries
+   # Standard values of a specific cell
+   OUT_TSS_Daily = discharge
+   OUT_TSS_AnnualAvg = Precipitation
+   # Area sum of upstream catchment
+   OUT_TSS_AreaSum_MonthTot = Precipitation, runoff
+   # Area sum of upstream catchment
+   OUT_TSS_AreaAvg_MonthTot = Precipitation
+
+
+
+
+Format of output in the settings file
+-------------------------------------
+
+* per day [Daily]
+* total month [MonthTot],  average month [MonthAvg], end of month [MonthEnd]
+* total year  [AnnualTot], average year [AnnualAvg], end of year [AnnualEnd]
+* total sum [TotalTot], total average [TotalAvg]
+
+For each of the following sections output can be defined for different variables:
+
+* Meteo
+* Snow
+* Soil for different land cover (forest, grassland, irrigated land, paddy irrigated)
+* Water demand
+* Groundwater
+* River routing
+* Lakes and reservoirs
+
+**Or** output can be defined in the section *[output]*
+
+An output directory can be defined and for each sort of output the variable(s) can be set:
+
+| *OUT_* defines that this variable(s) are output
+| *MAP_* or *TSS_* defines if it is a spatial map or a time series of point(s)
+| *AreaSum_* or *AreaAvg_* after *TSS_* defines if the catchment sum of average upstream of the point is calculated
+| *Daily* or *MonthAvg* or .. is specifying the time
+| The variable is given after the equal sign e.g. * = discharge*
+| If more than one variable should be used for output, split with **,**
+| E.g. OUT_MAP_Daily = discharge -> daily spatial map of discharge
+
+As example output for precipitation, temperature and discharge is shown here::
+
+   # OUTPUT maps and timeseries
+   OUT_Dir = $(FILE_PATHS:PathOut)
+   OUT_MAP_Daily = 
+   OUT_MAP_MonthEnd = 
+   OUT_MAP_MonthTot = Precipitation, Tavg
+   OUT_MAP_MonthAvg = 
+
+   OUT_TSS_MonthTot = Precipitation, Tavg   # monthly total precipitation and average temperature
+   OUT_TSS_Daily = discharge                # daily discharge
+   OUT_TSS_MonthEnd = discharge
+   OUT_TSS_AnnualEnd = discharge
+
+   OUT_TSS_AreaSum_Daily = Precipitation    # daily sum of precipitation for the upstream catchment
+   OUT_TSS_AreaAvg_MonthAvg = runoff        # monthly average sum of runoff for the upstream catchment
+
+.. note:: For each variable the meta data information can be defined in :ref:`rst_metadata`
+
+
 Output variables
 ----------------
 
@@ -778,7 +1048,6 @@ but also not so common variables as:
 - nonIrrReturnFlowFraction (returnflow from domenstic and industrial water use [m3])
 - actualET[1] (actual evapotranspiration from grassland [m/day])
 - ...
-
 
 
 Daily, monthly - at the end or average
@@ -797,7 +1066,7 @@ for example
    [OUTPUT]
    # OUTPUT maps and timeseries
    OUT_Dir = $(FILE_PATHS:PathOut)
-   OUT_MAP_Daily = discharge, runoff
+   OUT_MAP_Daily = discharge, runoff, actualET[1]
    OUT_MAP_MonthAvg = Precipitation
    OUT_MAP_TotalEnd = lakeStorage
    OUT_MAP_TotalAvg = Tavg
@@ -811,26 +1080,8 @@ for example
    
 .. note:: For each variable the meta data information can be defined in :ref:`rst_metadata`
 
-.. note:: For information how to adjust the output in the settings file see :ref:`rst_outputone`
+.. note:: We are not very precise when to use capital letter for some output variables. But we fear now, if we change the variable name, we will forget it somewhere.
 
-Time series as point infomation or catchment sum or average
------------------------------------------------------------
-
-As standard time series can include values of the specific cell as defined in the settings file as *Gauges*
-But time series can also show the area sum or area average of the upstream catchment from the specific cell
-
-for example
-::
-   
-   [OUTPUT]
-   # OUTPUT maps and timeseries
-   # Standard values of a specific cell
-   OUT_TSS_Daily = discharge
-   OUT_TSS_AnnualAvg = Precipitation
-   # Area sum of upstream catchment
-   OUT_TSS_AreaSum_MonthTot = Precipitation, runoff
-   # Area sum of upstream catchment
-   OUT_TSS_AreaAvg_MonthTot = Precipitation
 
 Most important output variables - a selection
 ---------------------------------------------
@@ -862,3 +1113,4 @@ Output variables - starting a list
 
 We started a list of possible output variables. Please note that this list is under construction. We still need to fill in all descriptions and all units.
 You find this list at :ref:`rst_variables`
+

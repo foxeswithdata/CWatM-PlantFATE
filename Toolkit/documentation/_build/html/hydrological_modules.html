@@ -1109,6 +1109,7 @@ write initital conditions into a single netcdf file</p>
 <ul class="simple">
 <li><p>loads the fraction of landcover for each year from netcdf maps</p></li>
 <li><p>calculate the fraction of 6 land cover types based on the maps</p></li>
+<li><p>if used add glacier maps</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1191,7 +1192,7 @@ Initialise the six land cover types</p>
 <td><p>Precipitation (input for the model)</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-odd"><td><p>only_radition</p></td>
+<tr class="row-odd"><td><p>only_radiation</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
@@ -1555,33 +1556,33 @@ snow zones 1 -7 which each occupy a part of the pixel surface</p>
 <td><p>seconds in a timestep (default=86400)</p></td>
 <td><p>s</p></td>
 </tr>
-<tr class="row-odd"><td><p>Precipitation</p></td>
+<tr class="row-odd"><td><p>dzRel</p></td>
+<td><p>relative elevation above flood plains (max elevation above plain)</p></td>
+<td><p>m</p></td>
+</tr>
+<tr class="row-even"><td><p>Precipitation</p></td>
 <td><p>Precipitation (input for the model)</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-even"><td><p>Tavg</p></td>
+<tr class="row-odd"><td><p>Tavg</p></td>
 <td><p>Input, average air Temperature</p></td>
 <td><p>K</p></td>
 </tr>
-<tr class="row-odd"><td><p>SnowMelt</p></td>
+<tr class="row-even"><td><p>SnowMelt</p></td>
 <td><p>total snow melt from all layers</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-even"><td><p>Rain</p></td>
+<tr class="row-odd"><td><p>Rain</p></td>
 <td><p>Precipitation less snow</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-odd"><td><p>prevSnowCover</p></td>
+<tr class="row-even"><td><p>prevSnowCover</p></td>
 <td><p>snow cover of previous day (only for water balance)</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-even"><td><p>SnowCover</p></td>
+<tr class="row-odd"><td><p>SnowCover</p></td>
 <td><p>snow cover (sum over all layers)</p></td>
 <td><p>m</p></td>
-</tr>
-<tr class="row-odd"><td><p>ElevationStD</p></td>
-<td></td>
-<td><p>–</p></td>
 </tr>
 <tr class="row-even"><td><p>numberSnowLayersFloat</p></td>
 <td></td>
@@ -1595,131 +1596,127 @@ snow zones 1 -7 which each occupy a part of the pixel surface</p>
 <td><p>Number of layers which can be mimiced as glacier transport zone</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>deltaInvNorm</p></td>
-<td><p>Quantile of the normal distribution (for different numbers of snow lay</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p>frac_snow_redistribution</p></td>
+<tr class="row-odd"><td><p>frac_snow_redistribution</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>DeltaTSnow</p></td>
+<tr class="row-even"><td><p>DeltaTSnow</p></td>
 <td><p>Temperature lapse rate x std. deviation of elevation</p></td>
 <td><p>°C</p></td>
 </tr>
-<tr class="row-even"><td><p>SnowDayDegrees</p></td>
+<tr class="row-odd"><td><p>SnowDayDegrees</p></td>
 <td><p>day of the year to degrees: 360/365.25 = 0.9856</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>SeasonalSnowMeltSin</p></td>
+<tr class="row-even"><td><p>SeasonalSnowMeltSin</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>excludeGlacierArea</p></td>
+<tr class="row-odd"><td><p>excludeGlacierArea</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>summerSeasonStart</p></td>
+<tr class="row-even"><td><p>summerSeasonStart</p></td>
 <td><p>day when summer season starts = 165</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>IceDayDegrees</p></td>
+<tr class="row-odd"><td><p>IceDayDegrees</p></td>
 <td><p>days of summer (15th June-15th Sept.) to degree: 180/(259-165)</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>SnowSeason</p></td>
+<tr class="row-even"><td><p>SnowSeason</p></td>
 <td><p>seasonal melt factor</p></td>
 <td><p>m (Ce</p></td>
 </tr>
-<tr class="row-even"><td><p>TempSnowLow</p></td>
+<tr class="row-odd"><td><p>TempSnowLow</p></td>
 <td><p>Temperature below which all precipitation is snow</p></td>
 <td><p>°C</p></td>
 </tr>
-<tr class="row-odd"><td><p>TempSnowHigh</p></td>
+<tr class="row-even"><td><p>TempSnowHigh</p></td>
 <td><p>Temperature above which all precipitation is rain</p></td>
 <td><p>°C</p></td>
 </tr>
-<tr class="row-even"><td><p>TempSnow</p></td>
+<tr class="row-odd"><td><p>TempSnow</p></td>
 <td><p>Average temperature at which snow melts</p></td>
 <td><p>°C</p></td>
 </tr>
-<tr class="row-odd"><td><p>SnowFactor</p></td>
+<tr class="row-even"><td><p>SnowFactor</p></td>
 <td><p>Multiplier applied to precipitation that falls as snow</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>SnowMeltCoef</p></td>
+<tr class="row-odd"><td><p>SnowMeltCoef</p></td>
 <td><p>Snow melt coefficient - default: 0.004</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>IceMeltCoef</p></td>
+<tr class="row-even"><td><p>IceMeltCoef</p></td>
 <td><p>Ice melt coefficnet - default  0.007</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>TempMelt</p></td>
+<tr class="row-odd"><td><p>TempMelt</p></td>
 <td><p>Average temperature at which snow melts</p></td>
 <td><p>°C</p></td>
 </tr>
-<tr class="row-odd"><td><p>SnowCoverS</p></td>
+<tr class="row-even"><td><p>SnowCoverS</p></td>
 <td><p>snow cover for each layer</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-even"><td><p>Kfrost</p></td>
+<tr class="row-odd"><td><p>Kfrost</p></td>
 <td><p>Snow depth reduction coefficient, (HH, p. 7.28)</p></td>
 <td><p>m-1</p></td>
 </tr>
-<tr class="row-odd"><td><p>Afrost</p></td>
+<tr class="row-even"><td><p>Afrost</p></td>
 <td><p>Daily decay coefficient, (Handbook of Hydrology, p. 7.28)</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>FrostIndexThreshold</p></td>
+<tr class="row-odd"><td><p>FrostIndexThreshold</p></td>
 <td><p>Degree Days Frost Threshold (stops infiltration, percolation and capil</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>SnowWaterEquivalent</p></td>
+<tr class="row-even"><td><p>SnowWaterEquivalent</p></td>
 <td><p>Snow water equivalent, (based on snow density of 450 kg/m3) (e.g. Tarb</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>FrostIndex</p></td>
+<tr class="row-odd"><td><p>FrostIndex</p></td>
 <td><p>FrostIndex - Molnau and Bissel (1983), A Continuous Frozen Ground Inde</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>extfrostindex</p></td>
+<tr class="row-even"><td><p>extfrostindex</p></td>
 <td><p>Flag for second frostindex</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>FrostIndexThreshold2</p></td>
+<tr class="row-odd"><td><p>FrostIndexThreshold2</p></td>
 <td><p>FrostIndex2 - Molnau and Bissel (1983), A Continuous Frozen Ground Ind</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>frostInd1</p></td>
+<tr class="row-even"><td><p>frostInd1</p></td>
 <td><p>forstindex 1</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>frostInd2</p></td>
+<tr class="row-odd"><td><p>frostInd2</p></td>
 <td><p>frostindex 2</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>frostindexS</p></td>
+<tr class="row-even"><td><p>frostindexS</p></td>
 <td><p>array for frostindex</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>Snow</p></td>
+<tr class="row-odd"><td><p>Snow</p></td>
 <td><p>Snow (equal to a part of Precipitation)</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-odd"><td><p>snow_redistributed_previous</p></td>
+<tr class="row-even"><td><p>snow_redistributed_previous</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>SnowM1</p></td>
+<tr class="row-odd"><td><p>SnowM1</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>IceM1</p></td>
+<tr class="row-even"><td><p>IceM1</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>fracVegCover</p></td>
+<tr class="row-odd"><td><p>fracVegCover</p></td>
 <td><p>Fraction of specific land covers (0=forest, 1=grasslands, etc.)</p></td>
 <td><p>%</p></td>
 </tr>
@@ -1824,7 +1821,7 @@ Based on Penman Monteith</p>
 <td><p>potential evapotranspiration rate from reference crop</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-odd"><td><p>only_radition</p></td>
+<tr class="row-odd"><td><p>only_radiation</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
@@ -2248,6 +2245,11 @@ get crop coefficient, use potential ET, calculate potential bare soil evaporatio
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="cwatm.hydrological_modules.evaporation.evaporation.initial">
+<span class="sig-name descname"><span class="pre">initial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/hydrological_modules/evaporation.html#evaporation.initial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.hydrological_modules.evaporation.evaporation.initial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -2352,8 +2354,14 @@ calculating interception for each land cover class</p>
 <dt class="sig sig-object py" id="cwatm.hydrological_modules.sealed_water.sealed_water">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cwatm.hydrological_modules.sealed_water.</span></span><span class="sig-name descname"><span class="pre">sealed_water</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/hydrological_modules/sealed_water.html#sealed_water"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.hydrological_modules.sealed_water.sealed_water" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Sealed and open water runoff</p>
-<p>calculated runoff from impermeable surface (sealed) and into water bodies</p>
+<p>Sealed (impermeable surface) and open water (water landcover) runoff and evaporation</p>
+<dl class="simple">
+<dt>Open water evaporation is evaporation from the land classes sealed and water.</dt><dd><p>For water, this is performed as lakes &amp; reservoirs and channels may not represent all the water, such as
+smaller rivers, ponds, and wetlands. For example, in a cell, lakes, reservoirs, and channels may make 10%,
+while the water land class makes up 20%. This is one way of allowing evaporation to happen on these
+other surfaces, although limited by the days’ precipitation.</p>
+</dd>
+</dl>
 <p><strong>Global variables</strong></p>
 <table class="docutils align-default">
 <colgroup>
@@ -2915,71 +2923,27 @@ calculate cell fraction influenced by capillary rise</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>dzRel0100</p></td>
+<tr class="row-even"><td><p>dzRel</p></td>
 <td><p>relative elevation above flood plains (max elevation above plain)</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-odd"><td><p>dzRel0090</p></td>
-<td><p>relative elevation above flood plains (90% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-even"><td><p>dzRel0080</p></td>
-<td><p>relative elevation above flood plains (80% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-odd"><td><p>dzRel0070</p></td>
-<td><p>relative elevation above flood plains (70% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-even"><td><p>dzRel0060</p></td>
-<td><p>relative elevation above flood plains (60% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-odd"><td><p>dzRel0050</p></td>
-<td><p>relative elevation above flood plains (median elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-even"><td><p>dzRel0040</p></td>
-<td><p>relative elevation above flood plains (40% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-odd"><td><p>dzRel0030</p></td>
-<td><p>relative elevation above flood plains (30% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-even"><td><p>dzRel0020</p></td>
-<td><p>relative elevation above flood plains (20% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-odd"><td><p>dzRel0010</p></td>
-<td><p>relative elevation above flood plains (10% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-even"><td><p>dzRel0005</p></td>
-<td><p>relative elevation above flood plains (5% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-odd"><td><p>dzRel0001</p></td>
-<td><p>relative elevation above flood plains (1% elevation above plain)</p></td>
-<td><p>m</p></td>
-</tr>
-<tr class="row-even"><td><p>capRiseFrac</p></td>
+<tr class="row-odd"><td><p>capRiseFrac</p></td>
 <td><p>fraction of a grid cell where capillar rise may happen</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-odd"><td><p>modflow</p></td>
+<tr class="row-even"><td><p>modflow</p></td>
 <td><p>Flag: True if modflow_coupling = True in settings file</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>storGroundwater</p></td>
+<tr class="row-odd"><td><p>storGroundwater</p></td>
 <td><p>Groundwater storage (non-fossil). This is primarily used when not usin</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-odd"><td><p>specificYield</p></td>
+<tr class="row-even"><td><p>specificYield</p></td>
 <td><p>groundwater reservoir parameters (if ModFlow is not used) used to comp</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-even"><td><p>maxGWCapRise</p></td>
+<tr class="row-odd"><td><p>maxGWCapRise</p></td>
 <td><p>influence of capillary rise above groundwater level</p></td>
 <td><p>m</p></td>
 </tr>
@@ -3098,14 +3062,14 @@ Calculate groundwater storage and baseflow</p>
 <dt class="sig sig-object py" id="cwatm.hydrological_modules.runoff_concentration.runoff_concentration">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cwatm.hydrological_modules.runoff_concentration.</span></span><span class="sig-name descname"><span class="pre">runoff_concentration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/hydrological_modules/runoff_concentration.html#runoff_concentration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.hydrological_modules.runoff_concentration.runoff_concentration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Runoff concentration</p>
-<p>this is the part between runoff generation and routing
+<p>Runoff concentration
+this is the part between runoff generation and routing
 for each gridcell and for each land cover class the generated runoff is concentrated at a corner of a gridcell
 this concentration needs some lag-time (and peak time) and leads to diffusion
 lag-time/ peak time is calculated using slope, length and land cover class
 diffusion is calculated using a triangular-weighting-function</p>
-<p><img class="math" src="_images/math/6f19799931e854f85599309ad4e28d4bcfc6e27d.png" alt="Q(t) = sum_{i=0}^{max} c(i) * Q_{\mathrm{GW}} (t - i + 1)"/></p>
-<p>where <img class="math" src="_images/math/0fadf8331627eb19e2497d3f00cefc06d39f393e.png" alt="c(i) = \int_{i-1}^{i} {2 \over{max}} - | u - {max \over {2}} | * {4 \over{max^2}} du"/></p>
+<p><img class="math" src="_images/math/a5174f1d0a4743e6660f504375f6f0d53c305728.png" alt="Q(t) = sum_{i=0}^{max} c(i) * Q_{mathrm{GW}} (t - i + 1)"/>
+where <img class="math" src="_images/math/2ced2c47c124a9a2ee27373cb21744bb00443eb2.png" alt="c(i) = int_{i-1}^{i} {2 over{max}} - | u - {max over {2}} | * {4 over{max^2}} du"/></p>
 <p>see also:</p>
 <p><a class="reference external" href="http://stackoverflow.com/questions/24040984/transformation-using-triangular-weighting-function-in-python">http://stackoverflow.com/questions/24040984/transformation-using-triangular-weighting-function-in-python</a></p>
 <p><strong>Global variables</strong></p>
@@ -5095,259 +5059,263 @@ has to be checked if this works in forecasting mode!</p>
 <td><p>conversion factor from m to m3 (compressed map)</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>EvapWaterBodyM</p></td>
+<tr class="row-odd"><td><p>EvapWaterBodyMOutlet</p></td>
+<td><p>Evaporation from lakes and reservoirs summed up at outlet</p></td>
+<td><p>m</p></td>
+</tr>
+<tr class="row-even"><td><p>EvapWaterBodyM</p></td>
 <td><p>Evaporation from lakes and reservoirs</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeResInflowM</p></td>
+<tr class="row-odd"><td><p>lakeResInflowM</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeResOutflowM</p></td>
+<tr class="row-even"><td><p>lakeResOutflowM</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakedaycorrect</p></td>
+<tr class="row-odd"><td><p>lakedaycorrect</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeFactor</p></td>
+<tr class="row-even"><td><p>lakeFactor</p></td>
 <td><p>factor for the Modified Puls approach to calculate retention of the la</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeFactorSqr</p></td>
+<tr class="row-odd"><td><p>lakeFactorSqr</p></td>
 <td><p>square root factor for the Modified Puls approach to calculate retenti</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeInflowOldC</p></td>
+<tr class="row-even"><td><p>lakeInflowOldC</p></td>
 <td><p>inflow to the lake from previous days</p></td>
 <td><p>m/3</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeOutflowC</p></td>
+<tr class="row-odd"><td><p>lakeOutflowC</p></td>
 <td><p>compressed map of lake outflow</p></td>
 <td><p>m3/s</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeLevelC</p></td>
+<tr class="row-even"><td><p>lakeLevelC</p></td>
 <td><p>compressed map of lake level</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-even"><td><p>conLimitC</p></td>
+<tr class="row-odd"><td><p>conLimitC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>normLimitC</p></td>
+<tr class="row-even"><td><p>normLimitC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>floodLimitC</p></td>
+<tr class="row-odd"><td><p>floodLimitC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>adjust_Normal_FloodC</p></td>
+<tr class="row-even"><td><p>adjust_Normal_FloodC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>norm_floodLimitC</p></td>
+<tr class="row-odd"><td><p>norm_floodLimitC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>minQC</p></td>
+<tr class="row-even"><td><p>minQC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>normQC</p></td>
+<tr class="row-odd"><td><p>normQC</p></td>
+<td></td>
+<td><p>m3/s</p></td>
+</tr>
+<tr class="row-even"><td><p>nondmgQC</p></td>
+<td></td>
+<td><p>m3/s</p></td>
+</tr>
+<tr class="row-odd"><td><p>deltaO</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>nondmgQC</p></td>
+<tr class="row-even"><td><p>deltaLN</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>deltaO</p></td>
+<tr class="row-odd"><td><p>deltaLF</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>deltaLN</p></td>
+<tr class="row-even"><td><p>deltaNFL</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>deltaLF</p></td>
+<tr class="row-odd"><td><p>reservoirFillC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>deltaNFL</p></td>
+<tr class="row-even"><td><p>waterBodyTypCTemp</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>reservoirFillC</p></td>
+<tr class="row-odd"><td><p>waterBodyTypTemp</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>waterBodyTypCTemp</p></td>
+<tr class="row-even"><td><p>sumEvapWaterBodyC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>waterBodyTypTemp</p></td>
+<tr class="row-odd"><td><p>sumlakeResInflow</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>sumEvapWaterBodyC</p></td>
+<tr class="row-even"><td><p>sumlakeResOutflow</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>sumlakeResInflow</p></td>
+<tr class="row-odd"><td><p>lakeResStorage_release_ratio</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>sumlakeResOutflow</p></td>
+<tr class="row-even"><td><p>lakeResStorage_release_ratioC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeResStorage_release_ratio</p></td>
+<tr class="row-odd"><td><p>lakeIn</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeResStorage_release_ratioC</p></td>
+<tr class="row-even"><td><p>lakeEvapWaterBodyC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeIn</p></td>
+<tr class="row-odd"><td><p>resEvapWaterBodyC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeEvapWaterBodyC</p></td>
+<tr class="row-even"><td><p>lakeResInflowM_2</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>resEvapWaterBodyC</p></td>
+<tr class="row-odd"><td><p>lakeResOutflowM_2</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeResInflowM_2</p></td>
+<tr class="row-even"><td><p>downstruct</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeResOutflowM_2</p></td>
+<tr class="row-odd"><td><p>lakeStorage</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>downstruct</p></td>
+<tr class="row-even"><td><p>resStorage</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeStorage</p></td>
-<td></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>resStorage</p></td>
-<td></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p>cellArea</p></td>
+<tr class="row-odd"><td><p>cellArea</p></td>
 <td><p>Area of cell</p></td>
 <td><p>m2</p></td>
 </tr>
-<tr class="row-odd"><td><p>DtSec</p></td>
+<tr class="row-even"><td><p>DtSec</p></td>
 <td><p>number of seconds per timestep (default = 86400)</p></td>
 <td><p>s</p></td>
 </tr>
-<tr class="row-even"><td><p>MtoM3</p></td>
+<tr class="row-odd"><td><p>MtoM3</p></td>
 <td><p>Coefficient to change units</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>InvDtSec</p></td>
+<tr class="row-even"><td><p>InvDtSec</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>UpArea1</p></td>
+<tr class="row-odd"><td><p>UpArea1</p></td>
 <td><p>upstream area of a grid cell</p></td>
 <td><p>m2</p></td>
 </tr>
-<tr class="row-odd"><td><p>lddCompress</p></td>
+<tr class="row-even"><td><p>lddCompress</p></td>
 <td><p>compressed river network (without missing values)</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeEvaFactor</p></td>
+<tr class="row-odd"><td><p>lakeEvaFactor</p></td>
 <td><p>a factor which increases evaporation from lake because of wind</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>dtRouting</p></td>
+<tr class="row-even"><td><p>dtRouting</p></td>
 <td><p>number of seconds per routing timestep</p></td>
 <td><p>s</p></td>
 </tr>
-<tr class="row-even"><td><p>evapWaterBodyC</p></td>
+<tr class="row-odd"><td><p>evapWaterBodyC</p></td>
 <td><p>Compressed version of EvapWaterBodyM</p></td>
 <td><p>m</p></td>
 </tr>
-<tr class="row-odd"><td><p>sumLakeEvapWaterBodyC</p></td>
+<tr class="row-even"><td><p>sumLakeEvapWaterBodyC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>noRoutingSteps</p></td>
+<tr class="row-odd"><td><p>noRoutingSteps</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>sumResEvapWaterBodyC</p></td>
+<tr class="row-even"><td><p>sumResEvapWaterBodyC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>discharge</p></td>
+<tr class="row-odd"><td><p>discharge</p></td>
 <td><p>Channel discharge</p></td>
 <td><p>m3/s</p></td>
 </tr>
-<tr class="row-odd"><td><p>inflowDt</p></td>
+<tr class="row-even"><td><p>inflowDt</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>prelakeResStorage</p></td>
+<tr class="row-odd"><td><p>prelakeResStorage</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>runoff</p></td>
+<tr class="row-even"><td><p>runoff</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>includeWastewater</p></td>
+<tr class="row-odd"><td><p>includeWastewater</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>reservoir_transfers_net_M3C</p></td>
+<tr class="row-even"><td><p>reservoir_transfers_net_M3C</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>reservoir_transfers_in_M3C</p></td>
+<tr class="row-odd"><td><p>reservoir_transfers_in_M3C</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>reservoir_transfers_out_M3C</p></td>
+<tr class="row-even"><td><p>reservoir_transfers_out_M3C</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>reservoir_transfers_from_outside_M3C</p></td>
+<tr class="row-odd"><td><p>reservoir_transfers_from_outside_M3C</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>reservoir_transfers_to_outside_M3C</p></td>
+<tr class="row-even"><td><p>reservoir_transfers_to_outside_M3C</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeVolumeM3C</p></td>
+<tr class="row-odd"><td><p>lakeVolumeM3C</p></td>
 <td><p>compressed map of lake volume</p></td>
 <td><p>m3</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeStorageC</p></td>
+<tr class="row-even"><td><p>lakeStorageC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>reservoirStorageM3C</p></td>
+<tr class="row-odd"><td><p>reservoirStorageM3C</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>lakeResStorageC</p></td>
+<tr class="row-even"><td><p>lakeResStorageC</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>lakeResStorage</p></td>
+<tr class="row-odd"><td><p>lakeResStorage</p></td>
 <td></td>
 <td><p>–</p></td>
 </tr>
@@ -5410,6 +5378,11 @@ Using the appraoch of LISFLOOD</p>
 </div>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs.reservoir_releases">
+<span class="sig-name descname"><span class="pre">reservoir_releases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xl_settings_file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/hydrological_modules/lakes_reservoirs.html#lakes_reservoirs.reservoir_releases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs.reservoir_releases" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -5423,8 +5396,8 @@ Using the appraoch of LISFLOOD</p>
 <p>Small LAKES AND RESERVOIRS</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Calculate water retention in lakes and reservoirs</p>
-<p>Using the <strong>Modified Puls approach</strong> to calculate retention of a lake
+<p>Calculate water retention in lakes and reservoirs
+Using the <strong>Modified Puls approach</strong> to calculate retention of a lake
 See also: LISFLOOD manual Annex 3 (Burek et al. 2013)</p>
 </div>
 <p><strong>Global variables</strong></p>
@@ -5583,9 +5556,9 @@ area, location, initial average discharge, type: reservoir or lake) etc.</p>
 <p><strong>Global variables</strong></p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 63%" />
-<col style="width: 4%" />
+<col style="width: 32%" />
+<col style="width: 61%" />
+<col style="width: 6%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable [self.var]</p></th>
@@ -5646,7 +5619,7 @@ area, location, initial average discharge, type: reservoir or lake) etc.</p>
 <td><p>compressed map of a factor which increases evaporation from lake becau</p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>EvapWaterBodyM</p></td>
+<tr class="row-odd"><td><p>EvapWaterBodyMOutlet</p></td>
 <td><p>Evaporation from lakes and reservoirs</p></td>
 <td><p>m</p></td>
 </tr>
@@ -5744,7 +5717,7 @@ area, location, initial average discharge, type: reservoir or lake) etc.</p>
 </tr>
 <tr class="row-odd"><td><p>EvapoChannel</p></td>
 <td><p>Channel evaporation</p></td>
-<td><p>m3</p></td>
+<td><p>m</p></td>
 </tr>
 <tr class="row-even"><td><p>prechannelStorage</p></td>
 <td></td>
@@ -6254,9 +6227,9 @@ area, location, initial average discharge, type: reservoir or lake) etc.</p>
 <p><strong>Global variables</strong></p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 63%" />
-<col style="width: 4%" />
+<col style="width: 32%" />
+<col style="width: 61%" />
+<col style="width: 6%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable [self.var]</p></th>
@@ -6301,7 +6274,7 @@ area, location, initial average discharge, type: reservoir or lake) etc.</p>
 <td></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>EvapWaterBodyM</p></td>
+<tr class="row-odd"><td><p>EvapWaterBodyMOutlet</p></td>
 <td><p>Evaporation from lakes and reservoirs</p></td>
 <td><p>m</p></td>
 </tr>
@@ -6399,7 +6372,7 @@ area, location, initial average discharge, type: reservoir or lake) etc.</p>
 </tr>
 <tr class="row-odd"><td><p>EvapoChannel</p></td>
 <td><p>Channel evaporation</p></td>
-<td><p>m3</p></td>
+<td><p>m</p></td>
 </tr>
 <tr class="row-even"><td><p>prechannelStorage</p></td>
 <td></td>

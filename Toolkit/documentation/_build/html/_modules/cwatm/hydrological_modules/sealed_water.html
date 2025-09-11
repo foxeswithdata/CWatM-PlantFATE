@@ -193,10 +193,13 @@
 
 <div class="viewcode-block" id="sealed_water"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.sealed_water.sealed_water">[docs]</a><span class="k">class</span> <span class="nc">sealed_water</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Sealed and open water runoff</span>
+<span class="sd">    Sealed (impermeable surface) and open water (water landcover) runoff and evaporation</span>
 
-<span class="sd">    calculated runoff from impermeable surface (sealed) and into water bodies</span>
-
+<span class="sd">    Open water evaporation is evaporation from the land classes sealed and water.</span>
+<span class="sd">        For water, this is performed as lakes &amp; reservoirs and channels may not represent all the water, such as</span>
+<span class="sd">        smaller rivers, ponds, and wetlands. For example, in a cell, lakes, reservoirs, and channels may make 10%,</span>
+<span class="sd">        while the water land class makes up 20%. This is one way of allowing evaporation to happen on these</span>
+<span class="sd">        other surfaces, although limited by the days&#39; precipitation.</span>
 
 <span class="sd">    **Global variables**</span>
 
@@ -230,21 +233,22 @@
 
         <span class="k">if</span> <span class="n">No</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># 4 = sealed areas, 5 = water</span>
             <span class="k">if</span> <span class="n">coverType</span> <span class="o">==</span> <span class="s2">&quot;water&quot;</span><span class="p">:</span>
-                <span class="c1"># bigger than 1.0 because of wind evaporation</span>
+                <span class="c1"># bigger than 0.2 because of wind evaporation</span>
                 <span class="n">mult</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">mult</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># evaporation from open areas on sealed area estimated as 0.2 EWRef</span>
+                <span class="c1"># evaporation from open areas on sealed area estimated as 0.2 EWRef</span>
+                <span class="n">mult</span> <span class="o">=</span> <span class="mf">0.2</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">modflow</span><span class="p">:</span>  <span class="c1"># ModFlow Capillary rise under sealed areas and water bodies is sent to runoff</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">modflow</span><span class="p">:</span>  <span class="c1"># ModFlow capillary rise under sealed areas and water is sent to runoff</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">openWaterEvap</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">mult</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EWRef</span><span class="p">,</span>
-                                                        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">availWaterInfiltration</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">capillar</span><span class="p">)</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">availWaterInfiltration</span><span class="p">[</span><span class="n">No</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoff</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">availWaterInfiltration</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> \
                                             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">openWaterEvap</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">capillar</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">openWaterEvap</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">mult</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EWRef</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">availWaterInfiltration</span><span class="p">[</span><span class="n">No</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoff</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">availWaterInfiltration</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">openWaterEvap</span><span class="p">[</span><span class="n">No</span><span class="p">]</span>
 
-            <span class="c1"># open water evaporation is directly subtracted from the rivers, lakes, and reservoirs</span>
+            <span class="c1"># open water evaporation is removed from the rivers, lakes, and reservoirs later</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">actualET</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">actualET</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">+</span>  <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">openWaterEvap</span><span class="p">[</span><span class="n">No</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;calcWaterBalance&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">No</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">):</span>

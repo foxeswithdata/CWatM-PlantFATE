@@ -1,62 +1,99 @@
 # -------------------------------------------------------------------------
 # Name:        MiscInitial
-# Purpose:
+# Purpose: Miscellaneous initialization module for basic model parameters and conversions.
+# Sets up unit conversions, spatial parameters, and fundamental model constants.
+# Handles coordinate transformations and basic geometric calculations.
 #
-# Author:      pb
-#
+# Author:      PB
 # Created:     13.07.2016
-# Copyright:   (c) pb 2016
-
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
 
 from cwatm.management_modules.data_handling import *
 
 class miscInitial(object):
-
     """
-    Miscellaneous repeatedly used expressions
-    Definition if cell area comes from regular grid e.g. 5x5km or from irregular lat/lon
-    Conversion factors between m3 and mm etc.
-
-    Note:
-        Only used in the initial phase.
-
+    Miscellaneous initialization module for basic model parameters and conversions.
+    
+    Establishes fundamental model parameters including grid cell characteristics,
+    temporal parameters, unit conversion factors, and commonly used mathematical
+    expressions that are repeatedly accessed throughout model execution.
+    
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    This module handles essential initialization tasks:
+    - Grid cell area determination (user-defined or derived from projection)
+    - Time step definitions and conversion factors
+    - Unit conversion factors (mm to m, mÂ³ to m, etc.)
+    - Precipitation and evaporation conversion parameters
+    - Mathematical constants and frequently used expressions
+    
+    Only used during model initialization phase.
 
     **Global variables**
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    M3toM                                Array         Coefficient to change units                                             --   
+    DtSec                                Array         number of seconds per timestep (default = 86400)                        s    
+    twothird                             Number        2025-03-02 00:00:00                                                     --   
+    MtoM3                                Array         Coefficient to change units                                             --   
+    InvDtSec                             Array         inversere of seconds per timestep (default 1/86400)                     1/s  
+    InvCellArea                          Array         Inverse of cell area of each simulated mesh                             1/m2 
+    DtDay                                Array         seconds in a timestep (default=86400)                                   s    
+    InvDtDay                             Array         inverse seconds in a timestep (default=86400)                           1/s  
+    MMtoM                                Number        Coefficient to change units                                             --   
+    MtoMM                                Number        Coefficient to change units                                             --   
+    con_precipitation                    Array         conversion factor for precipitation                                     --   
+    con_e                                Array         conversion factor for evaporation                                       --   
+    cellArea                             Array         Area of cell                                                            m2   
+    ===================================  ==========    ======================================================================  =====
 
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    cellArea                               Area of cell                                                            m2   
-    DtSec                                  number of seconds per timestep (default = 86400)                        s    
-    twothird                               2/3                                                                     --   
-    MtoM3                                  Coefficient to change units                                             --   
-    InvDtSec                                                                                                       --   
-    InvCellArea                            Inverse of cell area of each simulated mesh                             1/m2 
-    DtDay                                  seconds in a timestep (default=86400)                                   s    
-    InvDtDay                               inverse seconds in a timestep (default=86400)                           1/s  
-    MMtoM                                  Coefficient to change units                                             --   
-    MtoMM                                  Coefficient to change units                                             --   
-    M3toM                                  Coefficient to change units                                             --   
-    con_precipitation                      conversion factor for precipitation                                     --   
-    con_e                                  conversion factor for evaporation                                       --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
+        """
+        Initialize miscellaneous parameters module.
+        
+        Parameters
+        ----------
+        model : object
+            CWatM model instance providing access to variables and configuration
+        """
         self.var = model.var
         self.model = model
 
 
     def initial(self):
         """
-        Initialization of some basic parameters e.g. cellArea
-
-        * grid area, length definition
-        * conversion factors
-        * conversion factors for precipitation and pot evaporation
+        Initialize basic model parameters and conversion factors.
+        
+        Sets up fundamental model parameters including grid cell characteristics,
+        temporal parameters, unit conversions, and mathematical constants required
+        throughout model execution.
+        
+        Notes
+        -----
+        Initialization includes:
+        - Grid cell area calculation (user-defined maps or equal-area projection)
+        - Time step parameters (daily time step in seconds and fractions)
+        - Unit conversion factors (mm/m, m/mÂ³, inverse relationships)
+        - Precipitation and evaporation conversion coefficients
+        - Mathematical constants (e.g., 2/3 power for interception calculations)
+        
+        Grid size handling:
+        - User-defined: Reads cell area from external map files
+        - Default: Derives from equal-area projection assuming square cells
+        
+        All conversion factors are established to maintain unit consistency
+        throughout hydrological calculations.
         """
 
         if checkOption('gridSizeUserDefined'):
@@ -84,16 +121,15 @@ class miscInitial(object):
             # - All grid cells have the same size
 
             # Area of pixel [m2]
-            self.var.cellArea=np.empty(maskinfo['mapC'])
+            self.var.cellArea = np.empty(maskinfo['mapC'])
             self.var.cellArea.fill(maskmapAttr['cell'] ** 2)
-            ii =1
 
-#            self.var.PixelArea = spatial(self.var.PixelArea)
+            # self.var.PixelArea = spatial(self.var.PixelArea)
             # Convert to spatial expresion (otherwise this variable cannnot be
             # used in areatotal function)
 
-# -----------------------------------------------------------------
-        # Miscellaneous repeatedly used expressions (as suggested by GF)
+        # -----------------------------------------------------------------
+        # Miscellaneous repeatedly used expressions for computational efficiency
 
         # self.var.InvCellLength = 1.0 / self.var.cellLength
         self.var.InvCellArea = 1.0 / self.var.cellArea
@@ -108,7 +144,7 @@ class miscInitial(object):
         self.var.InvDtDay = 1 / self.var.DtDay
         # Inverse of time step [1/d]
 
-       # self.var.DtSecChannel = loadmap('DtSecChannel')
+        # self.var.DtSecChannel = loadmap('DtSecChannel')
         # Sub time step used for kinematic wave channel routing [seconds]
         # within the model,the smallest out of DtSecChannel and DtSec is used
 

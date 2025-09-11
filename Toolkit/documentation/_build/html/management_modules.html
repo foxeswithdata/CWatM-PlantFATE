@@ -435,17 +435,16 @@ calls function <code class="xref py py-meth docutils literal notranslate"><span 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cwatm.management_modules.data_handling.multinetdf">
-<span class="sig-prename descclassname"><span class="pre">cwatm.management_modules.data_handling.</span></span><span class="sig-name descname"><span class="pre">multinetdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meteomaps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startcheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dateBegin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/management_modules/data_handling.html#multinetdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.management_modules.data_handling.multinetdf" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cwatm.management_modules.data_handling.</span></span><span class="sig-name descname"><span class="pre">multinetdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meteomaps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usebuffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startcheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dateBegin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/management_modules/data_handling.html#multinetdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.management_modules.data_handling.multinetdf" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>meteomaps</strong> – list of meteomaps to define start and end time</p></li>
-<li><p><strong>startcheck</strong> – date of beginning simulation</p></li>
-</ul>
+<dd class="field-odd"><p><strong>meteomaps</strong> – list of meteomaps to define start and end time</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
+</dl>
+<p>.param usebuffer: for certain map downscaling an additional cell around the maps is needed
+:param startcheck: date of beginning simulation
+:return</p>
+<dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><strong>if no map stack in meteo map folder</strong> – <code class="xref py py-meth docutils literal notranslate"><span class="pre">management_modules.messages.CWATMFileError()</span></code></p>
 </dd>
@@ -494,7 +493,7 @@ variable metaNetcdfVar</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cwatm.management_modules.data_handling.readmeteodata">
-<span class="sig-prename descclassname"><span class="pre">cwatm.management_modules.data_handling.</span></span><span class="sig-name descname"><span class="pre">readmeteodata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addZeros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapsscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/management_modules/data_handling.html#readmeteodata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.management_modules.data_handling.readmeteodata" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cwatm.management_modules.data_handling.</span></span><span class="sig-name descname"><span class="pre">readmeteodata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addZeros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapsscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extendback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/management_modules/data_handling.html#readmeteodata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.management_modules.data_handling.readmeteodata" title="Permalink to this definition">¶</a></dt>
 <dd><p>load stack of maps 1 at each timestamp in netcdf format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -516,6 +515,26 @@ variable metaNetcdfVar</p>
 <li><p><strong>if data is wrong</strong> – <code class="xref py py-meth docutils literal notranslate"><span class="pre">management_modules.messages.CWATMError()</span></code></p></li>
 <li><p><strong>if meteo netcdf file cannot be opened</strong> – <code class="xref py py-meth docutils literal notranslate"><span class="pre">management_modules.messages.CWATMFileError()</span></code></p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cwatm.management_modules.data_handling.readnetcdf12month">
+<span class="sig-prename descclassname"><span class="pre">cwatm.management_modules.data_handling.</span></span><span class="sig-name descname"><span class="pre">readnetcdf12month</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/management_modules/data_handling.html#readnetcdf12month"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.management_modules.data_handling.readnetcdf12month" title="Permalink to this definition">¶</a></dt>
+<dd><p>load maps in netcdf format (12 maps for each month)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>namebinding</strong> – file name in settings file</p></li>
+<li><p><strong>value</strong> – (optional) netcdf variable name. If not given -&gt; last variable is taken</p></li>
+</ul>
+</dd>
+<dt class="field-even">Month number</dt>
+<dd class="field-even"><p>of month from 0 to 11</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Compressed 1D array of netcdf stored data</p>
 </dd>
 </dl>
 </dd></dl>
@@ -694,7 +713,7 @@ variable metaNetcdfVar</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cwatm.management_modules.data_handling.writenetcdf">
-<span class="sig-prename descclassname"><span class="pre">cwatm.management_modules.data_handling.</span></span><span class="sig-name descname"><span class="pre">writenetcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">netfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varunits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeStamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">posCnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flagTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrdays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dateunit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'days'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/management_modules/data_handling.html#writenetcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.management_modules.data_handling.writenetcdf" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cwatm.management_modules.data_handling.</span></span><span class="sig-name descname"><span class="pre">writenetcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">netfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varunits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputmap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeStamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">posCnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flagTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nrdays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dateunit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'days'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netcdfindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/management_modules/data_handling.html#writenetcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.management_modules.data_handling.writenetcdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>write a netcdf stack</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1181,7 +1200,7 @@ Output of maps and timeseries</p>
 <dt class="sig sig-object py" id="cwatm.management_modules.globals.globalFlags">
 <span class="sig-prename descclassname"><span class="pre">cwatm.management_modules.globals.</span></span><span class="sig-name descname"><span class="pre">globalFlags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setting</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settingsfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Flags</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cwatm/management_modules/globals.html#globalFlags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cwatm.management_modules.globals.globalFlags" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read flags - according to the flags the output is adjusted
-quiet,veryquiet, loud, checkfiles, noheader,printtime, warranty</p>
+quiet,veryquiet, loud, checkfiles, printtime, warranty</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>arg</strong> – argument from calling cwatm</p>

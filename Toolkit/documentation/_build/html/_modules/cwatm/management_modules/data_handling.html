@@ -184,7 +184,7 @@
 <span class="c1">#</span>
 <span class="c1"># Author:      PB</span>
 <span class="c1">#</span>
-<span class="c1"># Created:     13/07/2016</span>
+<span class="c1"># Created:     13/07/2016 </span>
 <span class="c1"># Copyright:   (c) PB 2016</span>
 <span class="c1"># -------------------------------------------------------------------------</span>
 
@@ -210,6 +210,91 @@
 <span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdalconst</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="c1">#import xarray as xr</span>
+<span class="c1">#from concurrent.futures import ThreadPoolExecutor</span>
+<span class="c1">#import asyncio</span>
+
+<span class="c1"># -------------------------------------</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># Asychron reading of meteomaps to speed up - with the help of Jens de Bruijn</span>
+
+<span class="sd">class AsyncReader:</span>
+<span class="sd">    def __init__(self, filepath, variable_name):</span>
+<span class="sd">    #def __init__(self,no):</span>
+<span class="sd">        #filepath = netcdf_file[no]</span>
+<span class="sd">        self.filepath = filepath</span>
+<span class="sd">        #variable_name = varnameGl[no]</span>
+<span class="sd">        #self.nf1 = Dataset(filepath,&quot;r&quot;)</span>
+<span class="sd">        #self.ds = self.nf1.variables[variable_name]</span>
+<span class="sd">        self.ds = xr.open_dataset(filepath, chunks={&quot;time&quot;: 1})[variable_name]</span>
+<span class="sd">        #self.ds = xr.open_dataarray(filepath)</span>
+
+<span class="sd">        # Adjust chunk size based on your data</span>
+<span class="sd">        self.executor = ThreadPoolExecutor(max_workers=1)</span>
+<span class="sd">        self.preloaded_data_future = None</span>
+<span class="sd">        self.current_index = -1  # Initialize to -1 to indicate no data loaded yet</span>
+<span class="sd">        #self.time_index = self.ds.time.values</span>
+<span class="sd">        #self.time_index = nf1.variables[&quot;time&quot;][:]</span>
+<span class="sd">        try:</span>
+<span class="sd">            self.loop = asyncio.get_running_loop()</span>
+<span class="sd">        except RuntimeError:</span>
+<span class="sd">            self.loop = asyncio.new_event_loop()</span>
+
+<span class="sd">    def load(self, index,loc):</span>
+<span class="sd">        #a = self.ds[index + 1, loc[0]:loc[1], loc[2]:loc[3]]</span>
+<span class="sd">        #a = self.ds.values[index,loc[0]:loc[1],loc[2]:loc[3]]</span>
+<span class="sd">        #a = self.ds.isel(time=index).values</span>
+<span class="sd">        a = self.ds.isel(time=index, lat=slice(loc[0], loc[1]), lon=slice(loc[2],loc[3])).values</span>
+<span class="sd">        return a</span>
+
+
+<span class="sd">    def preload_next(self, index,loc):</span>
+<span class="sd">        # Preload the next timestep asynchronously</span>
+<span class="sd">        #if index + 1 &lt; self.ds.time.size:</span>
+<span class="sd">        if index+1 &lt; 14444111:</span>
+<span class="sd">            future = self.loop.run_in_executor(</span>
+<span class="sd">                self.executor, lambda: self.load(index + 1,loc) )</span>
+<span class="sd">            return future</span>
+<span class="sd">        return None</span>
+
+<span class="sd">    async def read_timestep_async(self, index, loc):</span>
+<span class="sd">        #assert index &lt; self.ds.time.size, &quot;Index out of bounds.&quot;</span>
+<span class="sd">        #assert index &gt;= 0, &quot;Index out of bounds.&quot;</span>
+<span class="sd">        # Check if the requested data is already preloaded, if so, just return that data</span>
+<span class="sd">        if index == self.current_index:</span>
+<span class="sd">            return self.current_data</span>
+<span class="sd">        # Check if the data for the next timestep is preloaded, if so, await for it to complete</span>
+<span class="sd">        if self.preloaded_data_future is not None and self.current_index + 1 == index:</span>
+<span class="sd">            data = await self.preloaded_data_future</span>
+<span class="sd">        # Load the requested data if not preloaded</span>
+<span class="sd">        else:</span>
+<span class="sd">            data = await self.loop.run_in_executor(</span>
+<span class="sd">                self.executor, lambda: self.load(index,loc))</span>
+
+<span class="sd">        # Initiate preloading the next timestep, do not await here, this returns a future</span>
+<span class="sd">        self.preloaded_data_future = self.preload_next(index,loc)</span>
+
+<span class="sd">        self.current_index = index</span>
+<span class="sd">        self.current_data = data</span>
+<span class="sd">        return data</span>
+
+<span class="sd">    def read_timestep(self, index, loc):</span>
+<span class="sd">        #index = self.get_index(date)</span>
+<span class="sd">        return self.loop.run_until_complete(self.read_timestep_async(index,loc))</span>
+
+<span class="sd">    def read_timestepxxx(self, index,loc):</span>
+<span class="sd">        #def read_timestep_not_async(self, index):</span>
+<span class="sd">        #index = self.get_index(date)</span>
+<span class="sd">        return self.load(index,loc)</span>
+<span class="sd">        #return self.ds[index,loc[0]:loc[1],loc[2]:loc[3]]</span>
+
+<span class="sd">    def close(self):</span>
+<span class="sd">        #self.nf1.close()</span>
+<span class="sd">        self.ds.close()</span>
+<span class="sd">        self.executor.shutdown()</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># --------------------------------------</span>
 <div class="viewcode-block" id="valuecell"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.valuecell">[docs]</a><span class="k">def</span> <span class="nf">valuecell</span><span class="p">(</span> <span class="n">coordx</span><span class="p">,</span> <span class="n">coordstr</span><span class="p">,</span> <span class="n">returnmap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    to put a value into a raster map -&gt; invert of cellvalue, map is converted into a numpy array first</span>
@@ -334,20 +419,24 @@
             <span class="n">nf1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># get the last variable name</span>
 
-            <span class="c1">#x1 = nf1.variables.values()[0][0]</span>
-            <span class="c1">#x2 = nf1.variables.values()[0][1]</span>
-            <span class="c1">#xlast = nf1.variables.values()[0][-1]</span>
-            <span class="n">x1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">x2</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">xlast</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">xlast</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1">#x1 = nf1.variables[&#39;lon&#39;][0]</span>
+            <span class="c1">#x2 = nf1.variables[&#39;lon&#39;][1]</span>
+            <span class="c1">#xlast = nf1.variables[&#39;lon&#39;][-1]</span>
 
-            <span class="n">y1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">ylast</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1">#y1 = nf1.variables[&#39;lat&#39;][0]</span>
+            <span class="c1">#ylast = nf1.variables[&#39;lat&#39;][-1]</span>
+            <span class="n">y1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ylast</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
             <span class="c1"># swap to make y1 the biggest number</span>
             <span class="k">if</span> <span class="n">y1</span> <span class="o">&lt;</span> <span class="n">ylast</span><span class="p">:</span>  <span class="n">y1</span><span class="p">,</span> <span class="n">ylast</span> <span class="o">=</span> <span class="n">ylast</span><span class="p">,</span> <span class="n">y1</span>
 
             <span class="n">cellSize</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span>
             <span class="n">invcell</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">cellSize</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">invcell</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">invcell</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">cellSize</span>
             <span class="n">nrRows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ylast</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span> <span class="o">*</span> <span class="n">invcell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">nrCols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xlast</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span> <span class="o">*</span> <span class="n">invcell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">cellSize</span> <span class="o">/</span> <span class="mi">2</span>
@@ -400,7 +489,7 @@
     <span class="c1"># if there is no ldd at a cell, this cell should be excluded from modelling</span>
 
     <span class="n">maskldd</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;Ldd&#39;</span><span class="p">,</span> <span class="n">compress</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="n">maskarea</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bool8</span><span class="p">(</span><span class="n">mapnp</span><span class="p">)</span>
+    <span class="n">maskarea</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">(</span><span class="n">mapnp</span><span class="p">)</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">maskldd</span><span class="p">,</span><span class="n">maskarea</span><span class="p">))</span>
 
 <span class="c1">#    mask=np.isnan(mapnp)</span>
@@ -466,7 +555,7 @@
     <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask2D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;row&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask2D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bool8</span><span class="p">(</span><span class="n">mask2D</span><span class="p">))</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">(</span><span class="n">mask2D</span><span class="p">))</span>
     <span class="n">mapC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">compressed</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">mask</span><span class="p">))</span>
 
     <span class="c1"># Definition of compressed array and info how to blow it up again</span>
@@ -616,7 +705,8 @@
     <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapC</span><span class="p">)):</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 106:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; has less valid pixels than area or ldd </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="c1">#raise CWATMError(msg)</span>
+            <span class="n">mapC</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapC</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.000001</span>
             <span class="c1"># test if map has less valid pixel than area.map (or ldd)</span>
     <span class="c1"># if a value is bigger or smaller than 1e20, -1e20 than the standard value is taken</span>
     <span class="n">mapC</span><span class="p">[</span><span class="n">mapC</span> <span class="o">&gt;</span> <span class="mf">1.E20</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeros</span>
@@ -759,6 +849,12 @@
             <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span>
             <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
 
+    <span class="k">if</span> <span class="s1">&#39;X&#39;</span> <span class="ow">in</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span>
+        <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>
+    <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span>
+        <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
 
     <span class="n">rows</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">cols</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordx&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -804,14 +900,20 @@
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 206: Checking netcdf map </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">meteodata</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
 
-    <span class="n">lonM0</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">lon1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">]</span>
+
+    <span class="n">lonM0</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lon1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+
     <span class="n">cellM</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lon1</span> <span class="o">-</span> <span class="n">lonM0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
     <span class="n">lonM0</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">lonM0</span> <span class="o">-</span> <span class="n">cellM</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
 
-    <span class="n">lonM1</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cellM</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
-    <span class="n">latM0</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">latM1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">lonM1</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cellM</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">latM0</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">latM1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="c1"># swap to make lat0 the biggest number</span>
@@ -827,15 +929,15 @@
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 207: Checking netcdf map </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">wordclimdata</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
 
-    <span class="n">lonW0</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">lon1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">lonW0</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lon1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">cellW</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lon1</span> <span class="o">-</span> <span class="n">lonW0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
     <span class="n">lonW0</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">lonW0</span> <span class="o">-</span> <span class="n">cellW</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
-    <span class="n">lonW1</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cellW</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">lonW1</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cellW</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
 
 
-    <span class="n">latW0</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">latW1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">latW0</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">latW1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="c1"># swap to make lat0 the biggest number</span>
     <span class="k">if</span> <span class="n">latW0</span> <span class="o">&lt;</span> <span class="n">latW1</span><span class="p">:</span>
@@ -993,18 +1095,20 @@
     <span class="k">return</span> <span class="n">cut0</span><span class="p">,</span> <span class="n">cut1</span><span class="p">,</span> <span class="n">cut2</span><span class="p">,</span> <span class="n">cut3</span></div>
 
 
-<div class="viewcode-block" id="multinetdf"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.multinetdf">[docs]</a><span class="k">def</span> <span class="nf">multinetdf</span><span class="p">(</span><span class="n">meteomaps</span><span class="p">,</span> <span class="n">startcheck</span> <span class="o">=</span> <span class="s1">&#39;dateBegin&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="multinetdf"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.multinetdf">[docs]</a><span class="k">def</span> <span class="nf">multinetdf</span><span class="p">(</span><span class="n">meteomaps</span><span class="p">,</span> <span class="n">usebuffer</span><span class="p">,</span><span class="n">startcheck</span> <span class="o">=</span> <span class="s1">&#39;dateBegin&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    :param meteomaps: list of meteomaps to define start and end time</span>
+<span class="sd">    .param usebuffer: for certain map downscaling an additional cell around the maps is needed</span>
 <span class="sd">    :param startcheck: date of beginning simulation</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :return</span>
 
 <span class="sd">    :raises if no map stack in meteo map folder: :meth:`management_modules.messages.CWATMFileError`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">end</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;dateEnd&#39;</span><span class="p">]</span>
 
+    <span class="n">no</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">maps</span> <span class="ow">in</span> <span class="n">meteomaps</span><span class="p">:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">cbinding</span><span class="p">(</span><span class="n">maps</span><span class="p">)</span>
         <span class="n">nameall</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
@@ -1016,6 +1120,8 @@
         <span class="n">startfile</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">nameall</span><span class="p">:</span>
+
+            <span class="c1"># --- Netcdf -------------</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">nf1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1031,14 +1137,16 @@
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">datediv</span> <span class="o">=</span> <span class="mi">1</span>
 
-            <span class="n">datestart</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:][</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">calendar</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
+            <span class="n">datestart</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:][</span><span class="mi">0</span><span class="p">],</span><span class="mi">0</span><span class="p">)),</span> <span class="n">units</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">calendar</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
 
-            <span class="c1"># sometime daily records have a strange hour to start with -&gt; it is changed to 0:00 to haqve the same record</span>
+            <span class="c1"># sometime daily records have a strange hour to start with -&gt; it is changed to 0:00 to have the same record</span>
             <span class="n">datestart</span> <span class="o">=</span> <span class="n">datestart</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">dateend</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">units</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">calendar</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
-
-            <span class="n">datestartint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nctime</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="n">datediv</span>
-            <span class="n">dateendint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">//</span> <span class="n">datediv</span>
+            <span class="n">datestartint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">nctime</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span><span class="mi">0</span><span class="p">))</span> <span class="o">//</span> <span class="n">datediv</span>
+            <span class="n">datelen</span><span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:])</span>
+            <span class="n">dateendint</span> <span class="o">=</span> <span class="n">datestartint</span> <span class="o">+</span> <span class="n">datelen</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">dateend</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">dateendint</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">calendar</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
+            <span class="c1">#dateend = num2date(int(round(nctime[:][-1],0)), units=nctime.units, calendar=nctime.calendar)</span>
+            <span class="c1">#dateendint = int(round(nctime[:][-1].data.tolist(),0)) // datediv</span>
 
             <span class="n">dateend</span> <span class="o">=</span> <span class="n">dateend</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
             <span class="c1">#if dateVar[&#39;leapYear&#39;] &gt; 0:</span>
@@ -1051,9 +1159,70 @@
 
             <span class="c1">#else:</span>
             <span class="c1">#    start = dateVar[startcheck]</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># get the last variable name</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="o">-</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">]):</span> <span class="k">break</span>
+
+            <span class="c1"># check if mask = map size -&gt; if yes do not cut the map</span>
+            <span class="n">cutcheckmask</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">shapey</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">shapex</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">cutcheckmap</span> <span class="o">=</span> <span class="n">shapey</span> <span class="o">*</span> <span class="n">shapex</span>
+            <span class="n">cutcheck</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">cutcheckmask</span> <span class="o">==</span> <span class="n">cutcheckmap</span><span class="p">:</span> <span class="n">cutcheck</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># check if it is x or X</span>
+            <span class="n">yy</span> <span class="o">=</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">yy</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;Y&quot;</span> <span class="ow">in</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">yy</span> <span class="o">=</span> <span class="s2">&quot;Y&quot;</span>
+
+            <span class="c1"># checkif latitude is reversed</span>
+            <span class="n">turn_latitude</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">yy</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">yy</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">turn_latitude</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># calculate buffer</span>
+            <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">usebuffer</span><span class="p">):</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="c1">#          buffer1</span>
+                <span class="c1">#         ---------</span>
+                <span class="c1"># buffer3¦        ¦ buffer4</span>
+                <span class="c1">#        ¦        ¦</span>
+                <span class="c1">#         ---------</span>
+                <span class="c1">#          buffer2</span>
+                <span class="n">buffer4</span><span class="p">,</span> <span class="n">buffer2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+                <span class="c1">#if the input map should be used until the last column there is no buffer</span>
+                <span class="k">if</span> <span class="n">shapex</span> <span class="o">==</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">buffer4</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="c1"># if the input map should be used at the last row there is no buffer</span>
+                <span class="k">if</span> <span class="n">shapey</span> <span class="o">==</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+                    <span class="n">buffer2</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="c1"># if the input map should be used at the first row or column there is no buffer</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                     <span class="n">buffer1</span> <span class="o">=</span> <span class="mi">0</span>
+                     <span class="n">buffer3</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="c1"># if the input map should be used at the first row there is no buffer</span>
+                <span class="k">elif</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">buffer1</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">buffer3</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="c1"># if the input map should be used at the first column there is no buffer</span>
+                <span class="k">elif</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">buffer1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="n">buffer3</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">buffer1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="n">buffer3</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="p">[</span><span class="n">buffer1</span><span class="p">,</span><span class="n">buffer2</span><span class="p">,</span><span class="n">buffer3</span><span class="p">,</span><span class="n">buffer4</span><span class="p">]</span>
+
 
             <span class="k">if</span> <span class="n">startfile</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># search first file where dynamic run starts</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">dateendint</span> <span class="o">&gt;=</span> <span class="n">startint</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datestartint</span> <span class="o">&lt;=</span> <span class="n">startint</span><span class="p">):</span>  <span class="c1"># if enddate of a file is bigger than the start of run</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">dateendint</span> <span class="o">&gt;=</span> <span class="n">startint</span><span class="p">):</span> <span class="c1"># if enddate of a file is bigger than the start of run</span>
+                    <span class="c1"># and (datestartint &lt;= startint):  # remove thiis, because glacier maps could start latter, than the day of the year of first year is  use</span>
                     <span class="n">startfile</span> <span class="o">=</span> <span class="mi">1</span>
                     <span class="c1">#indstart = (start - datestart).days</span>
                     <span class="n">indstart</span> <span class="o">=</span> <span class="n">startint</span> <span class="o">-</span> <span class="n">datestartint</span>
@@ -1061,32 +1230,47 @@
                     <span class="c1">#indend = (dateend -datestart).days</span>
                     <span class="n">indend</span> <span class="o">=</span> <span class="n">dateendint</span> <span class="o">-</span> <span class="n">datestartint</span>
 
-                    <span class="n">meteolist</span><span class="p">[</span><span class="n">startfile</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span><span class="p">,</span><span class="n">indstart</span><span class="p">,</span><span class="n">indend</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span><span class="n">dateend</span><span class="p">]</span>
+                    <span class="c1"># value varname of netcdf as index: 5</span>
+                    <span class="c1"># cutmap as index 6</span>
+                    <span class="c1"># name of y or latitude: 7</span>
+                    <span class="c1"># if map is turned )North is down): 8</span>
+                    <span class="c1"># buffer atound the map for interpolation: 9</span>
+                    <span class="c1"># shapey, shapex : shape y and y of total map  10, 11</span>
+                    <span class="c1"># Number - no of meteofile  12</span>
+                    <span class="n">meteolist</span><span class="p">[</span><span class="n">startfile</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span><span class="p">,</span><span class="n">indstart</span><span class="p">,</span><span class="n">indend</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span><span class="n">dateend</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">cutcheck</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span><span class="n">turn_latitude</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">shapey</span><span class="p">,</span> <span class="n">shapex</span><span class="p">,</span><span class="n">no</span><span class="p">]</span>
                     <span class="n">inputcounter</span><span class="p">[</span><span class="n">maps</span><span class="p">]</span> <span class="o">=</span> <span class="n">indstart</span>  <span class="c1"># startindex of timestep 1</span>
-                    <span class="c1">#start = dateend + datetime.timedelta(days=1)</span>
-                    <span class="c1">#start = start.replace(hour=0, minute=0)</span>
                     <span class="n">startint</span> <span class="o">=</span> <span class="n">dateendint</span> <span class="o">+</span> <span class="mi">1</span>
                     <span class="n">start</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">startint</span> <span class="o">*</span> <span class="n">datediv</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">calendar</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
+                    <span class="n">no</span> <span class="o">+=</span> <span class="mi">1</span>
 
+                    <span class="c1"># counter is set to a minus value - for some maps (e.g. glacier) if the counter is negativ</span>
+                    <span class="c1"># the doy of a year of first year is loaded -&gt; to use runs  before glacier maps are calculated</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">datestartint</span> <span class="o">&gt;=</span> <span class="n">startint</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datestartint</span> <span class="o">&lt;</span> <span class="n">endint</span> <span class="p">):</span>
                     <span class="n">startfile</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">indstart</span> <span class="o">=</span> <span class="n">startint</span> <span class="o">-</span> <span class="n">datestartint</span>
                     <span class="n">indend</span> <span class="o">=</span> <span class="n">dateendint</span> <span class="o">-</span> <span class="n">datestartint</span>
-                    <span class="n">meteolist</span><span class="p">[</span><span class="n">startfile</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span><span class="p">,</span> <span class="n">indstart</span><span class="p">,</span><span class="n">indend</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">dateend</span><span class="p">,]</span>
+                    <span class="c1">#meteolist[startfile - 1] = [filename, indstart,indend, start, dateend,value,cutcheck,yy,turn_latitude, buffer, shapey, shapex,no,</span>
+                    <span class="c1">#                            AsyncReader(filename,value)]</span>
+                    <span class="n">meteolist</span><span class="p">[</span><span class="n">startfile</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span><span class="p">,</span> <span class="n">indstart</span><span class="p">,</span><span class="n">indend</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">dateend</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">cutcheck</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span><span class="n">turn_latitude</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">shapey</span><span class="p">,</span> <span class="n">shapex</span><span class="p">,</span><span class="n">no</span><span class="p">]</span>
+
                     <span class="c1">#start = dateend + datetime.timedelta(days=1)</span>
                     <span class="c1">#start = start.replace(hour=0, minute=0)</span>
                     <span class="n">startint</span> <span class="o">=</span> <span class="n">dateendint</span> <span class="o">+</span> <span class="mi">1</span>
                     <span class="n">start</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">startint</span> <span class="o">*</span> <span class="n">datediv</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">calendar</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
+                    <span class="n">no</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="c1"># --- End Netcdf -------------</span>
+
         <span class="n">meteofiles</span><span class="p">[</span><span class="n">maps</span><span class="p">]</span> <span class="o">=</span>  <span class="n">meteolist</span>
-        <span class="n">flagmeteo</span><span class="p">[</span><span class="n">maps</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></div>
+        <span class="n">flagmeteo</span><span class="p">[</span><span class="n">maps</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">return</span></div>
 
 
 
-
-<div class="viewcode-block" id="readmeteodata"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readmeteodata">[docs]</a><span class="k">def</span> <span class="nf">readmeteodata</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">addZeros</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">zeros</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span><span class="n">mapsscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="readmeteodata"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readmeteodata">[docs]</a><span class="k">def</span> <span class="nf">readmeteodata</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">addZeros</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">zeros</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span><span class="n">mapsscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extendback</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    load stack of maps 1 at each timestamp in netcdf format</span>
 
@@ -1107,10 +1291,39 @@
         <span class="n">meteoInfo</span> <span class="o">=</span> <span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">inputcounter</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="n">filename</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">meteoInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
     <span class="k">except</span><span class="p">:</span>
         <span class="n">date1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 210: Netcdf map error for: &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; -&gt; &quot;</span> <span class="o">+</span> <span class="n">cbinding</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; on: &quot;</span> <span class="o">+</span> <span class="n">date1</span> <span class="o">+</span> <span class="s2">&quot;: </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+    <span class="c1"># for glaciermaps extend back into past if glaciermaps start later -&gt; use day of the year of first year</span>
+    <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">extendback</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">date1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 211: Netcdf map: &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; -&gt; &quot;</span> <span class="o">+</span> <span class="n">cbinding</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; starts later than first date of simulation on: &quot;</span> <span class="o">+</span> <span class="n">date1</span> <span class="o">+</span> <span class="s2">&quot;: </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]][</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">cutcheck</span> <span class="o">=</span> <span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]][</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]][</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">turn_latitude</span> <span class="o">=</span> <span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]][</span><span class="mi">8</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">cutcheck</span><span class="p">:</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">buffering</span><span class="p">:</span>
+            <span class="n">buffer</span> <span class="o">=</span> <span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]][</span><span class="mi">9</span><span class="p">]</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">+</span> <span class="n">buffer</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]][</span><span class="mi">10</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]][</span><span class="mi">11</span><span class="p">]]</span>
+
+
+    <span class="c1"># +++++++++++++++ Netcdf ++++++++++++++++++++++</span>
 
     <span class="k">try</span><span class="p">:</span>
        <span class="n">nf1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
@@ -1118,72 +1331,20 @@
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 211: Netcdf map stacks: </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">msg</span><span class="p">,</span> <span class="n">sname</span> <span class="o">=</span> <span class="n">name</span><span class="p">)</span>
 
-    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># get the last variable name</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">]:</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
-               <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="o">-</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-               <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;time&quot;</span><span class="p">])</span> <span class="p">:</span> <span class="k">break</span>
+    <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">loc</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
 
-    <span class="c1"># check if mask = map size -&gt; if yes do not cut the map</span>
-    <span class="n">cutcheckmask</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">cutcheckmap</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">cutcheck</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">if</span> <span class="n">cutcheckmask</span> <span class="o">==</span> <span class="n">cutcheckmap</span><span class="p">:</span> <span class="n">cutcheck</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    reader = meteofiles[name][flagmeteo[name]][13]</span>
+<span class="sd">    mapnp = reader.read_timestep(idx,loc)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># +++++++++++++++ Netcdf End++++++++++++++++++++++</span>
 
-    <span class="c1">#checkif latitude is reversed</span>
-    <span class="n">turn_latitude</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">turn_latitude</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">mapnp</span> <span class="o">=</span> <span class="n">mapnp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">turn_latitude</span><span class="p">:</span>
         <span class="n">mapnp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">mapnp</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">cutcheck</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">turn_latitude</span><span class="p">:</span>
-            <span class="n">mapnp</span> <span class="o">=</span> <span class="n">mapnp</span><span class="p">[</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-            <span class="c1">#TODO: make buffering work if lattitude is turned</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">buffering</span><span class="p">:</span>
-                <span class="n">buffer</span> <span class="o">=</span> <span class="mi">1</span>
-                <span class="c1">#          buffer1</span>
-                <span class="c1">#         ---------</span>
-                <span class="c1"># buffer3¦        ¦ buffer4</span>
-                <span class="c1">#        ¦        ¦</span>
-                <span class="c1">#         ---------</span>
-                <span class="c1">#          buffer2</span>
-                <span class="n">buffer4</span><span class="p">,</span> <span class="n">buffer2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-                <span class="c1">#if the input map should be used until the last column there is no buffer</span>
-                <span class="k">if</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                    <span class="n">buffer4</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="c1"># if the input map should be used at the last row there is no buffer</span>
-                <span class="k">if</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
-                    <span class="n">buffer2</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="c1"># if the input map should be used at the first row or column there is no buffer</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-                    <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer2</span><span class="p">,</span>
-                            <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer4</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-                    <span class="n">buffer1</span><span class="p">,</span> <span class="n">buffer3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-                <span class="c1"># if the input map should be used at the first row there is no buffer</span>
-                <span class="k">elif</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer2</span><span class="p">,</span>
-                            <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer4</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-                    <span class="n">buffer1</span><span class="p">,</span> <span class="n">buffer3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-                <span class="c1"># if the input map should be used at the first column there is no buffer</span>
-                <span class="k">elif</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer2</span><span class="p">,</span>
-                            <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer4</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-                    <span class="n">buffer1</span><span class="p">,</span> <span class="n">buffer3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer2</span><span class="p">,</span>
-                            <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer4</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-                    <span class="n">buffer1</span><span class="p">,</span> <span class="n">buffer3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">idx</span><span class="p">,</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">cutmapFine</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cutmapFine</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">turn_latitude</span><span class="p">):</span>
-            <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">mapnp</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
         <span class="n">mapnp</span> <span class="o">=</span> <span class="n">mapnp</span><span class="o">.</span><span class="n">data</span>
@@ -1191,11 +1352,9 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="n">ii</span> <span class="o">=</span><span class="mi">1</span>
 
-    <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="c1"># add zero values to maps in order to supress missing values</span>
     <span class="k">if</span> <span class="n">addZeros</span><span class="p">:</span> <span class="n">mapnp</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapnp</span><span class="p">)]</span> <span class="o">=</span> <span class="n">zeros</span>
-
 
     <span class="k">if</span> <span class="n">mapsscale</span><span class="p">:</span>  <span class="c1"># if meteo maps have the same extend as the other spatial static maps -&gt; meteomapsscale = True</span>
         <span class="k">if</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;shapeflat&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span> <span class="n">mapnp</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
@@ -1222,11 +1381,7 @@
         <span class="n">inputcounter</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="k">if</span> <span class="n">buffering</span><span class="p">:</span>
-        <span class="n">buffer</span> <span class="o">=</span> <span class="p">[</span><span class="n">buffer1</span><span class="p">,</span> <span class="n">buffer2</span><span class="p">,</span> <span class="n">buffer3</span><span class="p">,</span> <span class="n">buffer4</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">buffer</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="n">mapC</span><span class="p">,</span> <span class="n">buffer</span></div>
+    <span class="k">return</span> <span class="n">mapC</span></div>
 
 
 
@@ -1304,7 +1459,6 @@
 
             <span class="k">if</span> <span class="n">meteo</span><span class="p">:</span> <span class="n">inputcounter</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span>
 
-
     <span class="c1">#checkif latitude is reversed</span>
     <span class="n">turn_latitude</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1314,8 +1468,16 @@
            <span class="n">mapnp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">mapnp</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
        <span class="n">ii</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="s1">&#39;Glacier&#39;</span> <span class="ow">in</span> <span class="n">namebinding</span><span class="p">:</span>
+        <span class="n">cutcheckmask</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">cutcheckmap</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">cut</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">cutcheckmask</span> <span class="o">==</span> <span class="n">cutcheckmap</span><span class="p">:</span> <span class="n">cut</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">if</span> <span class="n">cut</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;maps_cut_individually&#39;</span> <span class="ow">in</span> <span class="n">option</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;maps_cut_individually&#39;</span><span class="p">):</span>
+                <span class="n">cutmap</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cutmap</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cutmap</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">cutmap</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">mapattrNetCDF</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">turn_latitude</span><span class="p">:</span>
             <span class="n">mapnp</span> <span class="o">=</span> <span class="n">mapnp</span><span class="p">[</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">cutmap</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1378,6 +1540,33 @@
         <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">mapC</span></div>
 
+<div class="viewcode-block" id="readnetcdf12month"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readnetcdf12month">[docs]</a><span class="k">def</span> <span class="nf">readnetcdf12month</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    load maps in netcdf format (12 maps for each month)</span>
+
+<span class="sd">    :param namebinding: file name in settings file</span>
+<span class="sd">    :month number: of month from 0 to 11</span>
+<span class="sd">    :param value: (optional) netcdf variable name. If not given -&gt; last variable is taken</span>
+<span class="sd">    :return: Compressed 1D array of netcdf stored data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">filename</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+       <span class="n">nf1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 213: Netcdf map stacks: </span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># get the last variable name</span>
+
+    <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">month</span><span class="p">,</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">cutmap</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">mapC</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
+        <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mapC</span></div>
 
 
 <div class="viewcode-block" id="readnetcdfInitial"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readnetcdfInitial">[docs]</a><span class="k">def</span> <span class="nf">readnetcdfInitial</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span><span class="n">default</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
@@ -1393,6 +1582,8 @@
 <span class="sd">    :raises if varibale name is not included in the netcdf file: :meth:`management_modules.messages.CWATMWarning`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;storGroundwater&quot;</span><span class="p">:</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">filename</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
        <span class="n">nf1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
@@ -1401,12 +1592,22 @@
         <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;X&#39;</span> <span class="ow">in</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span>
+                <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>
+            <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span>
+                <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;y&#39;</span>
+            
+            <span class="n">cut0</span><span class="p">,</span> <span class="n">cut1</span><span class="p">,</span> <span class="n">cut2</span><span class="p">,</span> <span class="n">cut3</span> <span class="o">=</span> <span class="n">mapattrNetCDF</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;coordy&#39;</span><span class="p">]][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 112: Latitude is in wrong order</span><span class="se">\n</span><span class="s2">&quot;</span>
                 <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
 
-            <span class="n">mapnp</span> <span class="o">=</span> <span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+            <span class="c1">#mapnp = (nf1.variables[value][:].astype(np.float64))</span>
+            <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">cut2</span><span class="p">:</span><span class="n">cut3</span><span class="p">,</span> <span class="n">cut0</span><span class="p">:</span><span class="n">cut1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            
             <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">mapC</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
@@ -1431,7 +1632,7 @@
 
 <span class="c1"># --------------------------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="writenetcdf"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.writenetcdf">[docs]</a><span class="k">def</span> <span class="nf">writenetcdf</span><span class="p">(</span><span class="n">netfile</span><span class="p">,</span><span class="n">prename</span><span class="p">,</span><span class="n">addname</span><span class="p">,</span><span class="n">varunits</span><span class="p">,</span><span class="n">inputmap</span><span class="p">,</span> <span class="n">timeStamp</span><span class="p">,</span> <span class="n">posCnt</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span><span class="n">flagTime</span><span class="p">,</span> <span class="n">nrdays</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dateunit</span><span class="o">=</span><span class="s2">&quot;days&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="writenetcdf"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.writenetcdf">[docs]</a><span class="k">def</span> <span class="nf">writenetcdf</span><span class="p">(</span><span class="n">netfile</span><span class="p">,</span><span class="n">prename</span><span class="p">,</span><span class="n">addname</span><span class="p">,</span><span class="n">varunits</span><span class="p">,</span><span class="n">inputmap</span><span class="p">,</span> <span class="n">timeStamp</span><span class="p">,</span> <span class="n">posCnt</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span><span class="n">flagTime</span><span class="p">,</span> <span class="n">nrdays</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dateunit</span><span class="o">=</span><span class="s2">&quot;days&quot;</span><span class="p">,</span><span class="n">netcdfindex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    write a netcdf stack</span>
 
@@ -1470,6 +1671,10 @@
     <span class="c1"># create real varname with variable name + time depending name e.g. discharge + monthavg</span>
     <span class="n">varname</span> <span class="o">=</span> <span class="n">prename</span> <span class="o">+</span> <span class="n">addname</span>
 
+    <span class="c1"># save only index values:</span>
+    <span class="k">if</span> <span class="n">netcdfindex</span><span class="p">:</span>
+        <span class="n">netfile</span> <span class="o">=</span> <span class="n">netfile</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_index.nc&quot;</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">flag</span><span class="p">:</span>
         <span class="n">nf1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">netfile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;NETCDF4&#39;</span><span class="p">)</span>
 
@@ -1484,10 +1689,11 @@
         <span class="n">nf1</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">cbinding</span> <span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;CWATM output maps&#39;</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">Conventions</span> <span class="o">=</span> <span class="s1">&#39;CF-1.6&#39;</span>
-        <span class="k">if</span> <span class="s1">&#39;save_git&#39;</span> <span class="ow">in</span> <span class="n">option</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s2">&quot;save_git&quot;</span><span class="p">):</span>
-                <span class="kn">import</span> <span class="nn">git</span>
-                <span class="n">nf1</span><span class="o">.</span><span class="n">git_commit</span> <span class="o">=</span> <span class="n">git</span><span class="o">.</span><span class="n">Repo</span><span class="p">(</span><span class="n">search_parent_directories</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hexsha</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">git</span>
+            <span class="n">nf1</span><span class="o">.</span><span class="n">git_commit</span> <span class="o">=</span> <span class="n">git</span><span class="o">.</span><span class="n">Repo</span><span class="p">(</span><span class="n">search_parent_directories</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hexsha</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">ii</span> <span class="o">=</span><span class="mi">1</span>
 
         <span class="c1"># put the additional genaral meta data information from the xml file into the netcdf file</span>
         <span class="c1"># infomation from the settingsfile comes first</span>
@@ -1511,26 +1717,42 @@
                 <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;modflow_y&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
 
         <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">latlon</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
                 <span class="n">lon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>  <span class="c1"># x 1000</span>
                 <span class="n">longitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,))</span>
+                <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]:</span>
                     <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;longitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
-            <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-                <span class="n">lon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
-                <span class="n">longitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,))</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]:</span>
-                    <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;longitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
             <span class="k">if</span> <span class="s1">&#39;y&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
                 <span class="n">lat</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>  <span class="c1"># x 950</span>
                 <span class="n">latitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]:</span>
                     <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
-            <span class="k">if</span> <span class="s1">&#39;lat&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-                <span class="n">lat</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>  <span class="c1"># x 950</span>
-                <span class="n">latitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]:</span>
-                    <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+            <span class="c1"># SHMI meteorogist have a capital X and Y</span>
+            <span class="k">if</span> <span class="s1">&#39;X&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">lon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>  <span class="c1"># x 1000</span>
+                <span class="n">longitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,))</span>
+                <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]:</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;longitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="s1">&#39;Y&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">lat</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>  <span class="c1"># x 950</span>
+                <span class="n">latitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]:</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">latlon</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="n">lon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+                    <span class="n">longitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,))</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]:</span>
+                        <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;longitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="s1">&#39;lat&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="n">lat</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>  <span class="c1"># x 950</span>
+                    <span class="n">latitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]:</span>
+                        <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
 
         <span class="c1"># projection</span>
         <span class="k">if</span> <span class="s1">&#39;laea&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -1575,9 +1797,10 @@
             <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">nrdays</span><span class="p">)</span>
             <span class="n">time</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">&#39;time&#39;</span>
-            <span class="k">if</span> <span class="n">dateunit</span> <span class="o">==</span> <span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;Days since &#39;</span> <span class="o">+</span> <span class="n">yearstr</span> <span class="o">+</span> <span class="s1">&#39;-01-01&#39;</span>
-            <span class="k">if</span> <span class="n">dateunit</span> <span class="o">==</span> <span class="s2">&quot;months&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;Months since &#39;</span> <span class="o">+</span> <span class="n">yearstr</span> <span class="o">+</span> <span class="s1">&#39;-01-01&#39;</span>
-            <span class="k">if</span> <span class="n">dateunit</span> <span class="o">==</span> <span class="s2">&quot;years&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;Years since &#39;</span> <span class="o">+</span> <span class="n">yearstr</span> <span class="o">+</span> <span class="s1">&#39;-01-01&#39;</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;Days since &#39;</span> <span class="o">+</span> <span class="n">yearstr</span> <span class="o">+</span> <span class="s1">&#39;-01-01&#39;</span>
+            <span class="c1">#if dateunit == &quot;days&quot;: time.units = &#39;Days since &#39; + yearstr + &#39;-01-01&#39;</span>
+            <span class="c1">#if dateunit == &quot;months&quot;: time.units = &#39;Months since &#39; + yearstr + &#39;-01-01&#39;</span>
+            <span class="c1">#if dateunit == &quot;years&quot;: time.units = &#39;Years since &#39; + yearstr + &#39;-01-01&#39;</span>
             <span class="c1">#time.calendar = &#39;standard&#39;</span>
             <span class="n">time</span><span class="o">.</span><span class="n">calendar</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;calendar&#39;</span><span class="p">]</span>
 
@@ -1585,21 +1808,61 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">,</span>
                                            <span class="n">chunksizes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="n">latlon</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">,</span>
                                                <span class="n">chunksizes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
-                <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-                    <span class="c1">#value = nf1.createVariable(varname, &#39;f4&#39;, (&#39;time&#39;, &#39;lat&#39;, &#39;lon&#39;), zlib=True, fill_value=1e20)</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">,</span><span class="n">chunksizes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">))</span>
+                <span class="k">if</span> <span class="s1">&#39;X&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">,</span>
+                                               <span class="n">chunksizes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">latlon</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">netcdfindex</span><span class="p">:</span>
+                        <span class="n">size</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">sizeall</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;maskflat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                        <span class="n">index</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+                        <span class="n">index1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="s1">&#39;i4&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+                        <span class="n">indexlatlon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;indexlatlon&#39;</span><span class="p">,</span> <span class="n">sizeall</span><span class="p">)</span>
+                        <span class="n">indexlatlon1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;indexlatlon&#39;</span><span class="p">,</span> <span class="s1">&#39;i4&#39;</span><span class="p">,</span> <span class="s1">&#39;indexlatlon&#39;</span><span class="p">)</span>
+                        <span class="n">index1</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+                        <span class="n">indexlatlon1</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">sizeall</span><span class="p">)</span>
+                        <span class="n">latlon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;latlon&quot;</span><span class="p">,</span> <span class="s1">&#39;i1&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;indexlatlon&#39;</span><span class="p">))</span>
+                        <span class="n">latlon</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;maskflat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">,</span> <span class="n">chunksizes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                            <span class="c1">#value = nf1.createVariable(varname, &#39;f4&#39;, (&#39;time&#39;, &#39;lat&#39;, &#39;lon&#39;), zlib=True, fill_value=1e20)</span>
+                            <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">,</span><span class="n">chunksizes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
           <span class="k">if</span> <span class="n">modflow</span><span class="p">:</span>
               <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
           <span class="k">else</span><span class="p">:</span>
+              <span class="n">latlon</span> <span class="o">=</span> <span class="kc">True</span>
               <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                  <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
                   <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
-              <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-                  <span class="c1"># for world lat/lon coordinates</span>
-                  <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
+              <span class="k">if</span> <span class="s1">&#39;X&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                  <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
+                  <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
+              <span class="k">if</span> <span class="n">latlon</span><span class="p">:</span>
+                  <span class="k">if</span> <span class="n">netcdfindex</span><span class="p">:</span>
+                      <span class="n">size</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                      <span class="n">sizeall</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;maskflat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                      <span class="n">index</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+                      <span class="n">index1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="s1">&#39;i4&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">)</span>
+                      <span class="n">indexlatlon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;indexlatlon&#39;</span><span class="p">,</span> <span class="n">sizeall</span><span class="p">)</span>
+                      <span class="n">indexlatlon1</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;indexlatlon&#39;</span><span class="p">,</span> <span class="s1">&#39;i4&#39;</span><span class="p">,</span> <span class="s1">&#39;indexlatlon&#39;</span><span class="p">)</span>
+                      <span class="n">index1</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+                      <span class="n">indexlatlon1</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">sizeall</span><span class="p">)</span>
+                      <span class="n">latlon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;latlon&quot;</span><span class="p">,</span> <span class="s1">&#39;i1&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;indexlatlon&#39;</span><span class="p">))</span>
+                      <span class="n">latlon</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;maskflat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+                      <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
+                  <span class="k">else</span><span class="p">:</span>
+                      <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                         <span class="c1"># for world lat/lon coordinates</span>
+                         <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
 
         <span class="n">value</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="n">getmeta</span><span class="p">(</span><span class="s2">&quot;standard_name&quot;</span><span class="p">,</span><span class="n">prename</span><span class="p">,</span><span class="n">varname</span><span class="p">)</span>
         <span class="n">p1</span> <span class="o">=</span> <span class="n">getmeta</span><span class="p">(</span><span class="s2">&quot;long_name&quot;</span><span class="p">,</span><span class="n">prename</span><span class="p">,</span><span class="n">prename</span><span class="p">)</span>
@@ -1618,12 +1881,10 @@
 
     <span class="k">if</span> <span class="n">flagTime</span><span class="p">:</span>
         <span class="n">date_time</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">dateunit</span> <span class="o">==</span> <span class="s2">&quot;days&quot;</span><span class="p">:</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">posCnt</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">date2num</span><span class="p">(</span><span class="n">timeStamp</span><span class="p">,</span> <span class="n">date_time</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">date_time</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">dateunit</span> <span class="o">==</span> <span class="s2">&quot;months&quot;</span><span class="p">:</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">posCnt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">timeStamp</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="mi">1901</span><span class="p">)</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">+</span> <span class="n">timeStamp</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">dateunit</span> <span class="o">==</span> <span class="s2">&quot;years&quot;</span><span class="p">:</span>  <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">posCnt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">timeStamp</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="mi">1901</span>
-
-        <span class="c1">#nf1.variables[&#39;time&#39;][posCnt - 1] = 60 + posCnt</span>
-
+        <span class="c1"># if dateunit is month or year then set date to the first days of the period</span>
+        <span class="k">if</span> <span class="n">dateunit</span> <span class="o">==</span> <span class="s2">&quot;months&quot;</span><span class="p">:</span> <span class="n">timeStamp</span> <span class="o">=</span> <span class="n">timeStamp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dateunit</span> <span class="o">==</span> <span class="s2">&quot;years&quot;</span><span class="p">:</span> <span class="n">timeStamp</span> <span class="o">=</span> <span class="n">timeStamp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">month</span> <span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">][</span><span class="n">posCnt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">date2num</span><span class="p">(</span><span class="n">timeStamp</span><span class="p">,</span> <span class="n">date_time</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">date_time</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
 
     <span class="n">mapnp</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;maskall&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
@@ -1637,6 +1898,17 @@
 
     <span class="k">if</span> <span class="n">modflow</span><span class="p">:</span>
         <span class="n">mapnp</span> <span class="o">=</span> <span class="n">inputmap</span>
+    <span class="k">elif</span> <span class="n">netcdfindex</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">flagTime</span><span class="p">:</span>
+            <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">varname</span><span class="p">][</span><span class="n">posCnt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">inputmap</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># without timeflag</span>
+            <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">varname</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">inputmap</span>
+        <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">flag</span>
+
+
     <span class="k">else</span><span class="p">:</span>
         <span class="n">mapnp</span><span class="p">[</span><span class="o">~</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;maskflat&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">inputmap</span><span class="p">[:]</span>
         <span class="c1">#mapnp = mapnp.reshape(maskinfo[&#39;shape&#39;]).data</span>
@@ -1698,26 +1970,40 @@
 
 
     <span class="c1"># Dimension</span>
+    <span class="n">latlon</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">lon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>  <span class="c1"># x 1000</span>
         <span class="n">longitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]:</span>
             <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;longitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
-    <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="n">lon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
-        <span class="n">longitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,))</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]:</span>
-            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;longitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
     <span class="k">if</span> <span class="s1">&#39;y&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="n">lat</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>  <span class="c1"># x 950</span>
         <span class="n">latitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]:</span>
             <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
-    <span class="k">if</span> <span class="s1">&#39;lat&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="n">lat</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>  <span class="c1"># x 950</span>
-        <span class="n">latitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]:</span>
-            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="s1">&#39;X&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>  <span class="c1"># x 1000</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;longitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="s1">&#39;Y&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">lat</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>  <span class="c1"># x 950</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">latlon</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+            <span class="n">longitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]:</span>
+                <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;longitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="s1">&#39;lat&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>  <span class="c1"># x 950</span>
+            <span class="n">latitude</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]:</span>
+                <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;latitude.&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">metadataNCDF</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span>
 
     <span class="c1"># projection</span>
     <span class="k">if</span> <span class="s1">&#39;laea&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
@@ -1744,12 +2030,17 @@
 
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">varname</span> <span class="ow">in</span> <span class="n">varlist</span><span class="p">:</span>
-
+        <span class="n">latlon</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-            <span class="c1"># for world lat/lon coordinates</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;X&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">latlon</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">latlon</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;lon&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">metadataNCDF</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="c1"># for world lat/lon coordinates</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">varname</span><span class="p">,</span> <span class="s1">&#39;f8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">),</span> <span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">1e20</span><span class="p">)</span>
 
         <span class="n">value</span><span class="o">.</span><span class="n">standard_name</span><span class="o">=</span> <span class="n">getmeta</span><span class="p">(</span><span class="s2">&quot;standard_name&quot;</span><span class="p">,</span><span class="n">varname</span><span class="p">,</span><span class="n">varname</span><span class="p">)</span>
         <span class="n">value</span><span class="o">.</span><span class="n">long_name</span><span class="o">=</span> <span class="n">getmeta</span><span class="p">(</span><span class="s2">&quot;long_name&quot;</span><span class="p">,</span><span class="n">varname</span><span class="p">,</span><span class="n">varname</span><span class="p">)</span>

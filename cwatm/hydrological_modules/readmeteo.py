@@ -1,11 +1,12 @@
 # -------------------------------------------------------------------------
 # Name:        READ METEO input maps
-# Purpose:
+# Purpose: Meteorological data reader and processor for climate forcing inputs.
+# Manages temporal reading and processing of weather data from NetCDF files.
+# Handles multiple meteorological variables with temporal interpolation and validation.
 #
-# Author:      PB
-#
+# Author:      PB, MS, SH, JdB
 # Created:     13/07/2016 
-# Copyright:   (c) PB 2016
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
 
 from cwatm.management_modules.data_handling import *
@@ -14,86 +15,117 @@ from scipy.interpolate import RegularGridInterpolator
 
 class readmeteo(object):
     """
-    READ METEOROLOGICAL DATA
-
-    reads all meteorological data from netcdf4 files
+    Meteorological data reader and processor for CWatM.
+    
+    Handles reading meteorological forcing data from NetCDF files, performs
+    spatial downscaling using WorldClim data, manages temporal interpolation,
+    and provides data preprocessing for hydrological calculations.
+    
+    Attributes
+    ----------
+    model : object
+        Reference to the main CWatM model instance
+    var : object
+        Reference to model variables object containing state variables
 
     **Global variables**
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    DtDay                                Array         seconds in a timestep (default=86400)                                   s    
+    con_precipitation                    Array         conversion factor for precipitation                                     --   
+    con_e                                Array         conversion factor for evaporation                                       --   
+    meteo                                Array         store all meteo data in memeory for warm start (eg calibration)         compl
+    ETRef                                Array         potential evapotranspiration rate from reference crop                   m    
+    Precipitation                        Array         Precipitation (input for the model)                                     m    
+    pet_modus                            Number        Index which ETP approach is used e.g. 1 for Penman-Monteith             bool 
+    only_radiation                       Flag          Boolean if only radiation is use for calculation e.g JRC EMO dataset    bool 
+    TMin                                 Array         minimum air temperature                                                 K    
+    TMax                                 Array         maximum air temperature                                                 K    
+    Tavg                                 Array         Input, average air Temperature                                          K    
+    Rsds                                 Array         short wave downward surface radiation fluxes                            W/m2 
+    EAct                                 Array         Daily vapor pressure                                                    hPa  
+    Psurf                                Array         Instantaneous surface pressure                                          Pa   
+    Qair                                 Array         specific humidity                                                       kg/kg
+    Rsdl                                 Array         long wave downward surface radiation fluxes                             W/m2 
+    Wind                                 Array         wind speed                                                              m/s  
+    EWRef                                Array         potential evaporation rate from water surface                           m    
+    includeGlaciers                      Flag          Include glaciers                                                        bool 
+    meteomapsscale                       Array         if meteo maps have the same extend as the other spatial static maps ->  --   
+    meteodown                            Array         if meteo maps should be downscaled                                      --   
+    InterpolationMethod                  Number        can be spline or kron                                                   Strin
+    buffer                               List                                                                                  --   
+    includeOnlyGlaciersMelt              Flag          Include only glacier melt but not rain on glacier                       bool 
+    preMaps                              Array         choose between steady state precipitation maps for steady state modflo  --   
+    tempMaps                             Array         choose between steady state temperature maps for steady state modflow   --   
+    evaTMaps                             Array         choose between steady state ETP water maps for steady state modflow or  --   
+    eva0Maps                             Array         choose between steady state ETP reference maps for steady state modflo  --   
+    RSDSMaps                             Array         Surface Downwelling Shortwave Radiation                                 w/m2 
+    RSDLMaps                             Array         Surface Downwelling Longwave Radiation                                  W/m2 
+    glaciermeltMaps                      Array         Melt from glacier                                                       m    
+    glacierrainMaps                      Array         Rain on glacier                                                         m    
+    snowmelt_radiation                   Array                                                                                 --   
+    wc2_tavg                             Array         High resolution WorldClim map for average temperature                   K    
+    wc4_tavg                             Array         upscaled to low resolution WorldClim map for average temperature        K    
+    wc2_tmin                             Array         High resolution WorldClim map for min temperature                       K    
+    wc4_tmin                             Array         upscaled to low resolution WorldClim map for min temperature            K    
+    wc2_tmax                             Array         High resolution WorldClim map for max temperature                       K    
+    wc4_tmax                             Array         upscaled to low resolution WorldClim map for max temperature            K    
+    wc2_prec                             Array         High resolution WorldClim map for precipitation                         m    
+    wc4_prec                             Array         upscaled to low resolution WorldClim map for precipitation              m    
+    xcoarse_prec                         List                                                                                  --   
+    ycoarse_prec                         List                                                                                  --   
+    xfine_prec                           List                                                                                  --   
+    yfine_prec                           List                                                                                  --   
+    meshlist_prec                        List                                                                                  --   
+    xcoarse_tavg                         List                                                                                  --   
+    ycoarse_tavg                         List                                                                                  --   
+    xfine_tavg                           List                                                                                  --   
+    yfine_tavg                           List                                                                                  --   
+    meshlist_tavg                        List                                                                                  --   
+    prec                                 Array         precipitation in kg m-2s-1 = mm/s (output variable)                     kg m-
+    temp                                 Array         average temperature in Celsius deg                                      Â°C  
+    WtoMJ                                Array         Conversion factor from [W] to [MJ] for radiation: 86400 * 1E-6          --   
+    GlacierMelt                          Array         melt from glacier                                                       m    
+    GlacierRain                          Array         rain on glacier                                                         m    
+    SnowFactor                           Array         Multiplier applied to precipitation that falls as snow                  --   
+    ===================================  ==========    ======================================================================  =====
 
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    DtDay                                  seconds in a timestep (default=86400)                                   s    
-    con_precipitation                      conversion factor for precipitation                                     --   
-    con_e                                  conversion factor for evaporation                                       --   
-    ETRef                                  potential evapotranspiration rate from reference crop                   m    
-    Precipitation                          Precipitation (input for the model)                                     m    
-    only_radiation                                                                                                  --
-    TMin                                   minimum air temperature                                                 K    
-    TMax                                   maximum air temperature                                                 K    
-    Tavg                                   Input, average air Temperature                                          K    
-    Rsds                                   short wave downward surface radiation fluxes                            W/m2 
-    EAct                                                                                                           --   
-    Psurf                                  Instantaneous surface pressure                                          Pa   
-    Qair                                   specific humidity                                                       kg/kg
-    Rsdl                                   long wave downward surface radiation fluxes                             W/m2 
-    Wind                                   wind speed                                                              m/s  
-    EWRef                                  potential evaporation rate from water surface                           m    
-    meteomapsscale                         if meteo maps have the same extend as the other spatial static maps ->  --   
-    meteodown                              if meteo maps should be downscaled                                      --   
-    InterpolationMethod                                                                                            --   
-    buffer                                                                                                         --   
-    preMaps                                choose between steady state precipitation maps for steady state modflo  --   
-    tempMaps                               choose between steady state temperature maps for steady state modflow   --   
-    evaTMaps                               choose between steady state ETP water maps for steady state modflow or  --   
-    eva0Maps                               choose between steady state ETP reference maps for steady state modflo  --   
-    glaciermeltMaps                                                                                                --   
-    glacierrainMaps                                                                                                --   
-    wc2_tavg                               High resolution WorldClim map for average temperature                   K    
-    wc4_tavg                               upscaled to low resolution WorldClim map for average temperature        K    
-    wc2_tmin                               High resolution WorldClim map for min temperature                       K    
-    wc4_tmin                               upscaled to low resolution WorldClim map for min temperature            K    
-    wc2_tmax                               High resolution WorldClim map for max temperature                       K    
-    wc4_tmax                               upscaled to low resolution WorldClim map for max temperature            K    
-    wc2_prec                               High resolution WorldClim map for precipitation                         m    
-    wc4_prec                               upscaled to low resolution WorldClim map for precipitation              m    
-    xcoarse_prec                                                                                                   --   
-    ycoarse_prec                                                                                                   --   
-    xfine_prec                                                                                                     --   
-    yfine_prec                                                                                                     --   
-    meshlist_prec                                                                                                  --   
-    xcoarse_tavg                                                                                                   --   
-    ycoarse_tavg                                                                                                   --   
-    xfine_tavg                                                                                                     --   
-    yfine_tavg                                                                                                     --   
-    meshlist_tavg                                                                                                  --   
-    meteo                                                                                                          --   
-    prec                                   precipitation in m                                                      m    
-    temp                                   average temperature in Celsius deg                                      °C   
-    WtoMJ                                  Conversion factor from [W] to [MJ] for radiation: 86400 * 1E-6          --   
-    includeGlaciers                                                                                                --   
-    includeOnlyGlaciersMelt                                                                                        --   
-    GlacierMelt                                                                                                    --   
-    GlacierRain                                                                                                    --   
-    =====================================  ======================================================================  =====
-
-
-    **Functions**
     """
 
     def __init__(self, model):
+        """
+        Initialize meteorological data reader.
+        
+        Parameters
+        ----------
+        model : object
+            CWatM model instance providing access to variables and configuration
+        """
         self.model = model
         self.var = model.var
 
     def initial(self):
         """
-        Initial part of meteo
-
-        read multiple file of input
+        Initialize meteorological data processing configuration.
+        
+        Sets up spatial resolution relationships between meteorological forcing
+        data and model domain, configures downscaling parameters, determines
+        required meteorological variables based on evapotranspiration method,
+        and prepares data structures for efficient data access.
+        
+        Notes
+        -----
+        Key initialization tasks:
+        - Resolution matching between meteo data and model grid
+        - WorldClim downscaling configuration setup
+        - Variable selection based on PET calculation method
+        - Coordinate system and spatial extent validation
+        - Multi-file NetCDF data preparation
         """
 
         # fit meteorological forcing data to size and resolution of mask map
-        #-------------------------------------------------------------------
+        # -------------------------------------------------------------------
 
         name = cbinding('PrecipitationMaps')
         nameall = glob.glob(os.path.normpath(name))
@@ -104,21 +136,23 @@ class readmeteo(object):
         latmeteo, lonmeteo, cell, invcellmeteo, rows, cols = readCoordNetCDF(namemeteo)
 
         nameldd = cbinding('Ldd')
-        #nameldd = os.path.splitext(nameldd)[0] + '.nc'
-        #latldd, lonldd, cell, invcellldd, row, cols = readCoordNetCDF(nameldd)
+        # nameldd = os.path.splitext(nameldd)[0] + '.nc'
+        # latldd, lonldd, cell, invcellldd, row, cols = readCoordNetCDF(nameldd)
         latldd, lonldd, cell, invcellldd, rows, cols = readCoord(nameldd)
         maskmapAttr['reso_mask_meteo'] = round(invcellldd / invcellmeteo)
 
         # if meteo maps have the same extend as the other spatial static maps -> meteomapsscale = True
         self.var.meteomapsscale = True
         if invcellmeteo != invcellldd:
-            if (not(Flags['quiet'])) and (not(Flags['veryquiet'])) and (not(Flags['check'])):
-                msg = "Resolution of meteo forcing is " + str(maskmapAttr['reso_mask_meteo']) + " times higher than base maps."
+            if (not (Flags['quiet'])) and (not (Flags['veryquiet'])) and (not (Flags['check'])):
+                msg = ("Resolution of meteo forcing is " + str(maskmapAttr['reso_mask_meteo']) + 
+                       " times higher than base maps.")
                 print(msg)
             self.var.meteomapsscale = False
 
         cutmap[0], cutmap[1], cutmap[2], cutmap[3] = mapattrNetCDF(nameldd)
-        for i in range(4): cutmapFine[i] = cutmap[i]
+        for i in range(4):
+            cutmapFine[i] = cutmap[i]
 
         # for downscaling meteomaps , Wordclim data at a finer resolution is used
         # here it is necessary to clip the wordclim data so that they fit to meteo dataset
@@ -189,7 +223,16 @@ class readmeteo(object):
         if 'only_radiation' in binding:
             self.var.only_radiation = returnBool('only_radiation')
 
+        # read PET modus if snowmelt radiation is used
+        if self.var.snowmelt_radiation:
+            self.var.pet_modus = checkOption('PET_modus')
+
         if checkOption('calc_evaporation'):
+            # if PET_modus is missing use Penman Monteith
+            self.var.pet_modus = 1
+            if "PET_modus" in option:
+                self.var.pet_modus = checkOption('PET_modus')
+
             if self.var.only_radiation:
                 # if addiation snowmlet from radiation
                 if self.var.snowmelt_radiation:
@@ -203,6 +246,14 @@ class readmeteo(object):
                     meteomaps.append('QAirMaps')
                 else:
                     meteomaps.append('RhsMaps')
+            if self.var.pet_modus == 4:
+                # Priestley-Taylor: tmin, tmax, tavg, rsds, rlds (or rsd)
+                if not(self.var.only_radiation):
+                    meteomaps = [self.var.preMaps, self.var.tempMaps, 'TminMaps', 'TmaxMaps','RSDSMaps', 'RSDLMaps']
+            if self.var.pet_modus == 5:
+                # for modified Thornthwaite: uses only tmin, tmax, tavg
+                meteomaps = [self.var.preMaps, self.var.tempMaps, 'TminMaps', 'TmaxMaps']
+
 
             if self.var.includeGlaciers:
                 meteomaps.append(self.var.glaciermeltMaps)
@@ -252,59 +303,9 @@ class readmeteo(object):
 
         # read dem for making a anomolydem between high resolution dem and low resoultion dem
 
-        """
-        # for downscaling1
-        dem = loadmap('Elevation', compress = False, cut = False)
-        demHigh = dem[cutmapFine[2]*6:cutmapFine[3]*6, cutmapFine[0]*6:cutmapFine[1]*6]
-        rows = demHigh.shape[0]
-        cols = demHigh.shape[1]
-        dem2 = demHigh.reshape(rows/6,6,cols/6,6)
-        dem3 = np.average(dem2, axis=(1, 3))
-        demLow = np.kron(dem3, np.ones((6, 6)))
-
-        demAnomaly = demHigh - demLow
-        self.var.demHigh = compressArray(demHigh[cutmapVfine[2]:cutmapVfine[3], cutmapVfine[0]:cutmapVfine[1]],pcr = False)
-        self.var.demAnomaly = compressArray(demAnomaly[cutmapVfine[2]:cutmapVfine[3], cutmapVfine[0]:cutmapVfine[1]],pcr = False)
-        """
-
 # --------------------------------------------------------------------------
 # --------------------------------------------------------------------------
 
-    #def downscaling1(self,input, downscale = 0):
-        """
-        Downscaling based on elevation correction for temperature and pressure
-
-        :param input:
-        :param downscale: 0 for no change, 1: for temperature change 6 deg per 1km , 2 for psurf
-        :return: input - downscaled input data
-
-        """
-        """
-        # if meteo maps have the same extend as the other spatial static maps -> meteomapsscale = True
-        if not self.var.meteomapsscale:
-            down1 = np.kron(input, np.ones((6, 6)))
-            down2 = down1[cutmapVfine[2]:cutmapVfine[3], cutmapVfine[0]:cutmapVfine[1]].astype(np.float64)
-            down3 = compressArray(down2)
-            if downscale == 0:
-                input = down3
-
-            if downscale == 1:
-                # temperature scaling 6 deg per 1000m difference in altitude
-                # see overview in Minder et al 2010 - http://onlinelibrary.wiley.com/doi/10.1029/2009JD013493/full
-                tempdiff = -0.006 * self.var.demAnomaly
-                input = down3 + tempdiff
-            if downscale == 2:
-                # psurf correction
-                # https://www.sandhurstweather.org.uk/barometric.pdf
-                # factor = exp(-elevation / (Temp x 29.263)  Temp in deg K
-                demLow = self.var.demHigh - self.var.demAnomaly
-                tavgK = self.var.Tavg + 273.15
-                factor1 = np.exp(-1 * demLow / (tavgK * 29.263))
-                factor2 = np.exp(-1 * self.var.demHigh / (tavgK * 29.263))
-                sealevelpressure = down3 / factor1
-                input = sealevelpressure * factor2
-        return input
-        """
 
     # def downscaling2_peter(self,input, downscaleName = "", wc2 = 0 , wc4 = 0, x=None, y=None, xfine=None, yfine=None, meshlist=None, downscale = 0):
     #     """
@@ -378,25 +379,56 @@ class readmeteo(object):
 
     def downscaling2(self,input, downscaleName = "", wc2 = 0 , wc4 = 0, x=None, y=None, xfine=None, yfine=None, meshlist=None, MaskMapBoundaries= None, downscale = 0):
         """
-        Downscaling based on Delta method:
-
-        Note:
-
-            | **References**
-            | Moreno and Hasenauer  2015:
-            | ftp://palantir.boku.ac.at/Public/ClimateData/Moreno_et_al-2015-International_Journal_of_Climatology.pdf
-            | Mosier et al. 2018:
-            | http://onlinelibrary.wiley.com/doi/10.1002/joc.5213/epdf\
-
-        :param input: low input map
-        :param downscaleName: High resolution monthly map from WorldClim
-        :param wc2: High resolution WorldClim map
-        :param wc4: upscaled to low resolution
-        :param MaskMapBoundaries: if 1 maskmap does not touch meteo input dataset boundary, if 0 maskmap touches it
-        :param downscale: 0 for no change, 1: for temperature , 2 for pprecipitation, 3 for psurf
-        :return: input - downscaled input data
-        :return: wc2
-        :return: wc4
+        Spatially downscale meteorological data using delta method with WorldClim.
+        
+        Performs statistical downscaling of coarse-resolution meteorological data
+        to higher spatial resolution using high-resolution climatological data
+        from WorldClim. Supports multiple interpolation methods including spline,
+        bilinear, and Kronecker product approaches.
+        
+        Parameters
+        ----------
+        input : numpy.ndarray
+            Coarse-resolution input meteorological data
+        downscaleName : str, optional
+            Name of high-resolution WorldClim dataset for downscaling
+        wc2 : numpy.ndarray, optional
+            High-resolution WorldClim climatological data
+        wc4 : numpy.ndarray, optional
+            WorldClim data upscaled to input resolution
+        x : numpy.ndarray, optional
+            Coarse grid x-coordinates for bilinear interpolation
+        y : numpy.ndarray, optional
+            Coarse grid y-coordinates for bilinear interpolation
+        xfine : numpy.ndarray, optional
+            Fine grid x-coordinates for bilinear interpolation
+        yfine : numpy.ndarray, optional
+            Fine grid y-coordinates for bilinear interpolation
+        meshlist : list, optional
+            Mesh coordinates for bilinear interpolation
+        MaskMapBoundaries : tuple, optional
+            Boundary flags indicating if mask touches input data boundaries
+        downscale : int, optional
+            Downscaling mode: 0=no scaling, 1=temperature, 2=precipitation
+            
+        Returns
+        -------
+        numpy.ndarray or tuple
+            Downscaled meteorological data and auxiliary arrays
+            
+        Notes
+        -----
+        Implements delta method downscaling based on:
+        - Temperature: additive corrections using climatological differences
+        - Precipitation: multiplicative corrections using climatological ratios
+        
+        References
+        ----------
+        Moreno and Hasenauer (2015): Spatial downscaling of European 
+        climate data. International Journal of Climatology.
+        
+        Mosier et al. (2018): 30-arcsecond monthly climate surfaces 
+        with global land coverage. International Journal of Climatology.
         """
         reso = maskmapAttr['reso_mask_meteo']
         resoint = int(reso)
@@ -404,6 +436,7 @@ class readmeteo(object):
         if self.var.InterpolationMethod == 'bilinear' and (downscale == 1 or downscale == 2):
 
             buffer1, buffer2, buffer3, buffer4 = MaskMapBoundaries
+            buffer = buffer1
             #if 1: does not touch boundaries of meteo input map, if 0 touches boundary of input map
             # to perform bilinear interpolation a buffer around the maskmap is needed, if maskmap touches bounary of input map an artifical buffer has to be created by duplicating the last row/column
             if buffer1 == 0:
@@ -439,7 +472,7 @@ class readmeteo(object):
           # this is creating an array resoint times bigger than input, by copying each item resoint times in x and y direction
             down3 = np.kron(input, np.ones((resoint, resoint)))
         else:
-            down3 = np.kron(input[buffer:-buffer, buffer:-buffer], np.ones((resoint, resoint)))
+            down3 = np.kron(input[buffer2:buffer1, buffer4:buffer3], np.ones((resoint, resoint)))
 
 
         if downscale == 0:
@@ -475,11 +508,11 @@ class readmeteo(object):
                         wc2 = wc1[int(np.floor((cutmapGlobal[2] - buffer) * reso)):int(
                                     np.ceil((cutmapGlobal[3] + buffer) * reso)),int(np.floor((cutmapGlobal[0]) * reso)) : int(np.ceil((cutmapGlobal[1] + buffer * 2) * reso))]
                     else:
-                        wc2 = wc1[int(np.floor((cutmapGlobal[2] - buffer) * reso)):int(
-                                    np.ceil((cutmapGlobal[3] + buffer) * reso)),
-                                      int(np.floor((cutmapGlobal[0] - buffer) * reso)):int(
-                                          np.ceil((cutmapGlobal[1] + buffer) * reso))]
-                else:
+                        wc2 = wc1[int(np.floor((cutmapGlobal[2] - buffer2) * reso)):int(
+                                    np.ceil((cutmapGlobal[3] + buffer1) * reso)),
+                                      int(np.floor((cutmapGlobal[0] - buffer4) * reso)):int(
+                                          np.ceil((cutmapGlobal[1] + buffer3) * reso))]
+                else: # non bilinear
                     wc2 = wc1[(cutmapGlobal[2] - buffer) * resoint: (cutmapGlobal[3] + buffer) * resoint,
                           (cutmapGlobal[0] - buffer) * resoint: (cutmapGlobal[1] + buffer) * resoint]
                 rows = wc2.shape[0]
@@ -541,7 +574,7 @@ class readmeteo(object):
                 quotSmooth = quotSmooth.reshape(len(xfine), len(yfine), order='F')
                 crop = int(resoint/2)
                 quotSmooth = quotSmooth[crop:-crop, crop:-crop]
-                down1 = wc2[buffer * resoint:-buffer * resoint, buffer * resoint:-buffer * resoint] * quotSmooth
+                down1 = wc2[buffer2 * resoint:buffer1 * resoint, buffer4 * resoint:buffer3 * resoint] * quotSmooth
             elif self.var.InterpolationMethod == 'kron':
                 down1 = down3 * wc4
 
@@ -562,17 +595,28 @@ class readmeteo(object):
 
     def dynamic(self):
         """
-        Dynamic part of the readmeteo module
-
-        Read meteo input maps from netcdf files
-
-        Note:
-            If option *calc_evaporation* is False only precipitation, avg. temp., and 2 evaporation vlaues are read
-            Otherwise all the variable needed for Penman-Monteith
-
-        Note:
-            If option *TemperatureInKelvin* = True temperature is assumed to be Kelvin instead of Celsius!
-
+        Read and process meteorological data for current time step.
+        
+        Loads meteorological forcing data from NetCDF files for the current time step,
+        applies spatial downscaling when configured, performs unit conversions,
+        and validates data ranges. Handles different variable sets depending on
+        evapotranspiration calculation method.
+        
+        Notes
+        -----
+        Processing workflow:
+        - Load precipitation data and convert units
+        - Read temperature data with Kelvin/Celsius handling
+        - Apply spatial downscaling when configured
+        - Load additional variables based on PET method
+        - Perform data validation and range checks
+        - Store data for calibration mode if enabled
+        
+        Variable loading depends on configuration:
+        - Basic mode: precipitation, temperature, reference ET
+        - Full PET mode: additional temperature extremes, humidity, wind, pressure
+        - Radiation mode: solar and longwave radiation data
+        - Glacier mode: glacier-specific precipitation and melt data
         """
         if Flags['warm']:
             # if warmstart use stored meteo variables
@@ -618,7 +662,7 @@ class readmeteo(object):
         self.var.prec = self.var.Precipitation / self.var.con_precipitation
         # precipitation (conversion to [m] per time step)  `
         if Flags['check']:
-            checkmap(self.var.preMaps, "", self.var.Precipitation, True, True, self.var.Precipitation)
+            checkmap(self.var.preMaps, meteofiles[self.var.preMaps][flagmeteo[self.var.preMaps]][0], self.var.Precipitation)
 
 
         ZeroKelvin = 0.0
@@ -667,34 +711,37 @@ class readmeteo(object):
 
 
         if Flags['check']:
-            checkmap(self.var.tempMaps, "", self.var.Tavg, True, True, self.var.Tavg)
+            checkmap(self.var.tempMaps, meteofiles[self.var.tempMaps][flagmeteo[self.var.tempMaps]][0], self.var.Tavg)
 
         if checkOption('calc_evaporation') or self.var.snowmelt_radiation:
             # for new snow calculation radiation is needed
-            if self.var.only_radiation:
-                # read daily calculated radiation [in KJ/m2/day]
-                # named here Rsds instead of rds, because use in evaproationPot in the same way as rsds
-                self.var.Rsds = readmeteodata('RGDMaps', dateVar['currDate'], addZeros=True, mapsscale=self.var.meteomapsscale)
-                self.var.Rsds = self.downscaling2(self.var.Rsds) * 0.000001  # convert from KJ to MJ/m2/day
-                # but for EMO it is 1e6 instead 1000 it seems it is J instead of KJ
-                # read daily vapor pressure [in hPa]
-                self.var.EAct = readmeteodata('EActMaps', dateVar['currDate'], addZeros=True, mapsscale=self.var.meteomapsscale)
-                self.var.EAct = self.downscaling2(self.var.EAct) * 0.1  # convert from hP to kP
-            else:
-                self.var.Rsds = readmeteodata('RSDSMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
-                self.var.Rsds = self.downscaling2(self.var.Rsds)
-                    # radiation surface downwelling shortwave maps [W/m2]
+            if self.var.pet_modus < 5:
+                # If evaporation is not modified Thornthwaite
+                # because with Priestley-Taylor or Thornthwaite there are no radiation maps
+                if self.var.only_radiation:
+                    # read daily calculated radiation [in KJ/m2/day]
+                    # named here Rsds instead of rds, because use in evaproationPot in the same way as rsds
+                    self.var.Rsds = readmeteodata('RGDMaps', dateVar['currDate'], addZeros=True, mapsscale=self.var.meteomapsscale)
+                    self.var.Rsds = self.downscaling2(self.var.Rsds) * 0.000001  # convert from KJ to MJ/m2/day
+                    # but for EMO it is 1e6 instead 1000 it seems it is J instead of KJ
+                    # read daily vapor pressure [in hPa]
+                    self.var.EAct = readmeteodata('EActMaps', dateVar['currDate'], addZeros=True, mapsscale=self.var.meteomapsscale)
+                    self.var.EAct = self.downscaling2(self.var.EAct) * 0.1  # convert from hP to kP
+                else:
+                    self.var.Rsds = readmeteodata('RSDSMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
+                    self.var.Rsds = self.downscaling2(self.var.Rsds)
+                        # radiation surface downwelling shortwave maps [W/m2]
 
-                self.var.Rsdl = readmeteodata('RSDLMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
-                self.var.Rsdl = self.downscaling2(self.var.Rsdl)
-                    # radiation surface downwelling longwave maps [W/m2]
+                    self.var.Rsdl = readmeteodata('RSDLMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
+                    self.var.Rsdl = self.downscaling2(self.var.Rsdl)
+                        # radiation surface downwelling longwave maps [W/m2]
 
-                # Conversion factor from [W] to [MJ]
-                self.var.WtoMJ = 86400 * 1E-6
+                    # Conversion factor from [W] to [MJ]
+                    self.var.WtoMJ = 86400 * 1E-6
 
-                # conversion from W/m2 to MJ/m2/day
-                self.var.Rsds = self.var.Rsds * self.var.WtoMJ
-                self.var.Rsdl = self.var.Rsdl * self.var.WtoMJ
+                    # conversion from W/m2 to MJ/m2/day
+                    self.var.Rsds = self.var.Rsds * self.var.WtoMJ
+                    self.var.Rsdl = self.var.Rsdl * self.var.WtoMJ
 
         # -----------------------------------------------------------------------
         # if evaporation has to be calculated load all the meteo map sets
@@ -717,7 +764,7 @@ class readmeteo(object):
                 self.var.TMin = self.downscaling2(self.var.TMin, "downscale_wordclim_tmin", self.var.wc2_tmin, self.var.wc4_tmin, downscale=0)
 
             if Flags['check']:
-                checkmap('TminMaps', "", self.var.TMin, True, True, self.var.TMin)
+                checkmap('TminMaps', meteofiles['TminMaps'][flagmeteo['TminMaps']][0], self.var.TMin)
 
             #self.var.TMax = readnetcdf2('TmaxMaps', dateVar['currDate'], addZeros = True, zeros = ZeroKelvin, meteo = True)
             self.var.TMax = readmeteodata('TmaxMaps', dateVar['currDate'], addZeros=True, zeros=ZeroKelvin, mapsscale = self.var.meteomapsscale, buffering= self.var.buffer)
@@ -732,42 +779,45 @@ class readmeteo(object):
             else:
                 self.var.TMax = self.downscaling2(self.var.TMax, "downscale_wordclim_tmin", self.var.wc2_tmax, self.var.wc4_tmax, downscale=0)
 
-            if Flags['check']: checkmap('TmaxMaps', "", self.var.TMax, True, True, self.var.TMax)
+            if Flags['check']:
+                checkmap('TmaxMaps', meteofiles['TmaxMaps'][flagmeteo['TmaxMaps']][0], self.var.TMax)
 
             if checkOption('TemperatureInKelvin'):
                 self.var.TMin -= ZeroKelvin
                 self.var.TMax -= ZeroKelvin
 
-            self.var.Wind = readmeteodata('WindMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
-            self.var.Wind = self.downscaling2(self.var.Wind)
+            if self.var.pet_modus < 4:
+                # with priestley ET or Thornewaite ET no wind, psurf,qair available
+                self.var.Wind = readmeteodata('WindMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
+                self.var.Wind = self.downscaling2(self.var.Wind)
                 # wind speed maps at 10m [m/s]
 
-            # Adjust wind speed for measurement height: wind speed measured at
-            # 10 m, but needed at 2 m height
-            # Shuttleworth, W.J. (1993) in Maidment, D.R. (1993), p. 4.36
-            self.var.Wind = self.var.Wind * 0.749
+                # Adjust wind speed for measurement height: wind speed measured at
+                # 10 m, but needed at 2 m height
+                # Shuttleworth, W.J. (1993) in Maidment, D.R. (1993), p. 4.36
+                self.var.Wind = self.var.Wind * 0.749
 
-            if not self.var.only_radiation:
+                if not self.var.only_radiation:
 
-                #self.var.Psurf = readnetcdf2('PSurfMaps', dateVar['currDate'], addZeros = True, meteo = True)
-                self.var.Psurf = readmeteodata('PSurfMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
-                self.var.Psurf = self.downscaling2(self.var.Psurf)
-                    # Instantaneous surface pressure[Pa]
+                    #self.var.Psurf = readnetcdf2('PSurfMaps', dateVar['currDate'], addZeros = True, meteo = True)
+                    self.var.Psurf = readmeteodata('PSurfMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
+                    self.var.Psurf = self.downscaling2(self.var.Psurf)
+                        # Instantaneous surface pressure[Pa]
 
-                if returnBool('useHuss'):
-                    #self.var.Qair = readnetcdf2('QAirMaps', dateVar['currDate'], addZeros = True, meteo = True)
-                    self.var.Qair = readmeteodata('QAirMaps', dateVar['currDate'], addZeros=True, mapsscale =self.var.meteomapsscale)
-                    # 2 m istantaneous specific humidity[kg / kg]
-                else:
-                    #self.var.Qair = readnetcdf2('RhsMaps', dateVar['currDate'], addZeros = True, meteo = True)
-                    self.var.Qair = readmeteodata('RhsMaps', dateVar['currDate'], addZeros=True, mapsscale =self.var.meteomapsscale)
-                self.var.Qair = self.downscaling2(self.var.Qair)
+                    if returnBool('useHuss'):
+                        #self.var.Qair = readnetcdf2('QAirMaps', dateVar['currDate'], addZeros = True, meteo = True)
+                        self.var.Qair = readmeteodata('QAirMaps', dateVar['currDate'], addZeros=True, mapsscale =self.var.meteomapsscale)
+                        # 2 m istantaneous specific humidity[kg / kg]
+                    else:
+                        #self.var.Qair = readnetcdf2('RhsMaps', dateVar['currDate'], addZeros = True, meteo = True)
+                        self.var.Qair = readmeteodata('RhsMaps', dateVar['currDate'], addZeros=True, mapsscale =self.var.meteomapsscale)
+                    self.var.Qair = self.downscaling2(self.var.Qair)
 
-                #--------------------------------------------------------
-                # conversions
+                    #--------------------------------------------------------
+                    # conversions
 
-                # [Pa] to [KPa]
-                self.var.Psurf = self.var.Psurf * 0.001
+                    # [Pa] to [KPa]
+                    self.var.Psurf = self.var.Psurf * 0.001
 
 
         # if pot evaporation is already precalulated

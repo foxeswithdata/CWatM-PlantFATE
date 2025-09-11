@@ -219,7 +219,7 @@
 <span class="sd">    compress_LR                            boolean map as mask map for compressing lake/reservoir                  --   </span>
 <span class="sd">    lakeArea                               area of each lake/reservoir                                             m2   </span>
 <span class="sd">    lakeEvaFactorC                         compressed map of a factor which increases evaporation from lake becau  --   </span>
-<span class="sd">    EvapWaterBodyM                         Evaporation from lakes and reservoirs                                   m    </span>
+<span class="sd">    EvapWaterBodyMOutlet                         Evaporation from lakes and reservoirs                                   m    </span>
 <span class="sd">    lakeResInflowM                                                                                                 --   </span>
 <span class="sd">    lakeResOutflowM                                                                                                --   </span>
 <span class="sd">    downstruct                                                                                                     --   </span>
@@ -243,7 +243,7 @@
 <span class="sd">    prelakeResStorage                                                                                              --   </span>
 <span class="sd">    catchmentAll                                                                                                   --   </span>
 <span class="sd">    sumsideflow                                                                                                    --   </span>
-<span class="sd">    EvapoChannel                           Channel evaporation                                                     m3   </span>
+<span class="sd">    EvapoChannel                           Channel evaporation                                                     m</span>
 <span class="sd">    prechannelStorage                                                                                              --   </span>
 <span class="sd">    chanLength                             Input, Channel length                                                   m    </span>
 <span class="sd">    totalCrossSectionArea                                                                                          --   </span>
@@ -531,7 +531,7 @@
         <span class="c1"># put all the water area in which is not reflected in the lakes ,res</span>
         <span class="c1">#channelFraction = np.maximum(self.var.fracVegCover[5], channelFraction)</span>
 
-        <span class="n">EWRefact</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeEvaFactor</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EWRef</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">openWaterEvap</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">EWRefact</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeEvaFactor</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EWRef</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">openWaterEvap</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
         <span class="c1"># evaporation from channel minus the calculated evaporation from rainfall</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EvapoChannel</span> <span class="o">=</span> <span class="n">EWRefact</span> <span class="o">*</span> <span class="n">channelFraction</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span>
         <span class="c1">#self.var.EvapoChannel = self.var.EWRef * channelFraction * self.var.cellArea</span>
@@ -685,8 +685,8 @@
         <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;inflow&#39;</span><span class="p">):</span>
              <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">QInM3Old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">inflowM3</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="c1"># maybe later, but for now it is known as m3</span>
-        <span class="c1">#self.var.EvapoChannel = self.var.EvapoChannel / self.var.cellArea</span>
+        <span class="c1"># maybe later, but for now it is known as m3 -&gt; put this active again PB May 2024</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EvapoChannel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EvapoChannel</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span>
 
 
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">humanConsumption</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -699,6 +699,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">humanUse</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">actTransTotal_crops_nonIrr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
         <span class="c1">#self.var.natureUse = actTransTotal_grasslands - self.var.humanUse + self.var.EvapoChannel + self.var.sum_actBareSoilEvap + self.var.sum_interceptEvap + self.var.EvapWaterBodyM</span>
+        <span class="c1"># EvapWaterBodyM is EvapWaterBodyMOutlet spread over the lake</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">humanConsumption</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">act_nonIrrConsumption</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">actTransTotal_paddy</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">addtoevapotrans</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">actTransTotal_nonpaddy</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_openWaterEvap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">humanUse</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">act_nonIrrWithdrawal</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">act_irrWithdrawal</span> <span class="c1">#+ self.var.sum_openWaterEvap #+ self.var.leakage #+reservoir evaporation</span>
@@ -723,7 +724,7 @@
             <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;calcWaterBalance&#39;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">waterbalance_module</span><span class="o">.</span><span class="n">waterBalanceCheck</span><span class="p">(</span>
                     <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeResInflowM</span><span class="p">],</span>  <span class="c1"># In</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeResOutflowM</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EvapWaterBodyM</span><span class="p">]</span>  <span class="p">,</span>  <span class="c1"># Out  self.var.evapWaterBodyC</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeResOutflowM</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EvapWaterBodyMOutlet</span><span class="p">]</span>  <span class="p">,</span>  <span class="c1"># Out  self.var.evapWaterBodyC</span>
                     <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">prelakeResStorage</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span><span class="p">]</span> <span class="p">,</span>  <span class="c1"># prev storage</span>
                     <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeResStorage</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span><span class="p">],</span>
                     <span class="s2">&quot;lake_res&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -780,7 +781,7 @@
 <span class="sd">        if checkOption(&#39;calcWaterBalance&#39;): # [m3] without waterbodies</span>
 <span class="sd">            self.model.waterbalance_module.waterBalanceCheckSum(</span>
 <span class="sd">                [self.var.runoff * self.var.cellArea],  # In</span>
-<span class="sd">                [self.var.dis_outlet * self.var.DtSec, self.var.EvapoChannel, self.var.EvapWaterBodyM * self.var.cellArea],  # Out</span>
+<span class="sd">                [self.var.dis_outlet * self.var.DtSec, self.var.EvapoChannel, self.var.EvapWaterBodyMOutlet * self.var.cellArea],  # Out</span>
 <span class="sd">                [self.var.prechannelStorage, self.var.prelakeResStorage],   # prev storage</span>
 <span class="sd">                [self.var.channelStorage, self.var.lakeResStorage],</span>
 <span class="sd">                &quot;rout8&quot;, False)  # without waterbody</span>
@@ -788,10 +789,10 @@
 
 
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        a = readmap(&quot;C:\work\output/q_pcr&quot;)</span>
+<span class="sd">        a = readmap(&quot;C:/work/output/q_pcr&quot;)</span>
 <span class="sd">        b = nominal(a*100)</span>
 <span class="sd">        c = ifthenelse(b == 105779, scalar(9999), scalar(0))</span>
-<span class="sd">        report(c,&quot;C:\work\output/t3.map&quot;)</span>
+<span class="sd">        report(c,&quot;C:/work/output/t3.map&quot;)</span>
 <span class="sd">        d = compressArray(c)</span>
 <span class="sd">        np.where(d == 9999)   #23765</span>
 <span class="sd">        e = pcr2numpy(c, 0).astype(np.float64)</span>

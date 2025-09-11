@@ -234,19 +234,42 @@
         <span class="n">pd</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pandas&quot;</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">xl_settings_file_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Crops&#39;</span><span class="p">)</span>
 
-        <span class="c1"># Crops = [ [planting month, [length of growth stage i, kc_i, ky_i]_i]_c]</span>
+        <span class="c1"># Crops = [ [planting date, [length of growth stage i from planting, kc_i, ky_i]_i]_crop]</span>
         <span class="n">Crops</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">Crops_names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
             <span class="n">crop</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Planting month&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">growth_stage_end_month</span> <span class="o">=</span> <span class="mi">0</span>
 
-            <span class="n">growth_stage_end_month</span><span class="o">=</span><span class="mi">0</span>
+            <span class="c1"># crop = [planting date, [GS1, KC1, KY1], [GS1+GS2, KC2, KY2], ..., [GS1+GS2+GS3+GS4, KC4, KY4]]</span>
             <span class="k">for</span> <span class="n">gs</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
-                <span class="c1">#gs_parameters = [df[&#39;EM&#39; + str(gs)][i], df[&#39;KC&#39; + str(gs)][i], df[&#39;KY&#39; + str(gs)][i]]</span>
-
-                <span class="n">growth_stage_end_month</span><span class="o">+=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">gs</span><span class="p">)][</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">growth_stage_end_month</span> <span class="o">+=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">gs</span><span class="p">)][</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">gs_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">growth_stage_end_month</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;KC&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">gs</span><span class="p">)][</span><span class="n">i</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;KY&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">gs</span><span class="p">)][</span><span class="n">i</span><span class="p">]]</span>
                 <span class="n">crop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gs_parameters</span><span class="p">)</span>
+
+            <span class="c1"># If the crop inputs are given in days, we pre-calculate the annual cycle of crop coefficients</span>
+            <span class="c1"># using the first three crop coefficients and four growth stages, following the</span>
+            <span class="c1"># flat - linear increase - flat - linear decrease standard FAO/AEZ crop coefficient timeseries</span>
+
+            <span class="c1"># We detect if the crop inputs are given in days if the total growing season is less than 36:</span>
+            <span class="c1"># This assumes crops have growing to harvest lengths of less than 60 months and a minimum of 60 days</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">daily_crop_KC</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">growth_stage_end_month</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">daily_crop_KC</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="n">KC_crop_daily_stage_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;KC1&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span><span class="o">*</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS1&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">KC_crop_daily_stage_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;KC1&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS2&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;KC2&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS2&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span>
+                                         <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS2&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])]</span>
+                <span class="n">KC_crop_daily_stage_3</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;KC2&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span><span class="o">*</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS3&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">KC_crop_daily_stage_4</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;KC2&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS4&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]))</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;KC3&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS4&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span>
+                                         <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GS4&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])]</span>
+
+                <span class="c1"># crop = [planting date,</span>
+                <span class="c1">#        [length of growth stage i from planting, kc_i, ky_i]_i,</span>
+                <span class="c1">#        [growing cycle of daily KCs]]</span>
+
+                <span class="n">crop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">KC_crop_daily_stage_1</span> <span class="o">+</span> <span class="n">KC_crop_daily_stage_2</span> <span class="o">+</span> <span class="n">KC_crop_daily_stage_3</span> <span class="o">+</span> <span class="n">KC_crop_daily_stage_4</span><span class="p">)</span>
 
             <span class="n">Crops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">crop</span><span class="p">)</span>
             <span class="n">Crops_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Crop&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
@@ -255,17 +278,17 @@
 
 <div class="viewcode-block" id="initcondition.reservoir_transfers"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.initcondition.initcondition.reservoir_transfers">[docs]</a>    <span class="k">def</span> <span class="nf">reservoir_transfers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xl_settings_file_path</span><span class="p">):</span>
         <span class="n">pd</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;pandas&quot;</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">xl_settings_file_path</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Reservoir_transfers&#39;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">xl_settings_file_path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Reservoir_transfers&#39;</span><span class="p">)</span>
 
-        <span class="c1"># reservoir_transfers = [ [Giving reservoir, Receiving reservoir, fraction of live storage] ]</span>
+        <span class="c1"># reservoir_transfers = [ [Giving reservoir, Receiving reservoir, [366-day array of releases]] ]</span>
         <span class="n">reservoir_transfers</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
-            <span class="n">transfer</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Giving reservoir&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Receiving reservoir&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Fraction of live storage&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span>
-            <span class="k">if</span> <span class="n">transfer</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">reservoir_transfers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transfer</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="mi">5</span><span class="p">:]:</span>
+            <span class="n">releases</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="mi">4</span><span class="o">+</span><span class="n">day</span><span class="p">]</span> <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">366</span><span class="p">)]</span>
+            <span class="n">transfer</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="mi">2</span><span class="p">]),</span> <span class="n">releases</span><span class="p">]</span>
+            <span class="n">reservoir_transfers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transfer</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">reservoir_transfers</span></div>
-    
  
     <span class="c1"># To initialize wastewater2reservoir; and wastewater attributes</span>
 <div class="viewcode-block" id="initcondition.wastewater_to_reservoirs"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.initcondition.initcondition.wastewater_to_reservoirs">[docs]</a>    <span class="k">def</span> <span class="nf">wastewater_to_reservoirs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xl_settings_file_path</span><span class="p">):</span>
@@ -393,6 +416,9 @@
         <span class="n">initCondVarValue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;unmetDemandPaddy&quot;</span><span class="p">)</span>
         <span class="n">initCondVar</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;unmetDemandNonpaddy&quot;</span><span class="p">)</span>
         <span class="n">initCondVarValue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;unmetDemandNonpaddy&quot;</span><span class="p">)</span>
+
+        <span class="n">initCondVar</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;unmetDemand_runningSum&#39;</span><span class="p">)</span>
+        <span class="n">initCondVarValue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;unmetDemand_runningSum&#39;</span><span class="p">)</span>
         
         <span class="c1"># Desalination</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">includeDesal</span> <span class="o">=</span> <span class="kc">False</span>
@@ -470,7 +496,7 @@
         <span class="c1"># or in certain interval e.g. 2y = every 2 years, 3m = every 3 month, 15d = every 15 days</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">saveInit</span> <span class="o">=</span> <span class="n">returnBool</span><span class="p">(</span><span class="s1">&#39;save_initial&#39;</span><span class="p">)</span>
-        <span class="c1">#self.var.initmap = {}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">initmap</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">saveInit</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">saveInitFile</span> <span class="o">=</span> <span class="n">cbinding</span><span class="p">(</span><span class="s1">&#39;initSave&#39;</span><span class="p">)</span>

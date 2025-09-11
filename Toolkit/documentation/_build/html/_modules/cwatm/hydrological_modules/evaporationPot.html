@@ -218,7 +218,7 @@
 <span class="sd">    albedoLand                             albedo from land surface (from GlobAlbedo database)                     --   </span>
 <span class="sd">    albedoOpenWater                        albedo from open water surface (from GlobAlbedo database)               --   </span>
 <span class="sd">    ETRef                                  potential evapotranspiration rate from reference crop                   m    </span>
-<span class="sd">    only_radition                                                                                                  --   </span>
+<span class="sd">    only_radiation                                                                                                  --</span>
 <span class="sd">    TMin                                   minimum air temperature                                                 K    </span>
 <span class="sd">    TMax                                   maximum air temperature                                                 K    </span>
 <span class="sd">    Tavg                                   Input, average air Temperature                                          K    </span>
@@ -252,10 +252,17 @@
 
         <span class="c1">#self.var.sumETRef = globals.inZero.copy()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cropCorrect</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;crop_correct&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">crop_correct_landCover</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="p">,(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s1">&#39;crop_correct_forest&#39;</span> <span class="ow">in</span> <span class="n">binding</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">crop_correct_landCover</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;crop_correct_forest&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;crop_correct_grassland&#39;</span> <span class="ow">in</span> <span class="n">binding</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">crop_correct_landCover</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;crop_correct_grassland&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;crop_correct_irrpaddy&#39;</span> <span class="ow">in</span> <span class="n">binding</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">crop_correct_landCover</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;crop_correct_irrpaddy&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;crop_correct_irrnonpaddy&#39;</span> <span class="ow">in</span> <span class="n">binding</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">crop_correct_landCover</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;crop_correct_irrnonpaddy&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;calc_evaporation&#39;</span><span class="p">):</span>
-
-
             <span class="c1"># Default calculation method is Penman Monteith</span>
             <span class="c1"># if PET_modus is missing use Penman Monteith</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">pet_modus</span> <span class="o">=</span> <span class="mi">1</span>
@@ -287,7 +294,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">AlbedoSoil</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;AlbedoSoil&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">AlbedoWater</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;AlbedoWater&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">only_radition</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">only_radiation</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">dem</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;dem&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span></div>
 
@@ -338,7 +345,7 @@
 
         <span class="c1"># --------------------------------</span>
         <span class="c1"># if only daily calculate radiation is given instead of longwave down and shortwave down radiation</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">only_radition</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">only_radiation</span><span class="p">:</span>
             <span class="c1"># FAO 56 - https://www.fao.org/3/x0490E/x0490e07.htm#solar%20radiation  equation 39</span>
             <span class="n">radian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lat</span>
             <span class="n">distanceSun</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.033</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">365</span><span class="p">)</span>
@@ -467,7 +474,7 @@
         <span class="n">RNup</span> <span class="o">=</span> <span class="mf">4.903E-9</span> <span class="o">*</span> <span class="p">(((</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">TMin</span> <span class="o">+</span> <span class="mf">273.16</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">TMax</span> <span class="o">+</span> <span class="mf">273.16</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="c1"># Up longwave radiation [MJ/m2/day]</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">only_radition</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">only_radiation</span><span class="p">:</span>
             <span class="c1"># FAO 56 - https://www.fao.org/3/x0490E/x0490e07.htm#solar%20radiation  equation 39</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span>
             <span class="c1">#radian = np.pi / 180 * self.var.lat</span>
@@ -531,7 +538,7 @@
 
 
         <span class="c1"># if only daily calculate radiation is given instead of longwave down and shortwave down radiation</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">only_radition</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">only_radiation</span><span class="p">:</span>
             <span class="c1"># FAO 56 - https://www.fao.org/3/x0490E/x0490e07.htm#solar%20radiation  equation 39</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span>
             <span class="c1">#radian = np.pi / 180 * self.var.lat</span>

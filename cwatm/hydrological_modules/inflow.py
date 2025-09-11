@@ -1,11 +1,13 @@
 # -------------------------------------------------------------------------
 # Name:        INFLOW HYDROGRAPHS module (OPTIONAL)
-# Purpose:
+# Purpose: External inflow hydrographs module for adding prescribed water inputs.
+# Manages point source water additions and boundary condition flows.
+# Supports observed streamflow integration and water system augmentation.
 #
 # Author:      PB
 #
 # Created:     13/07/2016
-# Copyright:   (c) PB 2016
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
 
 
@@ -13,67 +15,104 @@ import math
 from cwatm.management_modules.data_handling import *
 
 class inflow(object):
-
     """
-    READ INFLOW HYDROGRAPHS (OPTIONAL)
-    If option "inflow" is set to 1 the inflow hydrograph code is used otherwise dummy code is used
-
+    Inflow hydrographs module for adding external water inputs.
+    
+    Processes inflow hydrograph time series data from external files and applies
+    them at specified spatial locations within the model domain. This module is
+    optional and only activates when the 'inflow' option is enabled.
+    
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
 
     **Global variables**
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    sampleInflow                         Number        location of inflow point                                                lat/l
+    noinflowpoints                       Array         number of inflow points                                                 --   
+    inflowTs                             Array         inflow time series data                                                 m3/s 
+    totalQInM3                           Array         total inflow over time (for mass balance calculation)                   m3   
+    inflowM3                             Array         inflow to basin                                                         m3   
+    DtSec                                Array         number of seconds per timestep (default = 86400)                        s    
+    QInM3Old                             Array         Inflow from previous day                                                m3   
+    ===================================  ==========    ======================================================================  =====
 
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    sampleInflow                           location of inflow point                                                lat/l
-    noinflowpoints                         number of inflow points                                                 --   
-    inflowTs                               inflow time series data                                                 m3/s 
-    totalQInM3                             total inflow over time (for mass balance calculation)                   m3   
-    inflowM3                               inflow to basin                                                         m3   
-    DtSec                                  number of seconds per timestep (default = 86400)                        s    
-    QInM3Old                               Inflow from previous day                                                m3   
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
+        """
+        Initialize inflow module.
+        
+        Parameters
+        ----------
+        model : object
+            CWatM model instance providing access to variables and configuration
+        """
         self.var = model.var
         self.model = model
 
     def initial(self):
         """
-        Initial part of the inflow module
-        Get the inflow points
-
-        calls function :meth:`hydrological_modules.getlocOutpoints`
-        calls function :meth:`hydrological_modules.join_struct_arrays2`
-
+        Initialize inflow points and load time series data.
+        
+        Reads inflow point locations from configuration files or coordinates,
+        loads time series data from multiple files, and prepares data structures
+        for dynamic inflow application during model execution.
+        
+        Notes
+        -----
+        This method performs several key operations:
+        - Identifies spatial locations for inflow application
+        - Reads and validates time series data from multiple files
+        - Merges time series data from different sources
+        - Initializes cumulative inflow tracking variables
         """
 
         def getlocOutpoints(out):
             """
-            Get location from Inflow (same as outflow) points
-
-            :param out: get out
-            :return: sampleAdresses - number and locs of the output
+            Extract spatial locations of inflow points from input array.
+            
+            Processes an array of inflow point identifiers and creates a dictionary
+            mapping point IDs to their corresponding linear array indices.
+            
+            Parameters
+            ----------
+            out : numpy.ndarray
+                Array containing inflow point identifiers (positive integers)
+                
+            Returns
+            -------
+            dict
+                Dictionary mapping inflow point IDs to linear array indices
             """
 
             sampleAdresses = {}
             for i in range(maskinfo['mapC'][0]):
-                if out[i]>0:
+                if out[i] > 0:
                     sampleAdresses[out[i]] = i
             return sampleAdresses
 
         def join_struct_arrays2(arrays):
             """
-            Join arrays to a combined one
-
-            :param arrays:
-            :return: combined arry
-            """
-            """
-            :param arrays: 
-            :return: 
+            Merge multiple structured numpy arrays into a single array.
+            
+            Combines structured arrays with potentially different field names
+            into a unified structured array containing all fields from input arrays.
+            
+            Parameters
+            ----------
+            arrays : list of numpy.ndarray
+                List of structured numpy arrays to be merged
+                
+            Returns
+            -------
+            numpy.ndarray
+                Combined structured array containing all fields from input arrays
             """
 
             newdtype = sum((a.dtype.descr for a in arrays), [])
@@ -128,7 +167,7 @@ class inflow(object):
                     for i in range(no):
                         line = file.readline().strip('\n')
                         if line in inflowNames:
-                            msg = "Error 217:" + line  + " in: " + filename + " is used already"
+                            msg = "Error 217:" + line + " in: " + filename + " is used already"
                             raise CWATMError(msg)
 
                         inflowNames.append(line)
@@ -137,9 +176,10 @@ class inflow(object):
                     skiplines = 3 + no
                 except:
                     msg = "Error 218: Mistake reading inflow file\n"
-                    raise CWATMFileError(os.path.join(inDir,name), sname=name)
+                    raise CWATMFileError(os.path.join(inDir, name), sname=name)
 
-                tempTssData = np.genfromtxt(filename, skip_header=skiplines, names=names, usecols=names[1:], filling_values=0.0)
+                tempTssData = np.genfromtxt(filename, skip_header=skiplines, names=names, 
+                                            usecols=names[1:], filling_values=0.0)
 
                 if flagFirstTss:
                     self.var.inflowTs = tempTssData.copy()
@@ -149,8 +189,8 @@ class inflow(object):
                     self.var.inflowTs = join_struct_arrays2((self.var.inflowTs, tempTssData))
                     # join this dataset with the ones before
 
-                ###import numpy.lib.recfunctions as rfn
-                ###d = rfn.merge_arrays((a,b), flatten=True, usemask=False)
+                # import numpy.lib.recfunctions as rfn
+                # d = rfn.merge_arrays((a,b), flatten=True, usemask=False)
 
 
             self.var.QInM3Old = globals.inZero.copy()
@@ -162,8 +202,19 @@ class inflow(object):
 
     def dynamic(self):
         """
-        Dynamic part of the inflow module
-        Use the inflow points to add inflow from time series file(s)
+        Apply inflow hydrographs at specified locations for current time step.
+        
+        Retrieves inflow values from time series data for the current time step,
+        applies them at the corresponding spatial locations, and updates cumulative
+        inflow tracking variables.
+        
+        Notes
+        -----
+        Inflow values are:
+        - Read from pre-loaded time series data
+        - Converted from mÂ³/s to mÂ³ per time step
+        - Applied at specified inflow point locations
+        - Accumulated for mass balance tracking
         """
 
         if checkOption('inflow'):
@@ -172,7 +223,7 @@ class inflow(object):
             self.var.inflowM3 = globals.inZero.copy()
             for key in self.var.sampleInflow:
                 loc = self.var.sampleInflow[key]
-                index = dateVar['curr']-1
+                index = dateVar['curr'] - 1
                 self.var.inflowM3[loc] = self.var.inflowTs[str(key)][index] * self.var.DtSec
                 # Convert to [m3] per time step
             self.var.totalQInM3 += self.var.inflowM3

@@ -1,100 +1,180 @@
 # -------------------------------------------------------------------------
-# Name:        Output
-# Purpose:     Output as timeseries, netcdf,
+# Name: Output
+# Purpose: Output as timeseries, netcdf,
 #
 # Author:      PB
-#
 # Created:     5/08/2016
-# Copyright:   (c) PB 2016
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
 
-import numpy as np
-from . import globals
-
-import sys
+import difflib  # to check the closest word in settingsfile, if an error occurs
+import math
 import os
 import string
-import math
-import difflib  # to check the closest word in settingsfile, if an error occurs
-
-from cwatm.hydrological_modules.routing_reservoirs.routing_sub import *
-
-
-from cwatm.management_modules.checks import *
-from cwatm.management_modules.replace_pcr import *
-from cwatm.management_modules.data_handling import *
-from .messages import *
-from netCDF4 import Dataset,num2date,date2num,date2index
-
+import sys
 from decimal import Decimal
+
+import numpy as np
+from netCDF4 import Dataset, num2date, date2num, date2index
+
+from . import globals
+from .messages import *
+from cwatm.hydrological_modules.routing_reservoirs.routing_sub import *
+from cwatm.management_modules.checks import *
+from cwatm.management_modules.data_handling import *
+from cwatm.management_modules.replace_pcr import *
 
 class outputTssMap(object):
 
     """
-    Output of time series and map
+    Main CWatM output system class handling time series and map output generation.
 
+    This class manages all output operations for the CWatM hydrological model, including
+    NetCDF map writing, time series extraction at gauge points, CSV/TSS file generation,
+    and progress reporting. It handles various temporal aggregations (daily, monthly,
+    annual) and spatial aggregations (point values, catchment averages/sums).
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variable container with hydrological state variables
+    model : object
+        Reference to main CWatM model instance
+
+    Notes
+    -----
+    The output system supports multiple output formats:
+    - NetCDF maps for spatial data with temporal aggregation
+    - Time series files (TSS/CSV) for gauge point data
+    - Text dumps for debugging and analysis
+    - Progress monitoring for GUI integration
+    
+    Output timing is controlled by dateVar configuration and supports:
+    - Daily outputs
+    - Month-end, monthly totals, monthly averages  
+    - Annual outputs with various aggregations
+    - Simulation-total aggregations
 
     **Global variables**
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    dirUp                                Array         river network in upstream direction                                     --   
+    meteo                                Array         store all meteo data in memeory for warm start (eg calibration)         compl
+    sampleAdresses                       List          outflowpoints as 1D index                                               --   
+    outpoints                            List          output points (Gauges)                                                  --   
+    noOutpoints                          Number        number of output points                                                 --   
+    evalCatch                            Array         indeces of a subbasin in the mask                                       --   
+    catcharea                            Array         catchment area of the subbaSIN                                          m2   
+    netcdfasindex                        Flag          save netcdf file in a compressed way - for splitting runs in several b  bool 
+    firstout                             Number        discharge of the first gauge                                            m3/s 
+    discharge                            Array         Channel discharge                                                       m3/s 
+    cellArea                             Array         Area of cell                                                            m2   
+    ===================================  ==========    ======================================================================  =====
 
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    dirUp                                  river network in upstream direction                                     --   
-    cellArea                               Area of cell                                                            m2   
-    sampleAdresses                                                                                                 --   
-    noOutpoints                                                                                                    --   
-    evalCatch                                                                                                      --   
-    catcharea                                                                                                      --   
-    firstout                                                                                                       --   
-    discharge                              Channel discharge                                                       m3/s 
-    =====================================  ======================================================================  =====
-
-    **Functions**
     """
 
     def __init__(self, model):
+        """
+        Initialize CWatM output system with model reference.
+
+        Parameters
+        ----------
+        model : object
+            Main CWatM model instance containing variable container and configuration
+
+        Notes
+        -----
+        Sets up references to model variables and configuration needed for output
+        operations. The actual output configuration is handled in the initial() method.
+        """
         self.var = model.var
         self.model = model
 
     def initial(self):
         """
-        Initial part of the output module
+        Initialize output system configuration, gauge locations, and file structures.
+
+        This method sets up the complete output system including:
+        - Processing gauge coordinates and creating sample addresses
+        - Configuring catchment boundaries for area-based aggregations
+        - Setting up NetCDF and time series file structures
+        - Validating output variable names and timing specifications
+        - Initializing progress reporting system
+
+        Notes
+        -----
+        Must be called before any dynamic output operations. Processes settings
+        file configuration to determine output locations, variables, and timing.
+        Creates catchment delineation for gauges requiring area-based statistics.
+        Validates all output variable names against available model variables.
         """
 
         def getlocOutpoints(out):
             """
-            Get the location of output points
+            Extract gauge locations from output point map and convert to geographic coordinates.
 
-            :param out: get out
-            :return: sampleAdresses - number and locs of the output
-            :return: oup x(lon) and y(lat) loc of output points
+            Parameters
+            ----------
+            out : numpy.ndarray
+                1D compressed array with gauge IDs at corresponding cell locations,
+                zero for non-gauge cells
+
+            Returns
+            -------
+            dict
+                Dictionary mapping gauge IDs to compressed array indices for fast lookup
+            list
+                List of x,y coordinates in model projection [x1, y1, x2, y2, ...] for all gauges
+
+            Notes
+            -----
+            Converts from compressed array indices to geographic coordinates using
+            mask information and cell size. Coordinates represent cell centers in
+            the model's spatial reference system.
             """
 
             sampleAdresses = {}
             outp = []
-            allpoints = np.where(maskinfo["mask"].data == False)
+            # allpoints = np.where(maskinfo["mask"].data == False)
+            allpoints = np.where(maskinfo["mask"] == False)
 
             for i in range(maskinfo['mapC'][0]):
-                if out[i]>0:
+                if out[i] > 0:
                     sampleAdresses[out[i]] = i
 
-                    outx = allpoints[1][i] * maskmapAttr['cell'] + maskmapAttr['x'] + maskmapAttr['cell']/2
-                    outy = maskmapAttr['y'] - allpoints[0][i] * maskmapAttr['cell']  - maskmapAttr['cell'] / 2
+                    outx = allpoints[1][i] * maskmapAttr['cell'] + maskmapAttr['x'] + maskmapAttr['cell'] / 2
+                    outy = maskmapAttr['y'] - allpoints[0][i] * maskmapAttr['cell'] - maskmapAttr['cell'] / 2
                     outp.append(outx)
                     outp.append(outy)
 
-            return sampleAdresses,outp
+            return sampleAdresses, outp
 
 
-        def appendinfo(out,sec, name, type, ismap):
+        def appendinfo(out, sec, name, type, ismap):
             """
-            Append all information on outputpoints and maps - what output, where, when
+            Configure output specifications for maps or time series based on settings.
 
-            :param out:  map or tss, info of variable, output location
-            :param sec:  Section of settingsfile
-            :param name: variable name
-            :param type: daily or monthly or avergae monthly etc.
-            :param ismap: if map = True , if timeserie = False
+            Parameters
+            ----------
+            out : dict
+                Output configuration dictionary to populate with file information
+            sec : str
+                Settings file section name (e.g., 'OUTPUT', 'INITIAL', 'ENVIRONMENTAL')
+            name : str
+                Base output identifier ('_out_tss_' or '_out_map_')
+            type : str
+                Temporal aggregation type ('daily', 'monthly', 'annual', etc.)
+            ismap : bool
+                True for NetCDF map output, False for time series output
+
+            Notes
+            -----
+            Creates file paths and metadata structures for each configured output.
+            For maps: sets up NetCDF file paths and variable creation flags.
+            For time series: configures CSV or TSS file formats based on settings.
+            Validates output directory existence and creates error messages for
+            missing paths.
             """
 
             key = sec.lower() + name + type
@@ -113,7 +193,7 @@ class outputTssMap(object):
 
                             else:
                                 # TimeoutputTimeseries(binding[tss], self.var, outpoints, noHeader=Flags['noheader'])
-                                #info.append(os.path.join(outDir[sec], str(var) + "_daily.tss"))
+                                # info.append(os.path.join(outDimpontr[sec], str(var) + "_daily.tss"))
                                 newcsvformat = True
                                 suffix = ".csv"
                                 if 'reportOldTss' in option:
@@ -121,8 +201,8 @@ class outputTssMap(object):
                                 if not(newcsvformat):
                                     suffix = ".tss"
 
-                                name = os.path.join(outDir[sec], str(var) + "_"+ type + suffix)
-                                #info.append(TimeoutputTimeseries2(name, self.var, outpoints, noHeader=False))
+                                name = os.path.join(outDir[sec], str(var) + "_" + type + suffix)
+                                # info.append(TimeoutputTimeseries2(name, self.var, outpoints, noHeader=False))
                                 info.append(name)
                                 info.append(var)
                                 # flag set True for writing times series in csv format
@@ -131,11 +211,12 @@ class outputTssMap(object):
                             msg = "Error 220: Checking output file path \n"
                             raise CWATMFileError(outDir[sec], msg)
 
-                        placeholder =[]
+                        placeholder = []
                         info.append(placeholder)
-                        if ismap: info.append(type)  # set type to create variable later on first timestep
+                        if ismap:
+                            info.append(type)  # set type to create variable later on first timestep
                         out[key][i] = info
-                        i +=1
+                        i += 1
 
 
         # ------------------------------------------------------------------------------
@@ -144,24 +225,24 @@ class outputTssMap(object):
         where = "Gauges"
         outpoints = cbinding(where)
 
-        #globals.inZero = np.zeros(maskinfo['mapC'])
+        # globals.inZero = np.zeros(maskinfo['mapC'])
 
         coord = cbinding(where).split()  # could be gauges, sites, lakeSites etc.
         if len(coord) % 2 == 0:
             compress_arange = np.arange(maskinfo['mapC'][0])
             arange = decompress(compress_arange).astype(int)
 
-            #outpoints = valuecell( coord, outpoints)
-            col,row = valuecell(coord, outpoints, returnmap = False)
+            # outpoints = valuecell( coord, outpoints)
+            col, row = valuecell(coord, outpoints, returnmap=False)
             self.var.sampleAdresses = {}
             for i in range(len(col)):
-                self.var.sampleAdresses[i+1] = arange[row[i],col[i]]
+                self.var.sampleAdresses[i + 1] = arange[row[i], col[i]]
 
             self.var.outpoints = list(map(float, outpoints.split(" ")))
 
         else:
             if os.path.exists(outpoints):
-                outpoints = loadmap(where, local = localGauges).astype(np.int64)
+                outpoints = loadmap(where, local=localGauges).astype(np.int64)
             else:
                 if len(coord) == 1:
                     msg = "Error 221: Checking output-points file\n"
@@ -174,26 +255,28 @@ class outputTssMap(object):
             self.var.sampleAdresses, self.var.outpoints = getlocOutpoints(outpoints)  # for key in sorted(mydict):
 
         self.var.noOutpoints = len(self.var.sampleAdresses)
-        #catch = subcatchment1(self.var.dirUp,outpoints,self.var.UpArea1)
+        # catch = subcatchment1(self.var.dirUp,outpoints,self.var.UpArea1)
 
         # check if catchment area calculation is necessary
         calcCatch = False
-        for s in filter(lambda x: "areaavg" in x, outTss.keys()): calcCatch = True
-        for s in filter(lambda x: "areasum" in x, outTss.keys()): calcCatch = True
+        for s in filter(lambda x: "areaavg" in x, outTss.keys()):
+            calcCatch = True
+        for s in filter(lambda x: "areasum" in x, outTss.keys()):
+            calcCatch = True
 
         if calcCatch:
-           self.var.evalCatch ={}
-           self.var.catcharea = {}
+            self.var.evalCatch = {}
+            self.var.catcharea = {}
 
 
-           for key in sorted(self.var.sampleAdresses):
-              outp  = globals.inZero.copy()
-              outp[self.var.sampleAdresses[key]] = key
+            for key in sorted(self.var.sampleAdresses):
+                outp = globals.inZero.copy()
+                outp[self.var.sampleAdresses[key]] = key
 
 
 
-              self.var.evalCatch[key] = catchment1(self.var.dirUp, outp)
-              self.var.catcharea[key] =np.bincount(self.var.evalCatch[key], weights=self.var.cellArea)[key]
+                self.var.evalCatch[key] = catchment1(self.var.dirUp, outp)
+                self.var.catcharea[key] = np.bincount(self.var.evalCatch[key], weights=self.var.cellArea)[key]
 
         # ------------------------------------------------------------------------------
         # report TSS
@@ -235,18 +318,49 @@ class outputTssMap(object):
 
     def dynamic(self, ef = False):
         """
-        Dynamic part of the output module
-        Output of maps and timeseries
+        Execute dynamic output operations for current time step.
 
-        :param ef: done with environmental flow
+        This is the main output execution method called at each time step to:
+        - Write NetCDF maps with appropriate temporal aggregation
+        - Extract and accumulate time series data at gauge points
+        - Handle monthly/annual aggregation and reset cycles
+        - Update progress reporting for GUI and console output
+        - Manage file writing for completed aggregation periods
+
+        Parameters
+        ----------
+        ef : bool, optional
+            Environmental flow flag indicating if processing environmental flow
+            calculations, by default False
+
+        Notes
+        -----
+        Processes all configured outputs based on current date and timing rules.
+        Handles temporal aggregation by accumulating values and writing outputs
+        at appropriate intervals (month-end, year-end, etc.). Updates progress
+        displays and manages memory by resetting aggregation variables after
+        writing outputs.
         """
 
         def firstout(map):
             """
-            returns the first cell as output value
+            Extract value from the first configured output point for progress reporting.
 
-            :param map: 1D array of data
-            :return: value of the first output point
+            Parameters
+            ----------
+            map : numpy.ndarray
+                1D compressed array containing values to sample
+
+            Returns
+            -------
+            float
+                Value at the first gauge location, used for console progress display
+
+            Notes
+            -----
+            Used primarily for displaying discharge values during model execution
+            to provide feedback on simulation progress. Always samples from the
+            lowest-numbered gauge ID for consistency.
             """
 
             first = sorted(list(self.var.sampleAdresses))[0]
@@ -255,11 +369,28 @@ class outputTssMap(object):
 
         def checkifvariableexists(name, vari, space):
             """
-            Test if variable exists
+            Validate that requested output variable exists in model variable space.
 
-            :param name: variable name
-            :param vari: variable to check if it exists in the variable space
-            :param space: variable space of self.var
+            Parameters
+            ----------
+            name : str
+                Context name for error reporting (output section name)
+            vari : str
+                Variable name to validate, may include array indexing
+            space : list
+                List of available variable names in model variable container
+
+            Raises
+            ------
+            CWATMError
+                If variable does not exist in variable space, with suggestion
+                for closest matching variable name
+
+            Notes
+            -----
+            Provides helpful error messages with closest variable name matches
+            using difflib fuzzy string matching when requested variable is not found.
+            Handles array-indexed variables by checking base variable name.
             """
             if not (vari in space):
                 closest = difflib.get_close_matches(vari, space)
@@ -272,13 +403,32 @@ class outputTssMap(object):
 
         def sample3(expression, map, daymonthyear):
             """
-            Collects outputpoint value to write it into a time series file
-            calls function :meth:`management_modules.writeTssFile`
+            Sample values at gauge points and accumulate for time series output.
 
-            :param expression: array of outputpoint information
-            :param map: 1D array of data
-            :param daymonthyear: day =0 , month =1 , year =2
-            :return: expression
+            Parameters
+            ----------
+            expression : list
+                Output configuration containing [filename, variable, format_flag, data_list, type]
+            map : numpy.ndarray
+                1D compressed array with values to sample at gauge locations
+            daymonthyear : int
+                Temporal aggregation level: 0=daily, 1=monthly, 2=annual
+
+            Returns
+            -------
+            list
+                Updated expression with accumulated time series data
+
+            Notes
+            -----
+            Handles three types of spatial aggregation:
+            - Point values: Direct sampling at gauge coordinates
+            - Area averages: Catchment-weighted mean values
+            - Area sums: Catchment-weighted total values
+            
+            Accumulates values during simulation and writes complete time series
+            to file at the end of the simulation period. Supports both CSV and
+            traditional TSS formats.
             """
 
             #if dateVar['checked'][dateVar['currwrite'] - 1] >= daymonthyear:
@@ -318,12 +468,25 @@ class outputTssMap(object):
 
         def writeTssFile(expression, daymonthyear):
             """
-            writing timeseries
-            calls function :meth:`management_modules.writeFileHeader`
+            Write traditional TSS format time series file with PCRaster-style header.
 
-            :param expression:  array of outputpoint information
-            :param daymonthyear: day =0 , month =1 , year =2
-            :return: -
+            Parameters
+            ----------
+            expression : list
+                Output configuration with filename, variable info, and accumulated data
+            daymonthyear : int
+                Temporal filter level: 0=daily, 1=monthly, 2=annual
+
+            Notes
+            -----
+            Creates traditional PCRaster TSS format files with:
+            - Metadata header with model version and run information
+            - Column count and timestep numbering
+            - Fixed-width numeric formatting
+            - Missing value handling with 1e31 sentinel
+            
+            Only outputs timesteps matching the specified temporal aggregation level
+            based on the dateVar checking system.
             """
 
             outputFilename = expression[0]
@@ -354,12 +517,26 @@ class outputTssMap(object):
 
         def writeTssFileNew(expression, daymonthyear):
             """
-            writing timeseries
-            calls function :meth:`management_modules.writeFileHeader`
+            Write modern CSV format time series file with date headers.
 
-            :param expression:  array of outputpoint information
-            :param daymonthyear: day =0 , month =1 , year =2
-            :return: -
+            Parameters
+            ----------
+            expression : list
+                Output configuration with filename, variable info, and accumulated data
+            daymonthyear : int
+                Temporal filter level: 0=daily, 1=monthly, 2=annual
+
+            Notes
+            -----
+            Creates modern CSV format files with:
+            - Comma-separated values
+            - Date column in DD/MM/YYYY format
+            - Human-readable headers with gauge coordinates
+            - Model version and run metadata
+            
+            Date formatting adjusts to aggregation level (daily dates, month start
+            for monthly data, year start for annual data). Preferred format for
+            modern applications and data analysis.
             """
 
             outputFilename = expression[0]
@@ -396,11 +573,26 @@ class outputTssMap(object):
 
         def writeFileHeaderNew(outputFilename, expression):
             """
-            writes header part of tss file
+            Write CSV-style header with metadata and gauge coordinates.
 
-            :param outputfilename: name of the outputfile
-            :param expression:  array of outputpoint information
-            :return: -
+            Parameters
+            ----------
+            outputFilename : str
+                Full path to output CSV file
+            expression : list
+                Output configuration containing gauge information and metadata
+
+            Notes
+            -----
+            Creates comprehensive CSV header with:
+            - Model run metadata (settings file, execution time, version info)
+            - Git branch and hash information for reproducibility
+            - Longitude coordinates row for all gauges
+            - Latitude coordinates row for all gauges
+            - Column headers with gauge identifiers (G1, G2, etc.)
+            
+            Header provides all information needed to interpret time series data
+            and reproduce the model run that generated the output.
             """
 
             outputFile = open(outputFilename, "w")
@@ -408,12 +600,7 @@ class outputTssMap(object):
             # outputFile.write("timeseries " + self._spatialDatatype.lower() + "\n")
             header = "Timeseries," + "settingsfile: " + os.path.realpath(settingsfile[0]) + ",Runnning date: " + xtime.ctime(
                 xtime.time())
-            header += ",CWATM: " + versioning['exe'] + " last change:" + versioning['lastdate']
-            try:
-                import git
-                header += ",git commit: " + git.Repo(search_parent_directories=True).head.object.hexsha
-            except:
-                ii = 1
+            header += ",CWATM: " + versioning['exe'] + " Git-Branch:" + versioning['git']["git_branch"] + " Hash:" + versioning['git']["git_hash"]
             header += "\n"
 
             outputFile.write(header)
@@ -440,13 +627,27 @@ class outputTssMap(object):
 
 
 
-        def writeFileHeader(outputFilename,expression):
+        def writeFileHeader(outputFilename, expression):
             """
-            writes header part of tss file
+            Write PCRaster TSS-style header with run metadata and gauge count.
 
-            :param outputfilename: name of the outputfile
-            :param expression:  array of outputpoint information
-            :return: -
+            Parameters
+            ----------
+            outputFilename : str
+                Full path to output TSS file
+            expression : list
+                Output configuration containing gauge information and metadata
+
+            Notes
+            -----
+            Creates traditional PCRaster TSS header format with:
+            - Single line metadata (settings, date, version, git info)
+            - Number of data columns (timestep + gauge columns)
+            - Column identifiers starting with 'timestep'
+            - Gauge IDs as column headers
+            
+            Maintains compatibility with PCRaster and traditional CWatM
+            time series processing tools.
             """
 
             outputFile = open(outputFilename, "w")
@@ -483,11 +684,26 @@ class outputTssMap(object):
 
         def sample_maptotxt(expression, map):
             """
-            Write map information to textfile
+            Export spatial map data to text file for debugging and analysis.
 
-            :param expression:
-            :param map:
-            :return:
+            Parameters
+            ----------
+            expression : list
+                Output configuration containing filename and variable information
+            map : numpy.ndarray
+                1D compressed array with spatial data to export
+
+            Notes
+            -----
+            Creates simple text dump files with:
+            - Model run metadata header
+            - Variable name and cell count information
+            - One value per line for all valid cells
+            - Values scaled by 1000 and rounded to 3 decimal places
+            
+            Used primarily for total aggregation outputs and debugging
+            spatial patterns. Files have .txt extension regardless of
+            original output filename.
             """
             size = map.shape[0]
 
@@ -517,7 +733,7 @@ class outputTssMap(object):
 
         # print '----------------#'
         varname = None
-        varnameCollect =[]
+        varnameCollect = []
         # set this tru if only the valid cell are stored in netcdf
         nindex = self.var.netcdfasindex
         if dateVar['curr'] >= dateVar['intSpin'] or ef:
@@ -602,7 +818,8 @@ class outputTssMap(object):
                         if map[-9:] == "annualtot":
                             vars(self.var)[varname + "_annualtot"] = vars(self.var)[varname + "_annualtot"] + vars(self.var)[varname]
                         if map[-9:] == "annualavg":
-                            vars(self.var)[varname + "_annualavg"] = vars(self.var)[varname + "_annualavg"] + vars(self.var)[varname]
+                            #vars(self.var)[varname2 + "_annualavg"] = vars(self.var)[varname2 + "_annualavg"] + vars(self.var)[varname]
+                            vars(self.var)[varname + "_annualavg"] = vars(self.var)[varname + "_annualavg"] + eval(inputmap)
 
                         if dateVar['checked'][dateVar['currwrite'] - 1]==2:
                             if map[-9:] == "annualtot":
@@ -644,6 +861,17 @@ class outputTssMap(object):
         # ***** WRITING RESULTS: TIME SERIES *************************
         # ************************************************************
         self.var.firstout = firstout(self.var.discharge)
+
+        if Flags['gui']:
+            # if CWatM is started from a GUI - update the progress clock
+            if hasattr(self.var, 'meteo') and hasattr(self.var.meteo, 'progress_clock'):
+                # Calculate progress percentage based on dates
+                total_days = dateVar['intEnd'] - dateVar['intStart'] + 1
+                current_day = dateVar['curr'] - dateVar['intStart'] + 1
+                progress_percent = min(100, max(0, int((current_day / total_days) * 100)))
+                self.var.meteo.progress_clock.setValue(progress_percent)
+
+
 
         if Flags['loud']:
             print("\r%-6i %10s %10.2f     " %(dateVar['currStart'],dateVar['currDatestr'],self.var.firstout), end='')
