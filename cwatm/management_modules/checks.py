@@ -1,22 +1,71 @@
 # -------------------------------------------------------------------------
-# Name:        checks if inputs are valid
-# Purpose:
+# Name: Checks
+# Purpose: Validate CWatM input data and provide diagnostic information
 #
 # Author:      burekpe
-#
 # Created:     16/05/2016
-# Copyright:   (c) burekpe 2016
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
+
+"""
+Input validation and data quality control for CWatM.
+
+This module provides comprehensive validation and diagnostic functions for
+CWatM input data, including spatial data checking, file verification, and
+detailed reporting of data characteristics. The validation system helps
+ensure data quality and compatibility before model execution.
+
+Key Functions
+-------------
+decompress : Convert 1D compressed arrays to 2D display format
+counted : Decorator for counting function calls
+checkmap : Comprehensive validation and reporting for spatial data
+save_check : Save validation results to CSV files
+load_global_attribute : Extract NetCDF global attributes
+
+The module supports comparison against reference datasets and provides
+detailed statistics about spatial data including:
+- Spatial dimensions and valid cell counts
+- Value ranges, means, and distributions  
+- Missing value patterns and data completeness
+- File modification dates and version tracking
+"""
 
 from .globals import *
 from netCDF4 import Dataset
 
 def decompress(map):
     """
-    Decompress 1D array without missing values to 2D array with missing values
-
-    :param map: numpy 1D array as input
-    :return: 2D array for displaying
+    Decompress 1D array without missing values to 2D array with missing values.
+    
+    This function converts compressed 1D arrays used internally by CWatM back
+    to full 2D spatial arrays for display, analysis, and output. The function
+    properly handles different data types and missing value conventions.
+    
+    Parameters
+    ----------
+    map : numpy.ndarray
+        1D compressed array containing only valid (non-masked) values
+        
+    Returns
+    -------
+    numpy.ndarray
+        2D spatial array with proper dimensions and missing value handling
+        
+    Notes
+    -----
+    The function uses global maskinfo to determine:
+    - Original spatial dimensions (maskinfo['shape'])
+    - Location of valid cells (maskinfo['maskflat'])
+    - Base mask array structure (maskinfo['maskall'])
+    
+    Missing values are set according to data type:
+    - Integer types (int16, int32): -9999
+    - int8 types: Negative values set to 0
+    - All other types: -9999
+    
+    This function is essential for converting CWatM's internal compressed
+    storage format back to standard spatial raster format.
     """
 
     dmap = maskinfo['maskall'].copy()
@@ -39,10 +88,30 @@ def decompress(map):
 
 def counted(fn):
     """
-    count number of times a subroutine is called
-
-    :param fn:
-    :return: number of times the subroutine is called
+    Decorator to count the number of times a function is called.
+    
+    This decorator adds a call counter to any function, which is useful
+    for tracking how many times validation functions are executed during
+    model initialization and for generating sequential output.
+    
+    Parameters
+    ----------
+    fn : callable
+        Function to be wrapped with call counting functionality
+        
+    Returns
+    -------
+    callable
+        Wrapped function with added 'called' attribute for call count
+        
+    Notes
+    -----
+    The wrapper function maintains the original function name and adds
+    a 'called' attribute that increments each time the function is invoked.
+    This is particularly useful for the checkmap function to provide
+    sequential numbering in validation output.
+    
+    The call counter starts at 0 and increments before each function call.
     """
     def wrapper(*args, **kwargs):
         wrapper.called += 1
@@ -55,18 +124,42 @@ def counted(fn):
 @counted
 def checkmap(name, value, map):
     """
-    check maps if the fit to the mask map
-
-    :param name: name of the variable in settingsfile
-    :param value: filename of the variable
-    :param map: data (either a number or a 1D array)
-    :param flagmap: indicates a 1D array or a number
-    :param flagcompress: is there a compressed map available
-    :param mapC: compressed map
-    :return: -
-
-    Todo:
-        still to improve, this is work in progress!
+    Comprehensive validation and diagnostic reporting for CWatM input data.
+    
+    This function performs detailed validation of spatial and scalar input data,
+    comparing against mask requirements and providing comprehensive statistics.
+    It supports reference dataset comparison and generates detailed reports.
+    
+    Parameters
+    ----------
+    name : str
+        Name of the variable as specified in settings file
+    value : str  
+        Filename or path of the input data
+    map : numpy.ndarray or scalar
+        Input data - either spatial array or scalar value
+        
+    Notes
+    -----
+    The function provides comprehensive diagnostics including:
+    - Spatial dimensions and cell counts
+    - Data validity against mask requirements
+    - Statistical summaries (min, mean, max)
+    - Zero and non-zero value counts
+    - File creation dates and version comparison
+    - Reference dataset validation when available
+    
+    For spatial data, the function:
+    - Decompresses 1D arrays to 2D for analysis
+    - Validates coverage against the model mask
+    - Handles extreme values and missing data
+    - Compares valid cell counts with mask requirements
+    
+    Output is formatted as CSV-compatible text with headers generated
+    on first call. Results are stored globally for batch reporting.
+    
+    The function integrates with CWatM's version control system to
+    compare input data against reference datasets when available.
     """
 
     def load_global_attribute(filename, attribute_name):
@@ -92,6 +185,7 @@ def checkmap(name, value, map):
                 return f'{inp:.2f}'
             else:
                 return f'{inp:.2E}'
+        
     # ------------------------
     # if args[] is a netcdf then load this and analyse
     args = versioning['checkargs']
@@ -267,7 +361,31 @@ def checkmap(name, value, map):
 
 def save_check():
     """
-    Save the checked file
+    Save validation results to CSV file.
+    
+    This function writes accumulated validation results from checkmap calls
+    to a CSV file for external analysis. The output location is determined
+    from command-line arguments stored in the versioning system.
+    
+    Notes
+    -----
+    The function handles two argument patterns:
+    1. Three arguments: settings.ini, reference.nc, output.csv
+    2. Two arguments: settings.ini, output.csv
+    
+    File saving occurs only when:
+    - Valid arguments are provided with .csv extension
+    - Validation results have been accumulated in versioning['check']
+    
+    After saving, the checkmap call counter is reset to 0 for potential
+    future validation runs. The CSV output includes headers and formatted
+    data for each validated input.
+    
+    The saved file can be analyzed externally to:
+    - Compare multiple model setups
+    - Track data quality over time
+    - Validate input data consistency
+    - Document model configuration for reproducibility
     """
 
     save = False

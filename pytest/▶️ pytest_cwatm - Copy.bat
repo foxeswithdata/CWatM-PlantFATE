@@ -1,2 +1,0 @@
-p:/watmodel/python3810/python.exe -m pytest test_cwatm3.py --cov-report=xml --cov=cwatm tests/  --html=pytest_report_cwatm38.html --settingsfile=cwatm_pytests_settings.ini --cwatm=../run_cwatm.py
-pause

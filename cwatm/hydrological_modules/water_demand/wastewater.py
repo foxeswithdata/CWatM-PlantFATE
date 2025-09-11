@@ -1,12 +1,13 @@
 # -------------------------------------------------------------------------
 # -------------------------------------------------------------------------
 # Name:        Wastewaster Treatment
-# Purpose:
+# Purpose: Wastewater treatment and return flow module for water recycling processes.
+# Simulates wastewater generation, treatment efficiency, and return flow dynamics.
+# Handles treated wastewater discharge and water quality improvement processes.
 #
 # Author:      DF
-#
 # Created:     27/10/2021
-# Copyright:   (c) DF 2021
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
 
 from cwatm.management_modules.data_handling import *
@@ -15,49 +16,147 @@ from cwatm.management_modules.globals import *
 
 class waterdemand_wastewater(object):
     """
-    WASTEWATER TREATMENT
-    Update 13/07/21:
-    * Allows many-to-many relations between WWTP and reservoirs. Based on Excel input to replace reservoirs maps.
-    * Allows setting wastewater source (domestic/industrial/both), min Hydrological Response Time,/
-      Tretament time, daily capcity, and Export share per WWTP based on Excel input sheet.
-    * Allows to set different instances of any WWTP id, based on years of operation (from, to) using the Excel input sheet.
+    Wastewater treatment and return flow module for water recycling processes.
     
-    Update 14/04/21:
-     * Now include urban lekage: allow share of direct runoff from sealed areas to be added to wastewater.
-     * New ways to treat access volume of influents:calculate HRT as daily_capacity/influents -> define min_HRT allowed. if HRT > min_HRT -> wwt treatment quality is reduced,
-       else -> discharge to raw sewage
+    This class simulates wastewater generation, treatment efficiency, and return flow
+    dynamics. It handles treated wastewater discharge, water quality improvement processes,
+    and supports many-to-many relations between wastewater treatment plants (WWTP) and
+    reservoirs. The module includes urban leakage, evaporation from treatment facilities,
+    and two types of wastewater export (untreated and treated).
     
-    Update 9/12/21:
-     * Now includes evaporation from wastewater treatment facilities. Assume treatment ponds as a 6-meter deep cylinder-like.
-     * Now includes two types of wastewater export:
-        * export of untreated collected wastewater, in case collection area has a wwtID that is outside the maskmap.
-        * export of treated wastewater, based on predefined share of water exported per wastewater treatment facility.
-        
-    Note:
-    Wastewater are the result of domestic/industrial wateruse. They are collected as a share of these water users return flows.
-    Effluents are collected and sent to differenct wastewater treatment facilites from prescpecified collection areas. 
-    After treatment water can be released back to the environment in a prespecified overflow location, or reused via a distribution reservoir (type == 4).
+    The module processes domestic and industrial wastewater through collection areas,
+    applies treatment with configurable parameters (volume, treatment time, efficiency),
+    and manages discharge to overflow points or reuse via distribution reservoirs.
     
-    How to use:
-    In the [OPTIONS] section in the settings file add: 'includeWastewater = True'. Later, in the [WASTEWATER] section include the following:
-     -- specify a path to the wastewater module input data.
-     -- include netCDF files describing the wastewater treatement facilities: ID (wwtID), daily volume (wwtVol), and year of establishment (wwtYear), 
-        duration of treatment in days (wwtTime; if missing the default is 2 days; recommended values range from 1 -3 days). 
-     -- include additional netCDF files associated to each treatment facility with its ID to describe: overflow/discharge point (wwtOverflow), and effluents colleciton area (wwt_ColArea).  
+    Parameters
+    ----------
+    Required inputs:
+        - wwtID : Wastewater treatment plant identifiers
+        - wwtVol : Daily treatment volume capacity
+        - wwtYear : Year of establishment
+        - wwtTime : Treatment duration in days (default: 2 days, range: 1-3 days)
+        - wwtOverflow : Overflow/discharge point locations
+        - wwt_ColArea : Effluent collection area definitions
+    
+    Optional inputs:
+        - wwtColShare : Collection efficiency ratio (0-1)
+        - wwtToResManagement : Reservoir management strategy (-1, 0-1)
+        - urbanleak : Urban leakage coefficient
+    
+    Attributes
+    ----------
+    var : object
+        Model variables container from parent model
+    model : object
+        Parent CWatM model instance
+    
+    Notes
+    -----
+    Treatment levels: 1=primary, 2=secondary, 3=tertiary
+    Management options: -1=discharge only, 0=send to reservoir, 0-1=export fraction
 
-    Optional input: 
-     -- reduce sewege geneartion or collection with wwtColShare (ration between no collection of effluents, 0 - to - collect all wastewater and no return flows 1)
-     -- allow water discharge in reservoir - add a netCDF file with reservoir locations. For each reservoir accepting water from a treatment plant - put wastewater treatment facility ID.
-     -- using the 'wwtToResManagement' input you can decide if a treatment facility sends all water as overflow/discharge (-1); try to send all to a reservoir (0), or exports 
-        a predefined portion of it ( > 0; <=1); defaults to 0.
+    **Global variables**
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    wwt_def                              Flag                                                                                  --   
+    wastewater_to_reservoirs             Array                                                                                 --   
+    compress_LR                          Array         boolean map as mask map for compressing lake/reservoir                  --   
+    waterBodyOut                         Array         biggest outlet (biggest accumulation of ldd network) of a waterbody     --   
+    decompress_LR                        Array         boolean map as mask map for decompressing lake/reservoir                --   
+    waterBodyOutC                        Array         compressed map biggest outlet of each lake/reservoir                    --   
+    resYear                              Array         Settings waterBodyYear, with first operating year of reservoirs         map  
+    resVolume                            Array         Reservoir volume                                                        m3   
+    EWRef                                Array         potential evaporation rate from water surface                           m    
+    wwtUrbanLeakage                      Array                                                                                 --   
+    wwtColArea                           Array                                                                                 --   
+    urbanleak                            Array                                                                                 --   
+    wwtID                                Array                                                                                 --   
+    compress_WWT                         Array                                                                                 --   
+    decompress_WWT                       Array                                                                                 --   
+    wwtC                                 Array                                                                                 --   
+    act_bigLakeResAbst_UNRestricted      Array                                                                                 --   
+    act_bigLakeResAbst_Restricted        Array                                                                                 --   
+    wwtOverflow                          Array                                                                                 --   
+    wwtStorage                           Array                                                                                 --   
+    wwtColShare                          Array                                                                                 --   
+    wwtSewerCollectedC                   Array                                                                                 --   
+    wwtSewerTreatedC                     Array                                                                                 --   
+    wwtExportedTreatedC                  Array                                                                                 --   
+    wwtSewerToTreatmentC                 Array                                                                                 --   
+    wwtSewerOverflowC                    Array                                                                                 --   
+    wwtSewerResOverflowC                 Array                                                                                 --   
+    wwtTreatedOverflowC                  Array                                                                                 --   
+    wwtSentToResC                        Array                                                                                 --   
+    wwtSewerCollection                   Array                                                                                 --   
+    wwtOverflowOut                       Array                                                                                 --   
+    wwtEvapC                             Array                                                                                 --   
+    wwtSewerCollected                    Array                                                                                 --   
+    wwtExportedCollected                 Array                                                                                 --   
+    wwtSewerTreated                      Array                                                                                 --   
+    wwtExportedTreated                   Array                                                                                 --   
+    wwtSewerToTreatment                  Array                                                                                 --   
+    wwtSewerExported                     Array                                                                                 --   
+    wwtSewerOverflow                     Array                                                                                 --   
+    wwtSentToRes                         Array                                                                                 --   
+    wwtSewerResOverflow                  Array                                                                                 --   
+    wwtTreatedOverflow                   Array                                                                                 --   
+    wwtEvap                              Array                                                                                 --   
+    wwtInTreatment                       Array                                                                                 --   
+    wwtIdsOrdered                        List                                                                                  --   
+    wwtVolC                              Array                                                                                 --   
+    wwtTimeC                             Array                                                                                 --   
+    toResManageC                         Array                                                                                 --   
+    minHRTC                              Array                                                                                 --   
+    maskDomesticCollection               Array                                                                                 --   
+    maskIndustryCollection               Array                                                                                 --   
+    extensive                            Flag                                                                                  --   
+    noPools_extensive                    Array                                                                                 --   
+    poolVolume_extensive                 Array                                                                                 --   
+    wwtSurfaceAreaC                      Array                                                                                 --   
+    extensive_counter                    Array                                                                                 --   
+    wwtResIDTemp_compress                Array                                                                                 --   
+    wwtResIDC                            Array                                                                                 --   
+    wwtResTypC                           Array                                                                                 --   
+    wwtResYearC                          Array                                                                                 --   
+    wwtSentToResC_LR                     Array                                                                                 --   
+    wwtOverflowOutM                      Array                                                                                 --   
+    cellArea                             Array         Area of cell                                                            m2   
+    includeWastewater                    Flag                                                                                  --   
+    waterBodyTyp_unchanged               Array                                                                                 --   
+    lakeVolumeM3C                        Array         compressed map of lake volume                                           m3   
+    lakeStorageC                         Array                                                                                 --   
+    reservoirStorageM3C                  Array                                                                                 --   
+    lakeResStorageC                      Array                                                                                 --   
+    lakeResStorage                       Array                                                                                 --   
+    wwtEffluentsGenerated                Array                                                                                 --   
+    wwtSewerCollection_domestic          Array                                                                                 --   
+    wwtSewerCollection_industry          Array                                                                                 --   
+    ===================================  ==========    ======================================================================  =====
 
     """
 
     def __init__(self, model):
+        """
+        Initialize the wastewater treatment module.
+        
+        Parameters
+        ----------
+        model : object
+            The CWatM model instance containing variables and methods
+        """
         self.var = model.var
         self.model = model
 	
     def initial(self):
+        """
+        Initialize wastewater treatment facilities and variables.
+        
+        Sets up wastewater treatment plant locations, collection areas, storage systems,
+        and output variables. Configures treatment facility parameters including daily
+        volumes, collection shares, and urban leakage coefficients. Initializes big maps
+        for tracking wastewater flows, treatment processes, and discharge outputs.
+        """
         if self.var.includeWastewater:
             ## Setup wastewater treatment facilities
             # load inputs
@@ -132,22 +231,42 @@ class waterdemand_wastewater(object):
             
     
     def dynamic_init(self):
-        '''
-            Update: wwt definitions from Excel Settings
-            
-            Settings are loaded from Excel allow dynamic update of wastewater treatment plants operation and capacities.
-            The file defines for each WWTP ID within a specific range of time (from-to years) the following:
-             * daily capacity (Volume)
-             * Treatment duration (Days)
-             * Treatment level (categories: 1 primary, 2 secondary, 3, tertiary
-             * Export share (%) of daily outflows - exported out of basin
-             * Wastewater source: Domestic, Industrial (boolean)
-             
-            
-             The variable is a dictionary with keys as WWTP ID and np,array for each instance. The variable order is as follows:
-             ['From year', 'To year', 'Volume (cubic m per day)', 'Treatment days', 'Treatment level', 'Export share', 'Domestic', 'Industrial', 'min_HRT']
-            
-        '''
+        """
+        Initialize annual wastewater treatment plant configurations and storage systems.
+        
+        Updates wastewater treatment plant definitions from Excel settings for the current
+        simulation year. Filters facilities by operational years, creates ordered processing
+        lists, and sets up annual treatment parameters including volumes, treatment times,
+        and export shares. Configures extensive treatment systems with multiple pools and
+        calculates surface areas for evaporation processes.
+        
+        Notes
+        -----
+        Treatment plant definitions loaded from Excel include:
+        - Daily treatment capacity (Volume in mÂ³/day)
+        - Treatment duration (Days, typically 1-3)
+        - Treatment level (1=primary, 2=secondary, 3=tertiary)
+        - Export share (fraction of outflows exported from basin)
+        - Wastewater sources (Domestic and/or Industrial boolean flags)
+        - Minimum hydraulic retention time (min_HRT in days)
+        
+        The method handles technology changes by preserving existing storage when
+        treatment parameters change (e.g., from 30 to 20 days treatment time).
+        All stored water is allocated to the final treatment pool for release.
+        
+        Extensive systems (treatment time >= 2 days) use multiple treatment pools
+        (default: 3 pools) to simulate realistic treatment processes and timing.
+        
+        Sets up the following annual arrays:
+        - wwtVolC : Daily treatment volumes [mÂ³/day]
+        - wwtTimeC : Treatment duration [days]
+        - toResManageC : Reservoir management strategy [-1 to 1]
+        - minHRTC : Minimum hydraulic retention times [days]
+        - wwtSurfaceAreaC : Treatment facility surface areas [mÂ²]
+        
+        Collection masks are updated for domestic and industrial wastewater
+        sources based on facility-specific configuration flags.
+        """
         
         # filter wwtC by year and create ordered list for iteration
         year = dateVar['currDate'].year
@@ -261,6 +380,45 @@ class waterdemand_wastewater(object):
         #print(np.nansum(np.array(self.var.wwtStorage), axis = 1))
         
     def dynamic(self):
+        """
+        Execute daily wastewater treatment operations for all active facilities.
+        
+        Performs the main processing cycle for each time step, handling sewer collection,
+        treatment processes, storage dynamics, evaporation losses, and discharge operations.
+        Processes wastewater through collection areas, applies treatment with facility-specific
+        parameters, and manages discharge to overflow points or distribution reservoirs.
+        
+        Notes
+        -----
+        Daily processing sequence:
+        1. Initialize annual configurations if new year/start
+        2. Calculate total sewer collection from domestic and industrial sources
+        3. Handle export of untreated wastewater from areas without facilities
+        4. Process each treatment facility in ordered sequence:
+           - Check daily capacity limits and calculate overflow
+           - Apply hydraulic retention time constraints
+           - Calculate evaporation losses from treatment pools
+           - Update storage arrays (extensive vs standard systems)
+           - Release treated water based on management strategy
+           - Allocate water to reservoirs or overflow discharge points
+        
+        Storage management:
+        - Standard systems: Simple queue with daily advancement
+        - Extensive systems: Multiple pools with residence time tracking
+        - Evaporation calculated from surface area and reference ET
+        
+        Discharge management strategies (toResManageC):
+        - -1: Discharge all treated water to overflow points
+        - 0: Send all treated water to reservoirs (if available)
+        - 0-1: Export fraction, send remainder to reservoirs
+        - 1: Export all treated wastewater
+        
+        Water allocation to reservoirs uses iterative proportional allocation
+        based on available capacity, with overflow handling for excess volumes.
+        
+        Updates all output variables including collected volumes, treated volumes,
+        overflow discharges, reservoir transfers, and evaporation losses.
+        """
         if dateVar['newStart'] or dateVar['newYear']:
             self.dynamic_init()
         

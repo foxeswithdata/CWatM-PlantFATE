@@ -1,31 +1,104 @@
 # -------------------------------------------------------------------------
 # Name:        INITCONDITION
-# Purpose:	   Read/write initial condtions for warm start
+# Purpose:     Read/write initial condtions for warm start
 #
 # Author:      PB
-#
 # Created:     19/08/2016
-# Copyright:   (c) PB 2016
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
 
 from cwatm.management_modules.data_handling import *
 import importlib
 # importlib to import pandas as pd in has crop sentitive version is used
-# import pandas as pd
 
 class initcondition(object):
+    """
+    Initial conditions management module for model state persistence.
+    
+    Handles reading and writing of initial conditions for warm start capabilities,
+    crop parameterization from Excel files, reservoir configuration, and other
+    initialization data required for model setup and restart functionality.
+    
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    The module provides functionality for:
+    - Saving and loading model state variables for warm starts
+    - Crop parameter initialization from Excel configurations
+    - Reservoir operational parameter setup
+    - Water transfer and wastewater configuration
+    - Desalination capacity initialization
+    
+    All initial conditions can be stored at the end of a model run
+    to be used as a warm start for subsequent model executions.
+
+    **Global variables**
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    modflow                              Flag          True if modflow_coupling = True in settings file                        bool 
+    Crops_names                          Array         Internal: List of specific crops                                        --   
+    includeCrops                         Flag          1 when includeCrops=True in Settings, 0 otherwise                       bool 
+    Crops                                Array         Internal: List of specific crops and Kc/Ky parameters                   --   
+    daily_crop_KC                        Array                                                                                 --   
+    loadInit                             Flag          If true initial conditions are loaded                                   bool 
+    includeDesal                         Flag                                                                                  --   
+    unlimitedDesal                       Flag                                                                                  --   
+    desalAnnualCap                       Number                                                                                --   
+    wwt_def                              Flag                                                                                  --   
+    wastewater_to_reservoirs             Array                                                                                 --   
+    initLoadFile                         Number        load file name of the initial condition data                            Strin
+    saveInit                             Flag          If true initial conditions are saved                                    bool 
+    saveInitFile                         Flag          save file name of the initial condition data                            bool 
+    reservoir_info                       List          Number of lakes and reservoirs in Excel                                 --   
+    reservoir_transfers                  Array         [['Giving reservoir'][i], ['Receiving reservoir'][i], ['Fraction of li  array
+    coverTypes                           Array         land cover types - forest - grassland - irrPaddy - irrNonPaddy - water  --   
+    ===================================  ==========    ======================================================================  =====
 
     """
-    READ/WRITE INITIAL CONDITIONS
-    all initial condition can be stored at the end of a run to be used as a **warm** start for a following up run
-    """
-
 
     def __init__(self, model):
+        """
+        Initialize initial conditions module.
+        
+        Parameters
+        ----------
+        model : object
+            CWatM model instance providing access to variables and configuration
+        """
         self.var = model.var
         self.model = model
 
     def crops_initialise(self, xl_settings_file_path):
+        """
+        Initialize crop parameters from Excel configuration file.
+        
+        Reads crop-specific parameters including planting dates, growth stages,
+        crop coefficients (KC), and yield response factors (KY) from Excel
+        spreadsheet for crop-specific water use modeling.
+        
+        Parameters
+        ----------
+        xl_settings_file_path : str
+            Path to Excel file containing crop parameter configurations
+            
+        Notes
+        -----
+        Processes crop data including:
+        - Planting month/date for each crop
+        - Four growth stage lengths (GS1-GS4)
+        - Crop coefficients for each stage (KC1-KC4)
+        - Yield response factors for each stage (KY1-KY4)
+        
+        Supports both monthly and daily time step configurations
+        with automatic detection based on growth stage lengths.
+        """
         pd = importlib.import_module("pandas", package=None)
         df = pd.read_excel(xl_settings_file_path, sheet_name='Crops')
 
@@ -52,10 +125,10 @@ class initcondition(object):
             if growth_stage_end_month > 60:
                 self.var.daily_crop_KC = True
 
-                KC_crop_daily_stage_1 = [df['KC1'][i]]*df['GS1'][i]
+                KC_crop_daily_stage_1 = [df['KC1'][i]] * df['GS1'][i]
                 KC_crop_daily_stage_2 = [df['KC1'][i] * (1 - (d / df['GS2'][i])) + df['KC2'][i] * (d / df['GS2'][i]) for
                                          d in range(df['GS2'][i])]
-                KC_crop_daily_stage_3 = [df['KC2'][i]]*df['GS3'][i]
+                KC_crop_daily_stage_3 = [df['KC2'][i]] * df['GS3'][i]
                 KC_crop_daily_stage_4 = [df['KC2'][i] * (1 - (d / df['GS4'][i])) + df['KC3'][i] * (d / df['GS4'][i]) for
                                          d in range(df['GS4'][i])]
 
@@ -72,26 +145,51 @@ class initcondition(object):
         return Crops, Crops_names
 
     def reservoir_addinfo(self, xl_settings_file_path):
+        """
+        Load additional reservoir information from Excel configuration.
+        
+        Reads supplementary reservoir parameters including new reservoir
+        locations, operational characteristics, and configuration flags
+        from Excel spreadsheet for enhanced reservoir modeling.
+        
+        Parameters
+        ----------
+        xl_settings_file_path : str
+            Path to Excel file containing reservoir configuration data
+        """
         pd = importlib.import_module("pandas", package=None)
         df = pd.read_excel(xl_settings_file_path, header=None, sheet_name='Reservoirs')
 
         # reservoir_transfers = [ [Giving reservoir, Receiving reservoir, [366-day array of releases]] ]
         reservoir_info = []
         #         0      1      2
-        dtypes =['int','bool','float','float','int','str','float','float','float','float','float','float','float','float','float','float','float','float']
+        dtypes = ['int', 'bool', 'float', 'float', 'int', 'str', 'float', 'float', 'float', 'float', 'float', 
+                  'float', 'float', 'float', 'float', 'float', 'float', 'float']
         for col in list(df)[5:]:
-            info =[]
+            info = []
             # more complicated by sometimes excel mismatch dtypes
             for var in range(19):
                 v = np.array(df[col][var]).tolist()
                 info.append(v)
-            #info = np.array([df[col][values] for values in range(19)])
+            # info = np.array([df[col][values] for values in range(19)])
             reservoir_info.append(info)
 
         return reservoir_info
 
 
     def reservoir_transfers(self, xl_settings_file_path):
+        """
+        Configure inter-reservoir water transfer parameters.
+        
+        Sets up water transfer relationships between reservoirs including
+        transfer rates, operational rules, and connectivity information
+        from Excel configuration files.
+        
+        Parameters
+        ----------
+        xl_settings_file_path : str
+            Path to Excel file containing reservoir transfer configurations
+        """
         pd = importlib.import_module("pandas", package=None)
         df = pd.read_excel(xl_settings_file_path, header=None, sheet_name='Reservoir_transfers')
 
@@ -101,18 +199,30 @@ class initcondition(object):
         for col in list(df)[5:]:
             releases = [df[col][4+day] for day in range(366)]
             # info for transfer: Ruleset, giving res, receiving res, Limits, release days
-            # defaul;t rule = 1
+            # default rule = 1
             try:
                 rule = int(df[col][0])
             except:
                 rule = 1
-            transfer = [rule,int(df[col][1]), int(df[col][2]),df[col][3], releases]
+            transfer = [rule, int(df[col][1]), int(df[col][2]), df[col][3], releases]
             reservoir_transfers.append(transfer)
 
         return reservoir_transfers
  
     # To initialize wastewater2reservoir; and wastewater attributes
     def wastewater_to_reservoirs(self, xl_settings_file_path):
+        """
+        Configure wastewater discharge to reservoirs.
+        
+        Sets up wastewater treatment and discharge parameters including
+        treatment efficiencies, discharge locations, and operational
+        characteristics from Excel configuration data.
+        
+        Parameters
+        ----------
+        xl_settings_file_path : str
+            Path to Excel file containing wastewater discharge configurations
+        """
         # fix - build an object with wwtp_id as key and res as values.
         # get unique wwtp_id and iterate
         pd = importlib.import_module("pandas", package=None)
@@ -129,6 +239,18 @@ class initcondition(object):
         return wwtp_to_reservoir
     
     def wasterwater_def(self, xl_settings_file_path):
+        """
+        Define wastewater treatment parameters and characteristics.
+        
+        Configures wastewater treatment system parameters including
+        treatment capacities, removal efficiencies, and operational
+        parameters from Excel configuration files.
+        
+        Parameters
+        ----------
+        xl_settings_file_path : str
+            Path to Excel file containing wastewater treatment definitions
+        """
         pd = importlib.import_module("pandas", package=None)
         df = pd.read_excel(xl_settings_file_path, sheet_name='Wastewater_def')
         
@@ -139,6 +261,18 @@ class initcondition(object):
         return wwtp_definitions
     
     def desalinationCapacity(self, xl_settings_file_path):
+        """
+        Initialize desalination plant capacity and operational parameters.
+        
+        Configures desalination facility characteristics including production
+        capacities, energy requirements, and operational constraints from
+        Excel configuration data.
+        
+        Parameters
+        ----------
+        xl_settings_file_path : str
+            Path to Excel file containing desalination capacity configurations
+        """
         pd = importlib.import_module("pandas", package=None)
         df = pd.read_excel(xl_settings_file_path, sheet_name='Desalination')
         
@@ -325,8 +459,6 @@ class initcondition(object):
         # or in certain interval e.g. 2y = every 2 years, 3m = every 3 month, 15d = every 15 days
 
         self.var.saveInit = returnBool('save_initial')
-        self.var.initmap = {}
-
         if self.var.saveInit:
             self.var.saveInitFile = cbinding('initSave')
             initdates = cbinding('StepInit').split()

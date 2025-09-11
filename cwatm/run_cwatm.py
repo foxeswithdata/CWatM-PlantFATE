@@ -341,6 +341,9 @@ def mainwarm(settings, args, meteo):
     #print ("Warm start CWatM")
 
     calibclear()
+    if ("pytest" in sys.modules) or ("PySide6" in sys.modules):
+        globalclear()
+
     globalFlags(settings, args, settingsfile, Flags)
     Flags['warm'] = True
 

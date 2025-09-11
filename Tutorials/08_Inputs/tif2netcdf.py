@@ -5,7 +5,7 @@
 # Author:      burekpe
 #
 # Created:     16/01/2015
-# Copyright:   (c) burekpe 2015
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 #-------------------------------------------------------------------------------
 
 import numpy as np

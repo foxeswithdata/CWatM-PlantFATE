@@ -1,11 +1,12 @@
 # -------------------------------------------------------------------------
 # Name:        Lakes and reservoirs module
-# Purpose:
+# Purpose: Large lakes and reservoirs module for major water body simulation.
+# Handles complex reservoir operations, storage dynamics, and release scheduling.
+# Supports water management decisions for flood control and water supply.
 #
-# Author:      PB
-#
+# Author:      PB, MS, DF
 # Created:     01/08/2016
-# Copyright:   (c) PB 2016
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
 
 from cwatm.management_modules.data_handling import *
@@ -16,62 +17,180 @@ import importlib
 
 class lakes_reservoirs(object):
     """
-    LAKES AND RESERVOIRS
+    Lakes and reservoirs module for water retention and release calculations.
+    
+    Simulates water storage and outflow dynamics in natural lakes and artificial
+    reservoirs using modified Puls method for lakes and rule-based operations for
+    reservoirs. Handles different water body types including wetlands with variable
+    area characteristics.
+    
+    The module implements:
+    - Modified Puls approach for natural lake water balance
+    - Rule-based reservoir operations with multiple storage zones
+    - Wetland dynamics with seasonal area variations
+    - Water body initialization from spatial datasets and Excel configurations
+    - Reservoir transfers and water supply/demand management
+    
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    Lake calculations use the Modified Puls Method with assumptions:
+    1. Storage volume increases proportionally to elevation: S = A * H
+    2. Outflow follows parabolic weir relationship: Q = a * H^2
+    
+    Mathematical formulation:
+    (Qin1 + Qin2)/2 - (Qout1 + Qout2)/2 = (S2 - S1)/dt
+    
+    Solved as quadratic equation:
+    Q = (-LakeFactor + sqrt(LakeFactor^2 + 2*SI))^2
+    
+    References
+    ----------
+    LISFLOOD manual Annex 3 (Burek et al. 2013)
+    Maniak hydraulics textbook, p.331ff
+    Aigner (2008) for parabolic cross-section relationships
 
-    Note:
+    **Global variables**
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    modflow                              Flag          True if modflow_coupling = True in settings file                        bool 
+    load_initial                         Flag          Settings initLoad holds initial conditions for variables                bool 
+    wastewater_to_reservoirs             Array                                                                                 --   
+    saveInit                             Flag          If true initial conditions are saved                                    bool 
+    reservoir_info                       List          Number of lakes and reservoirs in Excel                                 --   
+    reservoir_transfers                  Array         [['Giving reservoir'][i], ['Receiving reservoir'][i], ['Fraction of li  array
+    waterBodyID_C                        Array         ID of the waterbody - compressed                                        --   
+    compress_LR                          Array         boolean map as mask map for compressing lake/reservoir                  --   
+    waterBodyOut                         Array         biggest outlet (biggest accumulation of ldd network) of a waterbody     --   
+    dirUp                                Array         river network in upstream direction                                     --   
+    ldd_LR                               Array         change river network (put pits in where lakes are)                      --   
+    lddCompress                          Array         compressed river network (without missing values)                       --   
+    lddCompress_LR                       Array         compressed river network lakes/reservoirs (without missing values)      --   
+    dirUp_LR                             Array         river network direction upstream lake/reservoirs                        --   
+    dirupLen_LR                          Array         number of bifurcation upstream lake/reservoir                           --   
+    downstruct_LR                        Array         river network downstream lake/reservoir                                 --   
+    catchment_LR                         Array         catchments lake/reservoir                                               --   
+    dirDown_LR                           Array         river network direktion downstream lake/reservoir                       --   
+    lendirDown_LR                        Array         number of river network connections lake/reservoir                      --   
+    decompress_LR                        Array         boolean map as mask map for decompressing lake/reservoir                --   
+    waterBodyOutC                        Array         compressed map biggest outlet of each lake/reservoir                    --   
+    resYear                              Array         Settings waterBodyYear, with first operating year of reservoirs         map  
+    resYearC                             Array         Compressed map of resYear                                               --   
+    resVolumeC                           Array         compressed map of reservoir volume                                      Milli
+    waterBodyTyp                         Array         Settings, waterBodyTyp, with waterbody type 1-4                         map  
+    waterBodyTypC                        Array         water body types 3 reservoirs and lakes (used as reservoirs but before  --   
+    lakeArea                             Array         area of each lake/reservoir                                             m2   
+    lakeAreaC                            Array         compressed map of the area of each lake/reservoir                       m2   
+    lakeDis0                             Array         compressed map average discharge at the outlet of a lake/reservoir      m3/s 
+    lakeDis0C                            Array         average discharge at the outlet of a lake/reservoir                     m3/s 
+    lakeAC                               Array         compressed map of parameter of channel width, gravity and weir coeffic  --   
+    reservoir_transfers_net_M3C          Array         Net transfer from one point to the other                                m3   
+    reservoir_transfers_net_M3           Array         net reservoir transfers, after exports, transfers, and imports          m3   
+    reservoir_transfers_in_M3C           Array         Transfer - what goes into the receiving reservoir                       m3   
+    reservoir_transfers_in_M3            Array         water received into reservoirs                                          m3   
+    reservoir_transfers_out_M3C          Array         Transfer - what goes out from the giving reservoir                      m3   
+    reservoir_transfers_out_M3           Array         water given from reservoirs                                             m3   
+    lakeEvaFactorC                       Array         compressed map of a factor which increases evaporation from lake becau  --   
+    reslakeoutflow                       Array         outflow of lakes and reservoirs                                         m3   
+    lakeVolume                           Array         volume of lakes                                                         m3   
+    lakeLevel                            Array         Waterlevel of lakes                                                     m    
+    outLake                              Array         outflow from lakes                                                      m    
+    lakeInflow                           Array         Inflow into lakes                                                       m3   
+    lakeOutflow                          Array         lake outflow - uncompressed  for all basin cells                        m3   
+    reservoirStorage                     Array         Storage of reservoirs                                                   m3   
+    MtoM3C                               Array         conversion factor from m to m3 (compressed map)                         --   
+    EvapWaterBodyMOutlet                 Array         Evaporation from waterbodies - sum at the outlet                        m    
+    lakeResInflowM                       Array         lake reservoir inflow in [m]                                            m    
+    lakeResOutflowM                      Array         lake reservoiroutflow in [m]                                            m    
+    wetlands_variable_area               Array         variable area of wetlands per day                                       m2   
+    wetland_area                         Array         variable area of wetlands per day                                       m2   
+    wetland_maxlevel                     Array         maximum waterlevel of wetlands                                          m    
+    resVolume                            Array         Reservoir volume                                                        m3   
+    includeType4                         Flag          True if there is a reservoir of waterbody type 4 in waterBodyTyp map    bool 
+    resId_restricted                     Array         waterbody ID for waste water                                            --   
+    waterBodyBuffer                      Array         Create a buffer around water bodies as command areas for lakes and res  m2   
+    waterBodyBuffer_wwt                  Array         Create a buffer around water bodies as command areas for lakes and res  m2   
+    lakeFactor                           Array         factor for the Modified Puls approach to calculate retention of the la  --   
+    lakeFactorSqr                        Array         square root factor for the Modified Puls approach to calculate retenti  --   
+    lakeInflowOldC                       Array         inflow to the lake from previous days                                   m/3  
+    lakeLevelC                           Array         compressed map of lake level                                            m    
+    lakeOutflowC                         Array         compressed map of lake outflow                                          m3/s 
+    conLimitC                            Array         Reservoir calculation: conservativeStorageLimit                         --   
+    normLimitC                           Array         Reservoir calculation: normalStorageLimit                               --   
+    floodLimitC                          Array         Reservoir calculation:                                                  --   
+    minQC                                Array         Reservoir calculation:                                                  m3/s 
+    normQC                               Array         Reservoir calculation:                                                  m3/s 
+    nondmgQC                             Array         Reservoir calculation:                                                  m3/s 
+    adjust_Normal_FloodC                 Array         Reservoir calculation:                                                  --   
+    norm_floodLimitC                     Array         Reservoir calculation:                                                  --   
+    deltaO                               Array         Reservoir calculation:                                                  m3/s 
+    deltaLN                              Array         Reservoir calculation:                                                  --   
+    deltaLF                              Array         Reservoir calculation:                                                  --   
+    deltaNFL                             Array         Reservoir calculation:                                                  --   
+    reservoirFillC                       Array         actual filling fraction of a reservoir                                  --   
+    reservoir_releases_excel_option      Flag          If Excel file is used for addition reservoirs, watertransfer, release   bool 
+    reservoir_releases                   Array         Release of reservoirs                                                   --   
+    waterBodyTypTemp                     Array         waterbody temp e.g. lake, reservoir, wetlands                           --   
+    sumEvapWaterBodyC                    Array         evaporation from waterbodies - compressed                               m    
+    sumlakeResInflow                     Array         infow into waterbodies                                                  m3   
+    sumlakeResOutflow                    Array         outflow of waterbodies                                                  m3   
+    lakeResStorage_release_ratio         Array         daily release ration for reservoirs                                     --   
+    lakeResStorage_release_ratioC        Array         daily release ration for reservoirs - compressed                        --   
+    lakeIn                               Array         Inflow into lakes                                                       m3   
+    lakeEvapWaterBodyC                   Array         Evaporation from lakes and reservoirs                                   m3   
+    resEvapWaterBodyC                    Array         evaporation from reservoirs                                             m    
+    EvapWaterBodyM                       Array         Evaporation from lakes and reservoirs                                   m    
+    lakeResStorage_filled                Array          Puts the value of lakeResStorage into all cells covered by the waterb  m3   
+    lakeResStorage_buffer                Array                                                                                 --   
+    lakeStorage                          Array         Storage volume of lakes                                                 m3   
+    resStorage                           Array         Storage volume of reservoirs                                            m3   
+    DtSec                                Array         number of seconds per timestep (default = 86400)                        s    
+    MtoM3                                Array         Coefficient to change units                                             --   
+    InvDtSec                             Array         inversere of seconds per timestep (default 1/86400)                     1/s  
+    waterBodyID                          Array         lakes/reservoirs map with a single ID for each lake/reservoir           --   
+    UpArea1                              Array         upstream area of a grid cell                                            m2   
+    dirupID_LR                           Array         index river upstream lake/reservoir                                     --   
+    lakeEvaFactor                        Array         a factor which increases evaporation from lake because of wind          --   
+    dtRouting                            Array         number of seconds per routing timestep                                  s    
+    evapWaterBodyC                       Array         Compressed version of EvapWaterBodyM                                    m    
+    sumLakeEvapWaterBodyC                Array                                                                                 --   
+    noRoutingSteps                       Number        Number of routing step - how often the subroutine is run during a day   --   
+    sumResEvapWaterBodyC                 Array                                                                                 --   
+    discharge                            Array         Channel discharge                                                       m3/s 
+    inflowDt                             Number                                                                                --   
+    downstruct                           Array         structure of the river network in downstream direction                  --   
+    runoff                               Array         Total runoff from surface, interflow and groundwater                    m    
+    fracVegCover                         Array         Fraction of specific land covers (0=forest, 1=grasslands, etc.)         %    
+    cellArea                             Array         Area of cell                                                            m2   
+    includeWastewater                    Flag                                                                                  --   
+    waterBodyTyp_unchanged               Array                                                                                 --   
+    lakeVolumeM3C                        Array         compressed map of lake volume                                           m3   
+    lakeStorageC                         Array                                                                                 --   
+    reservoirStorageM3C                  Array                                                                                 --   
+    lakeResStorageC                      Array                                                                                 --   
+    lakeResStorage                       Array                                                                                 --   
+    reservoir_supply                     Array                                                                                 --   
+    waterBodyTypCTemp                    Array         waterbody temp e.g. lake, reservoir, wetlands -> compressed             --   
+    ===================================  ==========    ======================================================================  =====
 
-        Calculate water retention in lakes and reservoirs 
-
-        Using the **Modified Puls approach** to calculate retention of a lake
-        See also: LISFLOOD manual Annex 3 (Burek et al. 2013)
-
-        for Modified Puls Method the Q(inflow)1 has to be used. It is assumed that this is the same as Q(inflow)2 for the first timestep
-        has to be checked if this works in forecasting mode!
-
-        Lake Routine using Modified Puls Method (see Maniak, p.331ff)
-
-        .. math::
-             {Qin1 + Qin2 \\over{2}} - {Qout1 + Qout2 \\over{2}} = {S2 - S1 \\over{\\delta time}}
-
-        changed into:
-
-        .. math::
-             {S2 \\over{time + Qout2/2}} = {S1 \\over{dtime + Qout1/2}} - Qout1 + {Qin1 + Qin2 \\over{2}}
-
-        Outgoing discharge (Qout) are linked to storage (S) by elevation.
-
-        Now some assumption to make life easier:
-
-        1.) storage volume is increase proportional to elevation: S = A * H where: H: elevation, A: area of lake
-
-        2.) :math:`Q_{\\mathrm{out}} = c * b * H^{2.0}` (c: weir constant, b: width)
-
-             2.0 because it fits to a parabolic cross section see (Aigner 2008) (and it is much easier to calculate (that's the main reason)
-
-        c: for a perfect weir with mu=0.577 and Poleni: :math:`{2 \\over{3}} \\mu * \\sqrt{2*g} = 1.7`
-
-        c: for a parabolic weir: around 1.8 
-
-        because it is a imperfect weir: :math:`C = c * 0.85 = 1.5`
-
-        results in formular: :math:`Q = 1.5 * b * H^2 = a*H^2 -> H = \\sqrt{Q/a}`
-
-        Solving the equation:
-
-        :math:`{S2 \\over{dtime + Qout2/2}} = {S1 \\over{dtime + Qout1/2}} - Qout1 + {Qin1 + Qin2 \\over{2}}`
-
-        :math:`SI = {S2 \\over{dtime}} + {Qout2 \\over{2}} = {A*H \\over{DtRouting}} + {Q \\over{2}} = {A \\over{DtRouting*\\sqrt{a}* \\sqrt{Q}}} + {Q \\over{2}}`
-
-        -> replacement: :math:`{A \\over{DtSec * \\sqrt{a}}} = Lakefactor, Y = \\sqrt{Q}`
-
-        :math:`Y^2 + 2 * Lakefactor *Y - 2 * SI=0`
-
-        solution of this quadratic equation:
-
-        :math:`Q = (-LakeFactor + \\sqrt{LakeFactor^2+2*SI})^2`
-     """
+    """
 
     def __init__(self, model):
+        """
+        Initialize lakes and reservoirs module.
+        
+        Parameters
+        ----------
+        model : object
+            CWatM model instance providing access to variables and configuration
+        """
         self.var = model.var
         self.model = model
 
@@ -89,7 +208,7 @@ class lakes_reservoirs(object):
                     reservoir_release[day][res_index] = df[res][day]
 
         reservoir_supply = [[-1 for i in self.var.waterBodyID_C] for i in range(366)]
-        #reservoir_release.copy()
+        # reservoir_release.copy()
         if 'Reservoirs_supply' in pd.read_excel(xl_settings_file_path, None).keys():
             df2 = pd.read_excel(xl_settings_file_path, sheet_name='Reservoirs_supply')
             for res in list(df2)[2:]:
@@ -321,8 +440,6 @@ class lakes_reservoirs(object):
             self.var.lakeResInflowM = globals.inZero.copy()
             self.var.lakeResOutflowM = globals.inZero.copy()
 
-            # for balance:
-            self.var.lakedaycorrect = globals.inZero.copy()
 
             if 'reservoir_add_info_in_Excel' in option:
                 if checkOption('reservoir_add_info_in_Excel'):
@@ -957,11 +1074,11 @@ class lakes_reservoirs(object):
                         # --- Rulesets -------------------
                         # use different rulesets:
                         limit =  transfer[3]
-                        # Rule 1: Fraction of live storage (values  ≤ 1) (default)
+                        # Rule 1: Fraction of live storage (values  â‰¤ 1) (default)
                         if transfer[0] == 1:
                             reservoir_transfer_actual = reservoir_storage_giver * transfer[4][dateVar['doy'] - 1] / self.var.noRoutingSteps
 
-                        # Rule 2: Fraction of live storage (values  ≤ 1) e, LIMIT: miminum reservoir volume which should be preserved
+                        # Rule 2: Fraction of live storage (values  â‰¤ 1) e, LIMIT: miminum reservoir volume which should be preserved
                         if transfer[0] == 2:
                             reservoir_transfer_actual = reservoir_storage_giver * transfer[4][dateVar['doy'] - 1] / self.var.noRoutingSteps
                             if (self.var.reservoirStorageM3C[giver] - reservoir_transfer_actual) < limit:
@@ -980,7 +1097,7 @@ class lakes_reservoirs(object):
 
                         # --- Outflow -------------------------------
                         # Outflow based rules
-                        # Rule 4: Fraction of outflow (values  ≤ 1) Limit: minimum discharge
+                        # Rule 4: Fraction of outflow (values  â‰¤ 1) Limit: minimum discharge
                         if transfer[0] == 4:
                             limit = limit * self.var.dtRouting
                             if transfer[1] == 0:  # giver is outside
@@ -992,7 +1109,7 @@ class lakes_reservoirs(object):
                             reservoir_transfer_actual = qResOutM3DtC[giver] - qnew
                             qResOutM3DtC[giver] = qnew
 
-                        # Rule 5: Fraction of outflow (v alues  ≤ 1)
+                        # Rule 5: Fraction of outflow (v alues  â‰¤ 1)
                         # Limit: minimum discharge, maximum discharge to receiving reservoir [m3/s]
                         if transfer[0] == 5:
                             limit= transfer[3].split(",")
