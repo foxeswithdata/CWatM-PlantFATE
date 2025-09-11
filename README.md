@@ -10,7 +10,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3528097.svg)](https://doi.org/10.5281/zenodo.3528097)
 
 
-
 User manual and model documentation at [https://cwatm.iiasa.ac.at](https://cwatm.iiasa.ac.at).
 
 Questions? Start a discussion on our [GitHub forum](https://github.com/iiasa/CWatM/discussions) and 
