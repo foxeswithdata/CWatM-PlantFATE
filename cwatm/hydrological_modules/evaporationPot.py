@@ -76,6 +76,27 @@ class evaporationPot(object):
         self.var = model.var
         self.model = model
     
+    def vari_pySnowClim(self,Psycon, RNup, RLN, ESat):
+        # if pysnowclim vraibles missing are calculated
+        if self.var.usepySnowClim:
+            if self.var.only_radiation:
+                # for pySnowclim
+                self.var.Psurf = Psycon / 0.665E-3
+                self.var.Rsdl = RNup - RLN
+                self.var.huss = 0.622 * self.var.EAct / (self.var.Psurf - self.var.EAct * (1 - 0.622))
+                self.var.rhs = 100 / ESat * (self.var.Psurf * self.var.huss) / ((0.378 * self.var.huss) + 0.622)
+            else:
+                if returnBool('useHuss'):
+                    self.var.rhs = 100 / ESat * (self.var.Psurf * self.var.huss) / ((0.378 * self.var.huss) + 0.622)
+                else:
+                    self.var.huss = 0.622 * self.var.EAct / (self.var.Psurf - self.var.EAct * (1 - 0.622))
+            if not self.var.useTdew:
+                # calculate Tdew
+                # based on FAO56 https://www.fao.org/4/X0490E/x0490e07.htm
+                # equation Compute Dew Point Temperature  No 14
+                self.var.Tdew = np.log(self.var.EAct / 0.6108) * 237.3 / (17.27 - np.log(self.var.EAct / 0.6108))
+        return
+
     def initial(self):
         """
         Initialize potential evapotranspiration calculations.
@@ -103,7 +124,7 @@ class evaporationPot(object):
         if 'crop_correct_irrnonpaddy' in binding:
             self.var.crop_correct_landCover[3] = loadmap('crop_correct_irrnonpaddy')
 
-        if checkOption('calc_evaporation'):
+        if self.var.calc_evapo:
             # Default calculation method is Penman Monteith
             # if PET_modus is missing use Penman Monteith
             self.var.pet_modus = 1
@@ -172,7 +193,7 @@ class evaporationPot(object):
             - EWRef - potential evaporation rate from water surface [m/day]
         """
 
-        if checkOption('calc_evaporation'):
+        if self.var.calc_evapo:
             if self.var.pet_modus == 1:
                 self.dynamic_1()
             if self.var.pet_modus == 2:
@@ -237,9 +258,7 @@ class evaporationPot(object):
             # Equation 39 Chapter 3
 
             Psycon = 0.00163 * (101.3 / LatHeatVap)
-            # psychrometric constant at sea level [mbar/deg C]
-            # Psycon = 0.665E-3 * self.var.Psurf
-            # psychrometric constant [kPa C-1]
+            # psychrometric constant at sea level [kPa deg C-1]
             # http://www.fao.org/docrep/X0490E/x0490e07.htm  Equation 8
             # see http://www.fao.org/docrep/X0490E/x0490e08.htm#penman%20monteith%20equation
             Psycon = Psycon * ((293 - 0.0065 * self.var.dem) / 293) ** 5.26  # in [KPa deg C-1]
@@ -256,13 +275,12 @@ class evaporationPot(object):
             # calculate actual vapour pressure
             if returnBool('useHuss'):
                 # if specific humidity calculate actual vapour pressure this way
-                self.var.EAct = (self.var.Psurf * self.var.Qair) / ((0.378 * self.var.Qair) + 0.622)
+                self.var.EAct = (self.var.Psurf * self.var.huss) / ((0.378 * self.var.huss) + 0.622)
                 # http://www.eol.ucar.edu/projects/ceop/dm/documents/refdata_report/eqns.html
-                # (self.var.Psurf * self.var.Qair)/0.622
-                # old calculation not completely ok
+
             else:
                 # if relative humidity
-                self.var.EAct = ESat * self.var.Qair / 100.0
+                self.var.EAct = ESat * self.var.rhs / 100.0
                 # longwave radiation balance
             RLN = RNup - self.var.Rsdl
             # RDL is stored on disk as W/m2 but converted in MJ/m2/s in readmeteo.py
@@ -305,7 +323,6 @@ class evaporationPot(object):
         # the 0.408 constant is replace by 1/LatHeatVap see above
 
         RNAN = RNA * numerator1
-        # RNANSoil = RNASoil * numerator1
         RNANWater = RNAWater * numerator1
 
         EA = windpart * VapPressDef * numerator2
@@ -315,10 +332,10 @@ class evaporationPot(object):
         # 2. Open water surface
         self.var.ETRef = (RNAN + EA) * 0.001
         # potential reference evapotranspiration rate [m/day]  # from mm to m with 0.001
-        # self.var.ESRef = RNANSoil + EA
         # potential evaporation rate from a bare soil surface [m/day]
         self.var.EWRef = (RNANWater + EA) * 0.001
-        # potential evaporation rate from water surface [m/day]
+        # if pysnowclim vraibles missing are calculated
+        self.vari_pySnowClim(Psycon, RNup, RLN, ESat)        # potential evaporation rate from water surface [m/day]
 
         # -> here we are at ET0 (see http://www.fao.org/docrep/X0490E/x0490e04.htm#TopOfPage figure 4:)
 

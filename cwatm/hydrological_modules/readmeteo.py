@@ -227,7 +227,16 @@ class readmeteo(object):
         if self.var.snowmelt_radiation:
             self.var.pet_modus = checkOption('PET_modus')
 
-        if checkOption('calc_evaporation'):
+        self.var.calc_evapo = checkOption('calc_evaporation')
+
+        # Check if option pySnowClim exists
+        self.var.usepySnowClim = checkOption('usepySnowClim', True)
+        if self.var.usepySnowClim:
+            # if pySnowClim is used then all meteo var has to be read anyway
+            # and missing meteo variables have to be calculated in evapoPot.py
+            self.var.calc_evapo = True
+
+        if self.var.calc_evapo:
             # if PET_modus is missing use Penman Monteith
             self.var.pet_modus = 1
             if "PET_modus" in option:
@@ -235,11 +244,11 @@ class readmeteo(object):
 
             if self.var.only_radiation:
                 # if addiation snowmlet from radiation
-                if self.var.snowmelt_radiation:
-                    meteomaps = [self.var.preMaps, self.var.tempMaps, 'RGDMaps','EActMaps']
-                else:
-                    # for maps from EMO-5 with total radiation and vapor pressure instead of huss, air pressure, rsds and rlds
-                    meteomaps = [self.var.preMaps, self.var.tempMaps,'TminMaps','TmaxMaps','WindMaps','RGDMaps','EActMaps']
+                #if self.var.snowmelt_radiation:
+                #    meteomaps = [self.var.preMaps, self.var.tempMaps, 'RGDMaps','EActMaps']
+                #else:
+                # for maps from EMO-5 with total radiation and vapor pressure instead of huss, air pressure, rsds and rlds
+                meteomaps = [self.var.preMaps, self.var.tempMaps,'TminMaps','TmaxMaps','WindMaps','RGDMaps','EActMaps']
             else:
                 meteomaps = [self.var.preMaps, self.var.tempMaps,'TminMaps','TmaxMaps','PSurfMaps','WindMaps','RSDSMaps','RSDLMaps']
                 if returnBool('useHuss'):
@@ -276,6 +285,9 @@ class readmeteo(object):
                     meteomaps.append(self.var.glacierrainMaps)
 
         multinetdf(meteomaps,self.var.buffer)
+
+        # Conversion factor from [W] to [MJ]
+        self.var.WtoMJ = 86400 * 1E-6
 
         # downscaling to wordclim, set parameter to 0 in case they are only used as dummy
         self.var.wc2_tavg = 0
@@ -713,7 +725,7 @@ class readmeteo(object):
         if Flags['check']:
             checkmap(self.var.tempMaps, meteofiles[self.var.tempMaps][flagmeteo[self.var.tempMaps]][0], self.var.Tavg)
 
-        if checkOption('calc_evaporation') or self.var.snowmelt_radiation:
+        if self.var.calc_evapo or self.var.snowmelt_radiation:
             # for new snow calculation radiation is needed
             if self.var.pet_modus < 5:
                 # If evaporation is not modified Thornthwaite
@@ -736,9 +748,6 @@ class readmeteo(object):
                     self.var.Rsdl = self.downscaling2(self.var.Rsdl)
                         # radiation surface downwelling longwave maps [W/m2]
 
-                    # Conversion factor from [W] to [MJ]
-                    self.var.WtoMJ = 86400 * 1E-6
-
                     # conversion from W/m2 to MJ/m2/day
                     self.var.Rsds = self.var.Rsds * self.var.WtoMJ
                     self.var.Rsdl = self.var.Rsdl * self.var.WtoMJ
@@ -748,7 +757,7 @@ class readmeteo(object):
         # Temparture min, max;  Windspeed,  specific humidity or relative humidity, psurf
         # -----------------------------------------------------------------------
 
-        if checkOption('calc_evaporation'):
+        if self.var.calc_evapo:
 
             #self.var.TMin = readnetcdf2('TminMaps', dateVar['currDate'], addZeros = True, zeros = ZeroKelvin, meteo = True)
             self.var.TMin = readmeteodata('TminMaps',dateVar['currDate'], addZeros=True, zeros=ZeroKelvin, mapsscale = self.var.meteomapsscale, buffering= self.var.buffer)
@@ -802,22 +811,19 @@ class readmeteo(object):
                     #self.var.Psurf = readnetcdf2('PSurfMaps', dateVar['currDate'], addZeros = True, meteo = True)
                     self.var.Psurf = readmeteodata('PSurfMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
                     self.var.Psurf = self.downscaling2(self.var.Psurf)
-                        # Instantaneous surface pressure[Pa]
-
+                    # Instantaneous surface pressure[Pa]
+                    # conversion [Pa] to [KPa]
+                    self.var.Psurf = self.var.Psurf * 0.001
                     if returnBool('useHuss'):
-                        #self.var.Qair = readnetcdf2('QAirMaps', dateVar['currDate'], addZeros = True, meteo = True)
-                        self.var.Qair = readmeteodata('QAirMaps', dateVar['currDate'], addZeros=True, mapsscale =self.var.meteomapsscale)
+                        self.var.huss = readmeteodata('QAirMaps', dateVar['currDate'], addZeros=True, mapsscale =self.var.meteomapsscale)
+                        self.var.huss = self.downscaling2(self.var.huss)
                         # 2 m istantaneous specific humidity[kg / kg]
                     else:
-                        #self.var.Qair = readnetcdf2('RhsMaps', dateVar['currDate'], addZeros = True, meteo = True)
-                        self.var.Qair = readmeteodata('RhsMaps', dateVar['currDate'], addZeros=True, mapsscale =self.var.meteomapsscale)
-                    self.var.Qair = self.downscaling2(self.var.Qair)
+                        self.var.rhs = readmeteodata('RhsMaps', dateVar['currDate'], addZeros=True, mapsscale =self.var.meteomapsscale)
+                        self.var.rhs = self.downscaling2(self.var.rhs)
 
-                    #--------------------------------------------------------
-                    # conversions
+                    
 
-                    # [Pa] to [KPa]
-                    self.var.Psurf = self.var.Psurf * 0.001
 
 
         # if pot evaporation is already precalulated
@@ -846,6 +852,18 @@ class readmeteo(object):
 
                 # potential evaporation rate from water surface (conversion to [m] per time step)
                 # potential evaporation rate from a bare soil surface (conversion # to [m] per time step)
+
+        if self.var.usepySnowClim:
+            self.var.useTdew = returnBool('useTdew')
+            if self.var.useTdew:
+                # if tDew maps are available, otherwise use Eact (vapor pressure and calculate Tdew
+                self.var.Tdew = readmeteodata('TdewMaps',
+                                              dateVar['currDate'],
+                                              addZeros=True,
+                                              mapsscale = self.var.meteomapsscale,
+                                              buffering= self.var.buffer)
+                if checkOption('TemperatureInKelvin'):
+                    self.var.Tdew -= ZeroKelvin
 
         if Flags['calib']:
             # if first clibration run, store all meteo data in a variable
