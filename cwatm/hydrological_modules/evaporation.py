@@ -177,15 +177,19 @@ class evaporation(object):
         # calculate potential bare soil evaporation - only once
         if No == 0:
             self.var.potBareSoilEvap = self.var.cropCorrect * self.var.minCropKC * self.var.ETRef
-            # calculate snow and ice evaporation
-            self.var.snowEvap = np.minimum(self.var.SnowMelt, self.var.potBareSoilEvap)
-            self.var.potBareSoilEvap -= self.var.snowEvap
+            if self.var.usepySnowClim:
+                # if snow on ground no bare soil evap
+                self.var.potBareSoilEvap = np.where(self.var.ExistSnow == 1,0,self.var.potBareSoilEvap)
+                # snowEvap calcualted already in snow-frost
+            else:
+                # calculate snow and ice evaporation
+                self.var.snowEvap = np.minimum(self.var.SnowMelt, self.var.potBareSoilEvap)
+                self.var.potBareSoilEvap -= self.var.snowEvap
+                self.var.iceEvap = np.minimum(self.var.IceMelt, self.var.potBareSoilEvap)
+                self.var.potBareSoilEvap -= self.var.iceEvap
 
-            self.var.iceEvap = np.minimum(self.var.IceMelt, self.var.potBareSoilEvap)
-            self.var.potBareSoilEvap -= self.var.iceEvap
-
-            self.var.SnowMelt -= self.var.snowEvap
-            self.var.IceMelt -= self.var.iceEvap
+                self.var.SnowMelt -= self.var.snowEvap
+                self.var.IceMelt -= self.var.iceEvap
 
         #if dateVar['newStart'] or (dateVar['currDate'].day in [1,11,21]):
         #    self.var.cropKC[No] = readnetcdf2(coverType + '_cropCoefficientNC', dateVar['10day'], "10day")
@@ -590,7 +594,6 @@ class evaporation(object):
 
 
         # potTranspiration: Transpiration for each land cover class
-        # Dealt with above - self.var.snowEvap
         self.var.potTranspiration[No] = np.maximum(0., self.var.totalPotET[No] - self.var.potBareSoilEvap)
 
         # checkOption('includeCrops') and checkOption('includeCropSpecificWaterUse')
@@ -604,9 +607,6 @@ class evaporation(object):
                     self.var.PotET_crop[c] = (self.var.cropCorrect * self.var.crop_correct_landCover[No] * 
                                               self.var.currentKC[c] * self.var.ETRef)
                     self.var.totalPotET_month[c] += self.var.PotET_crop[c]
-                    # self.var.cropCorrect * self.var.currentKC[c] * self.var.ETRef
-                    # np.maximum(0., self.var.cropCorrect * self.var.currentKC[c] * self.var.ETRef - 
-                    #           self.var.potBareSoilEvap - self.var.snowEvap)
 
                     # For creating named crop maps
                     vars(self.var)[self.var.Crops_names[c] + '_Irr'] = self.var.fracCrops_Irr[c].copy()

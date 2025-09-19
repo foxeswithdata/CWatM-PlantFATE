@@ -503,8 +503,7 @@ class snow_frost(object):
             # Reset to 0 snow at the specified time of year,
             if self.var.snowoff_month > 0:
                 if time_value[1] == self.var.snowoff_month and time_value[2] == self.var.snowoff_day:
-                    self.var.snowpack = self.var.Snowpack(globals.inZero.shape[0],
-                                                self.var.snowclimParameters)
+                    self.var.snowpack = self.var.Snowpack(globals.inZero.shape[0], self.var.snowclimParameters)
 
             self.var.snowpack, snow_vars = self.var._run_snowclim_step(
                 snow_vars,
@@ -519,15 +518,25 @@ class snow_frost(object):
             self.var.snowModelvars =  self.var._prepare_outputs(snow_vars, precip)
 
             self.var.ExistSnow = self.var.snowModelvars.ExistSnow.copy()
-            self.var.SnowMelt = self.var.snowModelvars.Runoff.copy() / self.var.constSnowClim.WATERDENS
-            self.var.Rain_on_snow = np.where(self.var.ExistSnow, precip.rain.copy(), 0)
-            self.var.Rain = np.where(self.var.ExistSnow, 0, precip.rain.copy())
+            self.var.SnowMelt = self.var.snowModelvars.Runoff / self.var.constSnowClim.WATERDENS
+            self.var.Rain_on_snow = np.where(self.var.ExistSnow, precip.rain, 0)
+            self.var.Rain = np.where(self.var.ExistSnow, 0, precip.rain)
             self.var.Snow = precip.sfe.copy()
 
-            self.var.IceMelt = globals.inZero.copy()
-            self.var.SnowCover = self.var.snowModelvars.SnowWaterEq.copy() / self.var.constSnowClim.WATERDENS
+
+            self.var.SnowCover = self.var.snowModelvars.SnowWaterEq / self.var.constSnowClim.WATERDENS
             self.var.snow_redistributed_previous = globals.inZero.copy()
+
+            # lost due to sublimation and condensation
+            # noy calculated in evaporation again!
+            self.var.snowEvap = (self.var.snowModelvars.Sublimation +  self.var.snowModelvars.Condensation) / self.var.constSnowClim.WATERDENS
+
+
+            # snowfraction set to 0 -> ExistSnow for true or false
             self.var.SnowFraction = globals.inZero.copy()
+            # icemelt =0 -> snowtowers are handled in pySnowClim
+            self.var.IceMelt = globals.inZero.copy()
+            self.var.iceEvap = globals.inZero.copy()
 
 
         else:
