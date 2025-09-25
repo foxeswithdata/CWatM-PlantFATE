@@ -795,7 +795,15 @@ class readmeteo(object):
                 self.var.TMin -= ZeroKelvin
                 self.var.TMax -= ZeroKelvin
 
-            if self.var.pet_modus < 4:
+            if self.var.pet_modus == 5:
+                if globals.dateVar['newStart'] or globals.dateVar['newYear']:
+                    if self.var.meteodown:
+                        self.var.thermalI = readnetcdf2('thermalIndexFile', globals.dateVar['currDate'], "yearly", value="thermalindex", compress=False)
+                        self.var.thermalI = self.downscaling2(self.var.thermalI)
+                    else:
+                        self.var.thermalI = readnetcdf2('thermalIndexFile', globals.dateVar['currDate'], "yearly", value="thermalindex", compress=True)
+
+            else:
                 # with priestley ET or Thornewaite ET no wind, psurf,qair available
                 self.var.Wind = readmeteodata('WindMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)
                 self.var.Wind = self.downscaling2(self.var.Wind)

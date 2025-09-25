@@ -1000,7 +1000,7 @@ class landcoverType(object):
         if self.var.includeWastewaterPits:
             self.var.sum_gwRecharge += self.var.pitLatrinToGW
             
-        soilVars = ['w1','w2','w3']
+        soilVars = ['w1','w2','w3','theta1','theta2','theta3']
         for variable in soilVars:
                 vars(self.var)["sum_" + variable] = globals.inZero.copy()
                 for No in range(4):

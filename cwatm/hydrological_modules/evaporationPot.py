@@ -511,8 +511,8 @@ class evaporationPot(object):
         #   and 0.69 proposed by Pereira et al.)
         k = 0.69
         # Thermal index of the year:
-        if globals.dateVar['newStart'] or globals.dateVar['newYear']:
-            self.var.thermalI = readnetcdf2('thermalIndexFile', globals.dateVar['currDate'], "yearly", value="thermalindex")
+        #if globals.dateVar['newStart'] or globals.dateVar['newYear']:
+        #    self.var.thermalI = readnetcdf2('thermalIndexFile', globals.dateVar['currDate'], "yearly", value="thermalindex")
 
         # I will be calculated in a prerun, year starts on 1st Jan.
         # I=âˆ‘(0.2*T_(eff,mean) )^1.514  from n=1 to 12
