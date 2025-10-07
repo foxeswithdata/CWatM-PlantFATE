@@ -456,7 +456,7 @@ class soil(object):
 
         TaMax = self.var.potTranspiration[No] * self.var.rws
         # transpiration is 0 when soil is frozen
-        TaMax = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0., TaMax)
+        TaMax = np.where(self.var.FrostDay, 0., TaMax)
 
         ta1 = np.maximum(np.minimum(TaMax * self.var.adjRoot[0][No], self.var.w1[No] - self.var.wwp1[No]), 0.0)
         ta2 = np.maximum(np.minimum(TaMax * self.var.adjRoot[1][No], self.var.w2[No] - self.var.wwp2[No]), 0.0)
@@ -475,8 +475,7 @@ class soil(object):
         # Actual potential bare soil evaporation - upper layer
         self.var.actBareSoilEvap[No] = np.minimum(self.var.potBareSoilEvap, 
                                                   np.maximum(0., self.var.w1[No] - self.var.wres1[No]))
-        self.var.actBareSoilEvap[No] = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0., 
-                                                self.var.actBareSoilEvap[No])
+        self.var.actBareSoilEvap[No] = np.where(self.var.FrostDay, 0., self.var.actBareSoilEvap[No])
 
         # no bare soil evaporation in the inundated paddy field
         if coverType == 'irrPaddy':
@@ -521,7 +520,7 @@ class soil(object):
             self.var.prefFlow[No] = 0.
         else:
             self.var.prefFlow[No] = availWaterInfiltration * relSat ** self.var.cPrefFlow
-            self.var.prefFlow[No] = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0.0, self.var.prefFlow[No])
+            self.var.prefFlow[No] = np.where(self.var.FrostDay, 0.0, self.var.prefFlow[No])
 
         if self.var.modflow:
             # multiplied by the fraction of ModFlow unsaturated cells
@@ -531,8 +530,7 @@ class soil(object):
         # calculate infiltration
         # infiltration, limited with KSat1 and available water in topWaterLayer
         self.var.infiltration[No] = np.minimum(potInf, availWaterInfiltration - self.var.prefFlow[No])
-        self.var.infiltration[No] = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0.0, 
-                                             self.var.infiltration[No])
+        self.var.infiltration[No] = np.where(self.var.FrostDay, 0.0, self.var.infiltration[No])
         self.var.directRunoff[No] = np.maximum(0., availWaterInfiltration - self.var.infiltration[No] - 
                                                self.var.prefFlow[No])
 
@@ -713,8 +711,8 @@ class soil(object):
             subperc2to3 = np.minimum(availWater2, np.minimum(kUnSat2 * DtSub, capLayer3))
 
             # Frozen soils do not facilitate percolation
-            subperc1to2 = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0, subperc1to2)
-            subperc2to3 = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0, subperc2to3)
+            subperc1to2 = np.where(self.var.FrostDay, 0, subperc1to2)
+            subperc2to3 = np.where(self.var.FrostDay, 0, subperc2to3)
 
             if self.var.modflow:
                 # multiplied by the fraction of ModFlow unsaturated cells
@@ -742,10 +740,8 @@ class soil(object):
             self.var.perc3toGW[No] += subperc3toGW
 
         # When the soil is frozen (frostindex larger than threshold), no perc1 and 2
-        self.var.perc1to2[No] = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0, 
-                                         self.var.perc1to2[No])
-        self.var.perc2to3[No] = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, 0, 
-                                         self.var.perc2to3[No])
+        self.var.perc1to2[No] = np.where(self.var.FrostDay, 0, self.var.perc1to2[No])
+        self.var.perc2to3[No] = np.where(self.var.FrostDay, 0, self.var.perc2to3[No])
 
         # Update soil moisture
         self.var.w1[No] = self.var.w1[No] - self.var.perc1to2[No]

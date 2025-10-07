@@ -223,6 +223,13 @@ class readmeteo(object):
         if 'only_radiation' in binding:
             self.var.only_radiation = returnBool('only_radiation')
 
+        # for high resolution runs eg 1 arcmin the rlds maps are too coarse
+        self.var.without_rlds = False
+        if 'without_rlds' in binding:
+            self.var.without_rlds = returnBool('without_rlds')
+        if self.var.only_radiation:
+            self.var.without_rlds = True
+
         # read PET modus if snowmelt radiation is used
         if self.var.snowmelt_radiation:
             self.var.pet_modus = checkOption('PET_modus')
@@ -803,6 +810,9 @@ class readmeteo(object):
                     else:
                         self.var.thermalI = readnetcdf2('thermalIndexFile', globals.dateVar['currDate'], "yearly", value="thermalindex", compress=True)
 
+            elif self.var.pet_modus == 4:
+                self.var.Wind = 0
+                # no additional data needed
             else:
                 # with priestley ET or Thornewaite ET no wind, psurf,qair available
                 self.var.Wind = readmeteodata('WindMaps', dateVar['currDate'], addZeros=True, mapsscale = self.var.meteomapsscale)

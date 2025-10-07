@@ -765,10 +765,10 @@ class snow_frost(object):
 
         # ---------------------------------------------------------------------------------
         # Dynamic part of frost index
-        if self.var.adv_frost:
-            Kfrost = self.var.Kfrost
-        else:
-            Kfrost = np.where(self.var.Tavg < 0, 0.08, 0.5)
+        
+        Kfrost = np.where(self.var.Tavg < 0, 0.08, self.var.Kfrost)
+        # Kfrost, (snow depth reduction coefficient) is taken as 0.57 [1/cm], (HH, p. 7.28) -> from Molnau taken as 0.5 for t> 0 and 0.08 for T<0
+        if not self.var.adv_frost:
             self.var.maxFrostIndex = 1000.
 
         # self.var.Kfrost = np.where(self.var.Tavg < 0, 0.08, 0.5)
@@ -777,6 +777,8 @@ class snow_frost(object):
         # Rate of change of frost index (expressed as rate, [degree days/day])
         self.var.FrostIndex = np.maximum(self.var.FrostIndex + FrostIndexChangeRate * self.var.DtDay, 0)
         self.var.FrostIndex = np.where(self.var.FrostIndex > self.var.maxFrostIndex, self.var.maxFrostIndex, self.var.FrostIndex)
+        
+        self.var.FrostDay = np.where(self.var.FrostIndex > self.var.FrostIndexThreshold, True, False)
         # frost index in soil [degree days] based on Molnau and Bissel (1983, A Continuous Frozen Ground Index for Flood
         # Forecasting. In: Maidment, Handbook of Hydrology, p. 7.28, 7.55)
         # if Tavg is above zero, FrostIndex will stay 0
@@ -786,7 +788,7 @@ class snow_frost(object):
         # Division by SnowDensity because SnowDepth is expressed as equivalent water depth(always less than depth of snow pack)
         # SnowWaterEquivalent taken as 0.45
         # Afrost, (daily decay coefficient) is taken as 0.97 (Handbook of Hydrology, p. 7.28)
-        # Kfrost, (snow depth reduction coefficient) is taken as 0.57 [1/cm], (HH, p. 7.28) -> from Molnau taken as 0.5 for t> 0 and 0.08 for T<0
+
 
 
 

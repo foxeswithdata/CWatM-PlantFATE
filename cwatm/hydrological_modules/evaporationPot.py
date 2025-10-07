@@ -81,20 +81,26 @@ class evaporationPot(object):
         if self.var.usepySnowClim:
             if self.var.only_radiation:
                 # for pySnowclim
+                eps = 0.621979008
+                # molecular weight of water vapor / The molecular weight of dry air: 18.015 g/mol / 28.964 g/mol
                 self.var.Psurf = Psycon / 0.665E-3
                 self.var.Rsdl = RNup - RLN
-                self.var.huss = 0.622 * self.var.EAct / (self.var.Psurf - self.var.EAct * (1 - 0.622))
-                self.var.rhs = 100 / ESat * (self.var.Psurf * self.var.huss) / ((0.378 * self.var.huss) + 0.622)
+                self.var.huss = eps * self.var.EAct / (self.var.Psurf - self.var.EAct * (1 - eps))
+                self.var.rhs = 100 / ESat * (self.var.Psurf * self.var.huss) / (((1-eps) * self.var.huss) + eps)
             else:
                 if returnBool('useHuss'):
-                    self.var.rhs = 100 / ESat * (self.var.Psurf * self.var.huss) / ((0.378 * self.var.huss) + 0.622)
+                    self.var.rhs = 100 / ESat * (self.var.Psurf * self.var.huss) / (((1-eps) * self.var.huss) + eps)
                 else:
-                    self.var.huss = 0.622 * self.var.EAct / (self.var.Psurf - self.var.EAct * (1 - 0.622))
+                    self.var.huss = eps * self.var.EAct / (self.var.Psurf - self.var.EAct * (1 - eps))
             if not self.var.useTdew:
-                # calculate Tdew
+                # calculate Tdew (Magnus Formula)
                 # based on FAO56 https://www.fao.org/4/X0490E/x0490e07.htm
                 # equation Compute Dew Point Temperature  No 14
-                self.var.Tdew = np.log(self.var.EAct / 0.6108) * 237.3 / (17.27 - np.log(self.var.EAct / 0.6108))
+                #self.var.Tdew = np.log(self.var.EAct / 0.61078) * 237.3 / (17.27 - np.log(self.var.EAct / 0.61078))
+                # or Bolton, D. (1980). The computation of equivalent potential temperature. Monthly Weather Review, 108(7), 1046-1053.
+                self.var.Tdew = np.log(self.var.EAct / 6.112  ) * 243.5 / (17.67 - np.log(self.var.EAct / 6.112))
+                # or use Arden Buck equation for Temp > 0 deg
+                # self.var.Tdew  =  (243.04 * np.log(self.var.EAct / 6.1121)) / (17.625 - np.log(self.var.EAct / 6.1121))
         return
 
     def initial(self):
@@ -168,10 +174,10 @@ class evaporationPot(object):
         self.var.AlbedoSoil = loadmap('AlbedoSoil')
         self.var.AlbedoWater = loadmap('AlbedoWater')
 
-        if self.var.pet_modus == 4 or self.var.only_radiation:
+        if self.var.pet_modus == 4 or self.var.without_rlds:
             self.var.dem = loadmap('dem')
 
-        if self.var.pet_modus == 5 or self.var.only_radiation:
+        if self.var.pet_modus == 5 or self.var.without_rlds:
             self.var.lat = loadmap('latitude')
 
     # --------------------------------------------------------------------------
@@ -234,13 +240,19 @@ class evaporationPot(object):
         ESat = (ESatmin + ESatmax) / 2.0   # [KPa]
         # http://www.fao.org/docrep/X0490E/x0490e07.htm   equation 11/12
         RNup = 4.903E-9 * (((self.var.TMin + 273.16) ** 4) + ((self.var.TMax + 273.16) ** 4)) / 2
-        # Up longwave radiation [MJ/m2/day]
+        # Up longwave radiation [MJ/m2/day] https://www.fao.org/4/x0490E/x0490e0j.htm#TopOfPage table 2.8
         LatHeatVap = 2.501 - 0.002361 * self.var.Tavg
         # latent heat of vaporization [MJ/kg]
 
         # --------------------------------
         # if only daily calculate radiation is given instead of longwave down and shortwave down radiation
-        if self.var.only_radiation:
+        if self.var.without_rlds:
+            if not self.var.only_radiation:
+                if returnBool('useHuss'):
+                    self.var.EAct = (self.var.Psurf * self.var.huss) / ((0.378020992 * self.var.huss) + 0.621979008)
+                else:
+                    self.var.EAct = ESat * self.var.rhs / 100.0
+
             # FAO 56 - https://www.fao.org/3/x0490E/x0490e07.htm#solar%20radiation  equation 39
             radian = np.pi / 180 * self.var.lat
             distanceSun = 1 + 0.033 * np.cos(2 * np.pi * dateVar['doy'] / 365)
@@ -275,7 +287,7 @@ class evaporationPot(object):
             # calculate actual vapour pressure
             if returnBool('useHuss'):
                 # if specific humidity calculate actual vapour pressure this way
-                self.var.EAct = (self.var.Psurf * self.var.huss) / ((0.378 * self.var.huss) + 0.622)
+                self.var.EAct = (self.var.Psurf * self.var.huss) / (((1-0.621979008) * self.var.huss) + 0.621979008)
                 # http://www.eol.ucar.edu/projects/ceop/dm/documents/refdata_report/eqns.html
 
             else:
@@ -284,6 +296,8 @@ class evaporationPot(object):
                 # longwave radiation balance
             RLN = RNup - self.var.Rsdl
             # RDL is stored on disk as W/m2 but converted in MJ/m2/s in readmeteo.py
+
+
 
         # ************************************************************
         # ***** NET ABSORBED RADIATION *******************************
@@ -334,7 +348,7 @@ class evaporationPot(object):
         # potential reference evapotranspiration rate [m/day]  # from mm to m with 0.001
         # potential evaporation rate from a bare soil surface [m/day]
         self.var.EWRef = (RNANWater + EA) * 0.001
-        # if pysnowclim vraibles missing are calculated
+        # if pysnowclim variables missing are calculated
         self.vari_pySnowClim(Psycon, RNup, RLN, ESat)        # potential evaporation rate from water surface [m/day]
 
         # -> here we are at ET0 (see http://www.fao.org/docrep/X0490E/x0490e04.htm#TopOfPage figure 4:)
@@ -366,7 +380,12 @@ class evaporationPot(object):
         RNup = 4.903E-9 * (((self.var.TMin + 273.16) ** 4) + ((self.var.TMax + 273.16) ** 4)) / 2
         # Up longwave radiation [MJ/m2/day]
 
-        if self.var.only_radiation:
+        if self.var.without_rlds:
+            if not self.var.only_radiation:
+                if returnBool('useHuss'):
+                    self.var.EAct = (self.var.Psurf * self.var.huss) / ((0.378020992 * self.var.huss) + 0.621979008)
+                else:
+                    self.var.EAct = ESat * self.var.rhs / 100.0
             # FAO 56 - https://www.fao.org/3/x0490E/x0490e07.htm#solar%20radiation  equation 39
             a = dateVar['doy']
             # radian = np.pi / 180 * self.var.lat
@@ -436,7 +455,12 @@ class evaporationPot(object):
 
 
         # if only daily calculate radiation is given instead of longwave down and shortwave down radiation
-        if self.var.only_radiation:
+        if self.var.without_rlds:
+            if not self.var.only_radiation:
+                if returnBool('useHuss'):
+                    self.var.EAct = (self.var.Psurf * self.var.huss) / ((0.378020992 * self.var.huss) + 0.621979008)
+                else:
+                    self.var.EAct = ESat * self.var.rhs / 100.0
             # FAO 56 - https://www.fao.org/3/x0490E/x0490e07.htm#solar%20radiation  equation 39
             radian = np.pi / 180 * self.var.lat
             distanceSun = 1 + 0.033 * np.cos(2 * np.pi * dateVar['doy'] / 365)
