@@ -95,10 +95,10 @@ class evaporationPot(object):
             if not self.var.useTdew:
                 # calculate Tdew (Magnus Formula)
                 # based on FAO56 https://www.fao.org/4/X0490E/x0490e07.htm
-                # equation Compute Dew Point Temperature  No 14
-                #self.var.Tdew = np.log(self.var.EAct / 0.61078) * 237.3 / (17.27 - np.log(self.var.EAct / 0.61078))
+                # equation Compute Dew Point Temperature  No 14: Eact in hPa
+                self.var.Tdew = np.log(self.var.EAct / 0.61078) * 237.3 / (17.27 - np.log(self.var.EAct / 0.61078))
                 # or Bolton, D. (1980). The computation of equivalent potential temperature. Monthly Weather Review, 108(7), 1046-1053.
-                self.var.Tdew = np.log(self.var.EAct / 6.112  ) * 243.5 / (17.67 - np.log(self.var.EAct / 6.112))
+                #self.var.Tdew = np.log(self.var.EAct / 0.6112  ) * 243.5 / (17.67 - np.log(self.var.EAct / 0.6112))
                 # or use Arden Buck equation for Temp > 0 deg
                 # self.var.Tdew  =  (243.04 * np.log(self.var.EAct / 6.1121)) / (17.625 - np.log(self.var.EAct / 6.1121))
         return
