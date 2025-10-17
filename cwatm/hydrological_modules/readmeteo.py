@@ -805,7 +805,7 @@ class readmeteo(object):
             if self.var.pet_modus == 5:
                 if globals.dateVar['newStart'] or globals.dateVar['newYear']:
                     if self.var.meteodown:
-                        self.var.thermalI = readnetcdf2('thermalIndexFile', globals.dateVar['currDate'], "yearly", value="thermalindex", compress=False)
+                        self.var.thermalI = readnetcdf2('thermalIndexFile', globals.dateVar['currDate'], "yearly", cut=False,value="thermalindex", compress=False)
                         self.var.thermalI = self.downscaling2(self.var.thermalI)
                     else:
                         self.var.thermalI = readnetcdf2('thermalIndexFile', globals.dateVar['currDate'], "yearly", value="thermalindex", compress=True)
