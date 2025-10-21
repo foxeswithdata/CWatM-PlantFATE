@@ -257,12 +257,12 @@ class landcoverType(object):
         - Temporal dynamics of land cover changes
         
         Land cover types:
-        0. Forest - Natural forest areas
-        * Grasland/non irrigated land No.1
-        * Paddy irrigation No.2
-        * non-Paddy irrigation No.3
-        * Sealed area No.4
-        * Water covered area No.5
+        0 Forest - Natural forest areas
+        1 Grasland/non irrigated land No.1
+        2 Paddy irrigation No.2
+        3 non-Paddy irrigation No.3
+        4 Sealed area No.4
+        5 Water covered area No.5
 
         And initialize the soil variables
         """

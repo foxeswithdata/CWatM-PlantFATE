@@ -288,9 +288,10 @@ class runoff_concentration(object):
         """
 
         self.var.sum_landSurfaceRunoff = globals.inZero.copy()
+        self.var.sum_directRunoff = globals.inZero.copy()
 
         for No in range(6):
-            # self.var.sum_directRunoff += self.var.fracVegCover[No] * self.var.directRunoff[No]
+            self.var.sum_directRunoff += self.var.fracVegCover[No] * self.var.directRunoff[No]
             self.var.landSurfaceRunoff[No] = self.var.directRunoff[No] + self.var.interflow[No]
             self.var.sum_landSurfaceRunoff += self.var.fracVegCover[No] * self.var.landSurfaceRunoff[No]
         self.var.runoff = self.var.sum_landSurfaceRunoff + self.var.baseflow + self.var.leakageIntoRunoff
