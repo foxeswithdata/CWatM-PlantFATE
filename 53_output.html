@@ -1,0 +1,523 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Output Options &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Testing Data" href="54_testingdata.html" />
+    <link rel="prev" title="Settingsfile" href="52_settingsfile.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Output Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#output-meta-information">Output meta information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-output">Model Output</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#varity-of-outputs">Varity of outputs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#time-depending-and-non-depending-output-maps">Time depending and non depending output maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#or-time-series-at-specified-points">Or time series at specified points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#or-time-series-as-a-catchment-sum-or-average">Or time series as a catchment sum or average</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#format-of-output-in-the-settings-file">Format of output in the settings file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-variables">Output variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#most-important-output-variables-a-selection">Most important output variables - a selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#output-variables-a-list">Output variables - a list</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#daily-monthly-at-the-end-or-average">Daily, monthly - at the end or average</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Output Options</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/53_output.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="output-options">
+<h1><a class="toc-backref" href="#id1">Output Options</a><a class="headerlink" href="#output-options" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#output-options" id="id1">Output Options</a></p>
+<ul>
+<li><p><a class="reference internal" href="#output-meta-information" id="id2">Output meta information</a></p></li>
+<li><p><a class="reference internal" href="#model-output" id="id3">Model Output</a></p>
+<ul>
+<li><p><a class="reference internal" href="#varity-of-outputs" id="id4">Varity of outputs</a></p>
+<ul>
+<li><p><a class="reference internal" href="#time-depending-and-non-depending-output-maps" id="id5">Time depending and non depending output maps</a></p></li>
+<li><p><a class="reference internal" href="#or-time-series-at-specified-points" id="id6">Or time series at specified points</a></p></li>
+<li><p><a class="reference internal" href="#or-time-series-as-a-catchment-sum-or-average" id="id7">Or time series as a catchment sum or average</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#format-of-output-in-the-settings-file" id="id8">Format of output in the settings file</a></p></li>
+<li><p><a class="reference internal" href="#output-variables" id="id9">Output variables</a></p>
+<ul>
+<li><p><a class="reference internal" href="#most-important-output-variables-a-selection" id="id10">Most important output variables - a selection</a></p></li>
+<li><p><a class="reference internal" href="#output-variables-a-list" id="id11">Output variables - a list</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#daily-monthly-at-the-end-or-average" id="id12">Daily, monthly - at the end or average</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="output-meta-information">
+<span id="rst-metadata"></span><h2><a class="toc-backref" href="#id2">Output meta information</a><a class="headerlink" href="#output-meta-information" title="Permalink to this headline">¶</a></h2>
+<p>The format for spatial data for output data is netCDF.
+The cwatm/metaNetcdf.xml includes information on the output netCDF files
+e.g. description of the parameter, unit ..</p>
+<p>In the meta data file information can be added  e.g. a description of the variable, unit</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is not necessary to change this file! This is an option to put additional information into output maps</p>
+</div>
+<p>Example of a metaNetcdf.xml file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">CWATM</span><span class="o">&gt;</span>
+<span class="c1"># METADATA for NETCDF OUTPUT DATA</span>
+
+<span class="c1"># varname: name of the variable in the CWAT code</span>
+<span class="c1"># unit: unit of the varibale</span>
+<span class="c1"># long name# standard name</span>
+
+<span class="c1"># Discharge maps </span>
+<span class="o">&lt;</span><span class="n">metanetcdf</span> <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;discharge&quot;</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;m3/s&quot;</span>  <span class="n">standard_name</span><span class="o">=</span><span class="s2">&quot;Discharge&quot;</span> <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Discharge in cubic meter per second&quot;</span>  <span class="n">title</span><span class="o">=</span><span class="s2">&quot;1st Demo CWATM&quot;</span> <span class="n">author</span><span class="o">=</span><span class="s2">&quot;PB&quot;</span> <span class="o">/&gt;</span>
+
+<span class="c1"># others</span>
+<span class="o">&lt;</span><span class="n">metanetcdf</span> <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;soilmoisture&quot;</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;mm&quot;</span>  <span class="n">standard_name</span><span class="o">=</span><span class="s2">&quot;soil moisture&quot;</span> <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Soil moisture&quot;</span>  <span class="n">title</span> <span class="o">=</span><span class="s2">&quot;1st Demo CWATM&quot;</span> <span class="n">author</span><span class="o">=</span><span class="s2">&quot;PB&quot;</span> <span class="o">/&gt;</span>
+
+<span class="c1"># Initial condition Files</span>
+<span class="o">&lt;</span><span class="n">metanetcdf</span> <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;initcondition&quot;</span>  <span class="n">purpose</span> <span class="o">=</span><span class="s2">&quot;Initial Conditions CWATM&quot;</span> <span class="n">author</span><span class="o">=</span><span class="s2">&quot;PB&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">metanetcdf</span> <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;SnowCover1&quot;</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;mm&quot;</span>  <span class="n">standard_name</span><span class="o">=</span><span class="s2">&quot;SnowCover1&quot;</span> <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Snow cover top layer&quot;</span>  <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">metanetcdf</span> <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;SnowCover2&quot;</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;mm&quot;</span>  <span class="n">standard_name</span><span class="o">=</span><span class="s2">&quot;SnowCover2&quot;</span> <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Snow cover middle layer&quot;</span>  <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">metanetcdf</span> <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;SnowCover3&quot;</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;mm&quot;</span>  <span class="n">standard_name</span><span class="o">=</span><span class="s2">&quot;SnowCover3&quot;</span> <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Snow cover lower layer&quot;</span>  <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="n">metanetcdf</span> <span class="n">varname</span><span class="o">=</span><span class="s2">&quot;FrostIndex&quot;</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;degree/days&quot;</span>  <span class="n">standard_name</span><span class="o">=</span><span class="s2">&quot;FrostIndex&quot;</span> <span class="n">long_name</span><span class="o">=</span><span class="s2">&quot;Frost index based on Molnau, Bissel (1983)&quot;</span>  <span class="o">/&gt;</span>
+<span class="o">&lt;/</span><span class="n">CWATM</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="model-output">
+<h2><a class="toc-backref" href="#id3">Model Output</a><a class="headerlink" href="#model-output" title="Permalink to this headline">¶</a></h2>
+<p>An advantage of <strong>CWatM</strong> is the full flexibility of the output variables.</p>
+<ul class="simple">
+<li><p>All parameters and variables can be used for output as maps or time series.</p></li>
+<li><p>Even if the model is run at daily timestep, output can be daily, monthly, annual, at the end of a run</p></li>
+<li><p>all variables maps are stored as netcdf and the meta data information can be added</p></li>
+</ul>
+<div class="section" id="varity-of-outputs">
+<h3><a class="toc-backref" href="#id4">Varity of outputs</a><a class="headerlink" href="#varity-of-outputs" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="time-depending-and-non-depending-output-maps">
+<h4><a class="toc-backref" href="#id5">Time depending and non depending output maps</a><a class="headerlink" href="#time-depending-and-non-depending-output-maps" title="Permalink to this headline">¶</a></h4>
+<div class="line-block">
+<div class="line">Output maps will be produced as spatial maps, stack of spatial maps (over time)</div>
+<div class="line">Format: <a class="reference external" href="http://www.unidata.ucar.edu/software/netcdf/">netCDF</a></div>
+</div>
+<p>The netCDF maps can be read with:</p>
+<p><strong>Windows</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.giss.nasa.gov/tools/panoply">Panoply</a></p></li>
+</ul>
+<p><strong>Linux</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://meteora.ucsd.edu/~pierce/ncview_home_page.html">ncview</a></p></li>
+<li><p><a class="reference external" href="https://www.unidata.ucar.edu/software/netcdf/workshops/2012/third_party/CDO.html">cdo</a></p></li>
+</ul>
+</div>
+<div class="section" id="or-time-series-at-specified-points">
+<h4><a class="toc-backref" href="#id6">Or time series at specified points</a><a class="headerlink" href="#or-time-series-at-specified-points" title="Permalink to this headline">¶</a></h4>
+<div class="line-block">
+<div class="line">Timeseries are procuded as ASCII .csv files, which can be read with every text editor or Excel</div>
+<div class="line">If you need the old version .tss with you can read with <a class="reference external" href="http://pcraster.geo.uu.nl/projects/developments/aguila/">PCRaster Aquila</a></div>
+<div class="line">you need to put reportOldTss = True in [Option]</div>
+</div>
+<div class="line-block">
+<div class="line">The specific point(s) where timeseries are provided are defined in the settings file as <em>Gauges</em>:</div>
+<div class="line">Can be several points in the format lon lat lon lat ..</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Station data</span>
+<span class="c1"># either a map e.g. $(FILE_PATHS:PathRoot)/data/areamaps/area3.map</span>
+<span class="c1"># or a location coordinates (X,Y) e.g. 5.75 52.25 9.25 49.75 )</span>
+<span class="c1"># Lobith/Rhine</span>
+<span class="n">Gauges</span> <span class="o">=</span> <span class="mf">6.25</span> <span class="mf">51.75</span> <span class="mf">7.75</span> <span class="mf">49.75</span>
+
+<span class="c1"># if .tif file for gauges, this is a flag if the file is global or local</span>
+<span class="c1"># e.g. Gauges = $(FILE_PATHS:PathRoot)/data/areamaps/gaugesRhine.tif</span>
+<span class="n">GaugesLocal</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="or-time-series-as-a-catchment-sum-or-average">
+<h4><a class="toc-backref" href="#id7">Or time series as a catchment sum or average</a><a class="headerlink" href="#or-time-series-as-a-catchment-sum-or-average" title="Permalink to this headline">¶</a></h4>
+<p>As standard, time series can include values of the specific cell as defined in the settings file as <em>Gauges</em>
+But time series can also show the area sum or area average of the upstream catchment from the specific cell</p>
+<p>for example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">OUTPUT</span><span class="p">]</span>
+<span class="c1"># OUTPUT maps and timeseries</span>
+<span class="c1"># Standard values of a specific cell</span>
+<span class="n">OUT_TSS_Daily</span> <span class="o">=</span> <span class="n">discharge</span>
+<span class="n">OUT_TSS_AnnualAvg</span> <span class="o">=</span> <span class="n">Precipitation</span>
+<span class="c1"># Area sum of upstream catchment</span>
+<span class="n">OUT_TSS_AreaSum_MonthTot</span> <span class="o">=</span> <span class="n">Precipitation</span><span class="p">,</span> <span class="n">runoff</span>
+<span class="c1"># Area sum of upstream catchment</span>
+<span class="n">OUT_TSS_AreaAvg_MonthTot</span> <span class="o">=</span> <span class="n">Precipitation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="format-of-output-in-the-settings-file">
+<h3><a class="toc-backref" href="#id8">Format of output in the settings file</a><a class="headerlink" href="#format-of-output-in-the-settings-file" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>per day [Daily]</p></li>
+<li><p>total month [MonthTot],  average month [MonthAvg], end of month [MonthEnd]</p></li>
+<li><p>total year  [AnnualTot], average year [AnnualAvg], end of year [AnnualEnd]</p></li>
+<li><p>total sum [TotalTot], total average [TotalAvg]</p></li>
+</ul>
+<p>For each of the following sections output can be defined for different variables:</p>
+<ul class="simple">
+<li><p>Meteo</p></li>
+<li><p>Snow</p></li>
+<li><p>Soil for different land cover (forest, grassland, irrigated land, paddy irrigated)</p></li>
+<li><p>Water demand</p></li>
+<li><p>Groundwater</p></li>
+<li><p>River routing</p></li>
+<li><p>Lakes and reservoirs</p></li>
+</ul>
+<p><strong>Or</strong> output can be defined in the section <em>[output]</em></p>
+<p>An output directory can be defined and for each sort of output the variable(s) can be set:</p>
+<div class="line-block">
+<div class="line"><em>OUT_</em> defines that this variable(s) are output</div>
+<div class="line"><em>MAP_</em> or <em>TSS_</em> defines if it is a spatial map or a time series of point(s)</div>
+<div class="line"><em>AreaSum_</em> or <em>AreaAvg_</em> after <em>TSS_</em> defines if the catchment sum of average upstream of the point is calculated</div>
+<div class="line"><em>Daily</em> or <em>MonthAvg</em> or .. is specifying the time</div>
+<div class="line">The variable is given after the equal sign e.g. * = discharge*</div>
+<div class="line">If more than one variable should be used for output, split with <strong>,</strong></div>
+<div class="line">E.g. OUT_MAP_Daily = discharge -&gt; daily spatial map of discharge</div>
+</div>
+<p>As example output for precipitation, temperature and discharge is shown here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># OUTPUT maps and timeseries
+OUT_Dir = $(FILE_PATHS:PathOut)
+OUT_MAP_Daily =
+OUT_MAP_MonthEnd =
+OUT_MAP_MonthTot = Precipitation, Tavg
+OUT_MAP_MonthAvg =
+
+OUT_TSS_MonthTot = Precipitation, Tavg   # monthly total precipitation and average temperature
+OUT_TSS_Daily = discharge                # daily discharge
+OUT_TSS_MonthEnd = discharge
+OUT_TSS_AnnualEnd = discharge
+
+OUT_TSS_AreaSum_Daily = Precipitation    # daily sum of precipitation for the upstream catchment
+OUT_TSS_AreaAvg_MonthAvg = runoff        # monthly average sum of runoff for the upstream catchment
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For each variable the meta data information can be defined in <a class="reference internal" href="#rst-metadata"><span class="std std-ref">Output meta information</span></a></p>
+</div>
+</div>
+<div class="section" id="output-variables">
+<h3><a class="toc-backref" href="#id9">Output variables</a><a class="headerlink" href="#output-variables" title="Permalink to this headline">¶</a></h3>
+<p>Output can be every global defined variable in the model
+Variable are e.g. Precipitation, runoff, baseflow</p>
+<p>but also not so common variables as:</p>
+<ul class="simple">
+<li><p>reservoirStorage (amount of water in the reservoirs in [m3])</p></li>
+<li><p>nonIrrReturnFlowFraction (returnflow from domenstic and industrial water use [m3])</p></li>
+<li><p>actualET[1] (actual evapotranspiration from grassland [m/day])</p></li>
+<li><p>…</p></li>
+</ul>
+<div class="section" id="most-important-output-variables-a-selection">
+<h4><a class="toc-backref" href="#id10">Most important output variables - a selection</a><a class="headerlink" href="#most-important-output-variables-a-selection" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Variable name    : Description</span>
+<span class="n">discharge</span>         <span class="p">:</span> <span class="n">river</span> <span class="n">discharge</span>
+<span class="n">runoff</span>            <span class="p">:</span> <span class="n">runoff</span>
+<span class="n">Precipitation</span>     <span class="p">:</span> <span class="n">rainfall</span> <span class="o">+</span> <span class="n">snow</span>
+<span class="n">Tavg</span>              <span class="p">:</span> <span class="n">average</span> <span class="n">temperature</span>
+<span class="n">ETRef</span><span class="p">:</span> <span class="n">potential</span>  <span class="p">:</span> <span class="n">evaporation</span> <span class="kn">from</span> <span class="nn">reference</span> <span class="n">soil</span>
+<span class="n">sum_gwRecharge</span>    <span class="p">:</span> <span class="n">total</span> <span class="n">groundwater</span> <span class="n">recharge</span>
+<span class="n">totalET</span>           <span class="p">:</span> <span class="n">total</span> <span class="n">actual</span> <span class="n">evapotranspiration</span>
+<span class="n">baseflow</span>          <span class="p">:</span> <span class="n">baseflow</span> <span class="kn">from</span> <span class="nn">groundwater</span>
+<span class="o">...</span> <span class="p">(</span><span class="n">to</span> <span class="n">be</span> <span class="n">continued</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="output-variables-a-list">
+<h4><a class="toc-backref" href="#id11">Output variables - a list</a><a class="headerlink" href="#output-variables-a-list" title="Permalink to this headline">¶</a></h4>
+<div class="line-block">
+<div class="line">A list of variables can be produced by using:</div>
+<div class="line">grep -d recurse ‘self.var.’ *.py</div>
+<div class="line">Every self.var.variable can be used as output variable</div>
+<div class="line">For a description of the variable please take a look at the python module itself.</div>
+<div class="line">.</div>
+<div class="line">As output variable, use without self.var.</div>
+</div>
+<p>A list of possible output variables are in:
+<span class="xref std std-ref">rst_variables</span></p>
+</div>
+</div>
+<div class="section" id="daily-monthly-at-the-end-or-average">
+<h3><a class="toc-backref" href="#id12">Daily, monthly - at the end or average</a><a class="headerlink" href="#daily-monthly-at-the-end-or-average" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>per day</p></li>
+<li><p>total month, average month, end of month</p></li>
+<li><p>total year, average year, end of year</p></li>
+<li><p>total average, total at the end</p></li>
+</ul>
+<p>available prefixes are: ‘daily’, ‘monthtot’,’monthavg’, ‘monthend’,’annualtot’,’annualavg’,’annualend’,’totaltot’,’totalavg’</p>
+<p>for example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[OUTPUT]
+# OUTPUT maps and timeseries
+OUT_Dir = $(FILE_PATHS:PathOut)
+OUT_MAP_Daily = discharge, runoff, actualET[1]
+OUT_MAP_MonthAvg = Precipitation
+OUT_MAP_TotalEnd = lakeStorage
+OUT_MAP_TotalAvg = Tavg
+
+OUT_TSS_Daily = discharge
+OUT_TSS_MonthTot = runoff
+OUT_TSS_AnnualAvg = Precipitation
+OUT_TSS_AnnualTot = runoff
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For each variable the meta data information can be defined in <a class="reference internal" href="#rst-metadata"><span class="std std-ref">Output meta information</span></a></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We are not very precise when to use capital letter for some output variables. But we fear now, if we change the variable name, we will forget it somewhere.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="54_testingdata.html" class="btn btn-neutral float-right" title="Testing Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="52_settingsfile.html" class="btn btn-neutral float-left" title="Settingsfile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

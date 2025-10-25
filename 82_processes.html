@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Hydrological processes &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="9. Technical Guide" href="9_technical.html" />
+    <link rel="prev" title="Data" href="81_data.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hydrological processes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rain-and-snow-and-melt">Rain and Snow and Melt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#frost-index">Frost Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adressing-sub-grid-variability-in-land-cover">Adressing sub-grid variability in land cover</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#soil-model">Soil model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interception">Interception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evaporation">Evaporation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Hydrological processes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/82_processes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hydrological-processes">
+<h1><a class="toc-backref" href="#id1">Hydrological processes</a><a class="headerlink" href="#hydrological-processes" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#hydrological-processes" id="id1">Hydrological processes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rain-and-snow-and-melt" id="id2">Rain and Snow and Melt</a></p></li>
+<li><p><a class="reference internal" href="#frost-index" id="id3">Frost Index</a></p></li>
+<li><p><a class="reference internal" href="#adressing-sub-grid-variability-in-land-cover" id="id4">Adressing sub-grid variability in land cover</a></p></li>
+<li><p><a class="reference internal" href="#soil-model" id="id5">Soil model</a></p></li>
+<li><p><a class="reference internal" href="#interception" id="id6">Interception</a></p></li>
+<li><p><a class="reference internal" href="#evaporation" id="id7">Evaporation</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="line-block">
+<div class="line">Most of the text and figures are taken from</div>
+<div class="line">Burek, P., Van Der Knijff, J., &amp; de Roo, A. P. J. D. (2013). LISFLOOD distributed water balance and flood simulation model. Revised user manual. doi:10.2788/24719</div>
+<div class="line"><a class="reference external" href="https://publications.jrc.ec.europa.eu/repository/handle/JRC78917">https://publications.jrc.ec.europa.eu/repository/handle/JRC78917</a></div>
+<div class="line">and adjusted to the CWatM model</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Under construction! Might contain writing errors and misspellings. Keep away from small children!</p>
+</div>
+<div class="section" id="rain-and-snow-and-melt">
+<h2><a class="toc-backref" href="#id2">Rain and Snow and Melt</a><a class="headerlink" href="#rain-and-snow-and-melt" title="Permalink to this headline">¶</a></h2>
+<p>If the average temperatur is below 1°C, all precipitation is assumed to be snow. A snow correction factor is used to correct for undercatch of snow precipitation. Unlike rain, snow accumulates on the soil surface until it melts. The rate of snowmelt is estimated using a simple degree-day factor method. Degree-day factor type snow melt models usually take the following form (e.g. see WMO, 1986):</p>
+<p><img class="math" src="_images/math/5243652b633ebce4ae9c04742942f46436a58f04.png" alt="M = C_m (T_{avg} - T_m)"/>  (1)</p>
+<p>where M  is the rate of snowmelt, Tavg is the average daily temperature, Tm is some critical temperature and Cm is a degree-day factor [mm °C-1 day-1]. Speers et al. (1979) developed an extension of this equation which accounts for accelerated snowmelt that takes place when it is raining (cited in Young, 1985). The equation is supposed to apply when rainfall is greater than 30 mm in 24 hours. Moreover, although the equation is reported to work sufficiently well in forested areas, it is not valid in areas that are above the tree line, where radiation is the main energy source for snowmelt).  LISFLOOD uses a variation on the equation of Speers et al. The modified equation simply assumes that for each mm of rainfall, the rate of snowmelt increases with 1% (compared to a ‘dry’ situation). This yields the following equation:</p>
+<p><img class="math" src="_images/math/d1b8454437845497909460e5a6297b4a3a561edf.png" alt="M = C_m \cdot C_{\text{Seasonal}} \cdot (1 + 0.01 \cdot R \cdot \Delta t) \cdot (T_{\text{avg}} - T_m) \cdot \Delta t"/>  (2)</p>
+<p>where M is the snowmelt per time step [mm], R is rainfall (not snow!) intensity [mm day-1], and Δt is the time interval [days]. Tm has a value of 0 °C, and Cm is a degree-day factor [mm °C-1 day-1]. However, it should be stressed that the value of Cm can actually vary greatly both in space and time (e.g. see Martinec et al., 1998).
+Therefore, in practice this parameter is often treated as a calibration constant. A low value of Cm indicates slow snow melt. CSeasonal is a seasonal variable melt factor which is also used in several other models (e.g. Anderson 2006, Viviroli et al., 2009). There are mainly two reasons to use a seasonally variable melt factor:
+-       The solar radiation has an effect on the energy balance and varies with the time of the year.
+-       The albedo of the snow has a seasonal variation, because fresh snow is more common in the mid winter and aged snow in the late winter/spring. This produce an even greater seasonal variation in the amount of net solar radiation</p>
+<p>Figure 1 shows an example where a mean value of: 3.0 mm °C-1 d-1is used. The value of Cm is reduced by 0.5 at 21st December and a 0.5 is added on the 21st June. In between a sinus function is applied</p>
+<a class="reference internal image-reference" href="_images/82_snowmelt.png"><img alt="_images/82_snowmelt.png" src="_images/82_snowmelt.png" style="width: 600px;" /></a>
+<p>Figure 1 Sinus shaped snow melt coefficient (Cm) as a function of days of year</p>
+<p>At high altitudes, where the temperature never exceeds 1ºC, the model accumulates snow without any reduction because of melting loss. In these altitudes runoff from glacier melt is an important part. The snow will accumulate and converted into firn. Then firn is converted to ice and transported to the lower regions. This can take decades or even hundred years. In the ablation area the ice is melted. In LISFLOOD this process is emulated by melting the snow in higher altitudes on an annual basis over summer. A sinus function is used to start ice melting in summer, starting on the 15 June and ending on the 15 September (see fig 2) and using the temperature of elevation zone 3 (see fig 3)</p>
+<a class="reference internal image-reference" href="_images/82_icemelt.png"><img alt="_images/82_icemelt.png" src="_images/82_icemelt.png" style="width: 600px;" /></a>
+<p>Figure 2 Sinus shaped ice melt coefficient as a function of days of year</p>
+<p>The amount of snowmelt and icemelt together can never exceed the actual snow cover that is present on the surface.</p>
+<p>For large cell sizes, there may be considerable sub-cell heterogeneity in snow accumulation and melt, which is a particular problem if there are large elevation differences within a cell. Because of this, snow melt and accumulation are modelled separately for different elevation zones, which are defined by the percentiles of sub-cell elevation.
+The division in elevation zones is done by calculating the percentiles of a high resolution DEM inside the resolution  of the CWatM cell. e.,g 3 arcsec SRTM DEM cell in a 5 arcmin grid cell.
+Depending on the elevetion zones (e.g. 0.0065 °C) per meter elevation difference. Snow, snowmelt and snow accumulation are subsequently modelled separately for each elevation zone.</p>
+</div>
+<div class="section" id="frost-index">
+<h2><a class="toc-backref" href="#id3">Frost Index</a><a class="headerlink" href="#frost-index" title="Permalink to this headline">¶</a></h2>
+<p>When the soil surface is frozen, this affects the hydrological processes occurring near the soil surface. To estimate whether the soil surface is frozen or not, a frost index F is calculated. The equation is based on Molnau &amp; Bissell (1983, cited in Maidment 1993), and adjusted for variable time steps. The rate at which the frost index changes is given by:</p>
+<p><img class="math" src="_images/math/67fb4db79458f35e9f36584dd956e6d016cc79b5.png" alt="\frac{dF}{dt} = -(1 - A_f)F - T_{av} \cdot e^{-0.04 \cdot K \cdot \frac{d_s}{we_s}}"/>  (3)</p>
+<p>dF/dt  is expressed in [°C day-1 day-1 ].  Af is a decay coefficient [day-1], K is a a snow depth reduction coefficient [cm-1], ds is the (pixel-average) depth of the snow cover (expressed as mm equivalent water depth), and wes is a parameter called snow water equivalent, which is the equivalent water depth water of a snow cover (Maidment, 1993). In LISFLOOD, Af and K are set to 0.97 and 0.57 cm-1 respectively, and wes is taken as 0.1, assuming an average snow density of 100 kg/m3    (Maidment, 1993). The soil is considered frozen when the frost index rises above a critical threshold of 56.  For each time step the value of F [°C day-1] is updated as:</p>
+<p><img class="math" src="_images/math/d7e1bd566c814a65577bee57862bcbfb3c60f4fb.png" alt="F(t) = F(t-1) + \frac{dF}{dt} \Delta t"/>  (4)</p>
+<p>F is not allowed to become less than 0. When the frost index rises above a threshold of 56, every soil process is frozen and transpiration, evaporation, infiltration and the outflow to the second soil layer and to upper groundwater layer is set to zero. Any rainfall is bypassing the soil and transformed into surface runoff till the frost index is equal or less than 56. To prevent that the soil is frozen for a too long period, a maximimum F can bedefined (e.g. 60) where F is not allowed to become more.</p>
+</div>
+<div class="section" id="adressing-sub-grid-variability-in-land-cover">
+<h2><a class="toc-backref" href="#id4">Adressing sub-grid variability in land cover</a><a class="headerlink" href="#adressing-sub-grid-variability-in-land-cover" title="Permalink to this headline">¶</a></h2>
+<p>In hydrological model a number of parameters are linked directly to land cover classes by using lookup tables. In some models the spatially dominant value is used to assign the corresponding grid parameter values. This implies that some of the sub-grid variability in land use, and consequently in the parameter of interest, is lost (figure 4)</p>
+<a class="reference internal image-reference" href="_images/82_dominant_landcover.png"><img alt="_images/82_dominant_landcover.png" src="_images/82_dominant_landcover.png" style="width: 600px;" /></a>
+<p>Figure x: Land cover aggregation approach with dominant land cover</p>
+<p>To account for the sub-grid variability in land use, CWatM models the within-grid variability. In the modified version of the hydrological model, the spatial distribution and frequency of each class is defined as a percentage of the whole represented area of the new pixel. Combining land cover classes and modeling aggregated classes, is known as the concept of hydrological response units (HRU). The logic behind this approach is that the non-linear nature of the rainfall runoff processes on different land cover surfaces observed in reality will be better captured. This concept is also used in models such as SWAT (Arnold and Fohrer, 2005) and PREVAH (Viviroli et al., 2009). CWatM is using a HRU approach on sub-grid level, as shown in figure 6.</p>
+<a class="reference internal image-reference" href="_images/82_landcover.png"><img alt="_images/82_landcover.png" src="_images/82_landcover.png" style="width: 600px;" /></a>
+<p>Figure 6  CWatM land cover aggregation by modelling aggregated land use classes separately: Percentages of forest (dark green); water (blue), impervious surface (red), other classes (light green)</p>
+</div>
+<div class="section" id="soil-model">
+<h2><a class="toc-backref" href="#id5">Soil model</a><a class="headerlink" href="#soil-model" title="Permalink to this headline">¶</a></h2>
+<p>If a part of a cell is made up of built-up areas this will influence that cell’s water-balance. CWatM’s ‘sealed fraction’ variable defines the fraction of a pixel that is impervious.  For impervious areas, CWatM assumes that:
+1.      A depression storage is filled by precipitation and snowmelt and emptied by evaporation
+2.      Any water that is not filling the depression storage, reaches the surface is added directly to surface runoff
+3.      The storage capacity of the soil is zero (i.e. no soil)
+4.      There is no groundwater storage</p>
+<p>For open water (e.g. lakes, rivers) the water fraction variable defines the fraction that is covered with water (large lakes that are in direct connection with major river channels can be modelled using CWatM’s lake or reservoir option. It is assumed that:
+1.      The loss of actual evaporation is equal to the potential evaporation on open water
+2.      Any water that is not evaporated, reaches the surface is added directly to surface runoff
+3.      The storage capacity of the soil is zero (i.e. no soil moisture storage in the water fraction)
+4.      There is no groundwater storage</p>
+<p>For the part of a cell that is forest, other land cover, irrigated land, or paddy irrigated land the description of all soil- and groundwater-related processes below (evaporation, transpiration, infiltration, preferential flow, soil moisture redistribution and groundwater flow) are valid. While the modelling structure for forest and other classes is the same, the difference is the use of different map sets for crop coefficient index.</p>
+<p>CWatM calculates for every land cover class the soil fluxes, even if there is not such a land cover class in that cell. The model will then calculate the real fluxes based on the corresponding land cover class fraction. As result of the soil model you get six different surface fluxes weighted by the corresponding fraction (forest, other, irrigated, paddy irrigated, water and sealed), respectively four fluxes percolating to the groundwater zone (forest, other, irrigated, paddy irrigated).</p>
+</div>
+<div class="section" id="interception">
+<h2><a class="toc-backref" href="#id6">Interception</a><a class="headerlink" href="#interception" title="Permalink to this headline">¶</a></h2>
+<p>Interception is estimated using the following storage-based equation (Aston, 1978, Merriam, 1960):</p>
+<p><img class="math" src="_images/math/d8fa9e147393135223a9afa39b4279b54b3a476f.png" alt="\text{Int} = S_{\max} \cdot \left[1 - e^{\frac{-k \cdot R \cdot \Delta t}{S_{\max}}}\right]"/></p>
+<p>where Int [mm] is the interception per time step, Smax [mm] is the maximum interception, R is the rainfall intensity [mm day-1] and the factor k accounts for the density of the vegetation. Smax is calculated using an empirical equation (Von Hoyningen-Huene, 1981):</p>
+<p><img class="math" src="_images/math/a1f76a2f7bd85bc9556a2a44e658665fdd02d562.png" alt="S_{max} = 0.935 + 0.498 \cdot LAI - 0.00575 \cdot LAI^2"/> for <img class="math" src="_images/math/10dc788d4badb4d6670eec3789a671da334e32b3.png" alt="LAI &gt; 0.1"/></p>
+<p><img class="math" src="_images/math/68abf0c68fcee692219c480952b1546ea9283630.png" alt="S_{max} = 0"/> for <img class="math" src="_images/math/f362754957d482c5406e77e106252f6187bc5a5e.png" alt="LAI \leq 0.1"/></p>
+<p>where LAI is the average Leaf Area Index [m2 m-2] of each model element (pixel). k is estimated as:</p>
+<p>The value of Int can never exceed the interception storage capacity, which is defined as the difference between Smax and the accumulated amount of water that is stored as interception, Intcum.</p>
+</div>
+<div class="section" id="evaporation">
+<h2><a class="toc-backref" href="#id7">Evaporation</a><a class="headerlink" href="#evaporation" title="Permalink to this headline">¶</a></h2>
+<p><img class="math" src="_images/math/af2800105993a95e6c57da37158a584d3aa07dda.png" alt="{D\left(\frac{1}{T_{\text{int}}}\right)_{\text{cum}}}_{\text{int}}"/></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="9_technical.html" class="btn btn-neutral float-right" title="9. Technical Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="81_data.html" class="btn btn-neutral float-left" title="Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

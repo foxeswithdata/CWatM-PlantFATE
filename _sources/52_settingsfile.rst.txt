@@ -1,0 +1,200 @@
+
+
+############
+Settingsfile
+############
+
+.. contents:: 
+    :depth: 4
+
+.. _rst_settingdoc:
+
+Settings file
+===============
+
+The settings file is controlling the CWatM run
+
+.. literalinclude:: _static/settings1.ini
+    :linenos:
+    :language: ini
+    :lines: 3-11
+
+Components of the settings file
+-------------------------------
+
+General flags
+*************
+
+General flags are set in the first paragraph
+For example: If Temperature data are in unit ° Celsius ot Kelvin
+
+.. literalinclude:: _static/settings1.ini
+    :linenos:
+    :lineno-match:
+    :language: ini
+    :lines: 15-86
+
+	
+NetCDF meta data
+****************
+
+The format for spatial data for input and output data is netCDF.
+For output data the basic information are given in the settingsfile  
+
+.. literalinclude:: _static/settings1.ini
+    :linenos:
+    :lineno-match:
+    :language: ini
+    :lines: 102-105		
+	
+For each output file the specific information about units, variable name, displayed variable name is given 
+in the metaNetcdf.xml. See: :ref:`rst_metadata`
+	
+Path of data, output
+********************
+
+.. note:: Further on the pathes can be used as placeholders
+
+.. literalinclude:: _static/settings1.ini
+    :linenos:
+    :lineno-match:
+    :language: ini
+    :lines: 88-100	
+
+.. _rst_modelarea:
+	
+Defining the modeling area
+***************************
+
+In general the input data are stored and used at global scale.
+The modeling area can be defined by:
+
+* a mask map e.g.: $(FILE_PATHS:PathRoot)/source/rhine30min.tif
+* coordinates e.g.: 14 12 0.5 5.0 52.0
+* lowest point of a catchment e.g.: 6.25 51.75
+
+.. note:: 
+
+    | The mask map can be a .tif, PCraster or a netCDF format
+    | The coordinates have the format: Number of Cols, Number of rows, cellsize, upper left corner X, upper left corner Y 
+    | The point location (lon lat) will be used to create the catchment upstream of this point
+
+.. warning:: If you use a mask map, make sure you do not use blanks in the file path or name! 
+
+
+.. literalinclude:: _static/settings1.ini
+    :linenos:
+    :lineno-match:
+    :language: ini
+    :lines: 108-128	
+
+.. note:: 
+
+    | If you start with a basin defined by the outlet of a basin e.g. 6.25 51.75
+    | You can generate a new mask map for the following runs by:
+    | **savebasinmap = True** in [OPTIONS]
+    | a basin.tif is generated in the output folder, which you can copy and use next time as:
+    | **MaskMap = your_directory/basin.tif**
+
+Defining the time
+*****************
+
+The start and end time have to be defined.
+Spin-up time is the time for warming up (results will be stored after the spin-up time)
+
+.. note:: The time can be given as date: dd/mm/yyyy or as relative date: number (but then CalendarDayStart has to be defined)
+
+.. note:: Spin-up time can be given as date or number 
+	
+	
+.. literalinclude:: _static/settings1.ini
+    :linenos:
+    :lineno-match:
+    :language: ini
+    :lines: 130-142	
+
+
+Initial conditions
+***************************
+
+Initial conditions can be stored and be loaded in order to initialise a warm start of the model
+
+.. note:: Initial conditions are store as one netCDF file with all necessary variables
+
+.. literalinclude:: _static/settings1.ini
+    :linenos:
+    :lineno-match:
+    :language: ini
+    :lines: 145-158
+
+	
+StepInit indicate the date(s) when initial conditions are saved::
+
+    StepInit = 31/12/1989 
+    StepInit = 31/12/1989 31/12/2010
+    StepInit = 31/12/1989 5y
+    here: second value in StepInit is indicating a repetition of year(y), month(m) or day(d),
+    e.g. 2y for every 2 years or 6m for every 6 month
+
+
+
+
+
+Reading information
+***************************
+
+Information will be read in from values in the settings file
+Here the value definitions for [SNOW] is shown:	
+
+.. literalinclude:: _static/settings1.ini
+    :linenos:
+    :lineno-match:
+    :language: ini
+    :lines: 279-318
+	
+.. note:: TemperatureLapseRate = 0.0065
+     | for the variable TemperatureLapseRate the value of 0.0065 is set	
+
+Variables can also be defined by spatial maps or map stacks
+	
+::
+
+   tanslope = $(PathTopo)\tanslope.map
+   forest_coverFractionNC   = $(PathForest)\coverFractionInputForest366days.nc
+
+.. note:: suffix can be .map, but if there is no PCraster map it will look automatically for netCDF .nc
+	
+.. warning:: in most cases values can be replaced by map
+
+
+Sections of information
+-----------------------
+
+* Snow
+* Frost
+* General information on land cover types
+* Soil
+* Information for each of the six land cover types
+	* Forest
+	* Grassland
+	* Paddy irrigated area
+	* Irrigated area
+	* Sealed area
+	* Water covered area
+* Interflow
+* Groundwater
+* Water demand
+* Runoff concentration
+* Routing
+* Lakes and reservoirs
+* Inflow
+
+.. _rst_setting:	
+
+Complete settings file
+----------------------
+
+Example of a settings file:
+
+.. literalinclude:: _static/settings1.ini
+    :linenos:

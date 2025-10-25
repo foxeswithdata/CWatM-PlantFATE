@@ -1,0 +1,32 @@
+
+#####################################
+**5. HOW-TO-GUIDE** Problem oriented
+#####################################
+
+
+| The next chapters follows this structure:
+| inspired by:
+| https://docs.divio.com/documentation-system/
+
+**User Manual**
+
+- HOW-TO-GUIDE - Problem oriented
+- TUTORIALS –--- Learning oriented
+- REFERENCES –-- Information oriented
+- EXPLANATION -- Understanding oriented
+
+
+5. HOW-TO-USE - Problem oriented
+--------------------------------
+
+- Installing CWatM - Installing Python, libraries and CWatM.
+- Settingsfile - How to take control over CWatM?
+- Output Options - What do you want as output from the model? 
+- Testing Data - Are your input data ok?
+- Initialization - Think of the model of an old Diesel engine - i9t needs to warm up first.
+- Calibration - How to calibrate the model for better results?
+- Recover - You run the model in 2025 and now it is 2030 and you want to have the same results?
+
+
+
+Please start here at the next chapter :ref:`rst_setupdoc`

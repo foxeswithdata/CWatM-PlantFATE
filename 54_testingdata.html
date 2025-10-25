@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Testing Data &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Initialization" href="55_initialization.html" />
+    <link rel="prev" title="Output Options" href="53_output.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Testing data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Testing Data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/54_testingdata.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="testing-data">
+<h1>Testing Data<a class="headerlink" href="#testing-data" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Testing data<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">The model is only as good as the data!</div>
+<div class="line">To give out a list of data and to check the data the model can run a check.</div>
+</div>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">run_cwatm</span> <span class="n">settings1</span><span class="o">.</span><span class="n">ini</span> <span class="o">-</span><span class="n">c</span>
+<span class="ow">or</span>
+<span class="n">python</span> <span class="n">run_cwatm</span> <span class="n">settings1</span><span class="o">.</span><span class="n">ini</span> <span class="o">-</span><span class="n">c</span> <span class="o">&gt;</span> <span class="n">checkdata</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>A list is created with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Name:      Name of the variable
+Filename:  filename or if the value if it is a fixed value
+nonMV:     non missing value in 2D map
+MV:        missing value in 2D map
+lon-lat:   longitude x latitude of 2D map
+CompressV: 2D is compressed to 1D?
+MV-comp:   missing value in 1D
+Zero-comp: Number of 0 in 1D
+NonZero:   Number of non 0 in 1D
+min:       minimum in 1D (or 2D)
+mean:      mean in 1D (or 2D)
+max:       maximum in 1D (or 2D)
+</pre></div>
+</div>
+<p>example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Name</span>                          <span class="n">File</span><span class="o">/</span><span class="n">Value</span>                                    <span class="n">nonMV</span>         <span class="n">MV</span>    <span class="n">lon</span><span class="o">-</span><span class="n">lat</span>   <span class="n">Compress</span>    <span class="n">MV</span><span class="o">-</span><span class="n">comp</span>  <span class="n">Zero</span><span class="o">-</span><span class="n">comp</span>    <span class="n">NonZero</span>        <span class="nb">min</span>       <span class="n">mean</span>        <span class="nb">max</span>
+<span class="n">MaskMap</span>                       <span class="n">put5min_netcdf</span><span class="o">/</span><span class="n">areamaps</span><span class="o">/</span><span class="n">rhine5min</span><span class="o">.</span><span class="n">map</span>          <span class="mi">5236</span>          <span class="mi">0</span>      <span class="mi">68</span><span class="n">x77</span>      <span class="kc">False</span>          <span class="mi">0</span>       <span class="mi">2404</span>       <span class="mi">2832</span>       <span class="mf">0.00</span>       <span class="mf">0.54</span>       <span class="mf">1.00</span>
+<span class="n">Ldd</span>                           <span class="n">_5min</span><span class="o">/</span><span class="n">input5min_netcdf</span><span class="o">/</span><span class="n">routing</span><span class="o">/</span><span class="n">ldd</span><span class="o">.</span><span class="n">nc</span>          <span class="mi">5236</span>          <span class="mi">0</span>      <span class="mi">68</span><span class="n">x77</span>      <span class="kc">False</span>          <span class="mi">0</span>          <span class="mi">0</span>       <span class="mi">5236</span>       <span class="mf">1.00</span>       <span class="mf">5.34</span>       <span class="mf">9.00</span>
+<span class="n">Mask</span><span class="o">+</span><span class="n">Ldd</span>                                                                     <span class="mi">2832</span>          <span class="mi">0</span>      <span class="mi">68</span><span class="n">x77</span>       <span class="kc">True</span>          <span class="mi">0</span>       <span class="mi">2832</span>          <span class="mi">0</span>       <span class="mf">0.00</span>       <span class="mf">0.00</span>       <span class="mf">0.00</span>
+<span class="n">CellArea</span>                      <span class="n">n_netcdf</span><span class="o">/</span><span class="n">landsurface</span><span class="o">/</span><span class="n">topo</span><span class="o">/</span><span class="n">cellarea</span><span class="o">.</span><span class="n">nc</span>          <span class="mi">2832</span>          <span class="mi">0</span>      <span class="mi">68</span><span class="n">x77</span>       <span class="kc">True</span>          <span class="mi">0</span>          <span class="mi">0</span>       <span class="mi">2832</span>   <span class="mf">5.31E+07</span>   <span class="mf">5.63E+07</span>   <span class="mf">5.94E+07</span>
+<span class="n">precipitation_coversion</span>       <span class="mf">86.4</span>                                              <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>                 <span class="mf">86.40</span>
+<span class="n">evaporation_coversion</span>         <span class="mf">1.00</span>                                              <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>                  <span class="mf">1.00</span>
+<span class="n">crop_correct</span>                  <span class="mf">1.534</span>                                             <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>                  <span class="mf">1.53</span>
+<span class="n">NumberSnowLayers</span>              <span class="mi">7</span>                                                 <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>                  <span class="mf">7.00</span>
+<span class="n">GlacierTransportZone</span>          <span class="mi">3</span>                                                 <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>          <span class="o">-</span>                  <span class="mf">3.00</span>
+<span class="n">ElevationStD</span>                  <span class="n">min_netcdf</span><span class="o">/</span><span class="n">landsurface</span><span class="o">/</span><span class="n">topo</span><span class="o">/</span><span class="n">elvstd</span><span class="o">.</span><span class="n">nc</span>          <span class="mi">2832</span>          <span class="mi">0</span>      <span class="mi">68</span><span class="n">x77</span>       <span class="kc">True</span>          <span class="mi">0</span>          <span class="mi">0</span>       <span class="mi">2832</span>       <span class="mf">0.04</span>      <span class="mf">78.67</span>     <span class="mf">672.68</span>
+<span class="o">...</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="55_initialization.html" class="btn btn-neutral float-right" title="Initialization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="53_output.html" class="btn btn-neutral float-left" title="Output Options" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

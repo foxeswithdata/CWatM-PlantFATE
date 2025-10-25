@@ -1,0 +1,259 @@
+################################
+**3. The Community Water Model**
+################################
+
+.. contents:: 
+    :depth: 2
+
+.. _rst_philosophy:
+
+Model Philosophy
+================
+
+Open source/ open data/ open community
+--------------------------------------
+
+blablabla
+
+
+Functions follow form
+---------------------
+
+Inverse Bauhaus statment: 
+
+
+blablabla the form is given by:
+- non hydrological parts e.g. (data managment, management of date/time, output functions)
+- hydrological functions
+- hydrological processes (e.g. snow, soil, routing)
+- hydrological subprocesses or alternative ways to calculate this.
+
+Hydrological processes are split up in:
+- initialization phase
+- dynamic phase, where the model runs through the time period
+
+CWatM functions follow this form.
+
+
+FAIR software
+=============
+
+FAIR software refers to research software that adheres to the Findable, Accessible, Interoperable, and Reusable principles, adapted from data management to make software easier for humans and machines to discover, use, and share.
+
+
+Findable (F)
+------------
+
+Software is assigned a globally unique and persistent identifier, like a DOI. 
+https://doi.org/10.5281/zenodo.10044318
+
+It is described using rich metadata, which are also FAIR and searchable. 
+https://iiasa.ac.at/models-tools-data/cwatm
+https://cwatm.iiasa.ac.at/
+
+
+Different versions of the software have distinct identifiers. YES
+ 
+Software is registered in a repository or registry to improve its visibility. 
+https://github.com/iiasa/CWatM
+https://doi.org/10.5281/zenodo.10044318
+
+Accesable (A)
+-------------
+
+blablabla
+
+
+Interoperable (I)
+-----------------
+
+blablabla
+
+Reusable (R)
+------------
+
+Software is described with a plurality of relevant attributes. 
+It has a clear and accessible license, which is vital for reuse
+Detailed provenance information is included to show its origin and history. 
+The software meets community standards to ensure it can be understood, modified, or built upon
+
+And  Reproducable
+-----------------
+
+Model results can be reproduced, given the same inputdata, same model version and some environment setting.
+This is not state in FAIR principles, but during the years it occured sveral times that we need additional effort to find out which
+model version and dataset where used to produce the results.
+
+This happens, especially if we dig out a region which we modelled some year ago.
+
+blablabla
+
+
+
+	
+Model design and processes
+==========================
+
+Design
+------
+
+The Community Water Model (CWatM) will be designed for the purpose to assess water availability, water demand and environmental needs. It includes an accounting of how future water demands will evolve in response to socioeconomic change and how water availability will change in response to climate.
+
+
+.. image:: _static/Hydrological-model2.jpg
+    :width: 800px
+
+Figure 3: CWatM - Water related processes included in the model design
+
+
+Processes
+---------
+
+Calculation of potential Evaporation
+************************************
+
+Using Penman-Montheith equations based on FAO 56
+
+Calculation of rain, snow, snowmelt
+***********************************
+
+Using day-degree approach with up to 10 vertical layers
+Including snow- and glacier melt.
+
+Land cover
+**********
+
+using fraction of 6 different land cover types
+
+* Forest
+* Grassland
+* Irrigated land
+* Paddy irrigated land
+* Sealed areas (urban)
+* Water
+
+Water demand
+************
+
+* including water demand from industry and domestic land use via precalculated monhly spatial maps
+* including agricultural water use from calculation of plant water demand and livestock water demand
+* Return flows ((water withdrawn but not consumed and returned to the water circle)
+
+Vegetation
+**********
+
+Vegetation taken into account for calculating
+
+* Albedo
+* Transpiration (including rooting depth, crop  phenology, and potential evapotranspiration)
+* Interception 
+
+Soil
+****
+
+Three soil layers for each land cover type including processes:
+
+* Frost interupting soil processes
+* Infiltration
+* Preferential flow
+* Capillary rise
+* Surface runoff
+* Interflow
+* Percolation into groundwater
+
+Groundwater
+***********
+
+Groundwater storage is simulated as linear groundwater reservoir
+
+Lakes & Reservoirs
+******************
+
+* Lakes are simulated with weir function from Poleni for rectangular weir.
+* Reservoirs are simulated  as outflow function between three storage limits (conservative, normal,flood) and three outflow functions (minimum, normal, non-damaging)
+
+Routing
+*******
+
+Routing is calculated using the kinematic wave approach
+
+
+
+Features of the Model
+=====================
+
+Community Model
+---------------
+
+
+.. csv-table:: 
+   :header: "Feature", "Description"
+   :widths: 40, 50 
+
+   "Programming Language","Python 3.x with some C++ for computational demanding processes e.g. river routing"
+   "Community driven","Open-source but lead by IIASA `GitHub repository <https://github.com/iiasa/CWatM>`_"
+   "Well documented","Documentation, automatic source code documentation `GitHub Docu <https://cwatm.github.io>`_"
+   "Easy handling","Use of a setting file with all necessary information for the user  :ref:`rst_setting` and  :ref:`rst_metadata`"
+   "Multi-platform","Python 3.x on Windows, Mac, Linux, Unix - to be used on different platforms (PC, clusters, super-computers)"
+   "Modular","Processes in subprograms, easy to adapt to the requirements of options/ solutions `Modular structure <https://github.com/CWatM/CWatM>`_"
+
+
+Water Model
+-----------
+
+
+.. csv-table::
+   :header: "Feature", "Description"
+   :widths: 40, 50 
+
+   "Flexible","different resolution, different processes for different needs, links to other models, across sectors and across scales"
+   "Adjustable","to be tailored to the needs at IIASA i.e. collaboration with other programs/models, including solutions and option as part of the model"
+   "Multi-disciplinary","including economics, environmental needs, social science perspectives"
+   "Sensitive","Sensitive to option / solution"
+   "Fast","Global to regional modeling – a mixture between conceptional and physical modeling – as complex as necessary but not more"
+   "Comparable","Part of the ISI-MIP community"   
+   
+   
+Performance
+===========
+
+Computational run time (on a linux single node - 2400 MHz with Intel Xeon CPU E5- 2699A v4):
+
+Daily timestep on 0.5 deg 
+
+**Global:** 100 years in appr. 12h = 7.2min per year
+
+.. csv-table:: 
+   :header: "","Process", "sum % runtime"
+   :widths: 5, 20, 10
+
+   "1","Read Meteo Data","6.2"
+   "2","Et pot","7.6"
+   "3","Snow","8.8"
+   "4","Soil","59.4"
+   "5","Groundwater","59.5"
+   "6","Runoff conc","70.1"
+   "7","Lakes","70.4"
+   "8","Routing","95.5"
+   "9","Output","100"
+
+For the global setting, soil processes with 50% computing time is the most time consuming part, followed by routing with 25% and runoff concentration with 10%.
+(Reading the full global maps takes only 1/3 longer than reading a part of the global maps)
+
+**Rhine:**  640 years in appr. 4.5h = 0.4min per year 
+
+.. csv-table:: 
+   :header: "","Process", "sum % runtime"
+   :widths: 5, 20, 10
+
+   "1","Read Meteo Data","79.4"
+   "2","Et pot","80.5"
+   "3","Snow","80.9"
+   "4","Soil","88.8"
+   "5","Groundwater","88.9"
+   "6","Runoff conc","89.6"
+   "7","Lakes","89.8"
+   "8","Routing","99.6"
+   "9","Output","100"
+
+For the Rhine basin reading input maps 79% is by far the most time consuming process, followed by routing (kinematic wave) 10% and the soil processes (8%).

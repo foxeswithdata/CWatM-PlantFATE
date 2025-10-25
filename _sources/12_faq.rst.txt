@@ -1,0 +1,199 @@
+
+########################################
+**12. Frequently Asked Questions (FAQ)** 
+########################################
+
+.. contents:: 
+    :depth: 4
+
+
+General Questions
+=================
+
+**Q: What is CWatM?**
+----------------------
+
+A: CWatM (Community Water Model) is a hydrological model that simulates the water cycle daily at global and local levels, both historically and into the future. It's maintained by IIASA's Water Security research group and is designed to assess water availability, water demand, and environmental needs.
+
+**Q: Who developed CWatM?**
+---------------------------
+
+A: CWatM was developed by the IIASA (International Institute for Applied Systems Analysis) Water Security program, with the current version being 1.06 as of October 2024.
+
+**Q: What is the purpose of CWatM?**
+-------------------------------------
+
+A: The model is designed for assessing water availability, water demand, and environmental needs. It includes an accounting of how future water demands will evolve in response to socioeconomic change and how water availability will change in response to climate.
+
+Technical Specifications
+========================
+
+**Q: What resolution can CWatM run at?**
+-----------------------------------------
+
+A: CWatM can be run at daily resolution globally from 5 arcminutes to 0.5 degrees, or separately for any basin or region.
+
+**Q: What programming language is CWatM written in?**
+------------------------------------------------------
+
+A: CWatM is open source in the Python programming environment and has a modular structure. It uses global, freely available data in the netCDF4 file format for reading, storage, and production of data.
+
+**Q: Is CWatM open source?**
+-----------------------------
+
+A: Yes, CWatM is open source and available on GitHub. Its modular structure facilitates integration with other models.
+
+Model Features and Capabilities
+================================
+
+**Q: What processes does CWatM simulate?**
+-------------------------------------------
+
+A: CWatM includes general surface and groundwater hydrological processes but also takes into account human activities, such as:
+
+* Water use and reservoir regulation
+* Calculating water demands, water use, and return flows
+* Reservoirs and lakes management
+
+**Q: Can CWatM be integrated with other models?**
+--------------------------------------------------
+
+A: Yes, CWatM is designed to be flexible and link to different aspects of the water-energy-food nexus. It will be coupled to existing IIASA models, including:
+
+* EPIC
+* MESSAGE
+* GLOBIOM
+* Global Hydro-Economic Model
+
+Applications and Use Cases
+===========================
+
+**Q: What are the main applications of CWatM?**
+------------------------------------------------
+
+A: CWatM helps develop next-generation hydro-economic modeling tools that:
+
+* Represent economic trade-offs among water supply technologies and demands
+* Track water use from all sectors
+* Identify least-cost solutions for meeting future water demands under policy constraints
+
+**Q: Can CWatM be used for regional studies?**
+-----------------------------------------------
+
+A: Yes, CWatM can simulate hydrology both globally and regionally at different resolutions from 30 arcmin to 30 arcsec at daily time steps. It can be run for any specific basin or region.
+
+**Q: Does CWatM consider environmental needs?**
+------------------------------------------------
+
+A: Yes, the tool incorporates environmental flow requirements to ensure sufficient water for environmental needs.
+
+Data and Documentation
+======================
+
+**Q: Where can I find the model documentation?**
+-------------------------------------------------
+
+A: The complete user manual and model documentation is available at `https://cwatm.iiasa.ac.at <https://cwatm.iiasa.ac.at>`_, which includes:
+
+* Tutorials
+* Setup instructions
+* Error handling guides
+* Example applications
+
+**Q: What kind of data does CWatM use?**
+-----------------------------------------
+
+A: CWatM uses various data including:
+
+* Drainage direction maps
+* Channel geometry data
+* Manning's roughness coefficients
+* Lake/reservoir data from sources like HydroLakes database (1.4 million global lakes and reservoirs)
+
+**Q: Is there input data available for CWatM?**
+------------------------------------------------
+
+A: Yes, the repository **CWatM-Earth-30min** contains input data for CWatM at 30 arcminutes and provides links to climate and higher resolution input data.
+
+Future Development
+==================
+
+**Q: What future developments are planned for CWatM?**
+-------------------------------------------------------
+
+A: The vision for the short to medium term includes:
+
+* Introducing a water quality component
+
+  * Salinization in deltas
+  * Eutrophication associated with mega cities
+  
+* Including qualitative and quantitative measures of transboundary river and groundwater governance
+
+**Q: How does CWatM contribute to the water-energy-food nexus analysis?**
+--------------------------------------------------------------------------
+
+A: The modular structure makes linking CWatM with other IIASA models possible to:
+
+* Develop an integrated assessment modeling framework for nexus issues (water-food-energy)
+* Enable hydro-economic modeling for quantifying water infrastructure investment options
+
+Support and Community
+=====================
+
+**Q: Where can I get help with CWatM?**
+----------------------------------------
+
+A: Several resources are available:
+
+* Start a discussion on the `GitHub forum <https://github.com/iiasa/CWatM>`_
+* Check out CWatM tutorials on YouTube
+* Visit the forum section on the website for community support
+
+**Q: How can I track data sources and model versions?**
+--------------------------------------------------------
+
+A: CWatM includes FAIR data principles implementation:
+
+* Model data used (name and date) is stored in discharge netCDF files
+* Complete settings files are stored in netCDF outputs
+* Version numbers with GitHub hash are tracked in global attributes
+
+**Q: Is there a calibration tool available?**
+----------------------------------------------
+
+A: Yes, there is a dedicated calibration tool with accompanying tutorial documentation available as part of the CWatM package.
+
+Additional Resources
+====================
+
+Official Website
+----------------
+
+* Main documentation: `https://cwatm.iiasa.ac.at <https://cwatm.iiasa.ac.at>`_
+* IIASA Water Security Group: `https://iiasa.ac.at/models-tools-data/cwatm <https://iiasa.ac.at/models-tools-data/cwatm>`_
+
+GitHub Repositories
+-------------------
+
+* Main repository: `https://github.com/iiasa/CWatM <https://github.com/iiasa/CWatM>`_
+* Tutorial repository: `https://github.com/iiasa/CWatM_tutorial <https://github.com/iiasa/CWatM_tutorial>`_
+* Input data repository: CWatM-Earth-30min
+
+Publications
+------------
+
+* Burek P., et al. (2020). "Development of the Community Water Model (CWatM v1.04) – a high-resolution hydrological model for global and regional assessment of integrated water resources management". Geoscientific Model Development 13(7): 3267-3298. DOI:10.5194/gmd-13-3267-2020
+
+License
+-------
+
+The source code of CWatM is freely available under the GNU General Public License.
+
+.. note::
+
+   The source code is free, but support is limited due to resource constraints. For the most up-to-date information, always refer to the official documentation at the IIASA website.
+
+.. warning::
+
+   This FAQ is based on information available as of October 2024. Features and specifications may have been updated since then. Please check the official website for the most current information.

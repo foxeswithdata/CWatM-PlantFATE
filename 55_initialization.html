@@ -1,0 +1,580 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Initialization &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Calibration" href="56_calibration.html" />
+    <link rel="prev" title="Testing Data" href="54_testingdata.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-of-soil-moisture">Example of soil moisture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cold-start">Cold start</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-a-cold-start-in-the-settingsfile">Set up a cold start in the settingsfile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#storing-initial-variables">Storing initial variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#warm-start">Warm start</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Set up a cold start in the settingsfile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#initial-conditions">Initial conditions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Initialization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/55_initialization.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="initialization">
+<h1><a class="toc-backref" href="#id3">Initialization</a><a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#initialization" id="id3">Initialization</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id4">Initialization</a></p>
+<ul>
+<li><p><a class="reference internal" href="#example-of-soil-moisture" id="id5">Example of soil moisture</a></p></li>
+<li><p><a class="reference internal" href="#cold-start" id="id6">Cold start</a></p>
+<ul>
+<li><p><a class="reference internal" href="#set-up-a-cold-start-in-the-settingsfile" id="id7">Set up a cold start in the settingsfile</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#storing-initial-variables" id="id8">Storing initial variables</a></p></li>
+<li><p><a class="reference internal" href="#warm-start" id="id9">Warm start</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id2" id="id10">Set up a cold start in the settingsfile</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#initial-conditions" id="id11">Initial conditions</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2><a class="toc-backref" href="#id4">Initialization</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>CWatM needs to have estimates of the initial state of the internal storage variables, e.g. the amount of water stored in snow, soil, groundwater etc.</p>
+<p>There are two possibilities:</p>
+<ol class="arabic simple">
+<li><p>The initial state of the internal storage variables are unknown and a <strong>first</strong> guess has to be used e.g. all storage variables are half filled.</p></li>
+<li><p>The initial state is known from a previous run, where the variables are stored at a certain time step. This is called <strong>warm start</strong></p></li>
+</ol>
+<p>The <strong>warm start</strong> is usful for:</p>
+<ul class="simple">
+<li><p>using a long pre-run to find the steady-state storage of the groundwater storage and use it as initial value</p></li>
+<li><p>using the stored variables to shorten the warm-up period</p></li>
+<li><p>using the stored variables to restart every day with the values from the previous day (forecasting mode)</p></li>
+</ul>
+<div class="section" id="example-of-soil-moisture">
+<h3><a class="toc-backref" href="#id5">Example of soil moisture</a><a class="headerlink" href="#example-of-soil-moisture" title="Permalink to this headline">¶</a></h3>
+<p>The next figure shows the impact of different initial condition on the soil moisture of the lower soil.
+In one of the simulations the soil is initially almost completely saturated. In another simulation the soil is completely dry and the third simulation starts with initial conditions in between the two extremes.</p>
+<p>In the beginning the effect of different initial condition can be seen clearly. But after one year the three curves converge. The <strong>memory</strong> of the lower soil goes back for about one year.</p>
+<p>For all the initial condition apart from groundwater, lakes and reservoirs the memory is about 12 month.</p>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/init_soilmoisture.jpg"><img alt="_images/init_soilmoisture.jpg" src="_images/init_soilmoisture.jpg" style="width: 600px;" /></a>
+</div>
+<p>Figure: Simulation of soil moisture in the lower soil with different initial conditions</p>
+<p>For the groundwater zone a longer warm-up period is needed, because of the slow response of groundwater. Here a rather fast reacting groundwater storage is shown with the three curves coverge after two years.
+We propose a warm-up of several decades. The longer the better.</p>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/init_groundwater.jpg"><img alt="_images/init_groundwater.jpg" src="_images/init_groundwater.jpg" style="width: 600px;" /></a>
+</div>
+<p>Figure: Simulation of groundwater storage with different initial conditions</p>
+</div>
+<div class="section" id="cold-start">
+<h3><a class="toc-backref" href="#id6">Cold start</a><a class="headerlink" href="#cold-start" title="Permalink to this headline">¶</a></h3>
+<p>For a <strong>cold start</strong> the values of the storage variables are unknown and set to a “first” guess.
+A list of variables and their default value for a <strong>cold start</strong> is given below in: <a class="reference internal" href="#rst-initialcondition"><span class="std std-ref">Initial conditions</span></a></p>
+<div class="section" id="set-up-a-cold-start-in-the-settingsfile">
+<h4><a class="toc-backref" href="#id7">Set up a cold start in the settingsfile</a><a class="headerlink" href="#set-up-a-cold-start-in-the-settingsfile" title="Permalink to this headline">¶</a></h4>
+<p>In the settings file the option: <strong>load_initial</strong> has to be set on <strong>False</strong></p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">145</span><span class="c1">#-------------------------------------------------------</span>
+<span class="linenos">146</span><span class="k">[INITITIAL CONDITIONS]</span>
+<span class="linenos">147</span><span class="c1">#-------------------------------------------------------</span>
+<span class="linenos">148</span>
+<span class="linenos">149</span><span class="c1"># for a warm start initial variables a loaded</span>
+<span class="linenos">150</span><span class="c1"># e.g for a start on 01/01/2010 load variable from 31/12/2009</span>
+<span class="linenos">151</span><span class="na">load_initial</span> <span class="o">=</span> <span class="s">False</span>
+<span class="linenos">152</span><span class="na">initLoad</span> <span class="o">=</span> <span class="s">$(FILE_PATHS:PathRoot)/init/Rhine_19891231.nc</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is possible to exclude the warming up period of your model run for further analysis of results by setting the <strong>SpinUp</strong> option</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TIME</span><span class="o">-</span><span class="n">RELATED_CONSTANTS</span><span class="p">]</span>
+<span class="n">SpinUp</span> <span class="o">=</span>  <span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">1995</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="storing-initial-variables">
+<h3><a class="toc-backref" href="#id8">Storing initial variables</a><a class="headerlink" href="#storing-initial-variables" title="Permalink to this headline">¶</a></h3>
+<p>In the settings file the option <strong>save_initial</strong> has to be set to <strong>True</strong></p>
+<p>The name of the initial netCDF4 file has to be put in <strong>initsave</strong></p>
+<p>and one or more dates have to be specified in StepInit</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">154</span><span class="c1"># saving variables from this run, to initiate a warm start next run</span>
+<span class="linenos">155</span><span class="c1"># StepInit = saving date, can be more than one: 10/01/1973 20/01/1973</span>
+<span class="linenos">156</span><span class="na">save_initial</span> <span class="o">=</span> <span class="s">False</span>
+<span class="linenos">157</span><span class="na">initSave</span> <span class="o">=</span> <span class="s">$(FILE_PATHS:PathRoot)/init/Rhine</span>
+<span class="linenos">158</span><span class="na">StepInit</span> <span class="o">=</span> <span class="s">31/12/1989 31/12/2010</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="warm-start">
+<h3><a class="toc-backref" href="#id9">Warm start</a><a class="headerlink" href="#warm-start" title="Permalink to this headline">¶</a></h3>
+<p>CWatM can write internal variables to a netCDF file for choosen timesteps. These netCDF files can be used as the initial conditions for a suceeding simulation.</p>
+<p>This is useful for establishing a steady-state after a long-term run and then using this steady-state for succeding simulations or for an every day run (forecasting mode)</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the parameters are changed after a run(especially the groundwater, lakes and reservoir parameters) the stored initial values do not represent the conditions of the storage variables. Stored initial conditions should <strong>not</strong> be used as initial values for a model run with another set of parameters. If you do this during calibration, you will not be able to reproduce the calibration results!</p>
+</div>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="#id10">Set up a cold start in the settingsfile</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>In the settings file the option: <strong>load_initial</strong> has to be set on <strong>True</strong>
+And define the name of the netcdf4 file in <strong>initLoad</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use the initial values of the previous day here. E.g. if you run the model from 01/01/2006 use the inital condition from 31/12/2005</p>
+</div>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">145</span><span class="c1">#-------------------------------------------------------</span>
+<span class="linenos">146</span><span class="k">[INITITIAL CONDITIONS]</span>
+<span class="linenos">147</span><span class="c1">#-------------------------------------------------------</span>
+<span class="linenos">148</span>
+<span class="linenos">149</span><span class="c1"># for a warm start initial variables a loaded</span>
+<span class="linenos">150</span><span class="c1"># e.g for a start on 01/01/2010 load variable from 31/12/2009</span>
+<span class="linenos">151</span><span class="na">load_initial</span> <span class="o">=</span> <span class="s">False</span>
+<span class="linenos">152</span><span class="na">initLoad</span> <span class="o">=</span> <span class="s">$(FILE_PATHS:PathRoot)/init/Rhine_19891231.nc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="initial-conditions">
+<span id="rst-initialcondition"></span><h3><a class="toc-backref" href="#id11">Initial conditions</a><a class="headerlink" href="#initial-conditions" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+<col style="width: 20%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No.</p></th>
+<th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default value</p></th>
+<th class="head"><p>Number of maps</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>SnowCover</p></td>
+<td><p>Snow cover for up to 7 zones</p></td>
+<td><p>0</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>FrostIndex</p></td>
+<td><p>Degree days frost threshold</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Forest state</p></td>
+<td><p>Interception storage</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>Top water layer</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>Soil storage for 3 soil layers</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Grassland state</p></td>
+<td><p>Interception storage</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>Top water layer</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>Soil storage for 3 soil layers</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Paddy irrigation state</p></td>
+<td><p>Interception storage</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>Top water layer</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>Soil storage for 3 soil layers</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>Irrigation state</p></td>
+<td><p>Interception storage</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>Top water layer</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>Soil storage for 3 soil layers</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Sealed area state</p></td>
+<td><p>Interception storage</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>Groundwater</p></td>
+<td><p>Groundwater storage</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Runoff concentration</p></td>
+<td><p>10 layers of runoff concentration</p></td>
+<td><p>0</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>Routing</p></td>
+<td><p>Channel storage</p></td>
+<td><p>0.2 * total cross section</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>Routing</p></td>
+<td><p>Riverbed exchange</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>Routing</p></td>
+<td><p>Discharge</p></td>
+<td><p>depending on ini channel stor.</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>Lakes and Reservoirs</p></td>
+<td><p>Lake inflow</p></td>
+<td><p>from HydroLakes database</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>Lake outflow</p></td>
+<td><p>same as lake inflow</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>Lake&amp;Res outflow to other lakes&amp;res</p></td>
+<td><p>same as lake inflow</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>Lake storage</p></td>
+<td><p>based on inflow and lake area</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>Reservoir storage</p></td>
+<td><p>0.5 * max. reservoir storage</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>Small lake storage</p></td>
+<td><p>based on inflow and lake area</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>Small lake inflow</p></td>
+<td><p>from HydroLakes database</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p>Small lake outflow</p></td>
+<td><p>same as small lake inflow</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="56_calibration.html" class="btn btn-neutral float-right" title="Calibration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="54_testingdata.html" class="btn btn-neutral float-left" title="Testing Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

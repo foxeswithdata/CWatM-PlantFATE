@@ -1,0 +1,1404 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Testing Framework &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="10. Example Zambezi" href="zambezi.html" />
+    <link rel="prev" title="management_modules package" href="management_modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-types-and-execution-modes">Test Types and Execution Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-file-structure">Configuration File Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-workflow">Testing Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-quality-and-standards">Code Quality and Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-examples">Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#files-and-folders">Files and folders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-cwatm">Testing CWatM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#results">Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Testing Framework</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/92_testing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="testing-framework">
+<h1><a class="toc-backref" href="#id1">Testing Framework</a><a class="headerlink" href="#testing-framework" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#testing-framework" id="id1">Testing Framework</a></p>
+<ul>
+<li><p><a class="reference internal" href="#purpose" id="id2">Purpose</a></p></li>
+<li><p><a class="reference internal" href="#test-types-and-execution-modes" id="id3">Test Types and Execution Modes</a></p></li>
+<li><p><a class="reference internal" href="#configuration-file-structure" id="id4">Configuration File Structure</a></p></li>
+<li><p><a class="reference internal" href="#testing-workflow" id="id5">Testing Workflow</a></p></li>
+<li><p><a class="reference internal" href="#code-quality-and-standards" id="id6">Code Quality and Standards</a></p></li>
+<li><p><a class="reference internal" href="#usage-examples" id="id7">Usage Examples</a></p></li>
+<li><p><a class="reference internal" href="#files-and-folders" id="id8">Files and folders</a></p></li>
+<li><p><a class="reference internal" href="#testing-cwatm" id="id9">Testing CWatM</a></p></li>
+<li><p><a class="reference internal" href="#results" id="id10">Results</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p id="rst-testing">CWatM has a pyTest suite, but it is different from others.
+We have some bigger dataset to run especially meteorological dataset and we want to be sure that CWatM is running with
+different resolutions, with diffrent projections, for diffrent regions, with diffrent sub-modules.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please have a look at the folder: pytest on our github: <a class="reference external" href="https://github.com/iiasa/CWatM">https://github.com/iiasa/CWatM</a></p>
+</div>
+<div class="section" id="purpose">
+<h2><a class="toc-backref" href="#id2">Purpose</a><a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>A comprehensive pytest-based testing framework for the CWatM (Community Water Model) hydrological modeling system. This module provides automated testing capabilities for multiple model configurations, scenarios, and validation workflows including testing different settings files for different resolutions, different basins and different input and output options in order to make sure that CWatM is properly running after each change.
+| Folder: pytest
+| Program: test_cwatm3.py
+| Requirement: libraries pytest and pytest-html
+| Optional: pip install pytest-codecov</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line">Execute:</div>
+<div class="line">pytest test_cwatm3.py –html=C:/work/CWATM/report1.html</div>
+<div class="line">–settingsfile=test_py_cwatm2.txt  –cwatm=C:/work/CWATM/run_cwatm.py</div>
+<div class="line">Where:</div>
+<div class="line">–html=C:/work/CWATM/report1.html: results of test are written into this HTML file</div>
+<div class="line">–settingsfile=test_py_cwatm2.txt: settings file to tell which tests are executed</div>
+<div class="line">–cwatm=C:/work/CWATM/run_cwatm.py: executable of CWatM</div>
+</div>
+</div>
+</div>
+<div class="section" id="test-types-and-execution-modes">
+<h2><a class="toc-backref" href="#id3">Test Types and Execution Modes</a><a class="headerlink" href="#test-types-and-execution-modes" title="Permalink to this headline">¶</a></h2>
+<p>The framework supports different test execution modes based on keywords in the settings file path:</p>
+<ul class="simple">
+<li><p>“error”: Tests expected failure scenarios with quiet mode execution</p></li>
+<li><p>“calibration”: Runs calibration workflow with meteorological data loading and warm-start functionality</p></li>
+<li><p>“checkmap”: Validates model configuration without full execution - configuration validation only</p></li>
+<li><p>Default mode: Performs standard model run with full execution and result validation</p></li>
+</ul>
+</div>
+<div class="section" id="configuration-file-structure">
+<h2><a class="toc-backref" href="#id4">Configuration File Structure</a><a class="headerlink" href="#configuration-file-structure" title="Permalink to this headline">¶</a></h2>
+<p>The test configuration file uses a structured format to define test scenarios:</p>
+<ul class="simple">
+<li><p>base_setting: Path to the base configuration template</p></li>
+<li><p>name: Test scenario identifier and description</p></li>
+<li><p>runtest: Enable/disable specific test groups (TRUE/FALSE)</p></li>
+<li><p>test_value: Enable discharge value validation</p></li>
+<li><p>path_*: System paths for different components (system, root, init, output, maps, meteo)</p></li>
+<li><p>header: Test title for reporting</p></li>
+<li><p>description: Detailed test description</p></li>
+<li><p>set_save: Output filename for the generated settings file</p></li>
+<li><p>changes: Parameter modifications in “parameter = value” format</p></li>
+<li><p>adds: Additional configuration lines to append</p></li>
+<li><p>last_value: Expected discharge value for validation</p></li>
+</ul>
+</div>
+<div class="section" id="testing-workflow">
+<h2><a class="toc-backref" href="#id5">Testing Workflow</a><a class="headerlink" href="#testing-workflow" title="Permalink to this headline">¶</a></h2>
+<p>CWatM can be run with different resolutions, different basins, and different options. Each testing scenario uses a settings template and varies different options during the test. The framework follows this workflow:
+#. Parse command line arguments for settings file and CWatM executable paths
+#. Read and parse the test configuration file to extract test scenarios
+#. For each enabled test scenario:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Generate modified settings files with parameter changes</p></li>
+<li><p>Execute CWatM with the appropriate test mode</p></li>
+<li><p>Validate results based on test type</p></li>
+<li><p>Record success/failure status</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple">
+<li><p>Generate comprehensive HTML test report with pytest</p></li>
+</ol>
+</div>
+<div class="section" id="code-quality-and-standards">
+<h2><a class="toc-backref" href="#id6">Code Quality and Standards</a><a class="headerlink" href="#code-quality-and-standards" title="Permalink to this headline">¶</a></h2>
+<p>The test_cwatm3.py module has been enhanced with:</p>
+<ul class="simple">
+<li><p>PEP 8 Compliance: Code formatted according to Python PEP 8 standards with 120-character line limit</p></li>
+<li><p>Comprehensive Documentation: All functions documented using numpydoc format with detailed parameter descriptions</p></li>
+<li><p>Preserved Functionality: All original variable names, function names, and comments maintained</p></li>
+<li><p>Enhanced Readability: Improved code structure and formatting for better maintainability</p></li>
+</ul>
+</div>
+<div class="section" id="usage-examples">
+<h2><a class="toc-backref" href="#id7">Usage Examples</a><a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
+<p>Basic execution with HTML reporting:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>pytest test_cwatm3.py –html=pytest_report_cwatm.html –settingsfile=__cwatm_pytests_settings.ini –cwatm=../run_cwatm.py</p>
+</div>
+<p>Extended execution with code coverage:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>pytest test_cwatm3.py –html=pytest_report_cwatm.html –cov=cwatm –cov-report=xml –settingsfile=__cwatm_pytests_settings.ini –cwatm=../run_cwatm.py</p>
+</div>
+<p>The framework provides robust validation for CWatM hydrological model testing across multiple scenarios, ensuring model reliability and consistency across different configurations and use cases.</p>
+</div>
+<div class="section" id="files-and-folders">
+<h2><a class="toc-backref" href="#id8">Files and folders</a><a class="headerlink" href="#files-and-folders" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>output:               Folder for CWatM testing results e.g. output/rhine</p></li>
+<li><p>init:         Folder for CWatM warm-start files</p></li>
+<li><p>settings:     Folder with settings templates and created settings files e.g. Settings/30min/global_30min/settings_global_30min.ini</p></li>
+<li><p>metaNetcdf.xml: xml file with metadata for NetCDF files</p></li>
+<li><p>test_cwatm3.py, conftest.py, pytest.ini:              Program files</p></li>
+<li><p>test_py_cwatm1.txt,..                         Settings files</p></li>
+</ul>
+</div>
+<div class="section" id="testing-cwatm">
+<h2><a class="toc-backref" href="#id9">Testing CWatM</a><a class="headerlink" href="#testing-cwatm" title="Permalink to this headline">¶</a></h2>
+<p>CWatM can be run with different resolutions, different basins, and different options. Each testing e.g. for the Rhine basin 30 arcmin is using a settings template and varies different options during the test. Examples for tests are given below, but other tests can be included. Tests are executed using the template settings file as a start and then tests are repeated using different options.</p>
+</div>
+<div class="section" id="results">
+<h2><a class="toc-backref" href="#id10">Results</a><a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<p>Results of the testing are written into the report.html (–html=C:/work/CWATM/report1.html)
+This report shows an overview of passed, failed and skipped test and the details of each test.</p>
+<a class="reference internal image-reference" href="_images/92_testresult.png"><img alt="_images/92_testresult.png" src="_images/92_testresult.png" style="width: 600px;" /></a>
+<p>Figure 1: Screenshot of a test report page</p>
+<p>Example of a pytesat settings file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">   1</span># Tests for CWatM with pytest
+<span class="linenos">   2</span># ---------------------------
+<span class="linenos">   3</span>
+<span class="linenos">   4</span>[Introduction]
+<span class="linenos">   5</span># What to test?
+<span class="linenos">   6</span>
+<span class="linenos">   7</span># 1 test mask
+<span class="linenos">   8</span>#   1.1 mask as .tif
+<span class="linenos">   9</span>#   1.2. mask as box
+<span class="linenos">  10</span>#   1.3 mask as outlet lon/lat of a basin
+<span class="linenos">  11</span>
+<span class="linenos">  12</span># 2 test gauges
+<span class="linenos">  13</span>#   2.1 as list
+<span class="linenos">  14</span>#   2.2 as map
+<span class="linenos">  15</span>
+<span class="linenos">  16</span># 3 Options
+<span class="linenos">  17</span>#   3.1 includeIrrigation = False
+<span class="linenos">  18</span>#   3.2 preferentialFlow = False
+<span class="linenos">  19</span>#   3.3 CapillarRise = False
+<span class="linenos">  20</span>#   3.4 includeRunoffConcentration = True
+<span class="linenos">  21</span>#   3.5 includeWaterBodies = True      =&gt;  3.1 - 3.5 together
+<span class="linenos">  22</span>#   3.6 includeWaterDemand = True
+<span class="linenos">  23</span>#   3.7 calc_evaporation = True  
+<span class="linenos">  24</span>#        - store OUT_MAP_Daily = ETRef, EWRef before!
+<span class="linenos">  25</span>#   3.8 includeRouting = False
+<span class="linenos">  26</span>#   (some more calc_environflow = True, inflow = True, waterquality = True
+<span class="linenos">  27</span>
+<span class="linenos">  28</span># 4 Timing
+<span class="linenos">  29</span>#   4.1 more than 1 year
+<span class="linenos">  30</span>#   4.2 with SpinUp
+<span class="linenos">  31</span>#   4.3 save initital
+<span class="linenos">  32</span>#   4.4 load initial
+<span class="linenos">  33</span>
+<span class="linenos">  34</span># 5 outputs
+<span class="linenos">  35</span>#   5.1 with tss output for daily, monthly, yearly
+<span class="linenos">  36</span>#   5.2. with map output for daily, monthly, yearly
+<span class="linenos">  37</span>#   5.3 with some &#39;exotic output
+<span class="linenos">  38</span>
+<span class="linenos">  39</span>[How_to_execute]
+<span class="linenos">  40</span># ------------------------------------------------------------------------------------
+<span class="linenos">  41</span># Execute
+<span class="linenos">  42</span># pytest test_cwatm3.py --html=C:/work/CWATM/report1.html --settingsfile=test_py_catwm2.txt --cwatm=C:/work/CWATM/run_cwatm.py
+<span class="linenos">  43</span>
+<span class="linenos">  44</span>[Tests]
+<span class="linenos">  45</span># True is the tests for this section should be done
+<span class="linenos">  46</span>runtest: Rhine_30min  True
+<span class="linenos">  47</span>runtest: Rhine_30min_add False
+<span class="linenos">  48</span>runtest: Error_30min  False
+<span class="linenos">  49</span>runtest: global_30min False
+<span class="linenos">  50</span>runtest: Rhine_5min   False
+<span class="linenos">  51</span>runtest: Niger_5min   False
+<span class="linenos">  52</span>runtest: Ebro_Wastewater_5min  False
+<span class="linenos">  53</span>runtest: Otta_1km  False
+<span class="linenos">  54</span>runtest: Bhima_30sec  False
+<span class="linenos">  55</span>runtest: Burgenland_1km_modflow False
+<span class="linenos">  56</span>runtest: UpperDanube_1min  False
+<span class="linenos">  57</span>runtest: Morava_1min  False
+<span class="linenos">  58</span>runtest: Tisa_1min  False
+<span class="linenos">  59</span>runtest: Calibration  False
+<span class="linenos">  60</span>runtest: Check_30min  False
+<span class="linenos">  61</span>
+<span class="linenos">  62</span># True is test should compare last discharge with given number, False is test should look for -no error- execution of run
+<span class="linenos">  63</span>test_value: False
+<span class="linenos">  64</span>
+<span class="linenos">  65</span>[------------------------------------------------]
+<span class="linenos">  66</span>#--------------------------------------------------------------------------------------
+<span class="linenos">  67</span># --------------------
+<span class="linenos">  68</span>[30min_- Rhine]
+<span class="linenos">  69</span># ---------------------
+<span class="linenos">  70</span># 30 min versions
+<span class="linenos">  71</span>    # Rhine
+<span class="linenos">  72</span>	base_setting: ./settings/30min/rhine_30min/settings_rhine_30min.ini
+<span class="linenos">  73</span>	name: Rhine_30min
+<span class="linenos">  74</span>	path_system: P:
+<span class="linenos">  75</span>	path_root: ./
+<span class="linenos">  76</span>	path_init: ./init
+<span class="linenos">  77</span>	path_out: ./output
+<span class="linenos">  78</span>	path_maps: P:/watmodel/CWATM/cwatm_input_isimip3
+<span class="linenos">  79</span>	path_meteo: P:/watxene/ISIMIP/ISIMIP3a/InputData/climate/obsclim_updated/GSWP3-W5E5
+<span class="linenos">  80</span>	
+<span class="linenos">  81</span>       # 1st Rhine 30min
+<span class="linenos">  82</span>        header:      Rhine_30min_1
+<span class="linenos">  83</span>        description: 1st Rhine 30min basic version
+<span class="linenos">  84</span>        set_save:    settings_rhine_30min_01.ini
+<span class="linenos">  85</span>        changes:     
+<span class="linenos">  86</span>        adds:        
+<span class="linenos">  87</span>        last_value:  4.22
+<span class="linenos">  88</span>       # 2nd setup Rhine
+<span class="linenos">  89</span>        header:      Rhine_30min_2
+<span class="linenos">  90</span>        description: 2nd Rhine 30min with box as mask and basic outputs
+<span class="linenos">  91</span>        set_save:    settings_rhine_30min_02.ini
+<span class="linenos">  92</span>        changes:     MaskMap = 14 12 0.5 5.0 52.0
+<span class="linenos">  93</span>        adds:        OUT_TSS_Daily = discharge; OUT_MAP_Daily = discharge
+<span class="linenos">  94</span>        last_value:  4.22
+<span class="linenos">  95</span>       # 3rd setup Rhine
+<span class="linenos">  96</span>        header:      Rhine_30min_3
+<span class="linenos">  97</span>        description: 3rd Rhine 30min with location as mask
+<span class="linenos">  98</span>        set_save:    settings_rhine_30min_03.ini
+<span class="linenos">  99</span>        changes:     MaskMap = 6.25 51.75 
+<span class="linenos"> 100</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 101</span>        last_value:  4.22		
+<span class="linenos"> 102</span>       # 4th setup Rhine
+<span class="linenos"> 103</span>        header:      Rhine_30min_4
+<span class="linenos"> 104</span>        description: 4th Rhine 30min with routing off and storing EWRef, ETRef
+<span class="linenos"> 105</span>        set_save:    settings_rhine_30min_04.ini
+<span class="linenos"> 106</span>        changes:     PET_modus = 3; includeRouting = False; StepEnd = 730 
+<span class="linenos"> 107</span>        adds:        OUT_MAP_Daily = ETRef, EWRef
+<span class="linenos"> 108</span>        last_value:  4.20	
+<span class="linenos"> 109</span>       # 5h setup Rhine
+<span class="linenos"> 110</span>        header:      Rhine_30min_5
+<span class="linenos"> 111</span>        description: 5th Rhine 30min with using stored EWRef, ETREF
+<span class="linenos"> 112</span>        set_save:    settings_rhine_30min_05.ini
+<span class="linenos"> 113</span>        changes:     calc_evaporation = False; StepEnd = 365; reportOldTss = True
+<span class="linenos"> 114</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 115</span>        last_value:  4549.75	
+<span class="linenos"> 116</span>       # 6h setup Rhine
+<span class="linenos"> 117</span>        header:      Rhine_30min_6
+<span class="linenos"> 118</span>        description: 6th Rhine 30min using inflow 
+<span class="linenos"> 119</span>        set_save:    settings_rhine_30min_06.ini
+<span class="linenos"> 120</span>        changes:     inflow = True; calc_evaporation = False; StepEnd = 40; In_Dir = $(FILE_PATHS:PathOut); InflowPoints = 11.25 49.75;QInTS = discharge_daily.tss
+<span class="linenos"> 121</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 122</span>        last_value:  99999.99
+<span class="linenos"> 123</span>      # 7th setup Rhine
+<span class="linenos"> 124</span>        header:      Rhine_30min_7
+<span class="linenos"> 125</span>        description: 7th Rhine 30min with irrigation to runoff TRUE
+<span class="linenos"> 126</span>        set_save:    settings_rhine_30min_07.ini
+<span class="linenos"> 127</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True
+<span class="linenos"> 128</span>        adds:        OUT_TSS_Daily = discharge; OUT_MAP_Daily = discharge
+<span class="linenos"> 129</span>        last_value:  16.62
+<span class="linenos"> 130</span>       # 8th setup Rhine
+<span class="linenos"> 131</span>        header:      Rhine_30min_8
+<span class="linenos"> 132</span>        description: 8th Rhine 30min with waterdemand TRUE
+<span class="linenos"> 133</span>        set_save:    settings_rhine_30min_08.ini
+<span class="linenos"> 134</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 40
+<span class="linenos"> 135</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 136</span>        last_value:  443.03		
+<span class="linenos"> 137</span>       # 9th setup Rhine
+<span class="linenos"> 138</span>        header:      Rhine_30min_9
+<span class="linenos"> 139</span>        description: 9th Rhine 30min waterdemand TRUE, SpinUp, and save initial
+<span class="linenos"> 140</span>        set_save:    settings_rhine_30min_09.ini
+<span class="linenos"> 141</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 366; SpinUp = 20/01/2000; save_initial = True; StepInit = 31/12/2000 
+<span class="linenos"> 142</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 143</span>        last_value:  1624.14	
+<span class="linenos"> 144</span>       # 10th setup Rhine
+<span class="linenos"> 145</span>        header:      Rhine_30min_10
+<span class="linenos"> 146</span>        description: 10th Rhine 30min waterdemand TRUE, load initial
+<span class="linenos"> 147</span>        set_save:    settings_rhine_30min_10.ini
+<span class="linenos"> 148</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 100; SpinUp = 30; load_initial = True; initLoad = $(FILE_PATHS:PathInit)/Rhine_20001231.nc  
+<span class="linenos"> 149</span>        adds:        OUT_TSS_Daily = discharge; OUT_MAP_TotalAvg = discharge, baseflow
+<span class="linenos"> 150</span>        last_value:  1553.59		
+<span class="linenos"> 151</span>       # 11th setup Rhine
+<span class="linenos"> 152</span>        header:      Rhine_30min_11
+<span class="linenos"> 153</span>        description: 11th Rhine 30min with lot of output
+<span class="linenos"> 154</span>        set_save:    settings_rhine_30min_11.ini
+<span class="linenos"> 155</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 730; SpinUp = 01/10/2000; load_initial = True; initLoad = $(FILE_PATHS:PathInit)/Rhine_20001231.nc; swAbstractionFrac = -0.7 
+<span class="linenos"> 156</span>        adds:        OUT_TSS_Daily = discharge; OUT_TSS_MonthAvg = discharge; OUT_TSS_AnnualAvg = discharge; OUT_TSS_AnnualTot = runoff; OUT_Map_Daily = discharge; OUT_Map_MonthAvg = discharge, Precipitation, runoff; OUT_Map_AnnualAvg = discharge; OUT_MAP_AnnualTot = runoff; OUT_MAP_AnnualEnd = runoff; OUT_MAP_TotalAvg = discharge, baseflow
+<span class="linenos"> 157</span>        last_value:  1656.99	
+<span class="linenos"> 158</span>       # 12th setup Rhine
+<span class="linenos"> 159</span>        header:      Rhine_30min_12
+<span class="linenos"> 160</span>        description: 12th Rhine 30min with more exotic output
+<span class="linenos"> 161</span>        set_save:    settings_rhine_30min_12.ini
+<span class="linenos"> 162</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 400; SpinUp = 20/01/2000; load_initial = True; initLoad = $(FILE_PATHS:PathInit)/Rhine_20001231.nc  
+<span class="linenos"> 163</span>        adds:        OUT_TSS_AreaSum_MonthTot = Precipitation, runoff; OUT_TSS_AreaAvg_MonthTot = Precipitation; OUT_Map_MonthAvg = reservoirStorage, Tavg; OUT_MAP_TotalTot = Precipitation
+<span class="linenos"> 164</span>        last_value:  1032.73	
+<span class="linenos"> 165</span>
+<span class="linenos"> 166</span>
+<span class="linenos"> 167</span>[30min_- Rhine_additional]
+<span class="linenos"> 168</span># -----------------------------
+<span class="linenos"> 169</span>    # Additional testing
+<span class="linenos"> 170</span>	base_setting: ./settings/30min/rhine_30min_add/settings_rhine_30min2.ini
+<span class="linenos"> 171</span>	name: Rhine_30min_add
+<span class="linenos"> 172</span>	path_system: P:
+<span class="linenos"> 173</span>	path_root: ./
+<span class="linenos"> 174</span>	path_init: ./init
+<span class="linenos"> 175</span>	path_out: ./output
+<span class="linenos"> 176</span>	path_maps: P:/watmodel/CWATM/cwatm_input_isimip3
+<span class="linenos"> 177</span>	path_meteo: P:/watxene/ISIMIP/ISIMIP3a/InputData/climate/obsclim_updated/GSWP3-W5E5	
+<span class="linenos"> 178</span>	
+<span class="linenos"> 179</span>       # 1st add 
+<span class="linenos"> 180</span>        header:      Rhine_30min_add_1
+<span class="linenos"> 181</span>        description: Additional tests 30min ETP 2 
+<span class="linenos"> 182</span>        set_save:    settings_rhineadd_30min_01.ini
+<span class="linenos"> 183</span>        changes:     PET_modus = 2
+<span class="linenos"> 184</span>        adds:        
+<span class="linenos"> 185</span>        last_value:  4.22
+<span class="linenos"> 186</span>       # 2rd add 
+<span class="linenos"> 187</span>        header:      Rhine_30min_add_2
+<span class="linenos"> 188</span>        description: Additional tests 30min ETP 3
+<span class="linenos"> 189</span>        set_save:    settings_rhineadd_30min_02.ini
+<span class="linenos"> 190</span>        changes:     PET_modus = 3
+<span class="linenos"> 191</span>        adds:        co2conc = $(FILE_PATHS:PathMaps)/RCP_CO2/ssp126.nc4
+<span class="linenos"> 192</span>        last_value:  4.22
+<span class="linenos"> 193</span>       # 3th add 
+<span class="linenos"> 194</span>        header:      Rhine_30min_add_3
+<span class="linenos"> 195</span>        description: Additional tests 30min waterquality
+<span class="linenos"> 196</span>        set_save:    settings_rhineadd_30min_03.ini
+<span class="linenos"> 197</span>        changes:     waterquality = True
+<span class="linenos"> 198</span>        adds:        
+<span class="linenos"> 199</span>        last_value:  4.22
+<span class="linenos"> 200</span>       # 4th add 
+<span class="linenos"> 201</span>        header:      Rhine_30min_add_4
+<span class="linenos"> 202</span>        description: Additional tests 30min environmental flow
+<span class="linenos"> 203</span>        set_save:    settings_rhineadd_30min_04.ini
+<span class="linenos"> 204</span>        changes:     calc_environflow = True; StepEnd =  31/12/2001; calc_ef_afterRun = True
+<span class="linenos"> 205</span>        adds:        OUT_MAP_Daily = discharge; OUT_MAP_12month = MMF, MQ90, EF_VMF; OUT_MAP_Once = MAF, Q90
+<span class="linenos"> 206</span>        last_value:  4.22
+<span class="linenos"> 207</span>       # 5th add 
+<span class="linenos"> 208</span>        header:      Rhine_30min_add_5
+<span class="linenos"> 209</span>        description: Additional tests 30min add output
+<span class="linenos"> 210</span>        set_save:    settings_rhineadd_30min_05.ini
+<span class="linenos"> 211</span>        changes:     StepEnd = 40
+<span class="linenos"> 212</span>        adds:        OUT_MAP_Daily = actualET[1]; OUT_TSS_monthend = discharge; OUT_TSS_totaltot = discharge; OUT_TSS_totalavg = discharge; OUT_MAP_monthend = discharge; OUT_MAP_monthtot = discharge;OUT_MAP_totaltot = discharge; OUT_MAP_totalavg = discharge; OUT_MAP_totalend = discharge
+<span class="linenos"> 213</span>        last_value:  4.22
+<span class="linenos"> 214</span>       # 6th add 
+<span class="linenos"> 215</span>        header:      Rhine_30min_add_6
+<span class="linenos"> 216</span>        description: Additional tests - store basin map
+<span class="linenos"> 217</span>        set_save:    settings_rhineadd_30min_06.ini
+<span class="linenos"> 218</span>        changes:     StepEnd = 4; savebasinmap = True
+<span class="linenos"> 219</span>        adds:        
+<span class="linenos"> 220</span>        last_value:  4.22
+<span class="linenos"> 221</span>       # 7th add 
+<span class="linenos"> 222</span>        header:      Rhine_30min_add_7
+<span class="linenos"> 223</span>        description: Additional tests - load basin map stored before as .tif
+<span class="linenos"> 224</span>        set_save:    settings_rhineadd_30min_07.ini
+<span class="linenos"> 225</span>        changes:     StepEnd = 4; MaskMap = $(FILE_PATHS:PathOut)/basin.tif
+<span class="linenos"> 226</span>        adds:        
+<span class="linenos"> 227</span>        last_value:  4.22
+<span class="linenos"> 228</span>
+<span class="linenos"> 229</span>[Check for Errors]
+<span class="linenos"> 230</span># --- ERROR ------------------
+<span class="linenos"> 231</span>    # Error testing
+<span class="linenos"> 232</span>	base_setting: ./settings/30min/error_30min/settings_error_30min.ini
+<span class="linenos"> 233</span>	name: Error_30min
+<span class="linenos"> 234</span>	path_system: P:
+<span class="linenos"> 235</span>	path_root: ./
+<span class="linenos"> 236</span>	path_init: ./init
+<span class="linenos"> 237</span>	path_out: ./output
+<span class="linenos"> 238</span>	path_maps: P:/watmodel/CWATM/cwatm_input_isimip3
+<span class="linenos"> 239</span>	path_meteo: P:/watxene/ISIMIP/ISIMIP3a/InputData/climate/obsclim_updated/GSWP3-W5E5	
+<span class="linenos"> 240</span>	
+<span class="linenos"> 241</span>       # 1st Error 101 
+<span class="linenos"> 242</span>        header:      Error_30min_1
+<span class="linenos"> 243</span>        description: 1st failure 30min basic version - Error 101
+<span class="linenos"> 244</span>        set_save:    settings_error_30min_01.ini
+<span class="linenos"> 245</span>        changes:     Gauges = bad bad
+<span class="linenos"> 246</span>        adds:        
+<span class="linenos"> 247</span>        last_value:  Error 101 - Gauges in settings file xxx is not a coordinate
+<span class="linenos"> 248</span>       # 2nd Error 102
+<span class="linenos"> 249</span>        header:      Error_30min_2
+<span class="linenos"> 250</span>        description: 2nd failure 30min basic version - Error 102 
+<span class="linenos"> 251</span>        set_save:    settings_error_30min_02.ini
+<span class="linenos"> 252</span>        changes:     Gauges = 6.25 21.75
+<span class="linenos"> 253</span>        adds:        
+<span class="linenos"> 254</span>        last_value:  Error 102 - Gauges is outside mask map
+<span class="linenos"> 255</span>       # 3rd Error 201
+<span class="linenos"> 256</span>        header:      Error_30min_3
+<span class="linenos"> 257</span>        description: 3rd failure 30min basic version - Error 201 
+<span class="linenos"> 258</span>        set_save:    settings_error_30min_03.ini
+<span class="linenos"> 259</span>        changes:     MaskMap = bad30min.tif
+<span class="linenos"> 260</span>        adds:        
+<span class="linenos"> 261</span>        last_value:  Error 201 - File reading Error
+<span class="linenos"> 262</span>       # 4th Error 103
+<span class="linenos"> 263</span>        header:      Error_30min_4
+<span class="linenos"> 264</span>        description: 4th failure 30min basic version - Error 103
+<span class="linenos"> 265</span>        set_save:    settings_error_30min_04.ini
+<span class="linenos"> 266</span>        changes:     MaskMap = 1 1 1 1 1 1
+<span class="linenos"> 267</span>        adds:        
+<span class="linenos"> 268</span>        last_value:  Error 103 - Maskmap is not a valid mask map nor valid coordinates nor valid point
+<span class="linenos"> 269</span>       # 5th Error 104
+<span class="linenos"> 270</span>        header:      Error_30min_5
+<span class="linenos"> 271</span>        description: 5th failure 30min basic version - Error 104
+<span class="linenos"> 272</span>        set_save:    settings_error_30min_05.ini
+<span class="linenos"> 273</span>        changes:     MaskMap = 6.25 71.75
+<span class="linenos"> 274</span>        adds:        
+<span class="linenos"> 275</span>        last_value:  Error 104 - MaskMap point does not have a valid value in the river network (LDD)
+<span class="linenos"> 276</span>       # 6th Error 203
+<span class="linenos"> 277</span>        header:      Error_30min_6
+<span class="linenos"> 278</span>        description: 6th failure 30min basic version - Error 203 
+<span class="linenos"> 279</span>        set_save:    settings_error_30min_06.ini
+<span class="linenos"> 280</span>        changes:     Ldd = bad
+<span class="linenos"> 281</span>        adds:        
+<span class="linenos"> 282</span>        last_value:  Error 203 - Filename does not exists
+<span class="linenos"> 283</span>       # 7th Error 105   
+<span class="linenos"> 284</span>        header:      Error_30min_7
+<span class="linenos"> 285</span>        description: 7th failure 30min basic version - Error 105
+<span class="linenos"> 286</span>        set_save:    settings_error_30min_07.ini
+<span class="linenos"> 287</span>        changes:     CellArea = $(FILE_PATHS:PathMaps)/areamaps/lobith.tif
+<span class="linenos"> 288</span>        adds:        
+<span class="linenos"> 289</span>        last_value:  Error 105 - map has a different shape than area or ldd
+<span class="linenos"> 290</span>       # -&gt; error 106 is missing data handling line 435
+<span class="linenos"> 291</span>       # -&gt; error 204 is missing data handling line 510
+<span class="linenos"> 292</span>       # -&gt; error 205 is missing data handling line 561
+<span class="linenos"> 293</span>       # -&gt; error 206,207 is missing data handling line 610,633
+<span class="linenos"> 294</span>       # -&gt; error 107,108 is missing data handling line 680,780
+<span class="linenos"> 295</span>       # 8th Error 208
+<span class="linenos"> 296</span>        header:      Error_30min_8
+<span class="linenos"> 297</span>        description: 8th failure 30min basic version - Error 208
+<span class="linenos"> 298</span>        set_save:    settings_error_30min_08.ini
+<span class="linenos"> 299</span>        changes:     TavgMaps = $(FILE_PATHS:PathMeteo)/ttt*
+<span class="linenos"> 300</span>        adds:        
+<span class="linenos"> 301</span>        last_value:  Error 208 - File missing
+<span class="linenos"> 302</span>       # -&gt; error 209 is missing data handling line 822
+<span class="linenos"> 303</span>       # -&gt; error 210,211 is missing data handling line 915,920
+<span class="linenos"> 304</span>       # -&gt; error 109 is missing data handling line 968
+<span class="linenos"> 305</span>       # 9th Error 212
+<span class="linenos"> 306</span>        header:      Error_30min_9
+<span class="linenos"> 307</span>        description: 9th failure 30min basic version - Error 212
+<span class="linenos"> 308</span>        set_save:    settings_error_30min_09.ini
+<span class="linenos"> 309</span>        changes:     fractionLandcover = $(PathLandcover)/xxx.nc
+<span class="linenos"> 310</span>        adds:        
+<span class="linenos"> 311</span>        last_value:  Error 212 - File missing
+<span class="linenos"> 312</span>       # -&gt; error 110 is missing data handling line 1102 
+<span class="linenos"> 313</span>       # 10th Error 213
+<span class="linenos"> 314</span>        header:      Error_30min_10
+<span class="linenos"> 315</span>        description: 10th failure 30min basic version - Error 213  
+<span class="linenos"> 316</span>        set_save:    settings_error_30min_10.ini
+<span class="linenos"> 317</span>        changes:     relativeElevation = $(PathTopo)/xxx.nc
+<span class="linenos"> 318</span>        adds:        
+<span class="linenos"> 319</span>        last_value:  Error 213 - File missing
+<span class="linenos"> 320</span>       # -&gt; error 111 is missing data handling line 1132
+<span class="linenos"> 321</span>       # 11st Error 214
+<span class="linenos"> 322</span>        header:      Error_30min_11
+<span class="linenos"> 323</span>        description: 11st failure 30min basic version - Error 214
+<span class="linenos"> 324</span>        set_save:    settings_error_30min_11.ini
+<span class="linenos"> 325</span>        changes:     load_initial = True; initLoad = $(FILE_PATHS:PathInit)/xxx.nc
+<span class="linenos"> 326</span>        adds:        
+<span class="linenos"> 327</span>        last_value:  Error 214 - File missing
+<span class="linenos"> 328</span>       # -&gt; error 112 is missing data handling line 1167
+<span class="linenos"> 329</span>       # -&gt; error 113 is missing data handling line 1177
+<span class="linenos"> 330</span>       # -&gt; error 114 is missing data handling line 1182
+<span class="linenos"> 331</span>       # 12nd Error 115
+<span class="linenos"> 332</span>        header:      Error_30min_12
+<span class="linenos"> 333</span>        description: 12nd failure 30min basic version - Error 215
+<span class="linenos"> 334</span>        set_save:    settings_error_30min_12.ini
+<span class="linenos"> 335</span>        changes:     coverresult = FFFFF
+<span class="linenos"> 336</span>        adds:        
+<span class="linenos"> 337</span>        last_value:  Error 115 - Value is not True or False
+<span class="linenos"> 338</span>       # -&gt; error 116 is missing data handling line 1644
+<span class="linenos"> 339</span>
+<span class="linenos"> 340</span>       
+<span class="linenos"> 341</span>       # -----------------------------------------------
+<span class="linenos"> 342</span>
+<span class="linenos"> 343</span>       # -&gt; error 118 is missing timestep line 67
+<span class="linenos"> 344</span>       # 13th Error 119
+<span class="linenos"> 345</span>        header:      Error_30min_13
+<span class="linenos"> 346</span>        description: 13th failure 30min basic version - Error 119 
+<span class="linenos"> 347</span>        set_save:    settings_error_30min_13.ini
+<span class="linenos"> 348</span>        changes:     StepStart = xxx
+<span class="linenos"> 349</span>        adds:        
+<span class="linenos"> 350</span>        last_value:  Error 119 - Either date in StepStart is not a date or in SpinUp or StepEnd it is neither a number or a date
+<span class="linenos"> 351</span>       # 14th Error 120
+<span class="linenos"> 352</span>        header:      Error_30min_14
+<span class="linenos"> 353</span>        description: 14th failure 30min basic version - Error 120 
+<span class="linenos"> 354</span>        set_save:    settings_error_30min_14.ini
+<span class="linenos"> 355</span>        changes:     save_initial = True; StepInit = xxx
+<span class="linenos"> 356</span>        adds:        
+<span class="linenos"> 357</span>        last_value:  Error 120 - First date in StepInit is neither a number or a date
+<span class="linenos"> 358</span>       # 15th Error 121
+<span class="linenos"> 359</span>        header:      Error_30min_15
+<span class="linenos"> 360</span>        description: 15th failure 30min basic version - Error 121 
+<span class="linenos"> 361</span>        set_save:    settings_error_30min_15.ini
+<span class="linenos"> 362</span>        changes:     save_initial = True; StepInit = 31/12/2009 kkk
+<span class="linenos"> 363</span>        adds:        
+<span class="linenos"> 364</span>        last_value:  Error 121 - Second value in StepInit is not a bumber or date nor indicating a repetition of year(y), month(m) or day(d)^
+<span class="linenos"> 365</span>       # 16th Error 122
+<span class="linenos"> 366</span>        header:      Error_30min_16
+<span class="linenos"> 367</span>        description: 16th failure 30min basic version - Error 122
+<span class="linenos"> 368</span>        set_save:    settings_error_30min_16.ini
+<span class="linenos"> 369</span>        changes:     save_initial = True; StepInit = 31/12/2009 d kkk
+<span class="linenos"> 370</span>        adds:        
+<span class="linenos"> 371</span>        last_value:  Error 122 - Third value in StepInit is not an integer after (y) or (m) or (d)&quot;
+<span class="linenos"> 372</span>       # -&gt; error 215 is missing timestep line 281
+<span class="linenos"> 373</span>       # 17th Error 215
+<span class="linenos"> 374</span>        header:      Error_30min_17
+<span class="linenos"> 375</span>        description: 17th failure 30min basic version - Error 215
+<span class="linenos"> 376</span>        set_save:    settings_error_30min_17.ini
+<span class="linenos"> 377</span>        changes:     PrecipitationMaps = $(FILE_PATHS:PathMeteo)/xxx*
+<span class="linenos"> 378</span>        adds:        
+<span class="linenos"> 379</span>        last_value:  Error 215 - Cannot find precipitation maps
+<span class="linenos"> 380</span>       # 18th Error 123
+<span class="linenos"> 381</span>        header:      Error_30min_18
+<span class="linenos"> 382</span>        description: 18th failure 30min basic version - Error 123
+<span class="linenos"> 383</span>        set_save:    settings_error_30min_18.ini
+<span class="linenos"> 384</span>        changes:     StepStart = 1
+<span class="linenos"> 385</span>        adds:        
+<span class="linenos"> 386</span>        last_value:  Error 123 - StepStart has to be a valid date
+<span class="linenos"> 387</span>       # 19th Error 124
+<span class="linenos"> 388</span>        header:      Error_30min_19
+<span class="linenos"> 389</span>        description: 19th failure 30min basic version - Error 124
+<span class="linenos"> 390</span>        set_save:    settings_error_30min_19.ini
+<span class="linenos"> 391</span>        changes:     StepEnd = 01/01/1999
+<span class="linenos"> 392</span>        adds:        
+<span class="linenos"> 393</span>        last_value:  Error 124 - Start or end date are wrong. End date is smaller than the first time step date
+<span class="linenos"> 394</span>       # 20th Error 125
+<span class="linenos"> 395</span>        header:      Error_30min_20
+<span class="linenos"> 396</span>        description: 20th failure 30min basic version - Error 125
+<span class="linenos"> 397</span>        set_save:    settings_error_30min_20.ini
+<span class="linenos"> 398</span>        changes:     SpinUp =  1/01/1990
+<span class="linenos"> 399</span>        adds:        
+<span class="linenos"> 400</span>        last_value:  Error 125 - Spin date is wrong. Spin date is smaller/bigger than the first/last time step date
+<span class="linenos"> 401</span>        
+<span class="linenos"> 402</span>       # ---------------- global -----------------------------
+<span class="linenos"> 403</span>       # -&gt; error 301 is missing global line 177: Python version is not 64 bit
+<span class="linenos"> 404</span>
+<span class="linenos"> 405</span>       # --------------- data handling again ------------------------------
+<span class="linenos"> 406</span>       
+<span class="linenos"> 407</span>       # 21st Error 117 #### -&gt; error 117 is missing data handling line 1676
+<span class="linenos"> 408</span>        header:      Error_30min_21
+<span class="linenos"> 409</span>        description: 21st failure 30min basic version - Error 117 
+<span class="linenos"> 410</span>        set_save:    settings_error_30min_21.ini
+<span class="linenos"> 411</span>        changes:     inflow = True
+<span class="linenos"> 412</span>        adds:        
+<span class="linenos"> 413</span>        last_value:  Error 117 - No key with this name in Binding       
+<span class="linenos"> 414</span>        
+<span class="linenos"> 415</span>       # ---------------- inflow -----------------------------
+<span class="linenos"> 416</span>       # 22nd Error 216
+<span class="linenos"> 417</span>        header:      Error_30min_22
+<span class="linenos"> 418</span>        description: 22rd failure 30min basic version - Error 216 
+<span class="linenos"> 419</span>        set_save:    settings_error_30min_22.ini
+<span class="linenos"> 420</span>        changes:     inflow = True
+<span class="linenos"> 421</span>        adds:        InLocal = True
+<span class="linenos"> 422</span>        last_value:  Error 216 - Inflow file missing
+<span class="linenos"> 423</span>       # 23nd Error 127
+<span class="linenos"> 424</span>        header:      Error_30min_23
+<span class="linenos"> 425</span>        description: 23nd failure 30min basic version - Error 127
+<span class="linenos"> 426</span>        set_save:    settings_error_30min_23.ini
+<span class="linenos"> 427</span>        changes:     inflow = True; InflowPoints = 8.25 49.75 7.75
+<span class="linenos"> 428</span>        adds:        InLocal = True
+<span class="linenos"> 429</span>        last_value:  Error 127 - Inflow coordinates are not pair
+<span class="linenos"> 430</span>       # -&gt; error 217 is missing inflow line 131: inflow file mistake
+<span class="linenos"> 431</span>       # -&gt; error 218 is missing inflow line 140: inflow file mistake
+<span class="linenos"> 432</span>       
+<span class="linenos"> 433</span>       # ---------------- environflow -----------------------------
+<span class="linenos"> 434</span>       # 24th Error 128
+<span class="linenos"> 435</span>        header:      Error_30min_24
+<span class="linenos"> 436</span>        description: 24th failure 30min basic version - Error 128
+<span class="linenos"> 437</span>        set_save:    settings_error_30min_24.ini
+<span class="linenos"> 438</span>        changes:     calc_environflow = True; calc_ef_afterRun = True
+<span class="linenos"> 439</span>        adds:        
+<span class="linenos"> 440</span>        last_value:  Error 128 - OUT_MAP_Daily = discharge may be not defined in [OUTPUT]
+<span class="linenos"> 441</span>       # -&gt; error 219 is missing environ line 119: mistake in discharge daily netcdf file
+<span class="linenos"> 442</span>       
+<span class="linenos"> 443</span>      
+<span class="linenos"> 444</span>       # ---------------- output -----------------------------
+<span class="linenos"> 445</span>       # 26th Error 220
+<span class="linenos"> 446</span>        header:      Error_30min_26
+<span class="linenos"> 447</span>        description: 26th failure 30min basic version - Error 220
+<span class="linenos"> 448</span>        set_save:    settings_error_30min_26.ini
+<span class="linenos"> 449</span>        changes:     OUT_Dir = ./xxxx
+<span class="linenos"> 450</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 451</span>        last_value:  Error 220 - Output directory is wrong
+<span class="linenos"> 452</span>       # 27th Error 221
+<span class="linenos"> 453</span>        header:      Error_30min_27
+<span class="linenos"> 454</span>        description: 27th failure 30min basic version - Error 221 
+<span class="linenos"> 455</span>        set_save:    settings_error_30min_27.ini
+<span class="linenos"> 456</span>        changes:     Gauges = bad
+<span class="linenos"> 457</span>        adds:        
+<span class="linenos"> 458</span>        last_value:  Error 221 - output-points file is wrong
+<span class="linenos"> 459</span>       # 28th Error 129
+<span class="linenos"> 460</span>        header:      Error_30min_28
+<span class="linenos"> 461</span>        description: 28th failure 30min basic version - Error 129
+<span class="linenos"> 462</span>        set_save:    settings_error_30min_28.ini
+<span class="linenos"> 463</span>        changes:     Gauges = bad bad bad
+<span class="linenos"> 464</span>        adds:        
+<span class="linenos"> 465</span>        last_value:  Error 129 - output-points are not pairs of coordinate
+<span class="linenos"> 466</span>       # 29th Error 130
+<span class="linenos"> 467</span>        header:      Error_30min_29
+<span class="linenos"> 468</span>        description: 29th failure 30min basic version - Error 130
+<span class="linenos"> 469</span>        set_save:    settings_error_30min_29.ini
+<span class="linenos"> 470</span>        changes:     
+<span class="linenos"> 471</span>        adds:        OUT_TSS_Wrong = discharge
+<span class="linenos"> 472</span>        last_value:  Error 130 - Out_TSS is not one of these - daily, monthend, monthtot, monthavg, annualend, annualtot, annualavg
+<span class="linenos"> 473</span>       # 30th Error 131
+<span class="linenos"> 474</span>        header:      Error_30min_30
+<span class="linenos"> 475</span>        description: 30th failure 30min basic version - Error 131 
+<span class="linenos"> 476</span>        set_save:    settings_error_30min_30.ini
+<span class="linenos"> 477</span>        changes:     
+<span class="linenos"> 478</span>        adds:        OUT_TSS_AreaWrong_Daily = discharge
+<span class="linenos"> 479</span>        last_value:  Error 131 - OUT_TSS_AreaWrong_Daily is not one of these - TSS for point value AreaSum for sum of area, AreaAvg for average of area
+<span class="linenos"> 480</span>       # 31st Error 132
+<span class="linenos"> 481</span>        header:      Error_30min_31
+<span class="linenos"> 482</span>        description: 31st failure 30min basic version - Error 132 
+<span class="linenos"> 483</span>        set_save:    settings_error_30min_31.ini
+<span class="linenos"> 484</span>        changes:     
+<span class="linenos"> 485</span>        adds:        OUT_TSS_Daily = dischargeWrong
+<span class="linenos"> 486</span>        last_value:  Error 132 -  Variable is not defined in list of variables
+<span class="linenos"> 487</span>
+<span class="linenos"> 488</span>       # 32rd  Error 400 
+<span class="linenos"> 489</span>        header:      Error_30min_32
+<span class="linenos"> 490</span>        description: 32nd failure - here not a failure but exit bc environmental flow calc from existing - Error 400
+<span class="linenos"> 491</span>        set_save:    settings_error_30min_32.ini
+<span class="linenos"> 492</span>        changes:     calc_environflow = True; StepEnd =  31/12/2010; calc_ef_afterRun = False; EFDis = $(FILE_PATHS:PathOut)/discharge_daily.nc
+<span class="linenos"> 493</span>        adds:        OUT_MAP_12month = MMF, MQ90, EF_VMF
+<span class="linenos"> 494</span>        last_value:  Error 400 - environmental flow calc from existing
+<span class="linenos"> 495</span>
+<span class="linenos"> 496</span>[30min_- Global]
+<span class="linenos"> 497</span># -----------------------------
+<span class="linenos"> 498</span>    # Global
+<span class="linenos"> 499</span>	base_setting: ./settings/30min/global_30min/settings_global_30min.ini
+<span class="linenos"> 500</span>	name: global_30min
+<span class="linenos"> 501</span>	path_out: ./output
+<span class="linenos"> 502</span>	
+<span class="linenos"> 503</span>       # 1st global 30min
+<span class="linenos"> 504</span>        header:      Global_30min_1
+<span class="linenos"> 505</span>        description: 1st global 30min basic version
+<span class="linenos"> 506</span>        set_save:    settings_global_30min_01.ini
+<span class="linenos"> 507</span>        changes:     
+<span class="linenos"> 508</span>        adds:        
+<span class="linenos"> 509</span>        last_value:  1864.96
+<span class="linenos"> 510</span>       # 2th setup global
+<span class="linenos"> 511</span>        header:      Global_30min_4
+<span class="linenos"> 512</span>        description: 2nd global 30min with routing off and storing EWRef, ETRef
+<span class="linenos"> 513</span>        set_save:    settings_global_30min_02.ini
+<span class="linenos"> 514</span>        changes:     includeRouting = False; StepEnd = 400
+<span class="linenos"> 515</span>        adds:        OUT_MAP_Daily = ETRef, EWRef
+<span class="linenos"> 516</span>        last_value:  5895.42	
+<span class="linenos"> 517</span>       # 3h setup global
+<span class="linenos"> 518</span>        header:      Global_30min_3
+<span class="linenos"> 519</span>        description: 3rd global 30min with using stored EWRef, ETREF and map as gauges
+<span class="linenos"> 520</span>        set_save:    settings_global_30min_03.ini
+<span class="linenos"> 521</span>        changes:     calc_evaporation = False; StepEnd = 40; Gauges  = $(FILE_PATHS:PathMaps)/areamaps/station1263.map
+<span class="linenos"> 522</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 523</span>        last_value:  178.63	
+<span class="linenos"> 524</span>	   # 4th setup global
+<span class="linenos"> 525</span>        header:      global_30min_4
+<span class="linenos"> 526</span>        description: 4th global 30min with irrigation to runoff TRUE
+<span class="linenos"> 527</span>        set_save:    settings_global_30min_04.ini
+<span class="linenos"> 528</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True
+<span class="linenos"> 529</span>        adds:        OUT_TSS_Daily = discharge; OUT_MAP_Daily = discharge
+<span class="linenos"> 530</span>        last_value:  1555.02
+<span class="linenos"> 531</span>       # 5th setup global
+<span class="linenos"> 532</span>        header:      Global_30min_5
+<span class="linenos"> 533</span>        description: 5th Global 30min with waterdemand TRUE
+<span class="linenos"> 534</span>        set_save:    settings_global_30min_05.ini
+<span class="linenos"> 535</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 40
+<span class="linenos"> 536</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 537</span>        last_value:  3140.29		
+<span class="linenos"> 538</span>       # 6th setup global
+<span class="linenos"> 539</span>        header:      Global_30min_6
+<span class="linenos"> 540</span>        description: 6th Global 30min waterdemand TRUE, SpinUp, and save initial
+<span class="linenos"> 541</span>        set_save:    settings_global_30min_06.ini
+<span class="linenos"> 542</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 30; SpinUp = 15/01/2009; save_initial = True; StepInit = 20/01/2009 
+<span class="linenos"> 543</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 544</span>        last_value:  995.47
+<span class="linenos"> 545</span>       # 7th setup global
+<span class="linenos"> 546</span>        header:      Global_30min_7
+<span class="linenos"> 547</span>        description: 7th Global 30min waterdemand TRUE, load initial
+<span class="linenos"> 548</span>        set_save:    settings_global_30min_07.ini
+<span class="linenos"> 549</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 100; SpinUp = 15; load_initial = True; initLoad = $(FILE_PATHS:PathInit)/global_20090120.nc  
+<span class="linenos"> 550</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 551</span>        last_value:  150228.10			
+<span class="linenos"> 552</span>       # 8th setup global
+<span class="linenos"> 553</span>        header:      Global_30min_8
+<span class="linenos"> 554</span>        description: 8th Global 30min with lot of output
+<span class="linenos"> 555</span>        set_save:    settings_global_30min_08.ini
+<span class="linenos"> 556</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 370; SpinUp = 15/01/2009; load_initial = True; initLoad = $(FILE_PATHS:PathInit)/global_20090120.nc  
+<span class="linenos"> 557</span>        adds:        OUT_TSS_Daily = discharge; OUT_TSS_MonthAvg = discharge; OUT_TSS_AnnualAvg = discharge; OUT_TSS_AnnualTot = runoff; OUT_Map_MonthAvg = discharge, Precipitation, runoff; OUT_Map_AnnualAvg = discharge; OUT_MAP_TotalAvg = discharge, baseflow
+<span class="linenos"> 558</span>        last_value:  93642.42	
+<span class="linenos"> 559</span>		
+<span class="linenos"> 560</span># -----------------------------
+<span class="linenos"> 561</span># -----------------------------
+<span class="linenos"> 562</span>[5min -_Rhine]
+<span class="linenos"> 563</span># 5 min versions
+<span class="linenos"> 564</span>    # Rhine
+<span class="linenos"> 565</span>	base_setting: ./settings/5min/rhine_5min/settings_rhine_5min.ini
+<span class="linenos"> 566</span>	name: Rhine_5min
+<span class="linenos"> 567</span>	path_system: P:
+<span class="linenos"> 568</span>	path_root: P:/watmodel/CWATM/cwatm_input_5min
+<span class="linenos"> 569</span>	path_init: P:/watmodel/cwatmpublic/develop/pytest/init
+<span class="linenos"> 570</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output
+<span class="linenos"> 571</span>	path_maps: P:/watmodel/CWATM/cwatm_input_5min/input5min
+<span class="linenos"> 572</span>	path_meteo: P:/watmodel/CWATM/cwatm_input_5min/meteo/meteo_mswx_global
+<span class="linenos"> 573</span>
+<span class="linenos"> 574</span>       # 1st Rhine 5min
+<span class="linenos"> 575</span>        header:      Rhine_5min_1
+<span class="linenos"> 576</span>        description: 1st Rhine 5min basic version
+<span class="linenos"> 577</span>        set_save:    settings_rhine_5min_01.ini
+<span class="linenos"> 578</span>        changes:     
+<span class="linenos"> 579</span>        adds:        
+<span class="linenos"> 580</span>        last_value:  6.23
+<span class="linenos"> 581</span>       # 2nd setup Rhine
+<span class="linenos"> 582</span>        header:      Rhine_5min_2
+<span class="linenos"> 583</span>        description: 2nd Rhine 5min with box as mask and basic outputs
+<span class="linenos"> 584</span>        set_save:    settings_rhine_5min_02.ini
+<span class="linenos"> 585</span>        changes:     MaskMap =  77 68 0.0833333333333 5.41666666666 52.0
+<span class="linenos"> 586</span>        adds:        OUT_TSS_Daily = discharge; OUT_MAP_Daily = discharge
+<span class="linenos"> 587</span>        last_value:  6.23
+<span class="linenos"> 588</span>       # 3rd setup Rhine
+<span class="linenos"> 589</span>        header:      Rhine_5min_3
+<span class="linenos"> 590</span>        description: 3rd Rhine 5min with location as mask
+<span class="linenos"> 591</span>        set_save:    settings_rhine_5min_03.ini
+<span class="linenos"> 592</span>        changes:     MaskMap = 5.96 51.945
+<span class="linenos"> 593</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 594</span>        last_value:  6.23
+<span class="linenos"> 595</span>       # 4th setup Rhine
+<span class="linenos"> 596</span>        header:      Rhine_5min_4
+<span class="linenos"> 597</span>        description: 4th Rhine 5min with routing off and storing EWRef, ETRef
+<span class="linenos"> 598</span>        set_save:    settings_rhine_5min_04.ini
+<span class="linenos"> 599</span>        changes:     includeRouting = False; StepEnd = 400 
+<span class="linenos"> 600</span>        adds:        OUT_MAP_Daily = ETRef, EWRef
+<span class="linenos"> 601</span>        last_value:  5.83
+<span class="linenos"> 602</span>       # 5h setup Rhine
+<span class="linenos"> 603</span>        header:      Rhine_5min_5
+<span class="linenos"> 604</span>        description: 5th Rhine 5min with using stored EWRef, ETREF
+<span class="linenos"> 605</span>        set_save:    settings_rhine_5min_05.ini
+<span class="linenos"> 606</span>        changes:     calc_evaporation = False
+<span class="linenos"> 607</span>        adds:        UT_TSS_Daily = discharge
+<span class="linenos"> 608</span>        last_value:  6.23
+<span class="linenos"> 609</span>	   # 6th setup Rhine
+<span class="linenos"> 610</span>        header:      Rhine_5min_6
+<span class="linenos"> 611</span>        description: 6th Rhine 5min with irrigation to runoff TRUE and gauges as maps
+<span class="linenos"> 612</span>        set_save:    settings_rhine_5min_06.ini
+<span class="linenos"> 613</span>        changes:     calc_evaporation = False; Gauges= $(FILE_PATHS:PathMaps)/areamaps/rhine_station6.map; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True
+<span class="linenos"> 614</span>        adds:        OUT_TSS_Daily = discharge; OUT_MAP_Daily = discharge
+<span class="linenos"> 615</span>        last_value:  14.36
+<span class="linenos"> 616</span>       # 7th setup Rhine
+<span class="linenos"> 617</span>        header:      Rhine_5min_7
+<span class="linenos"> 618</span>        description: 7th Rhine 5min with waterdemand TRUE
+<span class="linenos"> 619</span>        set_save:    settings_rhine_5min_07.ini
+<span class="linenos"> 620</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 40
+<span class="linenos"> 621</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 622</span>        last_value:  1627.78
+<span class="linenos"> 623</span>       # 8th setup Rhine
+<span class="linenos"> 624</span>        header:      Rhine_5min_8
+<span class="linenos"> 625</span>        description: 8th Rhine 5min waterdemand TRUE, SpinUp, and save initial
+<span class="linenos"> 626</span>        set_save:    settings_rhine_5min_08.ini
+<span class="linenos"> 627</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 40; SpinUp = 20/01/1990; save_initial = True; StepInit = 31/01/1990  
+<span class="linenos"> 628</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 629</span>        last_value:  1627.78		
+<span class="linenos"> 630</span>       # 9th setup Rhine
+<span class="linenos"> 631</span>        header:      Rhine_5min_9
+<span class="linenos"> 632</span>        description: 9th Rhine 5min waterdemand TRUE, load initial
+<span class="linenos"> 633</span>        set_save:    settings_rhine_5min_09.ini
+<span class="linenos"> 634</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 40; SpinUp = 20/01/1990; load_initial = True; initLoad = $(FILE_PATHS:PathInit)/Global_19900131.nc  
+<span class="linenos"> 635</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 636</span>        last_value:  2895.04
+<span class="linenos"> 637</span>       # 10th setup Rhine
+<span class="linenos"> 638</span>        header:      Rhine_5min_10
+<span class="linenos"> 639</span>        description: 10th Rhine 5min with lot of output
+<span class="linenos"> 640</span>        set_save:    settings_rhine_5min_10.ini
+<span class="linenos"> 641</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 400; SpinUp = 20/01/1990; load_initial = True; initLoad = $(FILE_PATHS:PathInit)/Global_19900131.nc  
+<span class="linenos"> 642</span>        adds:        OUT_TSS_Daily = discharge; OUT_TSS_MonthAvg = discharge; OUT_TSS_AnnualAvg = discharge; OUT_TSS_AnnualTot = runoff; OUT_Map_Daily = discharge; OUT_Map_MonthAvg = discharge, Precipitation, runoff; OUT_Map_AnnualAvg = discharge; OUT_MAP_TotalAvg = discharge, baseflow
+<span class="linenos"> 643</span>        last_value:  3045.40
+<span class="linenos"> 644</span>       # 11th setup Rhine
+<span class="linenos"> 645</span>        header:      Rhine_5min_11
+<span class="linenos"> 646</span>        description: 11th Rhine 5min with more exotic output
+<span class="linenos"> 647</span>        set_save:    settings_rhine_5min_11.ini
+<span class="linenos"> 648</span>        changes:     calc_evaporation = False; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True; StepEnd = 400; SpinUp = 20/01/1990; load_initial = True; initLoad = $(FILE_PATHS:PathInit)/Global_19900131.nc  
+<span class="linenos"> 649</span>        adds:        OUT_TSS_AreaSum_MonthTot = Precipitation, runoff; OUT_TSS_AreaAvg_MonthTot = Precipitation; OUT_Map_MonthAvg = reservoirStorage, Tavg; OUT_MAP_TotalTot = Precipitation
+<span class="linenos"> 650</span>        last_value:  3045.40
+<span class="linenos"> 651</span>       # 12th setup Rhine
+<span class="linenos"> 652</span>        header:      Rhine_5min_12
+<span class="linenos"> 653</span>        description: 12th Rhine 5min with time period older than demand
+<span class="linenos"> 654</span>        set_save:    settings_rhine_5min_12.ini
+<span class="linenos"> 655</span>        changes:     StepStart = 01/01/2012; StepEnd = 4; SpinUp = None; includeIrrigation = True; preferentialFlow = True; CapillarRise = True; includeRunoffConcentration = True; includeWaterBodies = True; includeWaterDemand = True
+<span class="linenos"> 656</span>        adds:        
+<span class="linenos"> 657</span>        last_value:  9999.9
+<span class="linenos"> 658</span>
+<span class="linenos"> 659</span>[5min -_Niger]
+<span class="linenos"> 660</span># 5 min versions
+<span class="linenos"> 661</span>    # Niger - wetlands
+<span class="linenos"> 662</span>	base_setting: ./settings/5min/niger_5min/settings_niger_5min.ini
+<span class="linenos"> 663</span>	name: Niger_5min
+<span class="linenos"> 664</span>	path_system: P:
+<span class="linenos"> 665</span>	path_root: P:/watmodel/CWATM/Regions/Niger
+<span class="linenos"> 666</span>	path_out: ./output
+<span class="linenos"> 667</span>	path_init: P:/watmodel/CWATM/Regions/Niger/init
+<span class="linenos"> 668</span>	path_maps: P:/watmodel/CWATM/Regions/Niger/input
+<span class="linenos"> 669</span>	path_meteo: P:/watmodel/CWATM/Regions/Niger/meteo
+<span class="linenos"> 670</span>
+<span class="linenos"> 671</span>       # 1st Niger 5min
+<span class="linenos"> 672</span>        header:      Niger_5min_1
+<span class="linenos"> 673</span>        description: 1st Niger 5min basic version
+<span class="linenos"> 674</span>        set_save:    settings_niger_5min_01.ini
+<span class="linenos"> 675</span>        changes:     
+<span class="linenos"> 676</span>        adds:        
+<span class="linenos"> 677</span>        last_value:  6.23
+<span class="linenos"> 678</span>       # 2st Niger 5min
+<span class="linenos"> 679</span>        header:      Niger_5min_1
+<span class="linenos"> 680</span>        description: 2nd Niger 5min with wetland
+<span class="linenos"> 681</span>        set_save:    settings_niger_5min_02.ini
+<span class="linenos"> 682</span>        changes:     reservoir_add_info_in_Excel = True; wetlands_variable_area = True
+<span class="linenos"> 683</span>        adds:        
+<span class="linenos"> 684</span>        last_value:  6.23
+<span class="linenos"> 685</span>
+<span class="linenos"> 686</span>[Ebro_Wastewater_5min]
+<span class="linenos"> 687</span># ---------------------
+<span class="linenos"> 688</span># 5 min versions
+<span class="linenos"> 689</span>    # Ebro
+<span class="linenos"> 690</span>	base_setting: ./settings/5min/ebro_5min/settings_ebro5min_ebro_improved3_wwt.ini
+<span class="linenos"> 691</span>	name: Ebro_5min
+<span class="linenos"> 692</span>	path_system: P:
+<span class="linenos"> 693</span>	path_root: ./
+<span class="linenos"> 694</span>	path_init: ./init
+<span class="linenos"> 695</span>	path_out: ./output
+<span class="linenos"> 696</span>	path_maps: p:/watmodel/CWATM/cwatm_input_5min/input5min
+<span class="linenos"> 697</span>	path_maps2: p:/watproject/Accreu/casestudies/ebro/ebro_5min/inputs/wastewater
+<span class="linenos"> 698</span>	xl_settings: p:/watproject/Accreu/casestudies/ebro/ebro_5min/inputs/wastewater/cwatm_settings_9_wwt.xlsx
+<span class="linenos"> 699</span>	path_meteo: P:/watxene/ISIMIP/ISIMIP3a/InputData/climate/obsclim_updated/GSWP3-W5E5
+<span class="linenos"> 700</span>	
+<span class="linenos"> 701</span>       # 1st Ebro 5min
+<span class="linenos"> 702</span>        header:      Ebro_5min_1
+<span class="linenos"> 703</span>        description: 1st Ebro 5min basic version - with wastewater, command areas and sectorSourceAbstractionFractions
+<span class="linenos"> 704</span>        set_save:    settings_Ebro_5min_01.ini
+<span class="linenos"> 705</span>        changes:     
+<span class="linenos"> 706</span>        adds:        
+<span class="linenos"> 707</span>        last_value:  75.92
+<span class="linenos"> 708</span>       # 2st Ebro 5min
+<span class="linenos"> 709</span>        header:      Ebro_5min_2
+<span class="linenos"> 710</span>        description: 2st Ebro 5min basic version - without sectorSourceAbstractionFractions
+<span class="linenos"> 711</span>        set_save:    settings_Ebro_5min_02.ini
+<span class="linenos"> 712</span>        changes:     sectorSourceAbstractionFractions = False
+<span class="linenos"> 713</span>        adds:        
+<span class="linenos"> 714</span>        last_value:  71.68
+<span class="linenos"> 715</span>       # 3st Ebro 5min
+<span class="linenos"> 716</span>        header:      Ebro_5min_3
+<span class="linenos"> 717</span>        description: 3st Ebro 5min basic version - without commandAreas
+<span class="linenos"> 718</span>        set_save:    settings_Ebro_5min_03.ini
+<span class="linenos"> 719</span>        changes:     using_reservoir_command_areas = False
+<span class="linenos"> 720</span>        adds:        buffer_waterbodies = 1
+<span class="linenos"> 721</span>        last_value:  63.49
+<span class="linenos"> 722</span>
+<span class="linenos"> 723</span>
+<span class="linenos"> 724</span>[1km - Otta]
+<span class="linenos"> 725</span># -----------------------------
+<span class="linenos"> 726</span># 1 km version - Glacier + Reservoir
+<span class="linenos"> 727</span>    # Norway Otta
+<span class="linenos"> 728</span>	base_setting: ./settings/1km/Otta/settings_otta_1km.ini
+<span class="linenos"> 729</span>	name: Otta_1km
+<span class="linenos"> 730</span>	path_system: P:/watmodel/CWATM/Regions/CWatM-Otta2
+<span class="linenos"> 731</span>	path_root: P:/watmodel/CWATM/Regions/CWatM-Otta2
+<span class="linenos"> 732</span>	path_init: P:/watmodel/CWATM/Regions/CWatM-Otta2/init
+<span class="linenos"> 733</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output
+<span class="linenos"> 734</span>	path_maps: P:/watmodel/CWATM/Regions/CWatM-Otta2
+<span class="linenos"> 735</span>	path_meteo: P:/watmodel/CWATM/cwatm_input_1km_Norway/meteo_senorge
+<span class="linenos"> 736</span>
+<span class="linenos"> 737</span>       # 1st Norway Otta 1km
+<span class="linenos"> 738</span>        header:      Norway_Otta_1km_1
+<span class="linenos"> 739</span>        description: 1st Norway Otta - without release
+<span class="linenos"> 740</span>        set_save:    settings_otta_1km_01.ini
+<span class="linenos"> 741</span>        changes:     
+<span class="linenos"> 742</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 743</span>        last_value:  0.0  
+<span class="linenos"> 744</span>       # 2st Norway Otta 1km
+<span class="linenos"> 745</span>        header:      Norway_Otta_1km_1
+<span class="linenos"> 746</span>        description: 2st Norway Otta - with release, with transfer
+<span class="linenos"> 747</span>        set_save:    settings_otta_1km_02.ini
+<span class="linenos"> 748</span>        changes:     reservoir_add_info_in_Excel = True; reservoir_transfers = True; reservoir_releases_in_Excel_settings = True    
+<span class="linenos"> 749</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 750</span>        last_value:  0.0  
+<span class="linenos"> 751</span>       # 3st Norway Otta 1km
+<span class="linenos"> 752</span>        header:      Norway_Otta_1km_1
+<span class="linenos"> 753</span>        description: 3st Norway Otta - with release, with transfer, additional output
+<span class="linenos"> 754</span>        set_save:    settings_otta_1km_02.ini
+<span class="linenos"> 755</span>        changes:     reservoir_add_info_in_Excel = True; reservoir_transfers = True; reservoir_releases_in_Excel_settings = True    
+<span class="linenos"> 756</span>        adds:        OUT_TSS_Daily = discharge, reservoir_transfers_out_M3; OUT_MAP_Daily = Rain, Snow, IceMelt, SnowMelt, snowEvap, iceEvap, act_nonpaddyConsumption, act_paddyConsumption, act_livConsumption, returnflowIrr, returnflowNonIrr, GW_Irrigation, Res_Irrigation, Lake_Irrigation, Channel_Irrigation, GW_Industry, GW_Livestock, GW_Domestic, Res_Industry, Res_Livestock, Res_Domestic, Lake_Industry, Lake_Livestock, Lake_Domestic, Channel_Domestic, Channel_Livestock, Channel_Industry, prefFlow_GW, perc3toGW_GW, lakeResInflowM, lakeResOutflowM, act_indConsumption, act_domConsumption, act_livConsumption, act_irrWithdrawal, act_nonIrrWithdrawal, act_domWithdrawal, act_indWithdrawal, act_livWithdrawal, snowEvap, capillar, baseflow, actTransTotal_forest, actTransTotal_grasslands, actTransTotal_paddy, actTransTotal_nonpaddy, unmet_lost, unmetDemand, pot_GroundwaterAbstract, storGroundwater, discharge, nonFossilGroundwaterAbs, Precipitation, totalET, EvapoChannel, EvapWaterBodyM, act_nonIrrConsumption, channelStorage, lakeResStorage, totalSto, sum_actTransTotal, sum_actBareSoilEvap, sum_interceptEvap, sum_openWaterEvap, addtoevapotrans, lakeResInflowM, act_bigLakeResAbst, sum_gwRecharge, sum_capRiseFromGW, act_totalIrrConsumption, sum_runoff, returnFlow, act_SurfaceWaterAbstract, dis_outlet, act_irrNonpaddyWithdrawal, GlacierMelt, GlacierRain
+<span class="linenos"> 757</span>        last_value:  0.0 
+<span class="linenos"> 758</span>
+<span class="linenos"> 759</span>
+<span class="linenos"> 760</span>
+<span class="linenos"> 761</span>[30sec - Bhima]
+<span class="linenos"> 762</span># -----------------------------
+<span class="linenos"> 763</span># 30 arcsecond version - Groundwater modelflow
+<span class="linenos"> 764</span>    # Bhima
+<span class="linenos"> 765</span>	base_setting: ./settings/1km/Bhima/settings_bhima.ini
+<span class="linenos"> 766</span>	name: Bhima_30sec
+<span class="linenos"> 767</span>	path_system: P:/watmodel/CWATM/upper_bhima/FUSE
+<span class="linenos"> 768</span>	path_root: P:/watmodel/CWATM/upper_bhima/FUSE
+<span class="linenos"> 769</span>	path_init: P:/watmodel/CWATM/upper_bhima/FUSE/Input/init
+<span class="linenos"> 770</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output/bhima
+<span class="linenos"> 771</span>	path_maps: P:/watmodel/CWATM/upper_bhima/FUSE/Input
+<span class="linenos"> 772</span>	path_meteo: P:/watmodel/CWATM/upper_bhima/FUSE/Input/meteo/010deg
+<span class="linenos"> 773</span>       # 1st Bhima 30 arcseconds
+<span class="linenos"> 774</span>        header:      Bhima_30sec_1
+<span class="linenos"> 775</span>        description: 1st Bhima - without groundwater and crop
+<span class="linenos"> 776</span>        set_save:    settings_Bhima_01.ini
+<span class="linenos"> 777</span>        changes:     modflow_coupling = False; includeCrops = False
+<span class="linenos"> 778</span>        adds:       
+<span class="linenos"> 779</span>        last_value:  0.0  
+<span class="linenos"> 780</span>       # 3th Bhima 30 arcseconds
+<span class="linenos"> 781</span>        header:      Bhima_30sec_3
+<span class="linenos"> 782</span>        description: 3rd Bhima - with Groundwater and with crop specific data
+<span class="linenos"> 783</span>        set_save:    settings_Bhima_03.ini
+<span class="linenos"> 784</span>        changes:     StepEnd =  10/07/2013
+<span class="linenos"> 785</span>        adds:        OUT_MAP_TotalEnd = frac_totalnonIrr_max, canals, irrWithdrawalSW_max, irrWithdrawalGW_max, resVolume, gwdepth_adjuster, reservoir_command_areas, gwdepth_adjuster, domestic_agent_SW_request_month_m3, domestic_agent_GW_request_month_m3, irrigatedArea_original, reservoir_command_areas, resYear, gwdepth_difference_sim_obs, permeability, relaxGWagent, waterBodyTyp, adminSegments, waterBodyID, cellArea, modflowtotalSoilThickness, GeneralCrop_Irr, GeneralCrop_nonIrr, modflow_watertable, SugarAdsali_Irr; OUT_Map_MonthTot = PumpingM3_daily, abstractedLakeReservoirM3, ETRefAverage_segments, precipEffectiveAverage_segments, lakeResInflowM, act_bigLakeResAbst, lakeResOutflowM, EvapWaterBodyM, leakage
+<span class="linenos"> 786</span>        last_value:  0.0  
+<span class="linenos"> 787</span>	   # 4th Bhima 30 arcseconds
+<span class="linenos"> 788</span>        header:      Bhima_30sec_4
+<span class="linenos"> 789</span>        description: 4th Bhima - with complex Groundwater and with crop specific data
+<span class="linenos"> 790</span>        set_save:    settings_Bhima_04.ini
+<span class="linenos"> 791</span>        changes:     activate_irrigation_agents = True; relax_irrigation_agents = True; use_complex_solver_for_modflow = True; 
+<span class="linenos"> 792</span>        adds:      
+<span class="linenos"> 793</span>        last_value:  0.0  
+<span class="linenos"> 794</span>       # 2nd Bhima 30 arcseconds
+<span class="linenos"> 795</span>        header:      Bhima_30sec_2
+<span class="linenos"> 796</span>        description: 2nd Bhima - meteo interpolation methos is Kron instead spline
+<span class="linenos"> 797</span>        set_save:    settings_Bhima_02.ini
+<span class="linenos"> 798</span>        changes:     modflow_coupling = False; includeCrops = False; InterpolationMethod = kron
+<span class="linenos"> 799</span>        adds:       
+<span class="linenos"> 800</span>        last_value:  0.0  
+<span class="linenos"> 801</span>[1km -Burgenland]
+<span class="linenos"> 802</span># -----------------------------
+<span class="linenos"> 803</span># 1km min version - Groundwater modelflow
+<span class="linenos"> 804</span>    # Burgenland
+<span class="linenos"> 805</span>	base_setting: ./settings/1km/Burgenland/settings_burgenland.ini
+<span class="linenos"> 806</span>	name: Burgenland_1km_modflow
+<span class="linenos"> 807</span>	path_root: P:/watmodel/CWATM/cwatm_input_1km_burgenland
+<span class="linenos"> 808</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output/burgen
+<span class="linenos"> 809</span>	path_init:  P:/watmodel/cwatmpublic/develop/pytest/init
+<span class="linenos"> 810</span>	path_maps: P:/watmodel/CWATM/cwatm_input_1km_burgenland
+<span class="linenos"> 811</span>	path_meteo: $(PathMaps)/meteo3
+<span class="linenos"> 812</span>
+<span class="linenos"> 813</span>       # 1st Burgenland 1km
+<span class="linenos"> 814</span>        header:      Burgenland_1km_1
+<span class="linenos"> 815</span>        description: 1st Burgenland - without Groundwater and without crop specific data
+<span class="linenos"> 816</span>        set_save:    settings_burgenland_01.ini
+<span class="linenos"> 817</span>        changes:     modflow_coupling = False; includeCrops = False
+<span class="linenos"> 818</span>        adds:        
+<span class="linenos"> 819</span>        last_value:  0.0
+<span class="linenos"> 820</span>       # 2nd setup Burgenland 1km crop
+<span class="linenos"> 821</span>        header:      Burgenland_1km_2_crop
+<span class="linenos"> 822</span>        description: 2nd Burgenland with crop specifi
+<span class="linenos"> 823</span>        set_save:    settings_burgenland_02.ini
+<span class="linenos"> 824</span>        changes:     modflow_coupling = False; save_initial = True; StepInit = 10/01/1990
+<span class="linenos"> 825</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 826</span>        last_value:  0.0
+<span class="linenos"> 827</span>        # 3rd setup setup Burgenland 1km crop gw
+<span class="linenos"> 828</span>        header:     Burgenland_1km_3_gw_crop
+<span class="linenos"> 829</span>        description: 3rd Burgenland 1km with crop and groundwater
+<span class="linenos"> 830</span>        set_save:    settings_burgenland_03.ini
+<span class="linenos"> 831</span>        changes:     StepEnd = 5; verbose_GW = True; writeModflowError = True
+<span class="linenos"> 832</span>        adds:        OUT_Map_TotalEnd = modflow_watertable 
+<span class="linenos"> 833</span>        last_value:  0.0
+<span class="linenos"> 834</span>
+<span class="linenos"> 835</span>[1arcmin - Danube, Upper, Morava, Tisa]
+<span class="linenos"> 836</span># -----------------------------
+<span class="linenos"> 837</span># 1 arcmin version - Glacier
+<span class="linenos"> 838</span>    # Upper Danube
+<span class="linenos"> 839</span>	base_setting: ./settings/1min/UpperDanube/settings_upper_1min.ini
+<span class="linenos"> 840</span>	name: UpperDanube_1min
+<span class="linenos"> 841</span>	path_system: P:/watmodel/CWATM/Regions/Danube_1min/Upper
+<span class="linenos"> 842</span>	path_root: P:/watmodel/CWATM/Regions/Danube_1min/Upper
+<span class="linenos"> 843</span>	path_init: P:/watmodel/CWATM/Regions/Danube_1min/Upper/init
+<span class="linenos"> 844</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output
+<span class="linenos"> 845</span>	path_maps: P:/watmodel/CWATM/Regions/Danube_1min/Upper/input
+<span class="linenos"> 846</span>	path_meteo: P:/watmodel/CWATM/Regions/Danube_1min/Upper/meteo/emo-1
+<span class="linenos"> 847</span>
+<span class="linenos"> 848</span>       # 1st Upper Danube 1 arcmin
+<span class="linenos"> 849</span>        header:      Upper_Danube_1min_1
+<span class="linenos"> 850</span>        description: 1st Upper Danube - with glacier
+<span class="linenos"> 851</span>        set_save:    settings_upper_1min_01.ini
+<span class="linenos"> 852</span>        changes:     
+<span class="linenos"> 853</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 854</span>        last_value:  0.0  
+<span class="linenos"> 855</span>       # 2st Upper Danube 1 arcmin 
+<span class="linenos"> 856</span>        header:      Upper_Danube_1min_2
+<span class="linenos"> 857</span>        description: 2nd Upper Danube - with snow radiation and laspse rate map
+<span class="linenos"> 858</span>        set_save:    settings_upper_1min_02.ini
+<span class="linenos"> 859</span>        changes:     snowmelt_radiation = True; LapseRateVariable = True
+<span class="linenos"> 860</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 861</span>        last_value:  0.0  
+<span class="linenos"> 862</span>       # 3st Upper Danube 1 arcmin 
+<span class="linenos"> 863</span>        header:      Upper_Danube_1min_3
+<span class="linenos"> 864</span>        description: 3rd Upper Danube - - with reservoir transfer
+<span class="linenos"> 865</span>        set_save:    settings_upper_1min_03.ini
+<span class="linenos"> 866</span>        changes:     reservoir_add_info_in_Excel = True; reservoir_transfers = True
+<span class="linenos"> 867</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 868</span>        last_value:  0.0  
+<span class="linenos"> 869</span>       # 4st Upper Danube 1 arcmin 
+<span class="linenos"> 870</span>        header:      Upper_Danube_1min_4
+<span class="linenos"> 871</span>        description: 4th Upper Danube - - with smaller mask and missing reservoir transfer
+<span class="linenos"> 872</span>        set_save:    settings_upper_1min_04.ini
+<span class="linenos"> 873</span>        changes:     MaskMap = 10.0952 47.9596; Gauges = 10.0952 47.9596; reservoir_add_info_in_Excel = True; reservoir_transfers = True
+<span class="linenos"> 874</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 875</span>        last_value:  0.0  
+<span class="linenos"> 876</span>
+<span class="linenos"> 877</span>
+<span class="linenos"> 878</span># -----------------------------
+<span class="linenos"> 879</span># 1 arcmin version - Reservoirs
+<span class="linenos"> 880</span>    # Danube Morava
+<span class="linenos"> 881</span>	base_setting: ./settings/1min/Morava/settings_morava_1min.ini
+<span class="linenos"> 882</span>	name: Morava_1min
+<span class="linenos"> 883</span>	path_system: P:/watmodel/CWATM/Regions/Danube_1min/Morava
+<span class="linenos"> 884</span>	path_root: P:/watmodel/CWATM/Regions/Danube_1min/Morava
+<span class="linenos"> 885</span>	path_init: P:/watmodel/CWATM/Regions/Danube_1min/Morava/init
+<span class="linenos"> 886</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output
+<span class="linenos"> 887</span>	path_maps: P:/watmodel/CWATM/Regions/Danube_1min/Morava/input
+<span class="linenos"> 888</span>	path_meteo: P:/watmodel/CWATM/Regions/Danube_1min/Morava/meteo/emo-1
+<span class="linenos"> 889</span>
+<span class="linenos"> 890</span>       # 1st Danube Morava 1 arcmin
+<span class="linenos"> 891</span>        header:      Danube_Morava_1min_1
+<span class="linenos"> 892</span>        description: 1st Danube Morava - without additional reservoirs
+<span class="linenos"> 893</span>        set_save:    settings_morava_1min_01.ini
+<span class="linenos"> 894</span>        changes:     
+<span class="linenos"> 895</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 896</span>        last_value:  0.0  
+<span class="linenos"> 897</span>       # 2st Danube Morava 1 arcmin
+<span class="linenos"> 898</span>        header:      Danube_Morava_1min_2
+<span class="linenos"> 899</span>        description: 2nd Danube Morava - with additional reservoirs
+<span class="linenos"> 900</span>        set_save:    settings_morava_1min_02.ini
+<span class="linenos"> 901</span>        changes:     reservoir_add_info_in_Excel = True; reservoir_releases_in_Excel_settings = True
+<span class="linenos"> 902</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 903</span>        last_value:  0.0  
+<span class="linenos"> 904</span>       # 3st Danube Morava 1 arcmin
+<span class="linenos"> 905</span>        header:      Danube_Morava_1min_3
+<span class="linenos"> 906</span>        description: 3rd Danube Morava - with ET method 1
+<span class="linenos"> 907</span>        set_save:    settings_morava_1min_03.ini
+<span class="linenos"> 908</span>        changes:     PET_modus = 1; includeRouting = False; StepEnd = 10; calc_evaporation = True
+<span class="linenos"> 909</span>        adds:        OUT_MAP_Daily = ETRef, EWRef
+<span class="linenos"> 910</span>        last_value:  0.0  
+<span class="linenos"> 911</span>       # 4th Danube Morava 1 arcmin
+<span class="linenos"> 912</span>        header:      Danube_Morava_1min_4
+<span class="linenos"> 913</span>        description: 4th Danube Morava - with ET method 2
+<span class="linenos"> 914</span>        set_save:    settings_morava_1min_04.ini
+<span class="linenos"> 915</span>        changes:     PET_modus = 2; includeRouting = False; StepEnd = 10; calc_evaporation = True
+<span class="linenos"> 916</span>        adds:        OUT_MAP_Daily = ETRef, EWRef
+<span class="linenos"> 917</span>        last_value:  0.0  
+<span class="linenos"> 918</span>       # 5th Danube Morava 1 arcmin
+<span class="linenos"> 919</span>        header:      Danube_Morava_1min_5
+<span class="linenos"> 920</span>        description: 5th Danube Morava - with ET method 3
+<span class="linenos"> 921</span>        set_save:    settings_morava_1min_05.ini
+<span class="linenos"> 922</span>        changes:     PET_modus = 3; includeRouting = False; StepEnd = 10; calc_evaporation = True
+<span class="linenos"> 923</span>        adds:        OUT_MAP_Daily = ETRef, EWRef
+<span class="linenos"> 924</span>        last_value:  0.0
+<span class="linenos"> 925</span>       # 6th Danube Morava 1 arcmin
+<span class="linenos"> 926</span>        header:      Danube_Morava_1min_6
+<span class="linenos"> 927</span>        description: 6th Danube Morava - with ET method 4
+<span class="linenos"> 928</span>        set_save:    settings_morava_1min_06.ini
+<span class="linenos"> 929</span>        changes:     PET_modus = 4; includeRouting = False; StepEnd = 10; calc_evaporation = True
+<span class="linenos"> 930</span>        adds:        OUT_MAP_Daily = ETRef, EWRef
+<span class="linenos"> 931</span>        last_value:  0.0  
+<span class="linenos"> 932</span>       # 7th Danube Morava 1 arcmin
+<span class="linenos"> 933</span>        header:      Danube_Morava_1min_7
+<span class="linenos"> 934</span>        description: 7th Danube Morava - with ET method 5
+<span class="linenos"> 935</span>        set_save:    settings_morava_1min_07.ini
+<span class="linenos"> 936</span>        changes:     PET_modus = 5; includeRouting = False; StepEnd = 10; calc_evaporation = True
+<span class="linenos"> 937</span>        adds:        OUT_MAP_Daily = ETRef, EWRef
+<span class="linenos"> 938</span>        last_value:  0.0  
+<span class="linenos"> 939</span># -----------------------------
+<span class="linenos"> 940</span># 1 arcmin version - Water transfer
+<span class="linenos"> 941</span>    # Danube Tisa
+<span class="linenos"> 942</span>	base_setting: ./settings/1min/Tisa/settings_tisa_1min.ini
+<span class="linenos"> 943</span>	name: Tisa_1min
+<span class="linenos"> 944</span>	path_system: P:/watmodel/CWATM/Regions/Danube_1min/Tisa
+<span class="linenos"> 945</span>	path_root: P:/watmodel/CWATM/Regions/Danube_1min/Tisa
+<span class="linenos"> 946</span>	path_init: P:/watmodel/CWATM/Regions/Danube_1min/Tisa/init
+<span class="linenos"> 947</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output
+<span class="linenos"> 948</span>	path_maps: P:/watmodel/CWATM/Regions/Danube_1min/Tisa/input
+<span class="linenos"> 949</span>	path_meteo: P:/watmodel/CWATM/Regions/Danube_1min/Tisa/meteo/emo-1
+<span class="linenos"> 950</span>
+<span class="linenos"> 951</span>       # 1st Danube Tisa 1 arcmin
+<span class="linenos"> 952</span>        header:      Danube_Tisa_1min_1
+<span class="linenos"> 953</span>        description: 1st Danube Tisa - without additional reservoirs
+<span class="linenos"> 954</span>        set_save:    settings_tisa_1min_01.ini
+<span class="linenos"> 955</span>        changes:     
+<span class="linenos"> 956</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 957</span>        last_value:  0.0  
+<span class="linenos"> 958</span>       # 2st Danube Morava 1 arcmin
+<span class="linenos"> 959</span>        header:      Danube_Tisa_1min_2
+<span class="linenos"> 960</span>        description: 2st Danube Tisa - with additional reservoirs and water transfer
+<span class="linenos"> 961</span>        set_save:    settings_tisa_1min_02.ini
+<span class="linenos"> 962</span>        changes:     reservoir_add_info_in_Excel = True; reservoir_transfers = True
+<span class="linenos"> 963</span>        adds:        OUT_Map_Daily = discharge
+<span class="linenos"> 964</span>        last_value:  0.0  
+<span class="linenos"> 965</span>
+<span class="linenos"> 966</span>[Calibration]
+<span class="linenos"> 967</span># -----------------------------
+<span class="linenos"> 968</span># 1 arcmin version - Reservoirs
+<span class="linenos"> 969</span>    # Danube Morava
+<span class="linenos"> 970</span>	base_setting: ./settings/1min/Morava/settings_calibration_1min.ini
+<span class="linenos"> 971</span>	name: Morava_1min
+<span class="linenos"> 972</span>	path_system: P:/watmodel/CWATM/Regions/Danube_1min/Morava
+<span class="linenos"> 973</span>	path_root: P:/watmodel/CWATM/Regions/Danube_1min/Morava
+<span class="linenos"> 974</span>	path_init: P:/watmodel/CWATM/Regions/Danube_1min/Morava/init
+<span class="linenos"> 975</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output
+<span class="linenos"> 976</span>	path_maps: P:/watmodel/CWATM/Regions/Danube_1min/Morava/input
+<span class="linenos"> 977</span>	path_meteo: P:/watmodel/CWATM/Regions/Danube_1min/Morava/meteo/emo-1
+<span class="linenos"> 978</span>
+<span class="linenos"> 979</span>       # 1st Calibration Morava 1 arcmin
+<span class="linenos"> 980</span>        header:      Calibration_Morava_1min_1
+<span class="linenos"> 981</span>        description: 1st Calibration Test Morava
+<span class="linenos"> 982</span>        set_save:    settings_calibration_1min_01.ini
+<span class="linenos"> 983</span>        changes:     
+<span class="linenos"> 984</span>        adds:        OUT_TSS_Daily = discharge
+<span class="linenos"> 985</span>        last_value:  0.0  
+<span class="linenos"> 986</span>
+<span class="linenos"> 987</span>
+<span class="linenos"> 988</span>[Checkmap]		
+<span class="linenos"> 989</span># ------- CHECK ----------------------
+<span class="linenos"> 990</span>    # Check testing
+<span class="linenos"> 991</span>	base_setting: ./settings/30min/rhine_30min/settings_rhine_30min.ini
+<span class="linenos"> 992</span>	name: Check_30min
+<span class="linenos"> 993</span>	path_system: P:
+<span class="linenos"> 994</span>	path_root: ./
+<span class="linenos"> 995</span>	path_init: P:/watmodel/cwatmpublic/develop/init
+<span class="linenos"> 996</span>	path_out:  P:/watmodel/cwatmpublic/develop/pytest/output
+<span class="linenos"> 997</span>	path_maps: P:/watmodel/CWATM/cwatm_input_isimip3
+<span class="linenos"> 998</span>	path_meteo: P:/watxene/ISIMIP/ISIMIP3a/InputData/climate/obsclim_updated/GSWP3-W5E5	
+<span class="linenos"> 999</span>	
+<span class="linenos">1000</span>       # 1st Check 
+<span class="linenos">1001</span>        header:      Check_30min_1
+<span class="linenos">1002</span>        description: Check data 30min basic version 
+<span class="linenos">1003</span>        set_save:    settings_checkmap_30min_01.ini
+<span class="linenos">1004</span>        changes:     
+<span class="linenos">1005</span>        adds:       
+<span class="linenos">1006</span>        last_value:  4.22
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="zambezi.html" class="btn btn-neutral float-right" title="10. Example Zambezi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="management_modules.html" class="btn btn-neutral float-left" title="management_modules package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>3. The Community Water Model &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Using CWatM" href="4_UsingCwatM.html" />
+    <link rel="prev" title="2. NEWS" href="2_news.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>3. The Community Water Model</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#model-philosophy">Model Philosophy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#open-source-open-data-open-community">Open source/ open data/ open community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions-follow-form">Functions follow form</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fair-software">FAIR software</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#findable-f">Findable (F)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accesable-a">Accesable (A)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interoperable-i">Interoperable (I)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reusable-r">Reusable (R)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#and-reproducable">And  Reproducable</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#model-design-and-processes">Model design and processes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design">Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#processes">Processes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculation-of-potential-evaporation">Calculation of potential Evaporation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculation-of-rain-snow-snowmelt">Calculation of rain, snow, snowmelt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#land-cover">Land cover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#water-demand">Water demand</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vegetation">Vegetation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#soil">Soil</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#groundwater">Groundwater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lakes-reservoirs">Lakes &amp; Reservoirs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#routing">Routing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#features-of-the-model">Features of the Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#community-model">Community Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#water-model">Water Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><strong>3. The Community Water Model</strong></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/3_modeldesign.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="the-community-water-model">
+<h1><a class="toc-backref" href="#id1"><strong>3. The Community Water Model</strong></a><a class="headerlink" href="#the-community-water-model" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#the-community-water-model" id="id1"><strong>3. The Community Water Model</strong></a></p>
+<ul>
+<li><p><a class="reference internal" href="#model-philosophy" id="id2">Model Philosophy</a></p></li>
+<li><p><a class="reference internal" href="#fair-software" id="id3">FAIR software</a></p></li>
+<li><p><a class="reference internal" href="#model-design-and-processes" id="id4">Model design and processes</a></p></li>
+<li><p><a class="reference internal" href="#features-of-the-model" id="id5">Features of the Model</a></p></li>
+<li><p><a class="reference internal" href="#performance" id="id6">Performance</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="model-philosophy">
+<span id="rst-philosophy"></span><h2><a class="toc-backref" href="#id2">Model Philosophy</a><a class="headerlink" href="#model-philosophy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="open-source-open-data-open-community">
+<h3>Open source/ open data/ open community<a class="headerlink" href="#open-source-open-data-open-community" title="Permalink to this headline">¶</a></h3>
+<p>blablabla</p>
+</div>
+<div class="section" id="functions-follow-form">
+<h3>Functions follow form<a class="headerlink" href="#functions-follow-form" title="Permalink to this headline">¶</a></h3>
+<p>Inverse Bauhaus statment:</p>
+<p>blablabla the form is given by:
+- non hydrological parts e.g. (data managment, management of date/time, output functions)
+- hydrological functions
+- hydrological processes (e.g. snow, soil, routing)
+- hydrological subprocesses or alternative ways to calculate this.</p>
+<p>Hydrological processes are split up in:
+- initialization phase
+- dynamic phase, where the model runs through the time period</p>
+<p>CWatM functions follow this form.</p>
+</div>
+</div>
+<div class="section" id="fair-software">
+<h2><a class="toc-backref" href="#id3">FAIR software</a><a class="headerlink" href="#fair-software" title="Permalink to this headline">¶</a></h2>
+<p>FAIR software refers to research software that adheres to the Findable, Accessible, Interoperable, and Reusable principles, adapted from data management to make software easier for humans and machines to discover, use, and share.</p>
+<div class="section" id="findable-f">
+<h3>Findable (F)<a class="headerlink" href="#findable-f" title="Permalink to this headline">¶</a></h3>
+<p>Software is assigned a globally unique and persistent identifier, like a DOI.
+<a class="reference external" href="https://doi.org/10.5281/zenodo.10044318">https://doi.org/10.5281/zenodo.10044318</a></p>
+<p>It is described using rich metadata, which are also FAIR and searchable.
+<a class="reference external" href="https://iiasa.ac.at/models-tools-data/cwatm">https://iiasa.ac.at/models-tools-data/cwatm</a>
+<a class="reference external" href="https://cwatm.iiasa.ac.at/">https://cwatm.iiasa.ac.at/</a></p>
+<p>Different versions of the software have distinct identifiers. YES</p>
+<p>Software is registered in a repository or registry to improve its visibility.
+<a class="reference external" href="https://github.com/iiasa/CWatM">https://github.com/iiasa/CWatM</a>
+<a class="reference external" href="https://doi.org/10.5281/zenodo.10044318">https://doi.org/10.5281/zenodo.10044318</a></p>
+</div>
+<div class="section" id="accesable-a">
+<h3>Accesable (A)<a class="headerlink" href="#accesable-a" title="Permalink to this headline">¶</a></h3>
+<p>blablabla</p>
+</div>
+<div class="section" id="interoperable-i">
+<h3>Interoperable (I)<a class="headerlink" href="#interoperable-i" title="Permalink to this headline">¶</a></h3>
+<p>blablabla</p>
+</div>
+<div class="section" id="reusable-r">
+<h3>Reusable (R)<a class="headerlink" href="#reusable-r" title="Permalink to this headline">¶</a></h3>
+<p>Software is described with a plurality of relevant attributes.
+It has a clear and accessible license, which is vital for reuse
+Detailed provenance information is included to show its origin and history.
+The software meets community standards to ensure it can be understood, modified, or built upon</p>
+</div>
+<div class="section" id="and-reproducable">
+<h3>And  Reproducable<a class="headerlink" href="#and-reproducable" title="Permalink to this headline">¶</a></h3>
+<p>Model results can be reproduced, given the same inputdata, same model version and some environment setting.
+This is not state in FAIR principles, but during the years it occured sveral times that we need additional effort to find out which
+model version and dataset where used to produce the results.</p>
+<p>This happens, especially if we dig out a region which we modelled some year ago.</p>
+<p>blablabla</p>
+</div>
+</div>
+<div class="section" id="model-design-and-processes">
+<h2><a class="toc-backref" href="#id4">Model design and processes</a><a class="headerlink" href="#model-design-and-processes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="design">
+<h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3>
+<p>The Community Water Model (CWatM) will be designed for the purpose to assess water availability, water demand and environmental needs. It includes an accounting of how future water demands will evolve in response to socioeconomic change and how water availability will change in response to climate.</p>
+<a class="reference internal image-reference" href="_images/Hydrological-model2.jpg"><img alt="_images/Hydrological-model2.jpg" src="_images/Hydrological-model2.jpg" style="width: 800px;" /></a>
+<p>Figure 3: CWatM - Water related processes included in the model design</p>
+</div>
+<div class="section" id="processes">
+<h3>Processes<a class="headerlink" href="#processes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="calculation-of-potential-evaporation">
+<h4>Calculation of potential Evaporation<a class="headerlink" href="#calculation-of-potential-evaporation" title="Permalink to this headline">¶</a></h4>
+<p>Using Penman-Montheith equations based on FAO 56</p>
+</div>
+<div class="section" id="calculation-of-rain-snow-snowmelt">
+<h4>Calculation of rain, snow, snowmelt<a class="headerlink" href="#calculation-of-rain-snow-snowmelt" title="Permalink to this headline">¶</a></h4>
+<p>Using day-degree approach with up to 10 vertical layers
+Including snow- and glacier melt.</p>
+</div>
+<div class="section" id="land-cover">
+<h4>Land cover<a class="headerlink" href="#land-cover" title="Permalink to this headline">¶</a></h4>
+<p>using fraction of 6 different land cover types</p>
+<ul class="simple">
+<li><p>Forest</p></li>
+<li><p>Grassland</p></li>
+<li><p>Irrigated land</p></li>
+<li><p>Paddy irrigated land</p></li>
+<li><p>Sealed areas (urban)</p></li>
+<li><p>Water</p></li>
+</ul>
+</div>
+<div class="section" id="water-demand">
+<h4>Water demand<a class="headerlink" href="#water-demand" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>including water demand from industry and domestic land use via precalculated monhly spatial maps</p></li>
+<li><p>including agricultural water use from calculation of plant water demand and livestock water demand</p></li>
+<li><p>Return flows ((water withdrawn but not consumed and returned to the water circle)</p></li>
+</ul>
+</div>
+<div class="section" id="vegetation">
+<h4>Vegetation<a class="headerlink" href="#vegetation" title="Permalink to this headline">¶</a></h4>
+<p>Vegetation taken into account for calculating</p>
+<ul class="simple">
+<li><p>Albedo</p></li>
+<li><p>Transpiration (including rooting depth, crop  phenology, and potential evapotranspiration)</p></li>
+<li><p>Interception</p></li>
+</ul>
+</div>
+<div class="section" id="soil">
+<h4>Soil<a class="headerlink" href="#soil" title="Permalink to this headline">¶</a></h4>
+<p>Three soil layers for each land cover type including processes:</p>
+<ul class="simple">
+<li><p>Frost interupting soil processes</p></li>
+<li><p>Infiltration</p></li>
+<li><p>Preferential flow</p></li>
+<li><p>Capillary rise</p></li>
+<li><p>Surface runoff</p></li>
+<li><p>Interflow</p></li>
+<li><p>Percolation into groundwater</p></li>
+</ul>
+</div>
+<div class="section" id="groundwater">
+<h4>Groundwater<a class="headerlink" href="#groundwater" title="Permalink to this headline">¶</a></h4>
+<p>Groundwater storage is simulated as linear groundwater reservoir</p>
+</div>
+<div class="section" id="lakes-reservoirs">
+<h4>Lakes &amp; Reservoirs<a class="headerlink" href="#lakes-reservoirs" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Lakes are simulated with weir function from Poleni for rectangular weir.</p></li>
+<li><p>Reservoirs are simulated  as outflow function between three storage limits (conservative, normal,flood) and three outflow functions (minimum, normal, non-damaging)</p></li>
+</ul>
+</div>
+<div class="section" id="routing">
+<h4>Routing<a class="headerlink" href="#routing" title="Permalink to this headline">¶</a></h4>
+<p>Routing is calculated using the kinematic wave approach</p>
+</div>
+</div>
+</div>
+<div class="section" id="features-of-the-model">
+<h2><a class="toc-backref" href="#id5">Features of the Model</a><a class="headerlink" href="#features-of-the-model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="community-model">
+<h3>Community Model<a class="headerlink" href="#community-model" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Programming Language</p></td>
+<td><p>Python 3.x with some C++ for computational demanding processes e.g. river routing</p></td>
+</tr>
+<tr class="row-odd"><td><p>Community driven</p></td>
+<td><p>Open-source but lead by IIASA <a class="reference external" href="https://github.com/iiasa/CWatM">GitHub repository</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Well documented</p></td>
+<td><p>Documentation, automatic source code documentation <a class="reference external" href="https://cwatm.github.io">GitHub Docu</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Easy handling</p></td>
+<td><p>Use of a setting file with all necessary information for the user  <a class="reference internal" href="52_settingsfile.html#rst-setting"><span class="std std-ref">Complete settings file</span></a> and  <a class="reference internal" href="53_output.html#rst-metadata"><span class="std std-ref">Output meta information</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Multi-platform</p></td>
+<td><p>Python 3.x on Windows, Mac, Linux, Unix - to be used on different platforms (PC, clusters, super-computers)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Modular</p></td>
+<td><p>Processes in subprograms, easy to adapt to the requirements of options/ solutions <a class="reference external" href="https://github.com/CWatM/CWatM">Modular structure</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="water-model">
+<h3>Water Model<a class="headerlink" href="#water-model" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Flexible</p></td>
+<td><p>different resolution, different processes for different needs, links to other models, across sectors and across scales</p></td>
+</tr>
+<tr class="row-odd"><td><p>Adjustable</p></td>
+<td><p>to be tailored to the needs at IIASA i.e. collaboration with other programs/models, including solutions and option as part of the model</p></td>
+</tr>
+<tr class="row-even"><td><p>Multi-disciplinary</p></td>
+<td><p>including economics, environmental needs, social science perspectives</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sensitive</p></td>
+<td><p>Sensitive to option / solution</p></td>
+</tr>
+<tr class="row-even"><td><p>Fast</p></td>
+<td><p>Global to regional modeling – a mixture between conceptional and physical modeling – as complex as necessary but not more</p></td>
+</tr>
+<tr class="row-odd"><td><p>Comparable</p></td>
+<td><p>Part of the ISI-MIP community</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="performance">
+<h2><a class="toc-backref" href="#id6">Performance</a><a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h2>
+<p>Computational run time (on a linux single node - 2400 MHz with Intel Xeon CPU E5- 2699A v4):</p>
+<p>Daily timestep on 0.5 deg</p>
+<p><strong>Global:</strong> 100 years in appr. 12h = 7.2min per year</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 57%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Process</p></th>
+<th class="head"><p>sum % runtime</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Read Meteo Data</p></td>
+<td><p>6.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Et pot</p></td>
+<td><p>7.6</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Snow</p></td>
+<td><p>8.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Soil</p></td>
+<td><p>59.4</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Groundwater</p></td>
+<td><p>59.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>Runoff conc</p></td>
+<td><p>70.1</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Lakes</p></td>
+<td><p>70.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>Routing</p></td>
+<td><p>95.5</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Output</p></td>
+<td><p>100</p></td>
+</tr>
+</tbody>
+</table>
+<p>For the global setting, soil processes with 50% computing time is the most time consuming part, followed by routing with 25% and runoff concentration with 10%.
+(Reading the full global maps takes only 1/3 longer than reading a part of the global maps)</p>
+<p><strong>Rhine:</strong>  640 years in appr. 4.5h = 0.4min per year</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 57%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Process</p></th>
+<th class="head"><p>sum % runtime</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Read Meteo Data</p></td>
+<td><p>79.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Et pot</p></td>
+<td><p>80.5</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Snow</p></td>
+<td><p>80.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Soil</p></td>
+<td><p>88.8</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Groundwater</p></td>
+<td><p>88.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>Runoff conc</p></td>
+<td><p>89.6</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Lakes</p></td>
+<td><p>89.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>Routing</p></td>
+<td><p>99.6</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Output</p></td>
+<td><p>100</p></td>
+</tr>
+</tbody>
+</table>
+<p>For the Rhine basin reading input maps 79% is by far the most time consuming process, followed by routing (kinematic wave) 10% and the soil processes (8%).</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="4_UsingCwatM.html" class="btn btn-neutral float-right" title="4. Using CWatM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="2_news.html" class="btn btn-neutral float-left" title="2. NEWS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

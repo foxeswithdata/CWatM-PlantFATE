@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1. Introduction &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. NEWS" href="2_news.html" />
+    <link rel="prev" title="Community Water Model" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#community-water-model-cwatm">Community Water Model - CWatM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgement-of-funding">Acknowledgement of Funding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#developer">Developer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><strong>1. Introduction</strong></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/1_introduction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction">
+<h1><strong>1. Introduction</strong><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<video autoplay loop controls src="_static/CWatM_intro.mp4" width="700"> </video><div class="section" id="community-water-model-cwatm">
+<h2>Community Water Model - CWatM<a class="headerlink" href="#community-water-model-cwatm" title="Permalink to this headline">¶</a></h2>
+<p>With a growing population and economic development, water demands are expected to increase significantly in the future, especially in developing regions. At the same time, climate change is expected to alter spatial patterns of precipitation and temperature and will have regional to localized impacts on water availability. Thus, it is important to assess water demand, water supply and environmental needs over time to identify the populations and locations most affected by these changes linked to water scarcity, droughts and floods. The Community Water Model will be designed for this purpose in that they include an accounting of how future water demands will evolve in response to socioeconomic change and how water availability will change in response to climate.</p>
+<p>Community Water Model (CWatM) is a hydrological model simulating the water cycle daily at global and local levels, historically and into the future, maintained by IIASA BNR Water Security group. CWatM assesses water supply, demand, and environmental needs, including water management and human influence within the water cycle. CWatM includes an accounting of how future water demands will evolve in response to socioeconomic change and how water availability will change in response to climate and management.</p>
+<p>CWatM is open-source and community-driven, and its modular structure facilitates integration with other models. It is flexible enough to introduce further planned developments such as water quality and hydro-economy. CWatM will be a basis to develop next-generation global hydro-economic modelling coupled with existing IIASA models like MESSAGE and GLOBIOM.</p>
+<p>Our vision for the short to medium-term work of the group is to introduce water quality (i.e., salinization in deltas and eutrophication associated with megacities) into the community model and to consider how to include a qualitative/quantitative measure of transboundary river and groundwater governance into a scenario and modelling framework.</p>
+<a class="reference internal image-reference" href="_images/Hydrological-model2.jpg"><img alt="_images/Hydrological-model2.jpg" src="_images/Hydrological-model2.jpg" style="width: 700px;" /></a>
+<p>Figure: CWatM - Water-related processes included in the model design</p>
+</div>
+<div class="section" id="acknowledgement-of-funding">
+<h2>Acknowledgement of Funding<a class="headerlink" href="#acknowledgement-of-funding" title="Permalink to this headline">¶</a></h2>
+<p>The development of  CWatM is supported by financial support from the Austrian Research Promotion Agency (FFG) under the FUSE project funded by the Belmont Forum Urbanisation Global Initiative (SUGI)/Food–Water–Energy Nexus theme for which coordination was supported by the US National Science Foundation under grant ICER/EAR-1829999 to Stanford University (Grant Agreement: 730254), EUCP (European Climate Prediction System) project funded by the European Union under Horizon 2020 (Grant Agreement: 776613), SOS-Water (Safe Operating Space for the water resources) project funded by European Union’s Horizon EUROPE Research and Innovation Programme (Agreement N° 101059264), CO-MICC project (Project No: 863633) which is part of ERA4CS, an ERA-NET initiated by JPI Climate with co-funding by the European Union and the Austrian Federal Ministry of Science, Research and Economy (BMWFW). Interreg Danube Region: Development of a harmonized water balance modelling system for the Danube River Basin.</p>
+</div>
+<div class="section" id="developer">
+<span id="rst-developer"></span><h2>Developer<a class="headerlink" href="#developer" title="Permalink to this headline">¶</a></h2>
+<p>Research Scholars, Water Program, IIASA</p>
+<p>CWatM started in April 2016</p>
+<div class="line-block">
+<div class="line"><strong>Leading WAT Program and group:</strong></div>
+<div class="line">David Wiberg (2014-2015), Bill Cosgrove and Peter Burek (2016), Simon Langan (2016-2019), Yoshihide Wada (2019-2020), Taher Kahil (2021-)</div>
+<div class="line"><strong>Hydrology and Programming:</strong></div>
+<div class="line">Peter Burek (2016-), Yoshihide Wada(2016-), Yusuke Satoh(2016-), Peter Greve(2017-2022), Mikhail Smilovic(2018-), Luca Guillaumot(2018-), Jens de Bruijn(2019-), Sarah Hanus (2022-), Dor Fridman (2022-), Emilio Politti (2023-), Jessica Ferrel (2023-), Silvia Artuso (2023-), Carla Catania (2024-)</div>
+<div class="line"><strong>Interface to Water Quality and Hydro-economic modeling:</strong></div>
+<div class="line">Taher Kahil (2016-), Ting Tang (2018-)</div>
+<div class="line"><strong>GIS:</strong></div>
+<div class="line">Alejandra Virgen-Urcelay (2018)</div>
+<div class="line"><strong>Design of CWatM schematic view:</strong></div>
+<div class="line">Adam Islaam (2019)</div>
+<div class="line"><strong>Intro video:</strong></div>
+<div class="line">Junko Mochizuki (2019)</div>
+</div>
+<div class="line-block">
+<div class="line"><strong>Contribution from:</strong></div>
+<div class="line">Fang Zhao,  East China Normal University, China</div>
+<div class="line">Mengu Wang, Wageningen University, The Netherlands</div>
+<div class="line">Wenting Yang, Tsinghua University, China</div>
+<div class="line">Xiaogang He, national University of Singapore</div>
+<div class="line">Anjuli Figueroa, Stanford University, USA</div>
+<div class="line">Congrui Yi, Shanghai University, China</div>
+</div>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/rooftop.jpg"><img alt="_images/rooftop.jpg" src="_images/rooftop.jpg" style="width: 700px;" /></a>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="2_news.html" class="btn btn-neutral float-right" title="2. NEWS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Community Water Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

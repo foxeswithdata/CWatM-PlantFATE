@@ -1,0 +1,390 @@
+######################
+**13. CWatM Glossary**
+######################
+
+.. contents:: 
+    :depth: 3
+    :local:
+
+General Model Terms
+===================
+
+**CWatM**
+   Community Water Model - A hydrological model simulating the water cycle daily at global and local levels, historically and into the future, maintained by IIASA's Water Security research group.
+
+**IIASA**
+   International Institute for Applied Systems Analysis - The organization that developed and maintains CWatM, located in Laxenburg, Austria.
+
+**LHM**
+   Large-scale Hydrologic Model - A category of models that CWatM belongs to, used for assessing climate-driven hydrologic changes from watershed to global scales.
+
+**WHM**
+   Watershed Hydrologic Model - A model type configured with multiple subbasins for detailed watershed analysis.
+
+**Water-Energy-Food Nexus**
+   The interconnected relationship between water resources, energy production, and food systems that CWatM is designed to analyze.
+
+Hydrological Processes
+=======================
+
+**Evapotranspiration (ET)**
+   The sum of evaporation from the land surface plus transpiration from plants. CWatM can calculate this using Penman-Monteith or Hargreaves methods.
+
+**Baseflow**
+   The portion of streamflow that comes from groundwater discharge rather than direct runoff.
+
+**Capillary Rise**
+   The upward movement of water from groundwater to soil layers, occurring when groundwater level is close to the surface (0-5m depth in CWatM).
+
+**Interflow**
+   Lateral subsurface flow that occurs above the groundwater table and contributes to streamflow.
+
+**Runoff Concentration**
+   The process of collecting and routing surface runoff within a grid cell, calculated using a triangular weighting function in CWatM.
+
+**Preferential Bypass Flow**
+   Fast flow paths through soil that bypass the soil matrix, controlled by an empirical shape parameter in CWatM.
+
+**Snowmelt**
+   The process of snow turning into water, calculated using a degree-day factor approach in CWatM.
+
+**SWE (Snow Water Equivalent)**
+   The amount of water contained within the snowpack.
+
+**SWEmax**
+   Maximum Snow Water Equivalent - The peak amount of water stored as snow.
+
+Calibration Parameters
+======================
+
+**Snowmelt Coefficient**
+   Degree-day factor (m °C⁻¹d⁻¹) used to calculate snowmelt rate based on temperature.
+
+**Crop Factor (Kc)**
+   Adjustment factor for crop evapotranspiration, ranging from 0.8 to 3.0 in calibration.
+
+**Soil Depth Factor**
+   Factor for adjusting the overall soil depth of soil layers 1 and 2 (range: 0.8-1.8).
+
+**ARNO Beta**
+   Empirical shape parameter of the ARNO model for infiltration capacity (range: 0.01-1.0).
+
+**Interflow Factor**
+   Factor to adjust the amount of water that percolates from interflow to groundwater (range: 0.33-3.0).
+
+**Recession Coefficient Factor**
+   Factor to adjust the base flow recession constant (range: 0.1-10.0).
+
+**Manning's Coefficient (n)**
+   Roughness coefficient for channel flow, ranging from 0.025 (lowland rivers) to 0.075 (mountainous rivers).
+
+**Normal Storage Limit**
+   Threshold for reservoir storage levels (range: 0.15-0.85).
+
+**Lake A Factor**
+   Calibration parameter for lake area calculations (range: 0.333-3.0).
+
+**Lake Eva Factor**
+   Calibration parameter for lake evaporation (range: 0.5-3.0).
+
+Technical and Computational Terms
+==================================
+
+**NetCDF4**
+   Network Common Data Form version 4 - File format used by CWatM for reading, storage, and production of data.
+
+**CF 1.6 Convention**
+   Climate and Forecast metadata convention for NetCDF files, ensuring standardized variable names and units.
+
+**Kinematic Wave Approximation**
+   Simplified form of the Saint-Venant equations used for routing water through channels.
+
+**Modified Puls Method**
+   Approach used by CWatM for simulating lake dynamics.
+
+**Van Genuchten Model**
+   Mathematical model describing soil water retention and hydraulic conductivity relationships.
+
+**Pedotransfer Function**
+   Method to derive soil hydraulic parameters from standard soil properties using models like Rosetta.
+
+**D8 Flow Model**
+   Eight-direction flow model defining dominant flow direction to neighboring grid cells.
+
+**PC-Raster Framework**
+   Programming framework that influenced CWatM's modular structure with initialization and dynamic classes.
+
+Model Resolution and Scale
+==========================
+
+**Spatial Resolution**
+   CWatM can run at resolutions from 30 arcsec to 0.5 degrees (5 arcmin to 30 arcmin).
+
+**Temporal Resolution**
+   Daily time steps for main calculations, with sub-daily time stepping (10 steps/day) for soil and river routing.
+
+**Grid Cell**
+   Basic spatial unit of the model where calculations are performed.
+
+**Subbasin**
+   Hydrological subdivision of a larger watershed for detailed analysis.
+
+**Upstream Area**
+   The total drainage area contributing flow to a specific point.
+
+Data and Input/Output
+======================
+
+**DDM30**
+   0.5° drainage direction map used for ISIMIP compliance.
+
+**HydroSheds**
+   High-resolution hydrological data source for river networks.
+
+**HydroLakes**
+   Database providing information on 1.4 million global lakes and reservoirs with surface area ≥10ha.
+
+**HWSD**
+   Harmonized World Soil Database version 1.2 - Source of soil property data.
+
+**ISIMIP**
+   Inter-Sectoral Impact Model Intercomparison Project - Framework for comparing global model outputs.
+
+**Mask Map**
+   Spatial definition of the model domain or catchment area.
+
+**Forcing Data**
+   Meteorological input data driving the model (temperature, precipitation, etc.).
+
+Climate Data Sources
+====================
+
+**EWEMBI**
+   EartH2Observe, WFDEI and ERA-Interim data Merged and Bias-corrected for ISIMIP.
+
+**WFDEI**
+   WATCH Forcing Data methodology applied to ERA-Interim.
+
+**MSWEP**
+   Multi-Source Weighted-Ensemble Precipitation.
+
+**PGMFD**
+   Princeton Global Meteorological Forcing Dataset.
+
+**GSWP3**
+   Global Soil Wetness Project Phase 3.
+
+**GCM**
+   General Circulation Model - Global climate models providing future projections.
+
+**RCP**
+   Representative Concentration Pathway - Climate change scenarios (e.g., RCP4.5, RCP6.0, RCP8.5).
+
+**SSP**
+   Shared Socioeconomic Pathway - Scenarios of socioeconomic global changes (SSP126, SSP370, SSP585).
+
+**CMIP6**
+   Coupled Model Intercomparison Project Phase 6.
+
+Model Integration
+=================
+
+**MODFLOW**
+   Modular finite-difference groundwater flow model that can be coupled with CWatM for detailed groundwater simulation.
+
+**MESSAGE**
+   IIASA's energy system optimization model for energy planning.
+
+**GLOBIOM**
+   Global Biosphere Management Model - IIASA's land use and agriculture model.
+
+**EPIC**
+   Environmental Policy Integrated Climate model for crop yield and management.
+
+**ECHO**
+   Hydro-economic model for water infrastructure investment analysis.
+
+**MARINA**
+   Model for water quality assessment.
+
+Water Demand Sectors
+====================
+
+**Irrigation Water Demand**
+   Water requirements for agricultural irrigation, accounting for soil moisture, irrigation methods, and climate.
+
+**Domestic Water Demand**
+   Household water consumption requirements.
+
+**Industrial Water Demand**
+   Water requirements for industrial processes.
+
+**Livestock Water Demand**
+   Water consumption by livestock.
+
+**Environmental Flow Requirements**
+   Minimum water flows needed to maintain ecosystem health.
+
+**Return Flow**
+   Water that returns to the system after use (e.g., from irrigation or urban areas).
+
+Calibration and Validation
+===========================
+
+**NSE**
+   Nash-Sutcliffe Efficiency - Performance metric for model calibration.
+
+**KGE**
+   Kling-Gupta Efficiency - Alternative performance metric addressing NSE limitations.
+
+**DEAP**
+   Distributed Evolutionary Algorithms in Python - Used for model calibration.
+
+**Spin-up Period**
+   Initial model run period to establish equilibrium conditions before analysis.
+
+**Warm Start**
+   Initializing model with saved state variables from a previous run.
+
+**Initial Conditions**
+   Starting values for state variables at the beginning of a simulation.
+
+File Formats and Standards
+===========================
+
+**.ini File**
+   Configuration file format used for CWatM settings.
+
+**.nc File**
+   NetCDF file extension for model input/output data.
+
+**.csv File**
+   Comma-separated values format for time series data.
+
+**FAIR Principles**
+   Findable, Accessible, Interoperable, Reusable - Data management principles implemented in CWatM.
+
+**Git Hash**
+   Version control identifier tracking specific model versions.
+
+Hydrological Variables
+======================
+
+**Discharge**
+   Volume of water flowing through a channel cross-section per unit time (m³/s).
+
+**TWS**
+   Total Water Storage - Sum of all water stored in the system.
+
+**Channel Storage**
+   Water temporarily stored in river channels.
+
+**Lake/Reservoir Storage**
+   Water stored in lakes and reservoirs.
+
+**Groundwater Storage**
+   Water stored in aquifers below the water table.
+
+**Soil Moisture**
+   Water content in soil layers.
+
+**Interception Storage**
+   Water temporarily stored on vegetation surfaces.
+
+**Depression Storage**
+   Water accumulated in surface depressions.
+
+Soil Parameters
+===============
+
+**Field Capacity (θfc)**
+   Soil moisture content after excess water has drained.
+
+**Wilting Point (θwp)**
+   Soil moisture content below which plants cannot extract water.
+
+**Saturated Water Content (θs)**
+   Maximum water content when soil is fully saturated.
+
+**Residual Water Content (θr)**
+   Minimum water content in dry soil.
+
+**Saturated Hydraulic Conductivity (Ks)**
+   Rate of water movement through saturated soil.
+
+**Porosity**
+   Fraction of soil volume occupied by pore spaces.
+
+**Bulk Density**
+   Mass of dry soil per unit volume.
+
+Channel Geometry
+================
+
+**Channel Length**
+   Length of the main channel within a grid cell.
+
+**Channel Slope**
+   Gradient of the channel bed.
+
+**Channel Width**
+   Bottom width of the channel cross-section.
+
+**Channel Depth**
+   Depth of water in the channel.
+
+**Bankfull Discharge**
+   Flow rate at which water begins to overflow the channel banks.
+
+Model Outputs
+=============
+
+**Water Balance**
+   Accounting of all water inputs, outputs, and storage changes.
+
+**Potential Discharge**
+   Maximum possible flow under given conditions.
+
+**Potential Evaporation**
+   Maximum evaporation rate under given atmospheric conditions.
+
+**Actual Evapotranspiration**
+   Real water loss through evaporation and transpiration.
+
+**Water Availability**
+   Amount of water available for human and environmental use.
+
+**Water Stress**
+   Ratio of water demand to water availability.
+
+Acronyms
+========
+
+**BNR**
+   Biodiversity and Natural Resources (IIASA program).
+
+**WAT**
+   Water Security (IIASA research group).
+
+**IBF**
+   Integrated Biosphere Futures (IIASA research group).
+
+**EAC**
+   East African Community.
+
+**eLVB**
+   Extended Lake Victoria Basin.
+
+**LRB**
+   Liard River Basin.
+
+**GNU GPL**
+   GNU General Public License - Open source license under which CWatM is released.
+
+.. note::
+   This glossary is based on CWatM version 1.06 (October 2024). Terms and definitions may evolve with new model versions. For the most current information, refer to the official documentation at https://cwatm.iiasa.ac.at/
+
+.. seealso::
+   - CWatM Manual: https://cwatm.iiasa.ac.at/
+   - GitHub Repository: https://github.com/iiasa/CWatM
+   - IIASA Water Security: https://iiasa.ac.at/models-tools-data/cwatm
