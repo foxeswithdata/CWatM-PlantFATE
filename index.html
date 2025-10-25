@@ -43,7 +43,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1. Introduction" href="intro.html" /> 
+    <link rel="next" title="1. Introduction" href="1_introduction.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.1.0
               </div>
             
           
@@ -96,23 +96,35 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
 </ul>
 
             
@@ -192,35 +204,614 @@
 <dd class="field-odd"><p>IIASA WAT Program</p>
 </dd>
 <dt class="field-even">Authors</dt>
-<dd class="field-even"><p><a class="reference internal" href="publication.html#rst-developer"><span class="std std-ref">Developer</span></a></p>
+<dd class="field-even"><p><a class="reference internal" href="1_introduction.html#rst-developer"><span class="std std-ref">Developer</span></a></p>
 </dd>
 <dt class="field-odd">Version</dt>
-<dd class="field-odd"><p>1.06</p>
+<dd class="field-odd"><p>1.10</p>
 </dd>
 <dt class="field-even">Version Date</dt>
-<dd class="field-even"><p>Oct 04, 2024</p>
+<dd class="field-even"><p>Oct 25, 2025</p>
 </dd>
 </dl>
 <p><strong>Content:</strong></p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_introduction.html#community-water-model-cwatm">Community Water Model - CWatM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_introduction.html#acknowledgement-of-funding">Acknowledgement of Funding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_introduction.html#developer">Developer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2_news.html#year-anniversary">10 Year Anniversary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_news.html#major-updates">Major Updates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#october-2025">October 2025</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#september-2025">September 2025</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#july-2025">July 2025</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#june-2025">June 2025</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#june-2024">June 2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#id1">June 2024</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2_news.html#publication-using-cwatm">Publication using CWatM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_news.html#additional-selected-publications">Additional selected publications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_news.html#github-version-history">Github Version History</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#id2">2024</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#id3">2023</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#old-commits">Old commits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2_news.html#first-commit">First commit!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="3_modeldesign.html#model-philosophy">Model Philosophy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#open-source-open-data-open-community">Open source/ open data/ open community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#functions-follow-form">Functions follow form</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="3_modeldesign.html#fair-software">FAIR software</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#findable-f">Findable (F)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#accesable-a">Accesable (A)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#interoperable-i">Interoperable (I)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#reusable-r">Reusable (R)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#and-reproducable">And  Reproducable</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="3_modeldesign.html#model-design-and-processes">Model design and processes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#design">Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#processes">Processes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#calculation-of-potential-evaporation">Calculation of potential Evaporation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#calculation-of-rain-snow-snowmelt">Calculation of rain, snow, snowmelt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#land-cover">Land cover</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#water-demand">Water demand</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#vegetation">Vegetation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#soil">Soil</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#groundwater">Groundwater</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#lakes-reservoirs">Lakes &amp; Reservoirs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="3_modeldesign.html#routing">Routing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="3_modeldesign.html#features-of-the-model">Features of the Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#community-model">Community Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="3_modeldesign.html#water-model">Water Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="3_modeldesign.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="4_UsingCwatM.html#please-cite-when-using-cwatm">Please cite when using CWatM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_UsingCwatM.html#downloading-cwatm">Downloading CWatM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="4_UsingCwatM.html#source-code-community-water-model">Source code - Community Water Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="4_UsingCwatM.html#contributing-to-cwatm">Contributing to CWatM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="4_UsingCwatM.html#oggm">OGGM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4_UsingCwatM.html#snowclimpy">SnowClimPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4_UsingCwatM.html#working-with-cwatm">Working with CWatM</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="4_UsingCwatM.html#gnu-general-public-license">GNU General public license</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="4_UsingCwatM.html#preamble">Preamble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="4_UsingCwatM.html#terms-and-conditions">TERMS AND CONDITIONS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#definitions">0. Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#source-code">1. Source Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#basic-permissions">2. Basic Permissions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#protecting-users-legal-rights-from-anti-circumvention-law">3. Protecting Users’ Legal Rights From Anti-Circumvention Law</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#conveying-verbatim-copies">4. Conveying Verbatim Copies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#conveying-modified-source-versions">5. Conveying Modified Source Versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#conveying-non-source-forms">6. Conveying Non-Source Forms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#additional-terms">7. Additional Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#termination">8. Termination</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#acceptance-not-required-for-having-copies">9. Acceptance Not Required for Having Copies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#automatic-licensing-of-downstream-recipients">10. Automatic Licensing of Downstream Recipients</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#patents">11. Patents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#no-surrender-of-others-freedom">12. No Surrender of Others’ Freedom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#use-with-the-gnu-affero-general-public-license">13. Use with the GNU Affero General Public License</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#revised-versions-of-this-license">14. Revised Versions of this License</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#disclaimer-of-warranty">15. Disclaimer of Warranty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#limitation-of-liability">16. Limitation of Liability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#interpretation-of-sections-15-and-16">17. Interpretation of Sections 15 and 16</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="4_UsingCwatM.html#terms-and-conditions-of-use-of-the-community-water-model">Terms and Conditions of Use of the Community Water Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#copyright">1. Copyright</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#reprints-and-quotations">2. Reprints and quotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#usage">3. Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="4_UsingCwatM.html#final-remarks">4. Final Remarks</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="5_howto.html#how-to-use-problem-oriented">5. HOW-TO-USE - Problem oriented</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="51_installCwatM.html#installing-python">Installing Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="51_installCwatM.html#virtual-environment-setup-optional">Virtual environment setup (optional)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="51_installCwatM.html#what-is-virtual-environment">What is virtual environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="51_installCwatM.html#how-to-install-virtual-environment">How to install virtual environment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="51_installCwatM.html#external-libraries">External libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="51_installCwatM.html#id1">Installing CWatM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="51_installCwatM.html#c-libraries">C++ libraries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="51_installCwatM.html#compiling-a-version">Compiling a version</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="51_installCwatM.html#installing-cwatm-on-mac">Installing CwatM on Mac</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="51_installCwatM.html#running-the-model-for-the-first-time">Running the model for the first time</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="51_installCwatM.html#run-with-a-settingsfile">Run with a settingsfile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="51_installCwatM.html#using-flags">Using Flags</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="52_settingsfile.html#settings-file">Settings file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="52_settingsfile.html#components-of-the-settings-file">Components of the settings file</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="52_settingsfile.html#general-flags">General flags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="52_settingsfile.html#netcdf-meta-data">NetCDF meta data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="52_settingsfile.html#path-of-data-output">Path of data, output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="52_settingsfile.html#defining-the-modeling-area">Defining the modeling area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="52_settingsfile.html#defining-the-time">Defining the time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="52_settingsfile.html#initial-conditions">Initial conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="52_settingsfile.html#reading-information">Reading information</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="52_settingsfile.html#sections-of-information">Sections of information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="52_settingsfile.html#complete-settings-file">Complete settings file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="53_output.html#output-meta-information">Output meta information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="53_output.html#model-output">Model Output</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="53_output.html#varity-of-outputs">Varity of outputs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="53_output.html#time-depending-and-non-depending-output-maps">Time depending and non depending output maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="53_output.html#or-time-series-at-specified-points">Or time series at specified points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="53_output.html#or-time-series-as-a-catchment-sum-or-average">Or time series as a catchment sum or average</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="53_output.html#format-of-output-in-the-settings-file">Format of output in the settings file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="53_output.html#output-variables">Output variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="53_output.html#most-important-output-variables-a-selection">Most important output variables - a selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="53_output.html#output-variables-a-list">Output variables - a list</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="53_output.html#daily-monthly-at-the-end-or-average">Daily, monthly - at the end or average</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="54_testingdata.html#id1">Testing data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="55_initialization.html#id1">Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="55_initialization.html#example-of-soil-moisture">Example of soil moisture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="55_initialization.html#cold-start">Cold start</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="55_initialization.html#set-up-a-cold-start-in-the-settingsfile">Set up a cold start in the settingsfile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="55_initialization.html#storing-initial-variables">Storing initial variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="55_initialization.html#warm-start">Warm start</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="55_initialization.html#id2">Set up a cold start in the settingsfile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="55_initialization.html#initial-conditions">Initial conditions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#calibration-method">Calibration method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#suggested-calibration-parameters">Suggested Calibration parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#calibration-tool-structure">Calibration tool structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#what-is-needed">What is needed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#recommendations">Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#running-calibration">Running calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#run-runcalibration-bat">Run runCalibration.bat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#for-testing">For testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#running-it-on-your-computer">Running it on your computer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#preparation-for-another-catchment">Preparation for another catchment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="56_calibration.html#preparing-the-observed-dataset-discharge">Preparing the observed dataset – discharge</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#creating-an-initial-netcdf-file-for-warm-start">Creating an initial netcdf file for warm start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#cutting-out-a-catchment-as-mask-map">Cutting out a catchment as mask map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#calibration-of-a-downstream-catchment">Calibration of a downstream catchment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="56_calibration.html#cutting-the-mask-map">Cutting the mask map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="56_calibration.html#detecting-the-downstream-point">Detecting the downstream point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="56_calibration.html#run-the-best-calibration-scenario-upstream">Run the best calibration scenario upstream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="56_calibration.html#create-an-inflow-file-from-the-long-timeseries-of-outlet-s">Create an inflow file from the long timeseries of outlet(s)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="56_calibration.html#create-a-downstream-calibration-settings-directories-templates-etc">Create a downstream calibration settings (directories, templates etc.)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="56_calibration.html#change-the-settings-file">Change the settings file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#joining-best-sub-basin-results-to-calibration-maps">Joining best sub-basin results to calibration maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="56_calibration.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="57_reproduce.html#recover-or-reproduce-formar-runs">recover or reproduce formar runs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="57_reproduce.html#information-about-the-run">Information about the run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="57_reproduce.html#more-information">More information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="57_reproduce.html#how-to-recover">How to recover</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="58_tricks.html#generate-a-basin-and-an-upstream-map">Generate a basin and an upstream map</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="58_tricks.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="58_tricks.html#output-as-timeseries-of-area-averages-or-sums">Output as timeseries of area averages or sums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="58_tricks.html#output-of-indexed-variables">Output of indexed variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="6_references.html#id1">6. REFERENCES - Information</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="61_errors.html#potential-errors">Potential Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#error-because-you-did-not-run-with-python">Error because you did not run with Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#error-because-python-is-not-added-to-the-path">Error because python is not added to the PATH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#error-because-the-path-has-white-spaces-included">Error because the path has white spaces included</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#error-because-the-python-libraries-are-installed-incorrectly">Error because the python libraries are installed incorrectly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#error-because-the-settings-file-is-not-stored-as-utf-8-file">Error because the settings file is not stored as utf-8 file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#error-because-the-references-are-used-wrong">Error because the references are used wrong</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#errors-errors-err-er-e">Errors Errors Err Er E</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="61_errors.html#error-handling-of-cwatm-list-of-error-codes">Error handling of CWatM – list of error codes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e101">E101</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e102">E102</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e103">E103</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e104">E104</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e105">E105</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e106">E106</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e107">E107</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e108">E108</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e109">E109</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e110">E110</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e111">E111</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e112">E112</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e113">E113</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e114">E114</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e115">E115</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e116">E116</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e117">E117</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e118">E118</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e119">E119</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e120">E120</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e121">E121</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e122">E122</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e123">E123</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e124">E124</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e125">E125</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e127">E127</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e128">E128</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e129">E129</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e130">E130</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e131">E131</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e132">E132</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e201">E201</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e202">E202</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e203">E203</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e204">E204</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e205">E205</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e206">E206</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e207">E207</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e208">E208</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e209">E209</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e210">E210</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e211">E211</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e212">E212</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e213">E213</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e214">E214</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e215">E215</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e216">E216</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e217">E217</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e218">E218</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e219">E219</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e220">E220</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e221">E221</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e301">E301</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e302">E302</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e303">E303</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e304">E304</a></li>
+<li class="toctree-l3"><a class="reference internal" href="61_errors.html#e305">E305</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="7_tutorials.html#id1">7. TUTORIALS - Learning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="71_offline.html#tutorials">Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="71_offline.html#id1">…</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="72_online.html#youtube-videos">YouTube videos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="72_online.html#cwatm-level-a-hydrological-and-water-resources-modelling">CWatM Level A: Hydrological and water resources modelling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="72_online.html#cwatm-level-b-hydrological-and-water-resources-modelling">CWatM Level B: Hydrological and water resources modelling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="72_online.html#google-earth-engine">Google Earth Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="72_online.html#water-cycle-future">Water Cycle Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="72_online.html#while-hydrological-modelling">While Hydrological Modelling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="8_explanation.html#id1">8. EXPLANATION - Understanding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="81_data.html#data-requirements">Data requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="81_data.html#data-format">Data format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="81_data.html#data-storage-structure">Data storage structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="81_data.html#static-data">Static data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#mask-map">Mask map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#landsurface">Landsurface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#digital-elevation-model-and-river-channel-network">Digital elevation model and river channel network</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#river-drainage-maps">River drainage maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#river-channel-maps">River channel maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#methodology">Methodology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#channel-length">Channel length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#channel-gradient">Channel gradient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#mannings-roughness">Manning’s roughness</a></li>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#channel-bottom-width">Channel Bottom Width</a></li>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#channel-bankful-depth">Channel bankful depth</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#soil-and-soil-hydraulic-properties">Soil and soil hydraulic properties</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#harmonized-world-soil-database">Harmonized World Soil Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#pedotransfer-function-rosetta3">Pedotransfer function Rosetta3</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#groundwater">Groundwater</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#lakes-and-reservoirs">Lakes and Reservoirs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="81_data.html#temporal-data-for-each-year">Temporal data for each year</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#crop-coefficient">Crop coefficient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#land-cover">Land cover</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#forest">Forest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#sealed">Sealed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="81_data.html#albedo">Albedo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="81_data.html#continous-temporal-data">Continous temporal data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="81_data.html#meteorological-data">Meteorological data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="81_data.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="82_processes.html#rain-and-snow-and-melt">Rain and Snow and Melt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="82_processes.html#frost-index">Frost Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="82_processes.html#adressing-sub-grid-variability-in-land-cover">Adressing sub-grid variability in land cover</a></li>
+<li class="toctree-l2"><a class="reference internal" href="82_processes.html#soil-model">Soil model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="82_processes.html#interception">Interception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="82_processes.html#evaporation">Evaporation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="9_technical.html#id1">9. Technical Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="91_sourcecode.html#source-code-on-github">Source code on Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="91_sourcecode.html#id1">Source code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="91_sourcecode.html#modules-of-cwatm">Modules of CWatM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="91_sourcecode.html#source-code-description">Source code description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="run_cwatm.html">run_cwatm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cwatm_model.html">cwatm_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cwatm_dynamic.html">cwatm_dynamic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cwatm_initial.html">cwatm_initial module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hydrological_modules.html">hydrological_modules package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="hydrological_modules.html#initialize">Initialize</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#miscinitial-module">miscInitial module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#initcondition-module">initcondition module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#landcovertype-module">landcoverType module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="hydrological_modules.html#hydrology-i-from-rain-to-soil">Hydrology I - from rain to soil</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#readmeteo-module">readmeteo module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#inflow-module">inflow module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#snow-frost-module">snow_frost module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#evaporationpot-module">evaporationPot module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#evaporation-module">evaporation module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#interception-module">interception module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#sealed-water-module">sealed_water module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="hydrological_modules.html#hydrology-ii-from-soil-to-river">Hydrology II - from soil to river</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#soil-module">soil module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#capillarrise-module">capillarRise module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#groundwater-module">groundwater module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#runoff-concentration-module">runoff_concentration module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="hydrological_modules.html#hydrology-iii-socio-economic-water-demand">Hydrology III - Socio-economic - Water demand</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#water-demand-water-demand">water_demand.water_demand</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#water-demand-domestic">water_demand.domestic</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#water-demand-industry">water_demand.industry</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#water-demand-livestock">water_demand.livestock</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#water-demand-irrigation">water_demand.irrigation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#water-demand-environmental-need">water_demand.environmental_need</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#water-demand-wastewater">water_demand.wastewater</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="hydrological_modules.html#hydrology-iv-lakes-reservoirs-and-river">Hydrology IV - Lakes, reservoirs and river</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#lakes-reservoirs-module">lakes_reservoirs module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#lakes-res-small-module">lakes_res_small module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#routing-reservoirs-routing-kinematic-module">routing_reservoirs.routing_kinematic module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="hydrological_modules.html#routing-reservoirs-routing-sub-module">routing_reservoirs.routing_sub module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="management_modules.html">management_modules package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="management_modules.html#data-management">Data management</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#data-handling-module">data_handling module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#timestep-module">timestep module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#configuration-module">configuration module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#management-modules-messages-module">management_modules.messages module</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="management_modules.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#module-cwatm.management_modules.output">management_modules.output module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#management-modules-checks-module">management_modules.checks module</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="management_modules.html#key-functions">Key Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="management_modules.html#program-management">Program management</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#globals-module">globals module</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="management_modules.html#key-global-variables">Key Global Variables</a></li>
+<li class="toctree-l7"><a class="reference internal" href="management_modules.html#platform-detection">Platform Detection</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#dynamicmodel-module">dynamicModel module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="management_modules.html#replace-pcr-module">replace_pcr module</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="management_modules.html#id3">Key Functions</a></li>
+<li class="toctree-l7"><a class="reference internal" href="management_modules.html#modules">Modules</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="91_sourcecode.html#download-manual-as-pdf">Download Manual as pdf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="91_sourcecode.html#remarks">Remarks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#test-types-and-execution-modes">Test Types and Execution Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#configuration-file-structure">Configuration File Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#testing-workflow">Testing Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#code-quality-and-standards">Code Quality and Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#usage-examples">Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#files-and-folders">Files and folders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#testing-cwatm">Testing CWatM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="92_testing.html#results">Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="zambezi.html#zambezi-basin">Zambezi basin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zambezi.html#assessment-of-water-stress">Assessment of water stress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zambezi.html#water-stress-index-for-zambezi">Water Stress Index for Zambezi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forum.html#questions-and-answer-forum">Questions and answer forum</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="12_faq.html#general-questions">General Questions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-what-is-cwatm"><strong>Q: What is CWatM?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-who-developed-cwatm"><strong>Q: Who developed CWatM?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-what-is-the-purpose-of-cwatm"><strong>Q: What is the purpose of CWatM?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12_faq.html#technical-specifications">Technical Specifications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-what-resolution-can-cwatm-run-at"><strong>Q: What resolution can CWatM run at?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-what-programming-language-is-cwatm-written-in"><strong>Q: What programming language is CWatM written in?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-is-cwatm-open-source"><strong>Q: Is CWatM open source?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12_faq.html#model-features-and-capabilities">Model Features and Capabilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-what-processes-does-cwatm-simulate"><strong>Q: What processes does CWatM simulate?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-can-cwatm-be-integrated-with-other-models"><strong>Q: Can CWatM be integrated with other models?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12_faq.html#applications-and-use-cases">Applications and Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-what-are-the-main-applications-of-cwatm"><strong>Q: What are the main applications of CWatM?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-can-cwatm-be-used-for-regional-studies"><strong>Q: Can CWatM be used for regional studies?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-does-cwatm-consider-environmental-needs"><strong>Q: Does CWatM consider environmental needs?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12_faq.html#data-and-documentation">Data and Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-where-can-i-find-the-model-documentation"><strong>Q: Where can I find the model documentation?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-what-kind-of-data-does-cwatm-use"><strong>Q: What kind of data does CWatM use?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-is-there-input-data-available-for-cwatm"><strong>Q: Is there input data available for CWatM?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12_faq.html#future-development">Future Development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-what-future-developments-are-planned-for-cwatm"><strong>Q: What future developments are planned for CWatM?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-how-does-cwatm-contribute-to-the-water-energy-food-nexus-analysis"><strong>Q: How does CWatM contribute to the water-energy-food nexus analysis?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12_faq.html#support-and-community">Support and Community</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-where-can-i-get-help-with-cwatm"><strong>Q: Where can I get help with CWatM?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-how-can-i-track-data-sources-and-model-versions"><strong>Q: How can I track data sources and model versions?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#q-is-there-a-calibration-tool-available"><strong>Q: Is there a calibration tool available?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="12_faq.html#additional-resources">Additional Resources</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#official-website">Official Website</a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#github-repositories">GitHub Repositories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#publications">Publications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="12_faq.html#license">License</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#general-model-terms">General Model Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#hydrological-processes">Hydrological Processes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#calibration-parameters">Calibration Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#technical-and-computational-terms">Technical and Computational Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#model-resolution-and-scale">Model Resolution and Scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#data-and-input-output">Data and Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#climate-data-sources">Climate Data Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#model-integration">Model Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#water-demand-sectors">Water Demand Sectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#calibration-and-validation">Calibration and Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#file-formats-and-standards">File Formats and Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#hydrological-variables">Hydrological Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#soil-parameters">Soil Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#channel-geometry">Channel Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#model-outputs">Model Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_glossary.html#acronyms">Acronyms</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -231,14 +822,14 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="intro.html" class="btn btn-neutral float-right" title="1. Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="1_introduction.html" class="btn btn-neutral float-right" title="1. Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, IIASA Water Security.
+        &#169; Copyright 2025, IIASA Water Security.
 
     </p>
   </div>

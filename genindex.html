@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.1.0
               </div>
             
           
@@ -95,23 +95,35 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
 </ul>
 
             
@@ -185,6 +197,7 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
@@ -204,6 +217,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="management_modules.html#cwatm.management_modules.timestep.addmonths">addmonths() (in module cwatm.management_modules.timestep)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="management_modules.html#cwatm.management_modules.data_handling.addtoversiondate">addtoversiondate() (in module cwatm.management_modules.data_handling)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -231,7 +248,7 @@
 </li>
       <li><a href="management_modules.html#cwatm.management_modules.data_handling.checkOption">checkOption() (in module cwatm.management_modules.data_handling)</a>
 </li>
-      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.waterbalance.waterbalance.checkWaterSoilGround">checkWaterSoilGround() (cwatm.hydrological_modules.waterbalance.waterbalance method)</a>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.water_demand.water_demand.commandAreaOperation">commandAreaOperation() (cwatm.hydrological_modules.water_demand.water_demand.water_demand method)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.routing_reservoirs.routing_sub.Compress">Compress() (in module cwatm.hydrological_modules.routing_reservoirs.routing_sub)</a>
 </li>
@@ -264,13 +281,6 @@
 
       <ul>
         <li><a href="cwatm_model.html#module-cwatm.cwatm_model">module</a>
-</li>
-      </ul></li>
-      <li>
-    cwatm.hydrological_modules
-
-      <ul>
-        <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules">module</a>
 </li>
       </ul></li>
       <li>
@@ -444,13 +454,6 @@
 </li>
       </ul></li>
       <li>
-    cwatm.hydrological_modules.waterbalance
-
-      <ul>
-        <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.waterbalance">module</a>
-</li>
-      </ul></li>
-      <li>
     cwatm.management_modules
 
       <ul>
@@ -555,6 +558,8 @@
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.landcoverType.decompress">decompress() (in module cwatm.hydrological_modules.landcoverType)</a>
 
       <ul>
+        <li><a href="management_modules.html#cwatm.management_modules.checks.decompress">(in module cwatm.management_modules.checks)</a>
+</li>
         <li><a href="management_modules.html#cwatm.management_modules.data_handling.decompress">(in module cwatm.management_modules.data_handling)</a>
 </li>
       </ul></li>
@@ -623,8 +628,6 @@
 </li>
         <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.water_demand.water_demand.dynamic">(cwatm.hydrological_modules.water_demand.water_demand.water_demand method)</a>
 </li>
-        <li><a href="hydrological_modules.html#cwatm.hydrological_modules.waterbalance.waterbalance.dynamic">(cwatm.hydrological_modules.waterbalance.waterbalance method)</a>
-</li>
         <li><a href="management_modules.html#cwatm.management_modules.output.outputTssMap.dynamic">(cwatm.management_modules.output.outputTssMap method)</a>
 </li>
       </ul></li>
@@ -635,6 +638,8 @@
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.evaporationPot.evaporationPot.dynamic_2">dynamic_2() (cwatm.hydrological_modules.evaporationPot.evaporationPot method)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.evaporationPot.evaporationPot.dynamic_4">dynamic_4() (cwatm.hydrological_modules.evaporationPot.evaporationPot method)</a>
+</li>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.evaporationPot.evaporationPot.dynamic_5">dynamic_5() (cwatm.hydrological_modules.evaporationPot.evaporationPot method)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.landcoverType.landcoverType.dynamic_fracIrrigation">dynamic_fracIrrigation() (cwatm.hydrological_modules.landcoverType.landcoverType method)</a>
 </li>
@@ -655,6 +660,18 @@
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.evaporationPot.evaporationPot">evaporationPot (class in cwatm.hydrological_modules.evaporationPot)</a>
 </li>
       <li><a href="management_modules.html#cwatm.management_modules.configuration.ExtParser">ExtParser (class in cwatm.management_modules.configuration)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="management_modules.html#cwatm.management_modules.globals.FlagName">FlagName (in module cwatm.management_modules.globals)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="management_modules.html#cwatm.management_modules.globals.Flags">Flags (in module cwatm.management_modules.globals)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -733,8 +750,6 @@
 </li>
         <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.water_demand.water_demand.initial">(cwatm.hydrological_modules.water_demand.water_demand.water_demand method)</a>
 </li>
-        <li><a href="hydrological_modules.html#cwatm.hydrological_modules.waterbalance.waterbalance.initial">(cwatm.hydrological_modules.waterbalance.waterbalance method)</a>
-</li>
         <li><a href="management_modules.html#cwatm.management_modules.output.outputTssMap.initial">(cwatm.management_modules.output.outputTssMap method)</a>
 </li>
       </ul></li>
@@ -764,11 +779,9 @@
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.landcoverType.landcoverType">landcoverType (class in cwatm.hydrological_modules.landcoverType)</a>
 </li>
-      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.routing_reservoirs.routing_sub.lddrepair">lddrepair() (in module cwatm.hydrological_modules.routing_reservoirs.routing_sub)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.routing_reservoirs.routing_sub.lddshort">lddshort() (in module cwatm.hydrological_modules.routing_reservoirs.routing_sub)</a>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.routing_reservoirs.routing_sub.lddrepair">lddrepair() (in module cwatm.hydrological_modules.routing_reservoirs.routing_sub)</a>
 </li>
       <li><a href="cwatm_initial.html#cwatm.cwatm_initial.Variables.load_initial">load_initial() (cwatm.cwatm_initial.Variables method)</a>
 </li>
@@ -805,8 +818,6 @@
         <li><a href="cwatm_initial.html#module-cwatm.cwatm_initial">cwatm.cwatm_initial</a>
 </li>
         <li><a href="cwatm_model.html#module-cwatm.cwatm_model">cwatm.cwatm_model</a>
-</li>
-        <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules">cwatm.hydrological_modules</a>
 </li>
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.capillarRise">cwatm.hydrological_modules.capillarRise</a>
 </li>
@@ -855,8 +866,6 @@
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.water_demand.livestock">cwatm.hydrological_modules.water_demand.livestock</a>
 </li>
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.water_demand.water_demand">cwatm.hydrological_modules.water_demand.water_demand</a>
-</li>
-        <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.waterbalance">cwatm.hydrological_modules.waterbalance</a>
 </li>
         <li><a href="management_modules.html#module-cwatm.management_modules">cwatm.management_modules</a>
 </li>
@@ -911,6 +920,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="management_modules.html#cwatm.management_modules.output.outputTssMap">outputTssMap (class in cwatm.management_modules.output)</a>
 </li>
+      <li><a href="management_modules.html#cwatm.management_modules.globals.outputTypMap">outputTypMap (in module cwatm.management_modules.globals)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="management_modules.html#cwatm.management_modules.globals.outputTypTss">outputTypTss (in module cwatm.management_modules.globals)</a>
+</li>
+      <li><a href="management_modules.html#cwatm.management_modules.globals.outputTypTss2">outputTypTss2 (in module cwatm.management_modules.globals)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -922,6 +939,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.routing_reservoirs.routing_sub.postorder">postorder() (in module cwatm.hydrological_modules.routing_reservoirs.routing_sub)</a>
+</li>
+      <li><a href="management_modules.html#cwatm.management_modules.globals.python_bit">python_bit (in module cwatm.management_modules.globals)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -947,11 +966,13 @@
 </li>
       <li><a href="management_modules.html#cwatm.management_modules.data_handling.readnetcdfInitial">readnetcdfInitial() (in module cwatm.management_modules.data_handling)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="management_modules.html#cwatm.management_modules.data_handling.readnetcdfWithoutTime">readnetcdfWithoutTime() (in module cwatm.management_modules.data_handling)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="management_modules.html#cwatm.management_modules.data_handling.report">report() (in module cwatm.management_modules.data_handling)</a>
+</li>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.initcondition.initcondition.reservoir_addinfo">reservoir_addinfo() (cwatm.hydrological_modules.initcondition.initcondition method)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs.reservoir_releases">reservoir_releases() (cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs method)</a>
 </li>
@@ -978,14 +999,16 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="management_modules.html#cwatm.management_modules.checks.save_check">save_check() (in module cwatm.management_modules.checks)</a>
+</li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.sealed_water.sealed_water">sealed_water (class in cwatm.hydrological_modules.sealed_water)</a>
 </li>
       <li><a href="management_modules.html#cwatm.management_modules.data_handling.setmaskmapAttr">setmaskmapAttr() (in module cwatm.management_modules.data_handling)</a>
 </li>
-      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.snow_frost.snow_frost">snow_frost (class in cwatm.hydrological_modules.snow_frost)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.snow_frost.snow_frost">snow_frost (class in cwatm.hydrological_modules.snow_frost)</a>
+</li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.soil.soil">soil (class in cwatm.hydrological_modules.soil)</a>
 </li>
       <li><a href="management_modules.html#cwatm.management_modules.dynamicModel.ModelFrame.step">step() (cwatm.management_modules.dynamicModel.ModelFrame method)</a>
@@ -1026,6 +1049,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.evaporationPot.evaporationPot.vari_pySnowClim">vari_pySnowClim() (cwatm.hydrological_modules.evaporationPot.evaporationPot method)</a>
+</li>
       <li><a href="cwatm_initial.html#cwatm.cwatm_initial.Variables">Variables (class in cwatm.cwatm_initial)</a>
 </li>
   </ul></td>
@@ -1040,23 +1065,19 @@
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.water_demand.water_demand">water_demand (class in cwatm.hydrological_modules.water_demand.water_demand)</a>
 </li>
-      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.waterbalance.waterbalance">waterbalance (class in cwatm.hydrological_modules.waterbalance)</a>
-</li>
-      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.waterbalance.waterbalance.waterBalanceCheck">waterBalanceCheck() (cwatm.hydrological_modules.waterbalance.waterbalance method)</a>
-</li>
-      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.waterbalance.waterbalance.waterBalanceCheckSum">waterBalanceCheckSum() (cwatm.hydrological_modules.waterbalance.waterbalance method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.domestic.waterdemand_domestic">waterdemand_domestic (class in cwatm.hydrological_modules.water_demand.domestic)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.environmental_need.waterdemand_environmental_need">waterdemand_environmental_need (class in cwatm.hydrological_modules.water_demand.environmental_need)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.industry.waterdemand_industry">waterdemand_industry (class in cwatm.hydrological_modules.water_demand.industry)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.irrigation.waterdemand_irrigation">waterdemand_irrigation (class in cwatm.hydrological_modules.water_demand.irrigation)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.livestock.waterdemand_livestock">waterdemand_livestock (class in cwatm.hydrological_modules.water_demand.livestock)</a>
+</li>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs.wetland_readarea">wetland_readarea() (cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs method)</a>
 </li>
       <li><a href="management_modules.html#cwatm.management_modules.data_handling.writeIniNetcdf">writeIniNetcdf() (in module cwatm.management_modules.data_handling)</a>
 </li>
@@ -1076,7 +1097,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, IIASA Water Security.
+        &#169; Copyright 2025, IIASA Water Security.
 
     </p>
   </div>

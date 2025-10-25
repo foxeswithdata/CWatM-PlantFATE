@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.1.0
               </div>
             
           
@@ -95,23 +95,35 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
 </ul>
 
             
@@ -179,24 +191,119 @@
             
   <h1>Source code for cwatm.management_modules.checks</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -------------------------------------------------------------------------</span>
-<span class="c1"># Name:        checks if inputs are valid</span>
-<span class="c1"># Purpose:</span>
+<span class="c1"># Name: Checks</span>
+<span class="c1"># Purpose: Validate CWatM input data and provide diagnostic information</span>
 <span class="c1">#</span>
 <span class="c1"># Author:      burekpe</span>
-<span class="c1">#</span>
 <span class="c1"># Created:     16/05/2016</span>
-<span class="c1"># Copyright:   (c) burekpe 2016</span>
+<span class="c1"># CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.</span>
 <span class="c1"># -------------------------------------------------------------------------</span>
 
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Input validation and data quality control for CWatM.</span>
+
+<span class="sd">This module provides comprehensive validation and diagnostic functions for</span>
+<span class="sd">CWatM input data, including spatial data checking, file verification, and</span>
+<span class="sd">detailed reporting of data characteristics. The validation system helps</span>
+<span class="sd">ensure data quality and compatibility before model execution.</span>
+
+<span class="sd">Key Functions</span>
+<span class="sd">-------------</span>
+<span class="sd">decompress : Convert 1D compressed arrays to 2D display format</span>
+<span class="sd">counted : Decorator for counting function calls</span>
+<span class="sd">checkmap : Comprehensive validation and reporting for spatial data</span>
+<span class="sd">save_check : Save validation results to CSV files</span>
+<span class="sd">load_global_attribute : Extract NetCDF global attributes</span>
+
+<span class="sd">The module supports comparison against reference datasets and provides</span>
+<span class="sd">detailed statistics about spatial data including:</span>
+<span class="sd">- Spatial dimensions and valid cell counts</span>
+<span class="sd">- Value ranges, means, and distributions  </span>
+<span class="sd">- Missing value patterns and data completeness</span>
+<span class="sd">- File modification dates and version tracking</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">.globals</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<div class="viewcode-block" id="decompress"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.checks.decompress">[docs]</a><span class="k">def</span> <span class="nf">decompress</span><span class="p">(</span><span class="nb">map</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decompress 1D array without missing values to 2D array with missing values.</span>
+<span class="sd">    </span>
+<span class="sd">    This function converts compressed 1D arrays used internally by CWatM back</span>
+<span class="sd">    to full 2D spatial arrays for display, analysis, and output. The function</span>
+<span class="sd">    properly handles different data types and missing value conventions.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    map : numpy.ndarray</span>
+<span class="sd">        1D compressed array containing only valid (non-masked) values</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        2D spatial array with proper dimensions and missing value handling</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function uses global maskinfo to determine:</span>
+<span class="sd">    - Original spatial dimensions (maskinfo[&#39;shape&#39;])</span>
+<span class="sd">    - Location of valid cells (maskinfo[&#39;maskflat&#39;])</span>
+<span class="sd">    - Base mask array structure (maskinfo[&#39;maskall&#39;])</span>
+<span class="sd">    </span>
+<span class="sd">    Missing values are set according to data type:</span>
+<span class="sd">    - Integer types (int16, int32): -9999</span>
+<span class="sd">    - int8 types: Negative values set to 0</span>
+<span class="sd">    - All other types: -9999</span>
+<span class="sd">    </span>
+<span class="sd">    This function is essential for converting CWatM&#39;s internal compressed</span>
+<span class="sd">    storage format back to standard spatial raster format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dmap</span> <span class="o">=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;maskall&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">dmap</span><span class="p">[</span><span class="o">~</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;maskflat&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[:]</span>
+    <span class="n">dmap</span> <span class="o">=</span> <span class="n">dmap</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">])</span>
+
+    <span class="c1"># check if integer map (like outlets, lakes etc</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">checkint</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">checkint</span> <span class="o">=</span> <span class="s2">&quot;x&quot;</span>
+    <span class="k">if</span> <span class="n">checkint</span> <span class="o">==</span> <span class="s2">&quot;int16&quot;</span> <span class="ow">or</span> <span class="n">checkint</span> <span class="o">==</span> <span class="s2">&quot;int32&quot;</span><span class="p">:</span>
+        <span class="n">dmap</span><span class="p">[</span><span class="n">dmap</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999</span>
+    <span class="k">elif</span> <span class="n">checkint</span> <span class="o">==</span> <span class="s2">&quot;int8&quot;</span><span class="p">:</span>
+        <span class="n">dmap</span><span class="p">[</span><span class="n">dmap</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dmap</span><span class="p">[</span><span class="n">dmap</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999</span>
+
+    <span class="k">return</span> <span class="n">dmap</span></div>
 
 <div class="viewcode-block" id="counted"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.checks.counted">[docs]</a><span class="k">def</span> <span class="nf">counted</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    count number of times a subroutine is called</span>
-
-<span class="sd">    :param fn:</span>
-<span class="sd">    :return: number of times the subroutine is called</span>
+<span class="sd">    Decorator to count the number of times a function is called.</span>
+<span class="sd">    </span>
+<span class="sd">    This decorator adds a call counter to any function, which is useful</span>
+<span class="sd">    for tracking how many times validation functions are executed during</span>
+<span class="sd">    model initialization and for generating sequential output.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn : callable</span>
+<span class="sd">        Function to be wrapped with call counting functionality</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    callable</span>
+<span class="sd">        Wrapped function with added &#39;called&#39; attribute for call count</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The wrapper function maintains the original function name and adds</span>
+<span class="sd">    a &#39;called&#39; attribute that increments each time the function is invoked.</span>
+<span class="sd">    This is particularly useful for the checkmap function to provide</span>
+<span class="sd">    sequential numbering in validation output.</span>
+<span class="sd">    </span>
+<span class="sd">    The call counter starts at 0 and increments before each function call.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">wrapper</span><span class="o">.</span><span class="n">called</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -207,21 +314,58 @@
 
 
 <div class="viewcode-block" id="checkmap"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.checks.checkmap">[docs]</a><span class="nd">@counted</span>
-<span class="k">def</span> <span class="nf">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="n">flagmap</span><span class="p">,</span> <span class="n">flagcompress</span><span class="p">,</span> <span class="n">mapC</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="nb">map</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    check maps if the fit to the mask map</span>
-
-<span class="sd">    :param name: name of the variable in settingsfile</span>
-<span class="sd">    :param value: filename of the variable</span>
-<span class="sd">    :param map: data (either a number or a 1D array)</span>
-<span class="sd">    :param flagmap: indicates a 1D array or a number</span>
-<span class="sd">    :param flagcompress: is there a compressed map available</span>
-<span class="sd">    :param mapC: compressed map</span>
-<span class="sd">    :return: -</span>
-
-<span class="sd">    Todo:</span>
-<span class="sd">        still to improve, this is work in progress!</span>
+<span class="sd">    Comprehensive validation and diagnostic reporting for CWatM input data.</span>
+<span class="sd">    </span>
+<span class="sd">    This function performs detailed validation of spatial and scalar input data,</span>
+<span class="sd">    comparing against mask requirements and providing comprehensive statistics.</span>
+<span class="sd">    It supports reference dataset comparison and generates detailed reports.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the variable as specified in settings file</span>
+<span class="sd">    value : str  </span>
+<span class="sd">        Filename or path of the input data</span>
+<span class="sd">    map : numpy.ndarray or scalar</span>
+<span class="sd">        Input data - either spatial array or scalar value</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function provides comprehensive diagnostics including:</span>
+<span class="sd">    - Spatial dimensions and cell counts</span>
+<span class="sd">    - Data validity against mask requirements</span>
+<span class="sd">    - Statistical summaries (min, mean, max)</span>
+<span class="sd">    - Zero and non-zero value counts</span>
+<span class="sd">    - File creation dates and version comparison</span>
+<span class="sd">    - Reference dataset validation when available</span>
+<span class="sd">    </span>
+<span class="sd">    For spatial data, the function:</span>
+<span class="sd">    - Decompresses 1D arrays to 2D for analysis</span>
+<span class="sd">    - Validates coverage against the model mask</span>
+<span class="sd">    - Handles extreme values and missing data</span>
+<span class="sd">    - Compares valid cell counts with mask requirements</span>
+<span class="sd">    </span>
+<span class="sd">    Output is formatted as CSV-compatible text with headers generated</span>
+<span class="sd">    on first call. Results are stored globally for batch reporting.</span>
+<span class="sd">    </span>
+<span class="sd">    The function integrates with CWatM&#39;s version control system to</span>
+<span class="sd">    compare input data against reference datasets when available.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">load_global_attribute</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">nc_file</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">attribute_name</span> <span class="ow">in</span> <span class="n">nc_file</span><span class="o">.</span><span class="n">ncattrs</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">nc_file</span><span class="o">.</span><span class="n">getncattr</span><span class="p">(</span><span class="n">attribute_name</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">input2str</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -233,102 +377,230 @@
                 <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">inp</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">inp</span><span class="si">:</span><span class="s1">.2E</span><span class="si">}</span><span class="s1">&#39;</span>
+        
+    <span class="c1"># ------------------------</span>
+    <span class="c1"># if args[] is a netcdf then load this and analyse</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;checkargs&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;loadinput&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.nc&quot;</span><span class="p">:</span>
+            <span class="c1"># load discharge netcdf but only attribute version_inputfiles</span>
+            <span class="n">ver_input</span> <span class="o">=</span> <span class="n">load_global_attribute</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s2">&quot;version_inputfiles&quot;</span><span class="p">)</span>
+            <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;loadinput&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;refvalue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># put information on input data into dictorary</span>
+            <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;checkinput&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="n">ver_input</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pair</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="k">continue</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">date1</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">date1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;checkinput&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">date1</span>
+
+
+
+
 
     <span class="c1"># ----------------------------------</span>
+    <span class="c1"># stored inputdate with date (addtoversiondate in data_handling.py)</span>
+    <span class="c1"># (name, value, map):</span>
+
+    <span class="n">inputver</span> <span class="o">=</span><span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="c1"># dictorary with each file and date</span>
+    <span class="n">inputv</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">inputver</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">inputv</span><span class="p">[</span><span class="n">vv</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">vv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">+</span> <span class="n">vv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+
     <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">]</span>
-    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="o">-</span><span class="mi">37</span><span class="p">:])</span>
+    <span class="c1">#s.append(os.path.dirname(value))</span>
+    <span class="n">iv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iv</span><span class="p">)</span>
+    <span class="c1"># check for filename and get date</span>
+    <span class="n">createdate</span> <span class="o">=</span> <span class="n">inputv</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">iv</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">createdate</span><span class="p">)</span>
+
+    <span class="c1"># if a reference inputfile is used</span>
+    <span class="k">if</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;refvalue&#39;</span><span class="p">]:</span>
+        <span class="n">refdate</span> <span class="o">=</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;checkinput&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">iv</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">refdate</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">refdate</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">refdate</span> <span class="o">==</span> <span class="n">createdate</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;False&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+    <span class="c1"># evaluate maps</span>
+    <span class="c1"># if it is notr a number but a map (.tif, .nc, .map)</span>
+    <span class="n">flagmap</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">flagmap</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">mapshape</span> <span class="o">=</span> <span class="nb">map</span><span class="o">.</span><span class="n">shape</span>
+        <span class="c1"># ifr compressed -&gt; decompress</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mapshape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">map</span> <span class="o">=</span> <span class="n">decompress</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+            <span class="n">mapshape</span> <span class="o">=</span> <span class="nb">map</span><span class="o">.</span><span class="n">shape</span>
 
     <span class="k">if</span> <span class="n">flagmap</span><span class="p">:</span>
+        <span class="c1"># if smaller than 0 or bigger than 1e20 =&gt; nan</span>
+        <span class="nb">map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">map</span><span class="o">&lt;-</span><span class="mi">100</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="nb">map</span><span class="p">)</span>
+        <span class="nb">map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">map</span> <span class="o">&gt;</span> <span class="mf">1e20</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="nb">map</span><span class="p">)</span>
+        <span class="n">mapshape</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span> <span class="o">+</span> <span class="n">input2str</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">mapshape</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span> <span class="o">+</span> <span class="n">input2str</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">mapshape</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1">#maskinfo[&#39;mask&#39;]</span>
+        <span class="c1"># check if there are less valid cells than there should be compared to maskmap</span>
+        <span class="c1"># reverse maskmap -&gt; every valid cell has a True</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">]</span>
+        <span class="c1"># count number of must cells</span>
+        <span class="n">numbermask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+        <span class="n">vmap</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+        <span class="n">andmap</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="n">vmap</span>
+        <span class="c1"># count number of cell in map</span>
+        <span class="n">numbermap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">andmap</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">flagcompress</span><span class="p">):</span>
-            <span class="n">mapshape</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;x&quot;</span> <span class="o">+</span> <span class="n">input2str</span><span class="p">(</span><span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">numbernonmv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">))</span>  <span class="c1"># count nonmissing values</span>
-            <span class="n">numbermv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">))</span>  <span class="c1"># count missing value (np.nan)</span>
-            <span class="c1">#numbernan = &quot;-&quot;</span>
-            <span class="c1">#numberzero = &quot;-&quot;</span>
-            <span class="n">numbernan</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">)))</span>
-            <span class="n">numberzero</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span> <span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span>  <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="nb">map</span><span class="p">))</span>
-            <span class="n">numbernonzero</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="nb">map</span><span class="p">))</span>
+        <span class="c1"># if this is less the the must cell -&gt; problem</span>
+        <span class="n">valid</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+        <span class="k">if</span> <span class="n">numbermap</span> <span class="o">&lt;</span> <span class="n">numbermask</span><span class="p">:</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
 
-            <span class="n">compressF</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
-            <span class="n">minmap</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">)]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-            <span class="n">meanmap</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="n">maxmap</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">)]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">numbernonmv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapC</span><span class="p">))</span>  <span class="c1"># count nonmissing values</span>
-            <span class="n">numbermv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapC</span><span class="p">))</span>  <span class="c1"># count missing value (np.nan)</span>
+        <span class="n">numbernonzero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+        <span class="n">numberzero</span> <span class="o">=</span> <span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
 
-            <span class="n">compressF</span> <span class="o">=</span><span class="s2">&quot;True&quot;</span>
-            <span class="n">numbernan</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapC</span><span class="p">)))</span>
-            <span class="n">numberzero</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="n">mapC</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">mapC</span><span class="p">))</span>
-            <span class="n">numbernonzero</span> <span class="o">=</span> <span class="n">input2str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">mapC</span><span class="p">))</span>
+        <span class="n">minmap</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">)]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">meanmap</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">maxmap</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">map</span><span class="p">)]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 
-            <span class="n">minmap</span> <span class="o">=</span> <span class="n">mapC</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapC</span><span class="p">)]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-            <span class="n">meanmap</span> <span class="o">=</span> <span class="n">mapC</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapC</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="n">maxmap</span> <span class="o">=</span> <span class="n">mapC</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mapC</span><span class="p">)]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="n">numbernonmv</span><span class="p">))</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="n">numbermv</span><span class="p">))</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="n">mapshape</span><span class="p">))</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compressF</span><span class="p">)</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numbernan</span><span class="p">)</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numberzero</span><span class="p">)</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numbernonzero</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapshape</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">numbermap</span><span class="p">)))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="n">numberzero</span><span class="p">))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="n">numbernonzero</span><span class="p">))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    &quot;</span><span class="p">)</span>
         <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="n">minmap</span><span class="p">))</span>
         <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="n">meanmap</span><span class="p">))</span>
         <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="n">maxmap</span><span class="p">))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
+    <span class="c1"># if it is a number</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>  <span class="c1"># CompressF</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input2str</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">map</span><span class="p">)))</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c1">#s.append(input2str(float(map)))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
 
-    <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;30&quot;</span><span class="p">,</span><span class="s2">&quot;&lt;40&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">]</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span><span class="s2">&quot;File/Value&quot;</span><span class="p">,</span><span class="s2">&quot;nonMV&quot;</span><span class="p">,</span><span class="s2">&quot;MV&quot;</span><span class="p">,</span> <span class="s2">&quot;lon-lat&quot;</span><span class="p">,</span><span class="s2">&quot;Compress&quot;</span><span class="p">,</span><span class="s2">&quot;MV-comp&quot;</span><span class="p">,</span><span class="s2">&quot;Zero-comp&quot;</span><span class="p">,</span><span class="s2">&quot;NonZero&quot;</span><span class="p">,</span><span class="s2">&quot;min&quot;</span><span class="p">,</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span><span class="s2">&quot;max&quot;</span><span class="p">,</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span><span class="s2">&quot;x2&quot;</span><span class="p">,</span><span class="s2">&quot;x3&quot;</span><span class="p">]</span>
+
+
+    <span class="c1"># if it is checked against a discharge...nc</span>
+    <span class="k">if</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;refvalue&#39;</span><span class="p">]:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;30&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;80&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;20&quot;</span><span class="p">,</span><span class="s2">&quot;&lt;20&quot;</span><span class="p">,</span><span class="s2">&quot;&lt;10&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;80&quot;</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;File/Value&quot;</span><span class="p">,</span> <span class="s2">&quot;Create Date&quot;</span><span class="p">,</span><span class="s2">&quot;Ref Date&quot;</span><span class="p">,</span><span class="s2">&quot;Same Date&quot;</span><span class="p">,</span> <span class="s2">&quot;x-y&quot;</span><span class="p">,</span> <span class="s2">&quot;number valid&quot;</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="p">,</span> <span class="s2">&quot;Zero values&quot;</span><span class="p">,</span> <span class="s2">&quot;NonZero&quot;</span><span class="p">,</span><span class="s2">&quot;-----&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;Path&quot;</span><span class="p">]</span>
+    <span class="c1"># or without comparsion</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&lt;30&quot;</span><span class="p">,</span><span class="s2">&quot;&lt;80&quot;</span><span class="p">,</span><span class="s2">&quot;&lt;20&quot;</span>   <span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&gt;11&quot;</span><span class="p">,</span><span class="s2">&quot;&lt;80&quot;</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span><span class="s2">&quot;File/Value&quot;</span><span class="p">,</span><span class="s2">&quot;Create Date&quot;</span><span class="p">,</span> <span class="s2">&quot;x-y&quot;</span><span class="p">,</span> <span class="s2">&quot;number valid&quot;</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="p">,</span> <span class="s2">&quot;Zero values&quot;</span><span class="p">,</span> <span class="s2">&quot;NonZero&quot;</span><span class="p">,</span><span class="s2">&quot;-----&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;Path&quot;</span><span class="p">]</span>
+
+    <span class="c1"># if checkmap is called for the first time</span>
     <span class="k">if</span> <span class="n">checkmap</span><span class="o">.</span><span class="n">called</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---------------------------------------------&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nonMV:     non missing value in 2D map&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MV:        missing value in 2D map&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lon-lat:   longitude x latitude of 2D map&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CompressV: 2D is compressed to 1D?&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MV-comp:   missing value in 1D&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Zero-comp: Number of 0 in 1D&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NonZero:   Number of non 0 in 1D&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;min:       minimum in 1D (or 2D)&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean:      mean in 1D (or 2D)&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;max:       maximum in 1D (or 2D)&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---------------------------------------------&quot;</span><span class="p">)</span>
-
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        s1= &quot;----\n&quot;</span>
+<span class="sd">        s1 += &quot;nonMV,non missing value in 2D map\n&quot;</span>
+<span class="sd">        s1 += &quot;MV,missing value in 2D map\n&quot;</span>
+<span class="sd">        s1 += &quot;lon-lat,longitude x latitude of 2D map\n&quot;</span>
+<span class="sd">        s1 += &quot;CompressV,2D is compressed to 1D?\n&quot;</span>
+<span class="sd">        s1 += &quot;MV-comp,missing value in 1D\n&quot;</span>
+<span class="sd">        s1 += &quot;Zero-comp,Number of 0 in 1D\n&quot;</span>
+<span class="sd">        s1 += &quot;NonZero,Number of non 0 in 1D\n&quot;</span>
+<span class="sd">        s1 += &quot;min,minimum in 1D (or 2D)\n&quot;</span>
+<span class="sd">        s1 += &quot;mean,mean in 1D (or 2D)\n&quot;</span>
+<span class="sd">        s1 += &quot;max,maximum in 1D (or 2D)\n&quot;</span>
+<span class="sd">        s1 += &quot;-----\n&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">s1</span> <span class="o">=</span><span class="s2">&quot;&quot;</span>
+        <span class="c1"># put all the header (keys) in a text line</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)):</span>
+            <span class="n">s1</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:{</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}}</span><span class="s1">&#39;</span>
             <span class="k">if</span> <span class="n">i</span><span class="o">&lt;</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-               <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:{</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">end</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">s1</span> <span class="o">+=</span> <span class="s2">&quot;,&quot;</span>
             <span class="k">else</span><span class="p">:</span>
-               <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:{</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">s1</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>
+        <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">s1</span>
 
+    <span class="c1"># put all the values in a text file</span>
+    <span class="n">s2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)):</span>
+        <span class="n">s2</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:{</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}}</span><span class="s1">&#39;</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:{</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">end</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">s2</span> <span class="o">+=</span> <span class="s2">&quot;,&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:{</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-
-
-    <span class="c1">#print(&quot;%-30s%-40s%11i%11i%11i%11i%14.2f%14.2f%14.2f&quot; %(s[0],s[1][-39:],s[2],s[3],s[8],s[7],s[4],s[5],s[6]))</span>
-    <span class="c1">#print(&quot;%-30s%-40s%11s%11s%11s%11s%14s%14s%14s&quot; % (s[0], s[1][-39:], s[2], s[3], s[8], s[7], s[4], s[5], s[6]))</span>
+            <span class="n">s2</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">s2</span>
+    <span class="n">s2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">checkmap</span><span class="o">.</span><span class="n">called</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">s2</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="n">s2</span><span class="p">)</span>
 
     <span class="k">return</span></div>
+
+<div class="viewcode-block" id="save_check"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.checks.save_check">[docs]</a><span class="k">def</span> <span class="nf">save_check</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Save validation results to CSV file.</span>
+<span class="sd">    </span>
+<span class="sd">    This function writes accumulated validation results from checkmap calls</span>
+<span class="sd">    to a CSV file for external analysis. The output location is determined</span>
+<span class="sd">    from command-line arguments stored in the versioning system.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function handles two argument patterns:</span>
+<span class="sd">    1. Three arguments: settings.ini, reference.nc, output.csv</span>
+<span class="sd">    2. Two arguments: settings.ini, output.csv</span>
+<span class="sd">    </span>
+<span class="sd">    File saving occurs only when:</span>
+<span class="sd">    - Valid arguments are provided with .csv extension</span>
+<span class="sd">    - Validation results have been accumulated in versioning[&#39;check&#39;]</span>
+<span class="sd">    </span>
+<span class="sd">    After saving, the checkmap call counter is reset to 0 for potential</span>
+<span class="sd">    future validation runs. The CSV output includes headers and formatted</span>
+<span class="sd">    data for each validated input.</span>
+<span class="sd">    </span>
+<span class="sd">    The saved file can be analyzed externally to:</span>
+<span class="sd">    - Compare multiple model setups</span>
+<span class="sd">    - Track data quality over time</span>
+<span class="sd">    - Validate input data consistency</span>
+<span class="sd">    - Document model configuration for reproducibility</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">save</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">checkmap</span><span class="o">.</span><span class="n">called</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;checkargs&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.nc&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
+                <span class="n">save</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">savefile</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
+                <span class="n">save</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">savefile</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">savefile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">])</span>
+    <span class="k">return</span></div>
+
+
+
+
+
 
 
 
@@ -343,7 +615,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, IIASA Water Security.
+        &#169; Copyright 2025, IIASA Water Security.
 
     </p>
   </div>
