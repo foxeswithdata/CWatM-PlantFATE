@@ -5,7 +5,7 @@
 Questions and answer forum
 --------------------------
 
-We use a the forum directly on GitHub
+We use the forum directly on GitHub
 
 **Github Forum:** `https://github.com/iiasa/CWatM/discussions <https://github.com/iiasa/CWatM/discussions>`_
 

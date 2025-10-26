@@ -33,13 +33,13 @@ Source code - Community Water Model
    `Source code on Github repository of CWatM <https://github.com/iiasa/CWatM>`_
 
 
-.. warning:: The source code is free, but we can give only limited support, due to limited person power!
+.. warning:: The source code is free, but we provide only limited support, due to limited person power!
 
 
 Contributing to CWatM
 =====================
 
-All contributions, bug findings and even better bug fixes, improvements on documentation, enhancements and ideas are welcome.
+All contributions, bug findings and even better bug fixes, improvements to documentation, enhancements and ideas are welcome.
 We have some principles (see See: :ref:`rst_philosophy`). But if you come up with the right reasoning, we will threw away our principles.
 This to say, we might not always find the time, to answer your ideas, questions,....
 
@@ -54,7 +54,7 @@ Sarah Hanus, University of Zurich, Switzerland, linked OGGM and CWatM:
 
 Hanus, S., Schuster, L., Burek, P., Maussion, F., Wada, Y., and Viviroli, D.: Coupling a large-scale glacier and hydrological model (OGGM v1.5.3 and CWatM V1.08) – towards an improved representation of mountain water resources in global assessments, Geosci. Model Dev., 17, 5123–5144, https://doi.org/10.5194/gmd-17-5123-2024
 
-SnowClimPy
+pySnowClim
 ----------
 
 Abby C. Lute and Aranildo Lima and her/his team coupled CWatM with a sophisticated energy-balanced snow model:

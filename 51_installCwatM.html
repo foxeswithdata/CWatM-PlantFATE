@@ -106,7 +106,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#installing-python">Installing Python</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#virtual-environment-setup-optional">Virtual environment setup (optional)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#what-is-virtual-environment">What is virtual environment</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-install-virtual-environment">How to install virtual environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-install-a-virtual-environment">How to install a virtual environment</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#external-libraries">External libraries</a></li>
@@ -229,7 +229,7 @@
 <li><p><a class="reference internal" href="#virtual-environment-setup-optional" id="id4">Virtual environment setup (optional)</a></p>
 <ul>
 <li><p><a class="reference internal" href="#what-is-virtual-environment" id="id5">What is virtual environment</a></p></li>
-<li><p><a class="reference internal" href="#how-to-install-virtual-environment" id="id6">How to install virtual environment</a></p></li>
+<li><p><a class="reference internal" href="#how-to-install-a-virtual-environment" id="id6">How to install a virtual environment</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#external-libraries" id="id7">External libraries</a></p></li>
@@ -260,26 +260,26 @@
 <p>CWatM requires having <a class="reference external" href="https://www.python.org/downloads/">Python</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>CWatM is tested for Python 3.7 - 3.12. We recommend using the most recent stable release .</p>
+<p>CWatM is tested for Python 3.7 - 3.12. We recommend using the most recent stable release.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>a 64-bit version is necessary. This is generally the download default.</p>
+<p>a 64-bit version is necessary. This is generally the default download.</p>
 </div>
-<p>Martin Bednář from Brno University of Technology, Czech Republic wrote the following instruction to install Python and the virtual environment:</p>
+<p>Martin Bednář from Brno University of Technology, Czech Republic wrote the following instructions to install Python and the virtual environment:</p>
 <p>The following text describes instructions regarding the Windows 10 operating system
-(OS). However, there might be some differences in case of different OS.
-The first step is to install the Python language in your machine. You can find the
+(OS). However, there might be some differences in the case of different OS.
+The first step is to install Python on your machine. You can find the
 latest version on the official Python Website. As of October 2024, the latest version of
 Python is 3.13.0. However, it is a relatively new release, thus not all packages might be
-up to date. So scroll a bit down and download the second latest version which should
+up to date. So scroll a bit down and download the second latest version, which should
 be 3.12.7.</p>
 <p>Select the particular Python version and find a 64-bit version for Windows OS and click its name.
-Open the file and followrecommended instructions. Be careful during installation
-of the option to add Python into PATH environmental variable. Figure 2 shows what
+Open the file and follow the recommended instructions. Be careful during the installation
+of the option to add Python to PATH environmental variable. Figure 2 shows what
 to look for during the installation. It is not the end of the world if you did not check
-this checkbox and it is possible to add Python into PATH variable later. However, try to
-do it now as it will make your life way simpler during using python. After successful
+this checkbox and it is possible to add Python to PATH variable later. However, try to
+do it now, as it will make your life way simpler when using python. After successful
 installation open the Command Prompt (use i.e. WIN + R shortcut to open Run window
 and write cmd and hit ENTER.). If you write python -V and hit ENTER. It should return
 the Python version number you just installed.</p>
@@ -288,26 +288,26 @@ the Python version number you just installed.</p>
 <div class="section" id="what-is-virtual-environment">
 <h4><a class="toc-backref" href="#id5">What is virtual environment</a><a class="headerlink" href="#what-is-virtual-environment" title="Permalink to this headline">¶</a></h4>
 <p>The virtual environment enables you to run a clean “separate copy” of Python. Then
-you are able to install packages into this copied python which do not collide which then
+you are able to install packages into this copied Python, which do not collide with the
 “main” Python installed.
 For example, you install Python on your machine and then install a package named
-thebestpackage. Lets say it is a new package, thus its version would be 1.0.0. Then you
-write a code using this package’s functions. After some time you will need to update
-this package because for example in the version 1.2.0 the creator added a new feature
+thebestpackage. Let’s say it is a new package; thus, its version would be 1.0.0. Then you
+write code using this package’s functions. After some time, you will need to update
+this package because for example, in version 1.2.0 the creator added a new feature
 you would like to use. So you update the package. However, the new version changed
-howsome existing function operated and nowyour former code does notwork properly.
-However, if you installed the first version of package in the virtual environment the
+how some existing functions operated and now your former code does not work properly.
+However, if you installed the first version of package in the virtual environment, the
 package would remain at version 1.0.0 even if you update the package on the main
 Python because the virtual environment created a separate copy od Python.
-Therefore, the virtual environment is very usefull in controling the versions of
-packages used for your particular peace of code and if you will need and updated
+Therefore, the virtual environment is very useful in controlling the versions of
+packages used for your particular piece of code and if you will need and updated version
 version for different code (on main Python version or in different virtual environments)
-it will remain functional. Nevertheless, the virtual environment is not necessary and
-is totally optional so if you are not interested you can simply skip this.</p>
+It will remain functional. Nevertheless, the virtual environment is not necessary and
+is totally optional, so if you are not interested, you can simply skip this.</p>
 </div>
-<div class="section" id="how-to-install-virtual-environment">
-<h4><a class="toc-backref" href="#id6">How to install virtual environment</a><a class="headerlink" href="#how-to-install-virtual-environment" title="Permalink to this headline">¶</a></h4>
-<p>There are many ways to setup an virtual environment. Two ways of setup the virtual
+<div class="section" id="how-to-install-a-virtual-environment">
+<h4><a class="toc-backref" href="#id6">How to install a virtual environment</a><a class="headerlink" href="#how-to-install-a-virtual-environment" title="Permalink to this headline">¶</a></h4>
+<p>There are many ways to set up a virtual environment. Two ways of setup the virtual
 environment will be described (The second one was presented in the CwatM Level A1
 Summer School). The first one is using the venv package that is built-in the Python
 since version 3.3. The usage of this package is following:</p>
@@ -316,24 +316,24 @@ since version 3.3. The usage of this package is following:</p>
 <li><p>Open the Command Prompt inside this folder.</p></li>
 <li><p>Use command: python -m venv .venv</p></li>
 </ol>
-<p>Nowyou have create a virtual environment that is named “.venv” inside your folder.
-So, how does that command works? Firstly you tell it to use Python (python) then the
-flag -m tells python to execute a module as script and the module would be venv which
+<p>Now, you have created a virtual environment that is named “.venv” inside your folder.
+So, how does that command work? Firstly, you tell it to use Python (python) then the
+flag -m tells Python to execute a module as a script and the module would be venv, which
 follows. The last part is simply the name of your virtual environment. The name of
 virtual environment can be whatever you like, e. g. “my_project” or you can use a
 path to any folder you like if you do not want to create a virtual environment in the
 destination you are currently in.
 To activate the virtual environment using the venv package you need to open a Command
 Prompt inside your project folder (where the virtual environment was created)
-and use following command (“.venv” is the name of your virtual environment):</p>
+and use the following command (“.venv” is the name of your virtual environment):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="n">Scripts</span><span class="o">/</span><span class="n">Activate</span><span class="o">.</span><span class="n">bat</span>
 </pre></div>
 </div>
 <p>This will start the virtual environment and you will see its name in brackets before
-the next command line (Figure 5). After you activate the virtual environment all the
-packages you install will be installed specificaly in this activated environment and will
+the next command line (Figure 5). After you activate the virtual environment, all the
+packages you install will be installed specifically in this activated environment and will
 not be affected by any changes in the main Python environment. To deactivate the
-virtual environment simply put in Commant Prompt the deactivate command.</p>
+virtual environment, simply put in Command Prompt the deactivate command.</p>
 </div>
 </div>
 <div class="section" id="external-libraries">
@@ -465,7 +465,7 @@ virtual environment simply put in Commant Prompt the deactivate command.</p>
 </div>
 <div class="section" id="installing-cwatm-on-mac">
 <h3><a class="toc-backref" href="#id11">Installing CwatM on Mac</a><a class="headerlink" href="#installing-cwatm-on-mac" title="Permalink to this headline">¶</a></h3>
-<p>We do not run Mac by ourself, therefore this information is from Vlad Amihaesei:</p>
+<p>We do not run Mac by ourselves, therefore this information is from Vlad Amihaesei:</p>
 <p>Install Miniconda to run the CWATM model on a Macbook. After that, open a terminal and type conda create—n “cwatm” python=3.12.7 (you have to specify which version of Python you need to use—it took me a while to notice that). Then, type conda activate cwatm.</p>
 <p>Install the required libraries:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">numpy</span>

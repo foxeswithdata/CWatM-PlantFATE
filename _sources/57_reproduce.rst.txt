@@ -12,7 +12,7 @@ recover or reproduce former runs
 ================================
 
 
-Model results can be reproduced, given the same inputdata, same model version and some environment setting.
+Model results can be reproduced given the same input data, the same model version, and the same environment settings.
 
 Information about the run
 -------------------------
@@ -35,10 +35,10 @@ and in each output netcdf as global attributes:
 More information
 ----------------
 
-In discharge and potential evaporation netcdf output we put additional information to recover and reproduce a run:
+In discharge and potential evaporation netCDF output we put additional information to recover and reproduce a run:
 
 - The complete settingsfile in: version_settingsfile
-- The python version and all libraries with versionnumber: version_modules
+- The Python version and all libraries with version number: version_modules
 - The data used (location of the data is store in the settingsfile). But this gives information about the creation date
 
 .. note:: 
@@ -51,7 +51,7 @@ In discharge and potential evaporation netcdf output we put additional informati
 How to recover
 --------------
 
-| we put a python script in:
+| we put a Python script in:
 | Toolkit\git_commits_versioning\Toolkit\git_commits_versioning
 
 to rebuild the settingsfile and list the information of the Python and data version  

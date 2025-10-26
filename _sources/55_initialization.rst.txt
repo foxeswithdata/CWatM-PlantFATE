@@ -9,12 +9,11 @@ Initialization
 Initialization
 ==============
 
-
-CWatM needs to have estimates of the initial state of the internal storage variables, e.g. the amount of water stored in snow, soil, groundwater etc.
+CWatM needs estimates of the initial state of internal storage variables, e.g., the amount of water stored in snow, soil, groundwater, etc.
 
 There are two possibilities:
 
-1. The initial state of the internal storage variables are unknown and a **first** guess has to be used e.g. all storage variables are half filled.
+1. The initial state of the internal storage variables is unknown and a **first** guess has to be used e.g. all storage variables are half-filled.
 
 2. The initial state is known from a previous run, where the variables are stored at a certain time step. This is called **warm start**
 
@@ -29,12 +28,12 @@ The **warm start** is usful for:
 Example of soil moisture
 ------------------------
 
-The next figure shows the impact of different initial condition on the soil moisture of the lower soil.
-In one of the simulations the soil is initially almost completely saturated. In another simulation the soil is completely dry and the third simulation starts with initial conditions in between the two extremes.
+The next figure shows the impact of different initial conditions on soil moisture in the lower soil.
+In one of the simulations, the soil is initially almost completely saturated. In another simulation, the soil is completely dry and the third simulation starts with initial conditions in between the two extremes.
 
-In the beginning the effect of different initial condition can be seen clearly. But after one year the three curves converge. The **memory** of the lower soil goes back for about one year.
+At first, the effects of different initial conditions are clearly visible. But after one year the three curves converge. The **memory** of the lower soil extends back about 1 year.
 
-For all the initial condition apart from groundwater, lakes and reservoirs the memory is about 12 month. 
+For all initial conditions other than groundwater, lakes, and reservoirs, the memory is about 12 months. 
 
 
 
@@ -43,7 +42,7 @@ For all the initial condition apart from groundwater, lakes and reservoirs the m
 
 Figure: Simulation of soil moisture in the lower soil with different initial conditions
 
-For the groundwater zone a longer warm-up period is needed, because of the slow response of groundwater. Here a rather fast reacting groundwater storage is shown with the three curves coverge after two years.
+For the groundwater zone, a longer warm-up period is needed due to the groundwater's slow response. Here, a rather fast-reacting groundwater storage is shown, with the three curves converging after two years.
 We propose a warm-up of several decades. The longer the better.
 
 .. figure:: _static/init_groundwater.jpg
@@ -56,7 +55,7 @@ Figure: Simulation of groundwater storage with different initial conditions
 Cold start
 ----------
 
-For a **cold start** the values of the storage variables are unknown and set to a "first" guess.
+For a **cold start**, the values of the storage variables are unknown and set to a "first guess".
 A list of variables and their default value for a **cold start** is given below in: :ref:`rst_initialcondition`
 
 Set up a cold start in the settingsfile
@@ -98,13 +97,11 @@ and one or more dates have to be specified in StepInit
 Warm start
 ----------
 
-CWatM can write internal variables to a netCDF file for choosen timesteps. These netCDF files can be used as the initial conditions for a suceeding simulation.
+CWatM can write internal variables to a netCDF file for chosen timesteps. These netCDF files can be used as the initial conditions for a succeeding simulation.
 
-This is useful for establishing a steady-state after a long-term run and then using this steady-state for succeding simulations or for an every day run (forecasting mode)
+This is useful for establishing a steady-state after a long-term run and then using this steady-state for succeeding simulations or for an everyday run (forecasting mode)
 
-.. warning:: If the parameters are changed after a run(especially the groundwater, lakes and reservoir parameters) the stored initial values do not represent the conditions of the storage variables. Stored initial conditions should **not** be used as initial values for a model run with another set of parameters. If you do this during calibration, you will not be able to reproduce the calibration results!
-
-
+.. warning:: If the parameters are changed after a run(especially the groundwater, lakes and reservoir parameters) the stored initial values do not reflect the conditions of the storage variables. Stored initial conditions should **not** be used as initial values for a model run with another set of parameters. If you do this during calibration, you will not be able to reproduce the calibration results!
 
 
 Set up a cold start in the settingsfile

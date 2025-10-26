@@ -239,10 +239,10 @@
 </div>
 <div class="section" id="id1">
 <h2><a class="toc-backref" href="#id4">Initialization</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>CWatM needs to have estimates of the initial state of the internal storage variables, e.g. the amount of water stored in snow, soil, groundwater etc.</p>
+<p>CWatM needs estimates of the initial state of internal storage variables, e.g., the amount of water stored in snow, soil, groundwater, etc.</p>
 <p>There are two possibilities:</p>
 <ol class="arabic simple">
-<li><p>The initial state of the internal storage variables are unknown and a <strong>first</strong> guess has to be used e.g. all storage variables are half filled.</p></li>
+<li><p>The initial state of the internal storage variables is unknown and a <strong>first</strong> guess has to be used e.g. all storage variables are half-filled.</p></li>
 <li><p>The initial state is known from a previous run, where the variables are stored at a certain time step. This is called <strong>warm start</strong></p></li>
 </ol>
 <p>The <strong>warm start</strong> is usful for:</p>
@@ -253,15 +253,15 @@
 </ul>
 <div class="section" id="example-of-soil-moisture">
 <h3><a class="toc-backref" href="#id5">Example of soil moisture</a><a class="headerlink" href="#example-of-soil-moisture" title="Permalink to this headline">¶</a></h3>
-<p>The next figure shows the impact of different initial condition on the soil moisture of the lower soil.
-In one of the simulations the soil is initially almost completely saturated. In another simulation the soil is completely dry and the third simulation starts with initial conditions in between the two extremes.</p>
-<p>In the beginning the effect of different initial condition can be seen clearly. But after one year the three curves converge. The <strong>memory</strong> of the lower soil goes back for about one year.</p>
-<p>For all the initial condition apart from groundwater, lakes and reservoirs the memory is about 12 month.</p>
+<p>The next figure shows the impact of different initial conditions on soil moisture in the lower soil.
+In one of the simulations, the soil is initially almost completely saturated. In another simulation, the soil is completely dry and the third simulation starts with initial conditions in between the two extremes.</p>
+<p>At first, the effects of different initial conditions are clearly visible. But after one year the three curves converge. The <strong>memory</strong> of the lower soil extends back about 1 year.</p>
+<p>For all initial conditions other than groundwater, lakes, and reservoirs, the memory is about 12 months.</p>
 <div class="figure align-default">
 <a class="reference internal image-reference" href="_images/init_soilmoisture.jpg"><img alt="_images/init_soilmoisture.jpg" src="_images/init_soilmoisture.jpg" style="width: 600px;" /></a>
 </div>
 <p>Figure: Simulation of soil moisture in the lower soil with different initial conditions</p>
-<p>For the groundwater zone a longer warm-up period is needed, because of the slow response of groundwater. Here a rather fast reacting groundwater storage is shown with the three curves coverge after two years.
+<p>For the groundwater zone, a longer warm-up period is needed due to the groundwater’s slow response. Here, a rather fast-reacting groundwater storage is shown, with the three curves converging after two years.
 We propose a warm-up of several decades. The longer the better.</p>
 <div class="figure align-default">
 <a class="reference internal image-reference" href="_images/init_groundwater.jpg"><img alt="_images/init_groundwater.jpg" src="_images/init_groundwater.jpg" style="width: 600px;" /></a>
@@ -270,7 +270,7 @@ We propose a warm-up of several decades. The longer the better.</p>
 </div>
 <div class="section" id="cold-start">
 <h3><a class="toc-backref" href="#id6">Cold start</a><a class="headerlink" href="#cold-start" title="Permalink to this headline">¶</a></h3>
-<p>For a <strong>cold start</strong> the values of the storage variables are unknown and set to a “first” guess.
+<p>For a <strong>cold start</strong>, the values of the storage variables are unknown and set to a “first guess”.
 A list of variables and their default value for a <strong>cold start</strong> is given below in: <a class="reference internal" href="#rst-initialcondition"><span class="std std-ref">Initial conditions</span></a></p>
 <div class="section" id="set-up-a-cold-start-in-the-settingsfile">
 <h4><a class="toc-backref" href="#id7">Set up a cold start in the settingsfile</a><a class="headerlink" href="#set-up-a-cold-start-in-the-settingsfile" title="Permalink to this headline">¶</a></h4>
@@ -310,11 +310,11 @@ A list of variables and their default value for a <strong>cold start</strong> is
 </div>
 <div class="section" id="warm-start">
 <h3><a class="toc-backref" href="#id9">Warm start</a><a class="headerlink" href="#warm-start" title="Permalink to this headline">¶</a></h3>
-<p>CWatM can write internal variables to a netCDF file for choosen timesteps. These netCDF files can be used as the initial conditions for a suceeding simulation.</p>
-<p>This is useful for establishing a steady-state after a long-term run and then using this steady-state for succeding simulations or for an every day run (forecasting mode)</p>
+<p>CWatM can write internal variables to a netCDF file for chosen timesteps. These netCDF files can be used as the initial conditions for a succeeding simulation.</p>
+<p>This is useful for establishing a steady-state after a long-term run and then using this steady-state for succeeding simulations or for an everyday run (forecasting mode)</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If the parameters are changed after a run(especially the groundwater, lakes and reservoir parameters) the stored initial values do not represent the conditions of the storage variables. Stored initial conditions should <strong>not</strong> be used as initial values for a model run with another set of parameters. If you do this during calibration, you will not be able to reproduce the calibration results!</p>
+<p>If the parameters are changed after a run(especially the groundwater, lakes and reservoir parameters) the stored initial values do not reflect the conditions of the storage variables. Stored initial conditions should <strong>not</strong> be used as initial values for a model run with another set of parameters. If you do this during calibration, you will not be able to reproduce the calibration results!</p>
 </div>
 <div class="section" id="id2">
 <h4><a class="toc-backref" href="#id10">Set up a cold start in the settingsfile</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>

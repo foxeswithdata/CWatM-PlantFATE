@@ -267,7 +267,7 @@
 <div class="line">in ../CWatM/calibration</div>
 </div>
 <div class="line-block">
-<div class="line">using a distributed evolutionary algorithms in python: DEAP library</div>
+<div class="line">using a distributed evolutionary algorithm in Python: DEAP library</div>
 <div class="line"><a class="reference external" href="http://deap.readthedocs.io/en/master/">http://deap.readthedocs.io/en/master/</a></div>
 <div class="line"><a class="reference external" href="https://github.com/DEAP/deap/blob/master/README.md">https://github.com/DEAP/deap/blob/master/README.md</a></div>
 </div>
@@ -278,12 +278,12 @@
 </div>
 <div class="line-block">
 <div class="line">The calibration tool was created by Hylke Beck 2014 (JRC, Princeton) <a class="reference external" href="mailto:hylkeb&#37;&#52;&#48;princeton&#46;edu">hylkeb<span>&#64;</span>princeton<span>&#46;</span>edu</a></div>
-<div class="line">Thanks Hylke for making it available for use and modification</div>
+<div class="line">Thanks, Hylke for making it available for use and modification</div>
 <div class="line">Modified by Peter Burek</div>
 </div>
 <div class="line-block">
 <div class="line">The submodule Hydrostats was created 2011 by:</div>
-<div class="line">Sat Kumar Tomer (modified by Hylke Beck)</div>
+<div class="line">Sat Kumar Tomer (modified by Hylke Beck, Peter Burek)</div>
 <div class="line">Please see his book <a class="reference external" href="http://greenteapress.com/pythonhydro/pythonhydro.pdf">Python in Hydrology</a></div>
 </div>
 <div class="section" id="calibration-method">
@@ -294,8 +294,8 @@ As objective function we used the modified version of the Kling-Gupta Efficiency
 <div class="line"><img class="math" src="_images/math/56b1b0164260427a8b5ee7d92e1d999d14dc14ee.png" alt="KGE' = 1-\sqrt{(r-1)^2) + (\beta -1)^2 + (\gamma-1)^2 }"/></div>
 <div class="line">where: <img class="math" src="_images/math/73429919231fc13c70486678df7da3b8c325eaac.png" alt="\beta = \frac{\mu_s}{\mu_o}"/>   and    <img class="math" src="_images/math/b7f3fc8966449d8eb9e8d1c4f34b8438d4f37725.png" alt="\gamma = \frac{CV_s}{CV_o} =  \frac{\sigma_s/\mu_s}{\sigma_o/\mu_o}"/></div>
 </div>
-<p>Where CV is the coefficient of variation, μ is the mean streamflow [m3 s−1] and σ is the standard deviation of the streamflow [m3 s−1]. KGE’, r, β and γ have their optimum at unity. The KGE’ measures the Euclidean distance from the ideal point (unity) of the Pareto front and is therefore able to provide an optimal solution which is simultaneously good for bias, flow variability, and correlation. For a discussion of the KGE objective function and its advantages over the often used Nash–Sutcliffe Efficiency (NSE) or the related mean squared error see (Gupta et al., 2009).
-The calibration uses general a population size (µ) of 256, a recombination pool size (λ) of 32.The number of generations was set to 30, which we found was sufficient to achieve convergence for stations</p>
+<p>Where CV is the coefficient of variation, μ is the mean streamflow [m3 s−1] and σ is the standard deviation of the streamflow [m3 s−1]. KGE’, r, β and γ have their optimum at unity. The KGE’ measures the Euclidean distance from the ideal point (unity) of the Pareto front and can therefore provide an optimal solution that is simultaneously good for bias, flow variability, and correlation. For a discussion of the KGE objective function and its advantages over the often used Nash–Sutcliffe Efficiency (NSE) or the related mean squared error, see (Gupta et al., 2009).
+The calibration uses a general population size (µ) of 256, a recombination pool size (λ) of 32.The number of generations was set to 30, which we found was sufficient to achieve convergence for stations</p>
 </div>
 <div class="section" id="suggested-calibration-parameters">
 <h2><a class="toc-backref" href="#id3">Suggested Calibration parameters</a><a class="headerlink" href="#suggested-calibration-parameters" title="Permalink to this headline">¶</a></h2>
@@ -309,7 +309,7 @@ The calibration uses general a population size (µ) of 256, a recombination pool
 <div class="line">4.    Preferential bypass flow: empirical shape parameter of the preferential flow relation</div>
 <div class="line">5.    Infiltration capacity parameter: empirical shape parameter b of the ARNO model</div>
 <div class="line"><strong>Groundwater</strong></div>
-<div class="line">6.    Interflow factor: factor to  adjust the amount which percolates from interflow to groundwater</div>
+<div class="line">6.    Interflow factor: factor to  adjust the amount that percolates from interflow to groundwater</div>
 <div class="line">7.    Recession coefficient factor: factor to adjust the base flow recession constant (the contribution from groundwater to baseflow)</div>
 <div class="line"><strong>Routing</strong></div>
 <div class="line">8.    Runoff concentration factor: a factor for the concentration time of run-off in each grid-cell</div>
@@ -428,7 +428,7 @@ For each run it triggers the run of the hydrological model:</p>
 <div class="line"><strong>3.</strong> The observed discharge has to be provided in an .cvs file e.g. observed_data/lobith2006.csv</div>
 </div>
 <div class="line-block">
-<div class="line">In the template settings the date has to be set, so that the period of observed discharge is between SpinUp and StepEnd</div>
+<div class="line">In the template settingsfile the date has to be set, so that the period of observed discharge is between SpinUp and StepEnd</div>
 </div>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">#-------------------------------------------------------</span>
 <span class="linenos"> 2</span><span class="k">[TIME-RELATED_CONSTANTS]</span>
@@ -447,7 +447,7 @@ For each run it triggers the run of the hydrological model:</p>
 <div class="line"><strong>4.</strong> And empty ../catchments directory needs to be created</div>
 </div>
 <div class="line-block">
-<div class="line"><strong>5.</strong> A few option in the settings.txt have to be adjusted (how many runs?, a first run with standard parameters? etc)</div>
+<div class="line"><strong>5.</strong> A few options in the settings.txt have to be adjusted (how many runs?, a first run with standard parameters? etc)</div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">DEFAULT</span><span class="p">]</span>
 <span class="n">Root</span> <span class="o">=</span> <span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">watmodel</span><span class="o">/</span><span class="n">CWATM</span>
@@ -505,14 +505,14 @@ For each run it triggers the run of the hydrological model:</p>
 <div class="line"><strong>1.</strong> Run the model first to store the pot. evaporation results</div>
 </div>
 <div class="line-block">
-<div class="line">Afterwards use the stored evaporation to run the calibration</div>
+<div class="line">Afterwards, use the stored evaporation to run the calibration</div>
 <div class="line">calc_evaporation = False</div>
 </div>
 <div class="line-block">
-<div class="line"><strong>2.</strong> Run the model and store the last day to be used as initial condition for the calibration runs</div>
+<div class="line"><strong>2.</strong> Run the model and store the last day to be used as an initial condition for the calibration runs</div>
 </div>
 <div class="line-block">
-<div class="line">Best is to use a long term run for this.</div>
+<div class="line">Best is to use a long-term run for this.</div>
 </div>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="linenos">146</span><span class="k">[INITITIAL CONDITIONS]</span>
 <span class="linenos">147</span><span class="c1">#-------------------------------------------------------</span>
@@ -546,9 +546,9 @@ For each run it triggers the run of the hydrological model:</p>
 <h2><a class="toc-backref" href="#id8">Running calibration</a><a class="headerlink" href="#running-calibration" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p>Look into the settings file of the calibration folder.</p></li>
-<li><p>look into runCalibration.bat. If python is in your computer path everything should be ok, otherwise put in the path to python</p></li>
-<li><p>look into templates/runpy.bat. Put the path to python in if necessary</p></li>
-<li><p>look into templates/settings.ini. Put the pathes in a right way that it fits to your computer:</p>
+<li><p>look into runCalibration.bat. If Python is in your computer path everything should be ok, otherwise put in the path to Python</p></li>
+<li><p>look into templates/runpy.bat. Put the path to Python in if necessary</p></li>
+<li><p>look into templates/settings.ini. Put the paths in a right way that it fits your computer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[FILE_PATHS]
 #-------------------------------------------------------
 PathRoot = P:/watmodel/CWatM/calibration_tutorial
@@ -573,7 +573,7 @@ PathMeteo = $(PathRoot)/climate
 <li><p>go for testing (see below)</p></li>
 <li><p>go for testing again (see below)</p></li>
 <li><p>Change use_multiprocessing =1 in settings.txt</p></li>
-<li><p>Run runCalibration.bat and after some time something should appear on your window</p></li>
+<li><p>Run runCalibration.bat and after some time something should appear in your window</p></li>
 </ol>
 </div>
 <div class="section" id="for-testing">
@@ -593,13 +593,13 @@ PathMeteo = $(PathRoot)/climate
 </div>
 <div class="section" id="running-it-on-your-computer">
 <h2><a class="toc-backref" href="#id11">Running it on your computer</a><a class="headerlink" href="#running-it-on-your-computer" title="Permalink to this headline">¶</a></h2>
-<p>It will be really slow on Windows using data on the the server – next step run it on your PC</p>
+<p>It will be really slow on Windows using data on the server – next step run it on your PC</p>
 <ul>
 <li><p>copy the whole folder P:watmodelCWatMcalibration_tutorial to your PC (only 15 GB)</p></li>
 <li><p>(but maybe you have already parts of it on your computer – like the big climate input files)</p></li>
 <li><p>Make it work on your computer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Changing</span> <span class="n">file</span> <span class="n">paths</span> <span class="ow">in</span> <span class="n">templates</span><span class="o">/</span><span class="n">settings</span><span class="o">.</span><span class="n">ini</span><span class="p">,</span> <span class="n">setting</span><span class="o">.</span><span class="n">txt</span>
-<span class="n">Changing</span> <span class="n">the</span> <span class="n">path</span> <span class="k">for</span> <span class="n">python</span> <span class="ow">in</span> <span class="n">runCalibration</span><span class="o">.</span><span class="n">bat</span> <span class="ow">and</span> <span class="n">templates</span><span class="o">/</span><span class="n">runpy</span><span class="o">.</span><span class="n">bat</span>
+<span class="n">Changing</span> <span class="n">the</span> <span class="n">path</span> <span class="k">for</span> <span class="n">Python</span> <span class="ow">in</span> <span class="n">runCalibration</span><span class="o">.</span><span class="n">bat</span> <span class="ow">and</span> <span class="n">templates</span><span class="o">/</span><span class="n">runpy</span><span class="o">.</span><span class="n">bat</span>
 </pre></div>
 </div>
 </li>
@@ -642,8 +642,8 @@ date,yukon_pilot_station
 <li><p>Date format like this year-month-day [yyyy-mm-dd]</p></li>
 <li><p>Separated by a comma</p></li>
 <li><p>Discharge in [m3/s]</p></li>
-<li><p>If a value is missing that is not a problem (as long as the time series is long enough):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">it</span> <span class="n">should</span> <span class="n">like</span> <span class="n">this</span><span class="p">:</span> <span class="p">(</span><span class="n">no</span> <span class="n">value</span> <span class="n">after</span> <span class="n">the</span> <span class="n">comma</span><span class="p">)</span>
+<li><p>If a value is missing, that is not a problem (as long as the time series is long enough):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">it</span> <span class="n">should</span> <span class="n">look</span> <span class="n">like</span> <span class="n">this</span><span class="p">:</span> <span class="p">(</span><span class="n">no</span> <span class="n">value</span> <span class="n">after</span> <span class="n">the</span> <span class="n">comma</span><span class="p">)</span>
 <span class="mi">2002</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span>
 </pre></div>
 </div>
@@ -651,25 +651,25 @@ date,yukon_pilot_station
 <li><p>For each day (or month) a line</p></li>
 </ul>
 <p><strong>Settings.txt</strong></p>
-<p>In the settings file the lines:</p>
+<p>In the settings file, the lines:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ObservedData</span><span class="p">]</span>
 <span class="n">Qtss</span> <span class="o">=</span> <span class="n">observed_data</span><span class="o">/</span><span class="n">zhutuo_2002month</span><span class="o">.</span><span class="n">csv</span>
 <span class="n">Column</span> <span class="o">=</span> <span class="n">zhutuo</span>
 <span class="n">Header</span> <span class="o">=</span> <span class="n">River</span><span class="p">:</span> <span class="n">Yangtze</span>  <span class="n">station</span><span class="p">:</span> <span class="n">Zhutuo</span>
 </pre></div>
 </div>
-<p>Should correspondent to the name and header in the observed discharge.cvs</p>
+<p>Should correspond to the name and header in the observed discharge.cvs</p>
 <p>The lines:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ForcingStart</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span><span class="mi">2002</span>
 <span class="n">ForcingEnd</span> <span class="o">=</span> <span class="mi">31</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">2013</span>
 </pre></div>
 </div>
-<p>Should correspondent to the amount of lines in the observed discharge.cvs</p>
+<p>Should correspond to the number of lines in the observed discharge.cvs</p>
 </div>
 </div>
 <div class="section" id="creating-an-initial-netcdf-file-for-warm-start">
 <h2><a class="toc-backref" href="#id14">Creating an initial netcdf file for warm start</a><a class="headerlink" href="#creating-an-initial-netcdf-file-for-warm-start" title="Permalink to this headline">¶</a></h2>
-<p>It is best to have a long warm up phase especially for groundwater:
+<p>It is best to have a long warm-up phase, especially for groundwater:
 See also: <a class="reference external" href="https://cwatm.github.io/setup.html#initialisation">https://cwatm.github.io/setup.html#initialisation</a></p>
 <p>You can run CWatM for a couple of years (20 years or more) and store the last days storage values in a file. This file can be read in to enable a ‘warm” start</p>
 <ul class="simple">
@@ -692,7 +692,7 @@ See also: <a class="reference external" href="https://cwatm.github.io/setup.html
 <li><p>initLoad =  $(FILE_PATHS:PathRoot)/CWatM_init/testx_19960131.nc</p></li>
 <li><p>Run runpy00_001.bat</p></li>
 </ul>
-<p>If it work then it used the initial file you generate before (that was just a test)</p>
+<p>If it works, then it used the initial file you generated before (that was just a test)</p>
 <p><strong>Now change to:</strong></p>
 <ul class="simple">
 <li><p>StepStart = 1/1/1961</p></li>
@@ -735,11 +735,11 @@ See also: <a class="reference external" href="https://cwatm.github.io/setup.html
 <p>See the .doc file in
 P:watmodelCWatMcalibration_tutorialcalibrationtoolscut_catchmentFor a description:</p>
 <p><strong>Requirements:</strong> PCRASTER:</p>
-<p>We do no need the python version, I think downloading, extracting and setting of the paths in
+<p>We do not need the Python version, I think downloading, extracting and setting of the paths in
 P:watmodelCWatMcalibration_tutorialcalibrationtoolscut_catchmentcatchconfig_win.ini
 Creating the 2 potential evaporation files in advance</p>
-<p>Potential evaporation is Calculated with Penman-Monteith in CWatM, but it is not part of the calibration = there is no change in pot. Evaporation. In order to make the calibration computational faster the results of pot evaporation could be stored and used every time.</p>
-<p>For the 30min this is done already as global map set, but for the 5min these files become too big. So they have to be produced for each basin separately</p>
+<p>Potential evaporation is calculated with the Penman-Monteith equation in CWatM, but it is not part of the calibration—there is no change in pot. Evaporation. To make calibration computation faster, the results of pot evaporation could be stored and reused each time.</p>
+<p>For the 30min, this is already done as a global map set, but for the 5min, these files become too big. So they have to be produced for each basin separately</p>
 <p>Same preparation as for <strong>Creating an initial netcdf file for warm start</strong>  see above
 There should be a folder catchments00_001 with a working run for 001.</p>
 <p><strong>Open the settings-Run_001.init</strong></p>
@@ -752,7 +752,7 @@ OUT_MAP_Daily = ETRef, EWRef
 </pre></div>
 </div>
 <p><strong>Run runpy00_001.bat</strong></p>
-<p>There should be a file ETRef.nc and EWRef in the output directory</p>
+<p>There should be a file ETRef.nc and EWRef in the output directory.</p>
 <p>Rename the files e.g. ETRef.nc to ETRef_yangtze.nc, EWRef.nc to EWRef_yangtze.nc and copy it to PathMeteo (or somewhere else, you have to put the path in)</p>
 <p><strong>Open the settings-Run_001.init</strong></p>
 <p>Change:</p>
@@ -814,7 +814,7 @@ OUT_MAP_Daily = ETRef, EWRef
 </div>
 <div class="section" id="run-the-best-calibration-scenario-upstream">
 <h3><a class="toc-backref" href="#id19">Run the best calibration scenario upstream</a><a class="headerlink" href="#run-the-best-calibration-scenario-upstream" title="Permalink to this headline">¶</a></h3>
-<p>In order to get a long inflow timeserie for the inflow point (here:  Zhutuo)  you need to run the best scenario of the upstream catchment (here: 31_best)</p>
+<p>In order to get a long inflow time series for the inflow point (here:  Zhutuo), you need to run the best scenario of the upstream catchment (here: 31_best)</p>
 <ul>
 <li><p>Change into the folder ../catchments/best</p></li>
 <li><p>Change settings file from:</p>
@@ -872,7 +872,7 @@ InLocal = True
 # if InflowPoints is a map, this flag is to identify if it is global (False) or local (True)
 # observed or simulated input hydrographs as time series [cu m / s]
 # Note: that identifiers in time series have to correspond to InflowPoints
-# can be several timeseries in one file or different files e.g. main.tss mosel.tss
+# can be several time series in one file or different files e.g. main.tss mosel.tss
 QInTS = zhutuo.tss
 </pre></div>
 </div>
@@ -919,7 +919,7 @@ Use initial file for calibration</p>
 </pre></div>
 </div>
 </li>
-<li><p>Run python CAL_5_PARAMETER_MAPS.py</p></li>
+<li><p>Run Python CAL_5_PARAMETER_MAPS.py</p></li>
 </ol>
 </div>
 <div class="section" id="references">

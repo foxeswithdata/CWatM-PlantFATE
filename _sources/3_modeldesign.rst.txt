@@ -229,10 +229,10 @@ Community Model
 
    "Programming Language","Python 3.x with some C++ for computational demanding processes e.g. river routing"
    "Community driven","Open-source but lead by IIASA `GitHub repository <https://github.com/iiasa/CWatM>`_"
-   "Well documented","Documentation, automatic source code documentation `GitHub Docu <https://cwatm.github.io>`_"
+   "Well documented","Documentation, automatic source code documentation"
    "Easy handling","Use of a setting file with all necessary information for the user  :ref:`rst_setting` and  :ref:`rst_metadata`"
    "Multi-platform","Python 3.x on Windows, Mac, Linux, Unix - to be used on different platforms (PC, clusters, super-computers)"
-   "Modular","Processes in subprograms, easy to adapt to the requirements of options/ solutions `Modular structure <https://github.com/CWatM/CWatM>`_"
+   "Modular","Processes in subprograms, easy to adapt to the requirements of options/ solutions"
 
 
 Water Model

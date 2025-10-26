@@ -60,7 +60,7 @@ The netCDF maps can be read with:
 Or time series at specified points
 **********************************
 
-| Timeseries are procuded as ASCII .csv files, which can be read with every text editor or Excel
+| Timeseries are produced as ASCII .csv files, which can be read with every text editor or Excel
 | If you need the old version .tss with you can read with `PCRaster Aquila <http://pcraster.geo.uu.nl/projects/developments/aguila/>`_
 | you need to put reportOldTss = True in [Option]
 
@@ -161,7 +161,7 @@ Variable are e.g. Precipitation, runoff, baseflow
 but also not so common variables as:
 
 - reservoirStorage (amount of water in the reservoirs in [m3])
-- nonIrrReturnFlowFraction (returnflow from domenstic and industrial water use [m3])
+- nonIrrReturnFlowFraction (returnflow from domestic and industrial water use [m3])
 - actualET[1] (actual evapotranspiration from grassland [m/day])
 - ...
 
