@@ -1,0 +1,786 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>13. CWatM Glossary &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="12. Frequently Asked Questions (FAQ)" href="12_faq.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>13. CWatM Glossary</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#a">A</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#b">B</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#c">C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#d">D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#e">E</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#f">F</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#g">G</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#h">H</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i">I</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#k">K</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#l">L</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#m">M</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#n">N</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#o">O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#p">P</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#q">Q</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#r">R</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s">S</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#t">T</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#u">U</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v">V</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#w">W</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#x">X</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#z">Z</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mathematical-equations-and-formulas">Mathematical Equations and Formulas</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><strong>13. CWatM Glossary</strong></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/13_glossary.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cwatm-glossary">
+<h1><strong>13. CWatM Glossary</strong><a class="headerlink" href="#cwatm-glossary" title="Permalink to this headline">¶</a></h1>
+<dl class="glossary simple">
+</dl>
+<div class="section" id="a">
+<h2>A<a class="headerlink" href="#a" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Actual Evapotranspiration</strong></dt><dd><p>The real amount of water transferred from land to atmosphere through evaporation from soil and water surfaces plus transpiration from plants. Distinguished from potential evapotranspiration by accounting for water availability limitations.</p>
+</dd>
+<dt><strong>ARNO Model</strong></dt><dd><p>A rainfall-runoff model used in CWatM for calculating infiltration capacity. The saturated fraction of a grid cell that contributes to surface runoff is related to the overall soil moisture through a nonlinear distribution function.</p>
+</dd>
+<dt><strong>ARNO Beta Parameter</strong></dt><dd><p>Empirical shape parameter of the ARNO model for infiltration capacity. Calibration range: 0.01-1.0.</p>
+</dd>
+<dt><strong>Aquifer</strong></dt><dd><p>Underground layer of water-bearing permeable rock or sediment from which groundwater can be extracted. In CWatM, represented in the groundwater storage component.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="b">
+<h2>B<a class="headerlink" href="#b" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Bankfull Discharge</strong></dt><dd><p>The flow rate at which water begins to overflow the channel banks onto the floodplain. Used in channel geometry calculations.</p>
+</dd>
+<dt><strong>Base Flow</strong></dt><dd><p>The portion of streamflow that comes from groundwater discharge rather than direct surface runoff. Calculated using: Qbase = Storage / (Tbase × Rcoeff), where Tbase is groundwater reservoir constant.</p>
+</dd>
+<dt><strong>Baseflow Recession Coefficient</strong></dt><dd><p>Factor controlling the rate at which groundwater discharges to streams during dry periods. Calibration range: 0.1-10.0.</p>
+</dd>
+<dt><strong>Budyko Framework</strong></dt><dd><p>A conceptual framework used for calibrating hydrological models, relating the long-term water and energy balance.</p>
+</dd>
+<dt><strong>Bulk Density</strong></dt><dd><p>Mass of dry soil per unit volume (kg/m³). Used in pedotransfer functions to derive soil hydraulic parameters.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="c">
+<h2>C<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Calibration</strong></dt><dd><p>Process of adjusting model parameters to improve agreement between simulated and observed data. CWatM uses DEAP (Distributed Evolutionary Algorithms in Python) for automated calibration.</p>
+</dd>
+<dt><strong>Capillary Rise</strong></dt><dd><p>Upward movement of water from groundwater to soil layers through capillary action. In CWatM, occurs when groundwater level is within 0-5m of the surface.</p>
+</dd>
+<dt><strong>Carrying Capacity (K)</strong></dt><dd><p>In population models coupled with water resources, the maximum population that can be sustained by available water resources.</p>
+</dd>
+<dt><strong>CF 1.6 Convention</strong></dt><dd><p>Climate and Forecast metadata convention for NetCDF files, ensuring standardized variable names, units, and metadata structure.</p>
+</dd>
+<dt><strong>Channel Geometry</strong></dt><dd><p>Physical dimensions of river channels including width, depth, slope, and length. Derived using regression functions with discharge or upstream area.</p>
+</dd>
+<dt><strong>Channel Storage</strong></dt><dd><p>Volume of water temporarily stored in river channels during routing processes.</p>
+</dd>
+<dt><strong>Climate Forcing</strong></dt><dd><p>Meteorological input data driving the hydrological model, including precipitation, temperature, radiation, humidity, and wind speed.</p>
+</dd>
+<dt><strong>CMIP6</strong></dt><dd><p>Coupled Model Intercomparison Project Phase 6 - Provides standardized climate model outputs for historical and future scenarios.</p>
+</dd>
+<dt><strong>Condensation</strong></dt><dd><p>Process where water vapor changes to liquid water, forming clouds, dew, or fog. Occurs when air reaches its dew point temperature.</p>
+</dd>
+<dt><strong>Crop Factor (Kc)</strong></dt><dd><p>Coefficient relating crop evapotranspiration to reference evapotranspiration. Calibration range: 0.8-3.0.</p>
+</dd>
+<dt><strong>CWatM</strong></dt><dd><p>Community Water Model - Open-source hydrological model simulating the water cycle daily at global and local scales, developed by IIASA.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="d">
+<h2>D<a class="headerlink" href="#d" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>D8 Flow Model</strong></dt><dd><p>Eight-direction flow routing algorithm where each grid cell drains to one of its eight neighboring cells based on steepest descent.</p>
+</dd>
+<dt><strong>DDM30</strong></dt><dd><p>0.5° drainage direction map used for ISIMIP compliance in global hydrological modeling.</p>
+</dd>
+<dt><strong>DEAP</strong></dt><dd><p>Distributed Evolutionary Algorithms in Python - Optimization framework used for automatic calibration of CWatM parameters.</p>
+</dd>
+<dt><strong>Degree-Day Factor</strong></dt><dd><p>Snowmelt coefficient (m °C⁻¹d⁻¹) relating temperature above freezing to snowmelt rate. Used in temperature-index snowmelt modeling.</p>
+</dd>
+<dt><strong>Depression Storage</strong></dt><dd><p>Water accumulated in surface depressions that must be filled before runoff occurs.</p>
+</dd>
+<dt><strong>Dew Point</strong></dt><dd><p>Temperature at which water vapor condenses into liquid water at constant pressure and water content.</p>
+</dd>
+<dt><strong>Discharge</strong></dt><dd><p>Volume of water flowing through a river cross-section per unit time (m³/s). Primary output variable for model validation.</p>
+</dd>
+<dt><strong>Drainage Basin</strong></dt><dd><p>Geographic area draining to a common outlet point. Also called watershed or catchment.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="e">
+<h2>E<a class="headerlink" href="#e" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>ECHO Model</strong></dt><dd><p>Hydro-economic model developed by IIASA for water infrastructure investment analysis, designed to couple with CWatM.</p>
+</dd>
+<dt><strong>Environmental Flow Requirements</strong></dt><dd><p>Minimum water flows needed to maintain aquatic ecosystems and their services. Incorporated as constraints in water allocation.</p>
+</dd>
+<dt><strong>EPIC Model</strong></dt><dd><p>Environmental Policy Integrated Climate model for crop yield simulation, can be coupled with CWatM.</p>
+</dd>
+<dt><strong>Evaporation</strong></dt><dd><p>Process of water changing from liquid to vapor state. Energy-driven process primarily powered by solar radiation.</p>
+</dd>
+<dt><strong>Evapotranspiration (ET)</strong></dt><dd><p>Combined water loss from evaporation from soil and water surfaces plus transpiration from plants. Can be calculated using Penman-Monteith or Hargreaves methods.</p>
+</dd>
+<dt><strong>EWEMBI</strong></dt><dd><p>EartH2Observe, WFDEI and ERA-Interim data Merged and Bias-corrected for ISIMIP - Climate forcing dataset.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="f">
+<h2>F<a class="headerlink" href="#f" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>FAIR Principles</strong></dt><dd><p>Findable, Accessible, Interoperable, Reusable - Data management standards implemented in CWatM for tracking data sources and model versions.</p>
+</dd>
+<dt><strong>Field Capacity</strong></dt><dd><p>Soil moisture content after excess gravitational water has drained (typically 2-3 days after saturation).</p>
+</dd>
+<dt><strong>FloPy</strong></dt><dd><p>Python package for creating, running, and post-processing MODFLOW-based groundwater models. Used for CWatM-MODFLOW coupling.</p>
+</dd>
+<dt><strong>Forcing Data</strong></dt><dd><p>External meteorological inputs driving the hydrological model, including precipitation, temperature, radiation, humidity.</p>
+</dd>
+<dt><strong>Fossil Water</strong></dt><dd><p>Groundwater that has been stored in aquifers for more than 10,000 years with minimal recharge.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="g">
+<h2>G<a class="headerlink" href="#g" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>GCM (General Circulation Model)</strong></dt><dd><p>Global climate models providing projections of future climate conditions under different emission scenarios.</p>
+</dd>
+<dt><strong>GDAL</strong></dt><dd><p>Geospatial Data Abstraction Library - Software library for reading and writing raster and vector geospatial data formats.</p>
+</dd>
+<dt><strong>Git Hash</strong></dt><dd><p>Unique identifier for specific version of model code in version control system, stored in output files for reproducibility.</p>
+</dd>
+<dt><strong>GLOBIOM</strong></dt><dd><p>Global Biosphere Management Model - IIASA’s land use and agriculture model that can be coupled with CWatM.</p>
+</dd>
+<dt><strong>GNU GPL</strong></dt><dd><p>GNU General Public License - Open source license under which CWatM is released.</p>
+</dd>
+<dt><strong>Groundwater Recession Constant</strong></dt><dd><p>Time constant (days) controlling the rate of baseflow from groundwater storage. Key calibration parameter.</p>
+</dd>
+<dt><strong>Groundwater Recharge</strong></dt><dd><p>Process of water moving from surface through soil to replenish groundwater aquifers.</p>
+</dd>
+<dt><strong>Groundwater Storage</strong></dt><dd><p>Volume of water stored in aquifers below the water table. Modeled using linear reservoir approach or MODFLOW coupling.</p>
+</dd>
+<dt><strong>GSWP3</strong></dt><dd><p>Global Soil Wetness Project Phase 3 - Provides meteorological forcing data for land surface modeling.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="h">
+<h2>H<a class="headerlink" href="#h" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Hargreaves Method</strong></dt><dd><p>Temperature-based method for estimating potential evapotranspiration when radiation data is unavailable.</p>
+</dd>
+<dt><strong>HydroLakes Database</strong></dt><dd><p>Global database providing information on 1.4 million lakes and reservoirs with surface area ≥10 hectares.</p>
+</dd>
+<dt><strong>HydroSheds</strong></dt><dd><p>High-resolution hydrological data providing river networks, watershed boundaries, drainage directions, and flow accumulations.</p>
+</dd>
+<dt><strong>Hydrograph</strong></dt><dd><p>Graph showing discharge variation over time at a specific location in a river.</p>
+</dd>
+<dt><strong>Hydrological Cycle</strong></dt><dd><p>Continuous movement of water through Earth’s systems: atmosphere, land surface, soil, groundwater, and oceans.</p>
+</dd>
+<dt><strong>Hydrological Processes</strong></dt><dd><p>Physical mechanisms of water movement including precipitation, evaporation, infiltration, percolation, runoff, and groundwater flow.</p>
+</dd>
+<dt><strong>HWSD</strong></dt><dd><p>Harmonized World Soil Database version 1.2 - Global soil property database at 30 arc-second resolution.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="i">
+<h2>I<a class="headerlink" href="#i" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>IIASA</strong></dt><dd><p>International Institute for Applied Systems Analysis - Austrian research institute that developed and maintains CWatM.</p>
+</dd>
+<dt><strong>Infiltration</strong></dt><dd><p>Process of water entering soil from the surface. Rate depends on soil properties, moisture content, and surface conditions.</p>
+</dd>
+<dt><strong>Infiltration Capacity Parameter</strong></dt><dd><p>Empirical shape parameter controlling maximum infiltration rate in the ARNO model.</p>
+</dd>
+<dt><strong>Initial Conditions</strong></dt><dd><p>Starting values for state variables (soil moisture, groundwater, snow, etc.) at simulation beginning.</p>
+</dd>
+<dt><strong>Interception</strong></dt><dd><p>Capture and temporary storage of precipitation on vegetation surfaces before reaching the ground.</p>
+</dd>
+<dt><strong>Interception Storage</strong></dt><dd><p>Water held on leaf and stem surfaces that eventually evaporates without reaching the soil.</p>
+</dd>
+<dt><strong>Interflow</strong></dt><dd><p>Lateral subsurface flow occurring above the water table in unsaturated soil zones.</p>
+</dd>
+<dt><strong>Interflow Factor</strong></dt><dd><p>Calibration parameter controlling water percolation from interflow to groundwater. Range: 0.33-3.0.</p>
+</dd>
+<dt><strong>ISIMIP</strong></dt><dd><p>Inter-Sectoral Impact Model Intercomparison Project - Framework for comparing global impact model outputs.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="k">
+<h2>K<a class="headerlink" href="#k" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Kinematic Wave Routing</strong></dt><dd><p>Simplified solution of Saint-Venant equations for channel flow routing, assuming momentum equation can be approximated by uniform flow formula.</p>
+</dd>
+<dt><strong>KGE (Kling-Gupta Efficiency)</strong></dt><dd><p>Model performance metric addressing limitations of Nash-Sutcliffe Efficiency by considering correlation, bias, and variability.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="l">
+<h2>L<a class="headerlink" href="#l" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Lake A Factor</strong></dt><dd><p>Calibration parameter for lake area calculations. Range: 0.333-3.0.</p>
+</dd>
+<dt><strong>Lake Eva Factor</strong></dt><dd><p>Calibration parameter for lake evaporation rates. Range: 0.5-3.0.</p>
+</dd>
+<dt><strong>Lake/Reservoir Storage</strong></dt><dd><p>Water volume stored in lakes and reservoirs, differentiated between “big” (≥100 km² or upstream area ≥5000 km²) and “small”.</p>
+</dd>
+<dt><strong>Lambert W-Function</strong></dt><dd><p>Mathematical function used to solve transcendental equations like the Colebrook-White equation for flow friction.</p>
+</dd>
+<dt><strong>Land Cover</strong></dt><dd><p>Physical material at Earth’s surface (forest, grassland, urban, water, etc.) affecting hydrological processes.</p>
+</dd>
+<dt><strong>Lateral Flow</strong></dt><dd><p>Horizontal movement of water through soil, particularly important in sloped terrain. Included in MODFLOW coupling.</p>
+</dd>
+<dt><strong>Linear Reservoir</strong></dt><dd><p>Conceptual model where outflow is proportional to storage, used for groundwater and routing calculations.</p>
+</dd>
+<dt><strong>LISFLOOD</strong></dt><dd><p>European flood forecasting model that shares some methodological approaches with CWatM.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="m">
+<h2>M<a class="headerlink" href="#m" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Manning’s Coefficient (n)</strong></dt><dd><p>Roughness coefficient for open channel flow. Ranges from 0.025 (smooth lowland rivers) to 0.075 (rough mountain streams).</p>
+</dd>
+<dt><strong>MARINA Model</strong></dt><dd><p>Model for water quality assessment, particularly for nutrients and eutrophication, can be coupled with CWatM.</p>
+</dd>
+<dt><strong>Mask Map</strong></dt><dd><p>Binary grid defining the spatial domain for model calculations and output.</p>
+</dd>
+<dt><strong>MESSAGE Model</strong></dt><dd><p>IIASA’s energy system optimization model for energy planning, designed to couple with CWatM.</p>
+</dd>
+<dt><strong>MODFLOW</strong></dt><dd><p>Modular finite-difference groundwater flow model that can be coupled with CWatM for detailed groundwater simulation.</p>
+</dd>
+<dt><strong>Modified Puls Method</strong></dt><dd><p>Reservoir routing method used in CWatM for simulating lake and reservoir operations.</p>
+</dd>
+<dt><strong>Modular Structure</strong></dt><dd><p>Software architecture where functionality is divided into independent, interchangeable modules.</p>
+</dd>
+<dt><strong>MSWEP</strong></dt><dd><p>Multi-Source Weighted-Ensemble Precipitation - Global precipitation dataset combining gauge, satellite, and reanalysis data.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="n">
+<h2>N<a class="headerlink" href="#n" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Nash-Sutcliffe Efficiency (NSE)</strong></dt><dd><p>Statistical measure of model performance comparing simulated to observed values. Range: -∞ to 1 (perfect fit).</p>
+</dd>
+<dt><strong>NetCDF4</strong></dt><dd><p>Network Common Data Form version 4 - Self-describing, portable data format for array-oriented scientific data.</p>
+</dd>
+<dt><strong>Normal Storage Limit</strong></dt><dd><p>Threshold parameter for reservoir operations defining normal operating levels. Calibration range: 0.15-0.85.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="o">
+<h2>O<a class="headerlink" href="#o" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Open Source</strong></dt><dd><p>Software with source code freely available for use, modification, and distribution. CWatM uses GNU GPL license.</p>
+</dd>
+<dt><strong>Outflow</strong></dt><dd><p>Water leaving a system boundary, such as discharge from a watershed or release from a reservoir.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="p">
+<h2>P<a class="headerlink" href="#p" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>PC-Raster Framework</strong></dt><dd><p>Environmental modeling framework that influenced CWatM’s modular structure with initialization and dynamic classes.</p>
+</dd>
+<dt><strong>Pedotransfer Function</strong></dt><dd><p>Mathematical relationship deriving soil hydraulic parameters from easily measured soil properties like texture and organic matter.</p>
+</dd>
+<dt><strong>Penman-Monteith Equation</strong></dt><dd><p>Physically-based method for calculating potential evapotranspiration using energy balance and aerodynamic principles.</p>
+</dd>
+<dt><strong>Percolation</strong></dt><dd><p>Downward movement of water through soil and rock layers under gravity.</p>
+</dd>
+<dt><strong>PGMFD</strong></dt><dd><p>Princeton Global Meteorological Forcing Dataset - Historical climate forcing data for land surface modeling.</p>
+</dd>
+<dt><strong>Porosity</strong></dt><dd><p>Fraction of soil or rock volume occupied by pore spaces that can hold water or air.</p>
+</dd>
+<dt><strong>Potential Evapotranspiration (PET)</strong></dt><dd><p>Maximum water loss possible from a surface with unlimited water supply under given atmospheric conditions.</p>
+</dd>
+<dt><strong>Precipitation</strong></dt><dd><p>Any form of water falling from atmosphere to Earth’s surface: rain, snow, sleet, hail.</p>
+</dd>
+<dt><strong>Preferential Flow</strong></dt><dd><p>Rapid water movement through macropores bypassing the soil matrix. Controlled by empirical shape parameter.</p>
+</dd>
+<dt><strong>Python</strong></dt><dd><p>High-level programming language in which CWatM is written, allowing platform independence and easy modification.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="q">
+<h2>Q<a class="headerlink" href="#q" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Qbase</strong></dt><dd><p>Baseflow or outflow from groundwater zone in CWatM’s linear reservoir groundwater model.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="r">
+<h2>R<a class="headerlink" href="#r" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>RCP (Representative Concentration Pathway)</strong></dt><dd><p>Greenhouse gas concentration trajectories adopted by IPCC for climate modeling (e.g., RCP2.6, RCP4.5, RCP6.0, RCP8.5).</p>
+</dd>
+<dt><strong>Recharge</strong></dt><dd><p>Process of water addition to groundwater from precipitation or surface water infiltration.</p>
+</dd>
+<dt><strong>Recession Coefficient</strong></dt><dd><p>Parameter controlling the rate of decrease in baseflow during dry periods. Key calibration parameter.</p>
+</dd>
+<dt><strong>Reservoir Operation</strong></dt><dd><p>Rules governing water storage and release from reservoirs for flood control, water supply, and other purposes.</p>
+</dd>
+<dt><strong>Residence Time</strong></dt><dd><p>Average time a water molecule spends in a particular reservoir (atmosphere ~10 days, oceans ~3000 years).</p>
+</dd>
+<dt><strong>Residual Water Content (θr)</strong></dt><dd><p>Minimum volumetric water content remaining in soil at high suction pressures.</p>
+</dd>
+<dt><strong>Return Flow</strong></dt><dd><p>Water returning to rivers or groundwater after use in irrigation, industry, or domestic sectors.</p>
+</dd>
+<dt><strong>River Network</strong></dt><dd><p>System of connected stream channels draining a landscape, represented as grid cell connections in CWatM.</p>
+</dd>
+<dt><strong>River Routing</strong></dt><dd><p>Process of moving water through channel networks using hydraulic equations.</p>
+</dd>
+<dt><strong>Root Zone</strong></dt><dd><p>Soil depth from which plants extract water. Variable by vegetation type and soil properties.</p>
+</dd>
+<dt><strong>Rosetta</strong></dt><dd><p>Pedotransfer function model deriving Van Genuchten parameters from basic soil properties.</p>
+</dd>
+<dt><strong>Runoff</strong></dt><dd><p>Water flowing over land surface toward streams after exceeding infiltration capacity or saturation.</p>
+</dd>
+<dt><strong>Runoff Concentration</strong></dt><dd><p>Process of collecting surface runoff within a grid cell before routing. Uses triangular weighting function in CWatM.</p>
+</dd>
+<dt><strong>Runoff Concentration Factor</strong></dt><dd><p>Calibration parameter for time of concentration within grid cells. Range: 0.1-5.0.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="s">
+<h2>S<a class="headerlink" href="#s" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Saint-Venant Equations</strong></dt><dd><p>Partial differential equations describing unsteady open channel flow. CWatM uses kinematic wave approximation.</p>
+</dd>
+<dt><strong>Saturated Hydraulic Conductivity (Ks)</strong></dt><dd><p>Rate of water movement through fully saturated soil (m/day).</p>
+</dd>
+<dt><strong>Saturated Water Content (θs)</strong></dt><dd><p>Maximum volumetric water content when all pore spaces are water-filled.</p>
+</dd>
+<dt><strong>Settings File</strong></dt><dd><p>Configuration file (.ini format) containing all model parameters, paths, and options for a CWatM simulation.</p>
+</dd>
+<dt><strong>Snow Water Equivalent (SWE)</strong></dt><dd><p>Depth of water that would result if snowpack melted completely.</p>
+</dd>
+<dt><strong>Snowmelt Coefficient</strong></dt><dd><p>Degree-day factor relating temperature to snowmelt rate. Calibration range: 0.001-0.007 m °C⁻¹d⁻¹.</p>
+</dd>
+<dt><strong>Soil Depth Factor</strong></dt><dd><p>Multiplier for adjusting modeled soil depth. Calibration range: 0.8-1.8.</p>
+</dd>
+<dt><strong>Soil Moisture</strong></dt><dd><p>Water content in unsaturated soil zones, typically expressed as volumetric fraction.</p>
+</dd>
+<dt><strong>Spatial Resolution</strong></dt><dd><p>Grid cell size for model calculations. CWatM supports 30 arcsec to 0.5 degrees.</p>
+</dd>
+<dt><strong>Spin-up Period</strong></dt><dd><p>Initial simulation period allowing model states to equilibrate before analysis period.</p>
+</dd>
+<dt><strong>SSP (Shared Socioeconomic Pathway)</strong></dt><dd><p>Scenarios of socioeconomic global changes used in climate impact assessments (SSP1-SSP5).</p>
+</dd>
+<dt><strong>Stomata</strong></dt><dd><p>Microscopic pores on leaf surfaces controlling gas exchange and transpiration.</p>
+</dd>
+<dt><strong>Storage</strong></dt><dd><p>Volume of water held in various reservoirs: soil, groundwater, lakes, snow, channels.</p>
+</dd>
+<dt><strong>Stream Flow</strong></dt><dd><p>Water discharge through river channels, synonymous with discharge.</p>
+</dd>
+<dt><strong>Subdaily Time Step</strong></dt><dd><p>Computational time intervals smaller than one day, used for soil moisture and routing calculations (10 steps/day).</p>
+</dd>
+<dt><strong>Surface Runoff</strong></dt><dd><p>Water flowing over ground surface when rainfall rate exceeds infiltration capacity.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="t">
+<h2>T<a class="headerlink" href="#t" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Temporal Resolution</strong></dt><dd><p>Time step for model calculations. CWatM uses daily steps with subdaily steps for certain processes.</p>
+</dd>
+<dt><strong>Total Water Storage (TWS)</strong></dt><dd><p>Sum of all water stored in a system: surface water, soil moisture, groundwater, snow, ice.</p>
+</dd>
+<dt><strong>Transpiration</strong></dt><dd><p>Water vapor release from plants through stomata. Major component of evapotranspiration.</p>
+</dd>
+<dt><strong>Triangular Weighting Function</strong></dt><dd><p>Mathematical function used to distribute runoff concentration over time within grid cells.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="u">
+<h2>U<a class="headerlink" href="#u" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Unsaturated Hydraulic Conductivity</strong></dt><dd><p>Rate of water movement through partially saturated soil, varies with water content.</p>
+</dd>
+<dt><strong>Unsaturated Zone</strong></dt><dd><p>Soil region above water table where pore spaces contain both air and water.</p>
+</dd>
+<dt><strong>Upstream Area</strong></dt><dd><p>Total land area draining to a specific point in the river network.</p>
+</dd>
+<dt><strong>Urban Water Cycle</strong></dt><dd><p>Modified hydrological cycle in cities including water supply, wastewater, stormwater management.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="v">
+<h2>V<a class="headerlink" href="#v" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Van Genuchten Model</strong></dt><dd><p>Mathematical model describing soil water retention curve and unsaturated hydraulic conductivity relationships.</p>
+</dd>
+<dt><strong>Vapor Pressure Deficit</strong></dt><dd><p>Difference between saturation vapor pressure and actual vapor pressure, driving evapotranspiration.</p>
+</dd>
+<dt><strong>Variable Infiltration Capacity (VIC)</strong></dt><dd><p>Hydrological model using variable infiltration curve. Compared with CWatM in model intercomparisons.</p>
+</dd>
+<dt><strong>Vegetation Dynamics</strong></dt><dd><p>Temporal changes in plant communities affecting water cycle through changed evapotranspiration and interception.</p>
+</dd>
+<dt><strong>Version Control</strong></dt><dd><p>System for tracking changes to model code. CWatM uses Git with version hashes stored in outputs.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="w">
+<h2>W<a class="headerlink" href="#w" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Warm Start</strong></dt><dd><p>Initializing model simulation with saved state variables from previous run rather than default values.</p>
+</dd>
+<dt><strong>Water Balance</strong></dt><dd><p>Accounting equation ensuring conservation of mass: Inputs = Outputs + Change in Storage.</p>
+</dd>
+<dt><strong>Water Demand</strong></dt><dd><p>Human water requirements from irrigation, domestic, industrial, and energy sectors.</p>
+</dd>
+<dt><strong>Water Stress</strong></dt><dd><p>Condition where water demand exceeds available supply, affecting plant growth or human activities.</p>
+</dd>
+<dt><strong>Water Table</strong></dt><dd><p>Upper boundary of saturated groundwater zone where pore water pressure equals atmospheric pressure.</p>
+</dd>
+<dt><strong>Water Use</strong></dt><dd><p>Actual water consumption by various sectors, may be less than demand due to availability constraints.</p>
+</dd>
+<dt><strong>Water Year</strong></dt><dd><p>12-month period for hydrological accounting, often October-September in Northern Hemisphere.</p>
+</dd>
+<dt><strong>Watershed</strong></dt><dd><p>Land area draining to common outlet, synonymous with drainage basin or catchment.</p>
+</dd>
+<dt><strong>WFDEI</strong></dt><dd><p>WATCH Forcing Data methodology applied to ERA-Interim reanalysis - Climate forcing dataset.</p>
+</dd>
+<dt><strong>Wilting Point</strong></dt><dd><p>Soil moisture content below which plants cannot extract water, leading to permanent wilting.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="x">
+<h2>X<a class="headerlink" href="#x" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>xarray</strong></dt><dd><p>Python library for working with labeled multi-dimensional arrays, particularly NetCDF data.</p>
+</dd>
+<dt><strong>XML Metadata</strong></dt><dd><p>Extensible Markup Language files containing structured metadata about model configuration and data.</p>
+</dd>
+<dt><strong>xmipy</strong></dt><dd><p>Python package for coupling models using the eXtended Model Interface, used in CWatM-MODFLOW coupling.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="z">
+<h2>Z<a class="headerlink" href="#z" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>Zenodo</strong></dt><dd><p>Research data repository where CWatM datasets and model versions are archived with DOIs.</p>
+</dd>
+<dt><strong>Zero Flow</strong></dt><dd><p>Condition of no discharge in ephemeral or intermittent streams during dry periods.</p>
+</dd>
+<dt><strong>Zone of Aeration</strong></dt><dd><p>Unsaturated zone above water table where pore spaces contain both air and water.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="mathematical-equations-and-formulas">
+<h2>Mathematical Equations and Formulas<a class="headerlink" href="#mathematical-equations-and-formulas" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><strong>Water Balance Equation</strong></dt><dd><p>Basic conservation equation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P</span> <span class="o">=</span> <span class="n">ET</span> <span class="o">+</span> <span class="n">R</span> <span class="o">+</span> <span class="n">ΔS</span>
+</pre></div>
+</div>
+<p>Where:
+- P = Precipitation
+- ET = Evapotranspiration
+- R = Runoff
+- ΔS = Change in Storage</p>
+</dd>
+<dt><strong>Baseflow Equation</strong></dt><dd><p>Linear reservoir outflow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Qbase = Storage / (Tbase × Rcoeff)
+</pre></div>
+</div>
+<p>Where:
+- Qbase = Baseflow
+- Storage = Groundwater storage
+- Tbase = Groundwater reservoir constant (days)
+- Rcoeff = Recession coefficient</p>
+</dd>
+<dt><strong>Van Genuchten Equation</strong></dt><dd><p>Soil water retention curve:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">θ</span><span class="p">(</span><span class="n">h</span><span class="p">)</span> <span class="o">=</span> <span class="n">θr</span> <span class="o">+</span> <span class="p">(</span><span class="n">θs</span> <span class="o">-</span> <span class="n">θr</span><span class="p">)</span> <span class="o">/</span> <span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">α</span><span class="o">|</span><span class="n">h</span><span class="o">|</span><span class="p">)</span><span class="o">^</span><span class="n">n</span><span class="p">]</span><span class="o">^</span><span class="n">m</span>
+</pre></div>
+</div>
+<p>Where:
+- θ = Volumetric water content
+- h = Pressure head
+- θr = Residual water content
+- θs = Saturated water content
+- α, n, m = Empirical parameters</p>
+</dd>
+<dt><strong>Manning’s Equation</strong></dt><dd><p>Open channel flow velocity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>V = (1/n) × R^(2/3) × S^(1/2)
+</pre></div>
+</div>
+<p>Where:
+- V = Velocity
+- n = Manning’s roughness coefficient
+- R = Hydraulic radius
+- S = Channel slope</p>
+</dd>
+<dt><strong>Penman-Monteith Equation</strong></dt><dd><p>Reference evapotranspiration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ET₀ = [Δ(Rn-G) + ρₐcₚ(eₛ-eₐ)/rₐ] / [Δ + γ(1 + rₛ/rₐ)]
+</pre></div>
+</div>
+<p>Where:
+- ET₀ = Reference evapotranspiration
+- Δ = Slope of saturation vapor pressure curve
+- Rn = Net radiation
+- G = Soil heat flux
+- ρₐ = Air density
+- cₚ = Specific heat of air
+- eₛ-eₐ = Vapor pressure deficit
+- rₐ = Aerodynamic resistance
+- rₛ = Surface resistance
+- γ = Psychrometric constant</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This glossary covers CWatM version 1.10 (October 2025). Terms and definitions may evolve with model updates. For current information, consult <a class="reference external" href="https://cwatm.iiasa.ac.at/">https://cwatm.iiasa.ac.at/</a></p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p>CWatM Documentation: <a class="reference external" href="https://cwatm.iiasa.ac.at/">https://cwatm.iiasa.ac.at/</a></p></li>
+<li><p>GitHub Repository: <a class="reference external" href="https://github.com/iiasa/CWatM">https://github.com/iiasa/CWatM</a></p></li>
+<li><p>IIASA Water Security: <a class="reference external" href="https://iiasa.ac.at/models-tools-data/cwatm">https://iiasa.ac.at/models-tools-data/cwatm</a></p></li>
+<li><p>Model Manual: Burek et al. (2020) IIASA Report</p></li>
+</ul>
+</div>
+<p class="rubric">References</p>
+<p>Burek P., et al. (2020). Development of the Community Water Model (CWatM v1.104) – a high-resolution hydrological model for global and regional assessment of integrated water resources management. Geoscientific Model Development 13(7): 3267-3298.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="12_faq.html" class="btn btn-neutral float-left" title="12. Frequently Asked Questions (FAQ)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

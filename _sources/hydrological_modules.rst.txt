@@ -229,7 +229,7 @@ water_demand.wastewater
 
 **Calculate waste water**
 
-.. automodule:: cwatm.hydrological_modules.wastewater
+.. automodule:: cwatm.hydrological_modules.water_demand.wastewater
     :members:
     :undoc-members:
     :show-inheritance:

@@ -122,6 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="11_forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
 </ul>
 
             
@@ -372,8 +374,6 @@
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.routing_reservoirs.routing_kinematic">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     cwatm.hydrological_modules.routing_reservoirs.routing_sub
 
@@ -381,6 +381,8 @@
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.routing_reservoirs.routing_sub">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     cwatm.hydrological_modules.runoff_concentration
 
@@ -442,6 +444,13 @@
 
       <ul>
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.water_demand.livestock">module</a>
+</li>
+      </ul></li>
+      <li>
+    cwatm.hydrological_modules.water_demand.wastewater
+
+      <ul>
+        <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.water_demand.wastewater">module</a>
 </li>
       </ul></li>
       <li>
@@ -624,6 +633,8 @@
 </li>
         <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.livestock.waterdemand_livestock.dynamic">(cwatm.hydrological_modules.water_demand.livestock.waterdemand_livestock method)</a>
 </li>
+        <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater.dynamic">(cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater method)</a>
+</li>
         <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.water_demand.water_demand.dynamic">(cwatm.hydrological_modules.water_demand.water_demand.water_demand method)</a>
 </li>
         <li><a href="management_modules.html#cwatm.management_modules.output.outputTssMap.dynamic">(cwatm.management_modules.output.outputTssMap method)</a>
@@ -640,6 +651,8 @@
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.evaporationPot.evaporationPot.dynamic_5">dynamic_5() (cwatm.hydrological_modules.evaporationPot.evaporationPot method)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.landcoverType.landcoverType.dynamic_fracIrrigation">dynamic_fracIrrigation() (cwatm.hydrological_modules.landcoverType.landcoverType method)</a>
+</li>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater.dynamic_init">dynamic_init() (cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater method)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs.dynamic_inloop">dynamic_inloop() (cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs method)</a>
 </li>
@@ -745,6 +758,8 @@
         <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.irrigation.waterdemand_irrigation.initial">(cwatm.hydrological_modules.water_demand.irrigation.waterdemand_irrigation method)</a>
 </li>
         <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.livestock.waterdemand_livestock.initial">(cwatm.hydrological_modules.water_demand.livestock.waterdemand_livestock method)</a>
+</li>
+        <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater.initial">(cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater method)</a>
 </li>
         <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.water_demand.water_demand.initial">(cwatm.hydrological_modules.water_demand.water_demand.water_demand method)</a>
 </li>
@@ -862,6 +877,8 @@
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.water_demand.irrigation">cwatm.hydrological_modules.water_demand.irrigation</a>
 </li>
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.water_demand.livestock">cwatm.hydrological_modules.water_demand.livestock</a>
+</li>
+        <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.water_demand.wastewater">cwatm.hydrological_modules.water_demand.wastewater</a>
 </li>
         <li><a href="hydrological_modules.html#module-cwatm.hydrological_modules.water_demand.water_demand">cwatm.hydrological_modules.water_demand.water_demand</a>
 </li>
@@ -1067,13 +1084,15 @@
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.environmental_need.waterdemand_environmental_need">waterdemand_environmental_need (class in cwatm.hydrological_modules.water_demand.environmental_need)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.industry.waterdemand_industry">waterdemand_industry (class in cwatm.hydrological_modules.water_demand.industry)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.irrigation.waterdemand_irrigation">waterdemand_irrigation (class in cwatm.hydrological_modules.water_demand.irrigation)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.livestock.waterdemand_livestock">waterdemand_livestock (class in cwatm.hydrological_modules.water_demand.livestock)</a>
+</li>
+      <li><a href="hydrological_modules.html#cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater">waterdemand_wastewater (class in cwatm.hydrological_modules.water_demand.wastewater)</a>
 </li>
       <li><a href="hydrological_modules.html#cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs.wetland_readarea">wetland_readarea() (cwatm.hydrological_modules.lakes_reservoirs.lakes_reservoirs method)</a>
 </li>

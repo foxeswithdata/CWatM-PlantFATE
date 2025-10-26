@@ -42,7 +42,7 @@ CWatM functions follow this form, to ensure that the code is not redundant and e
 
 
 FAIR(R) software
-=============
+===================
 
 The FAIR principles were published in 2016 in: 
 
@@ -151,7 +151,7 @@ Calculation of potential Evaporation
 Using Penman-Montheith equations based on FAO 56
 
 Calculation of rain, snow, and snowmelt
-***********************************
+***************************************
 
 Using day-degree approach with up to 10 vertical layers
 Including snow- and glacier melt.

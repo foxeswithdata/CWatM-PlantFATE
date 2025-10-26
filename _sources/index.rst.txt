@@ -54,4 +54,5 @@ Community Water Model
    92_testing.rst   
    10_zambezi.rst
    11_forum.rst
-
+   12_faq.rst
+   13_glossary.rst

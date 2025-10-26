@@ -194,8 +194,7 @@ Output variables - a list
 | .
 | As output variable, use without self.var.
 
-A list of possible output variables are in: 
-:ref:`rst_variables`
+A list of possible output variables are in: **6 References** - List of variables.
 
 
 

@@ -3,8 +3,10 @@
 List of output variables
 ########################
 
+.. contents:: 
+    :depth: 0
 
-.. _rst_variables:
+.. _variables:
 
 This list of variables gives an overview of possible output variables.
 

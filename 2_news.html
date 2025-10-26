@@ -145,6 +145,8 @@
 <li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="11_forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
 </ul>
 
             
@@ -650,11 +652,11 @@ added: precipitation_sn as variable: = precipitation + snow correction with snow
 <li><p>Revert “update_modflowpreprocess”</p></li>
 </ul>
 <p>This reverts commit b4670111fcf83a839b6962eb7963ee131cdf3470.
-* Revert “update_modflowpreprocess”
+Revert “update_modflowpreprocess”
 This reverts commit b4670111fcf83a839b6962eb7963ee131cdf3470.
-* Revert “Update wastewater extensive threshold”
+Revert “Update wastewater extensive threshold”
 This reverts commit 9d476fc9ef8351009af1f58a6bc95eecedaee33a.
-* update extensive treatment thershold</p>
+update extensive treatment thershold</p>
 <div class="line-block">
 <div class="line"><strong>Commit:  0d4cdc3</strong></div>
 <div class="line">Date:    2024-07-11</div>
@@ -778,20 +780,15 @@ Bugfix for EvapWaterBodyM and totalET_WB. EvapWaterBodyM had some missing values
 <div class="line">Date:    2024-04-29</div>
 <div class="line">Message: - Changed output tss</div>
 </div>
-<p>Instead of the pcraster tss default out put for timeseries is now a .csv format with real date
-If you want to use th old output OPTION: reportOldTss = False
+<p>-Instead of the pcraster tss default out put for timeseries is now a .csv format with real date
+-If you want to use th old output OPTION: reportOldTss = False
 - Changed unit for netcdf for month and year. Pandas does not recognize “Month since …”.  So instead of month it is “”Day since …” with the first day of a month (or year)
 - Removed from OPTION: (now default)</p>
-<blockquote>
-<div><p>writeNetcdfStack = True, reportMap = True, reportTss = True</p>
-</div></blockquote>
 <ul class="simple">
-<li><p>save netcdf only the valid cells in Option (faster save and load for split global run)</p></li>
-</ul>
-<p>netcdfasindex = True
-- If GitPython is installed as a library - the git version is recorded in .nc and .csv
-- Snow: Snowcover fraction of each cell can be output: SnowFraction</p>
-<ul class="simple">
+<li><p>writeNetcdfStack = True, reportMap = True, reportTss = True</p></li>
+<li><p>save netcdf only the valid cells in Option (faster save and load for split global run) netcdfasindex = True</p></li>
+<li><p>If GitPython is installed as a library - the git version is recorded in .nc and .csv</p></li>
+<li><p>Snow: Snowcover fraction of each cell can be output: SnowFraction</p></li>
 <li><p>Bugfix: totalET_WB (total act evapotrans + evapo from rivers and lakes/res) was wrongly computed) , now fixed (hopefully)</p></li>
 <li><p>EvapoChannel  was in unit [m3] before-&gt; now changed to [m] (as all the other evaporation terms)</p></li>
 <li><p>EvapWaterBodyM is now the evaporation of a lake/reservoir for each gridcell (before it was the summed up evaporation of a lake at the outlet point)</p></li>
@@ -1202,20 +1199,14 @@ line 293 was outcommented: self.var.initmap = {}</p>
 <div class="line">Date:    2023-08-08</div>
 <div class="line">Message: Bugfixes</div>
 </div>
-<p>Change run_cwatm.py in the mainfolder: added import mainwarm to be used by calibration
-Waterdemand.py: line 1908ff</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
+<li><p>Change run_cwatm.py in the mainfolder: added import mainwarm to be used by calibration</p></li>
+<li><p>Waterdemand.py: line 1908ff</p></li>
 <li><p>self.var.reservoir_releases[dateVar[‘doy’]-1]  -&gt; put in dateVar[‘doy’]-1 -&gt; it runs from 0-365 and works in leap year</p></li>
 <li><p>np.put(resStorage_maxFracForIrrigation, self.var.decompress_LR, resStorage_maxFracForIrrigationC) -&gt; to have decompressed data</p></li>
-</ul>
-</div></blockquote>
-<dl class="simple">
-<dt>lakes_reservoirs.py: line 600</dt><dd><ul class="simple">
+<li><p>lakes_reservoirs.py: line 600</p></li>
 <li><p>self.var.reservoir_releases[dateVar[‘doy’]-1]  -&gt; dateVar[‘doy’]-1  -&gt; from 0 to 365</p></li>
 </ul>
-</dd>
-</dl>
 <div class="line-block">
 <div class="line"><strong>Commit:  47bb8de</strong></div>
 <div class="line">Date:    2023-08-04</div>
@@ -1601,9 +1592,9 @@ data_handling.py</p>
 </div>
 <ul class="simple">
 <li><p>Separation of groundwater modules with/out MODFLOW</p></li>
+<li><p>Zonal abstractions option for limitAbstraction=False</p></li>
+<li><p>General organising</p></li>
 </ul>
-<p>-ðŸžZonal abstractions option for limitAbstraction=False
-- General organising</p>
 <div class="line-block">
 <div class="line"><strong>Commit:  e0c4af8</strong></div>
 <div class="line">Date:    2022-07-02</div>
@@ -1994,13 +1985,17 @@ Deleted: includeIndusDomesDemand, ModFlow_modelV5.py</p>
 <ul class="simple">
 <li><p>library panda,xlrd, openpyxl loaded with importlib only if includeCrops = True</p></li>
 </ul>
-<p>Groundwater
-- library flopy, xmipy loaded with importlib only if modflow_coupling = True
-- modflow_coupling = True  back to OPTIONs
-- include verbose in Groundwater_Modflow to make run not so noisy</p>
-<p>General
-- new layout for documentation
-- output during run goes in same line</p>
+<p>Groundwater</p>
+<ul class="simple">
+<li><p>library flopy, xmipy loaded with importlib only if modflow_coupling = True</p></li>
+<li><p>modflow_coupling = True  back to OPTIONs</p></li>
+<li><p>include verbose in Groundwater_Modflow to make run not so noisy</p></li>
+</ul>
+<p>General</p>
+<ul class="simple">
+<li><p>new layout for documentation</p></li>
+<li><p>output during run goes in same line</p></li>
+</ul>
 <div class="line-block">
 <div class="line"><strong>Commit:  9d28c8a</strong></div>
 <div class="line">Date:    2021-06-01</div>
@@ -3604,11 +3599,8 @@ bug: checked water balance</p>
 <div class="line">Date:    2017-07-13</div>
 <div class="line">Message: chg: soil part - using different maps -&gt; map folder has to be updated!</div>
 </div>
-<dl class="simple">
-<dt>chg: meteo maps do not have to be merge before -&gt; stack of maps can</dt><dd><p>be used</p>
-</dd>
-</dl>
-<p>add: inflow to a catchment (still to work on)</p>
+<p>chg: meteo maps do not have to be merge before -&gt; stack of maps can be used
+add: inflow to a catchment (still to work on)</p>
 <div class="line-block">
 <div class="line"><strong>Commit:  f3621b2</strong></div>
 <div class="line">Date:    2017-05-23</div>
@@ -3661,11 +3653,8 @@ new: readme.md for github</p>
 <div class="line-block">
 <div class="line"><strong>Commit:  1ec94aa</strong></div>
 <div class="line">Date:    2017-04-06</div>
-<div class="line">Message: soil - Copy (2).py- removed bug in calculation of soildepth</div>
+<div class="line">Message: soil - Copy (2).py- removed bug in calculation of soildepth. Change calc of arno beta</div>
 </div>
-<ul class="simple">
-<li><p>change calc of arno beta</p></li>
-</ul>
 <div class="line-block">
 <div class="line"><strong>Commit:  c05ca8d</strong></div>
 <div class="line">Date:    2017-04-06</div>
@@ -3701,19 +3690,19 @@ Laxenburg, Austria</p>
 <div class="line-block">
 <div class="line"><strong>Commit:  2d7ef63</strong></div>
 <div class="line">Date:    2017-02-02</div>
-<div class="line">Message: - New kinematic routing
-- c++ routine include
- TODO: make it usable for linu/Unix</div>
+<div class="line">Message: - New kinematic routing</div>
 </div>
 <ul class="simple">
+<li><p>c++ routine include</p></li>
+<li><p>TODO: make it usable for linu/Unix</p></li>
 <li><p>removed pcraster GIS commands</p></li>
 <li><p>new output routine for time series</p></li>
 <li><p>Budyko output.html</p></li>
 <li><p>corrected bug in snow modules</p></li>
 <li><p>corrected bug in init read/save module</p></li>
 <li><p>WORKING on lakes/reservoirs</p></li>
+<li><p>TODO: bug in reading maskmap from coordinates</p></li>
 </ul>
-<p>TODO: bug in reading maskmap from coordinates</p>
 <div class="line-block">
 <div class="line"><strong>Commit:  758ad8b</strong></div>
 <div class="line">Date:    2017-01-17</div>

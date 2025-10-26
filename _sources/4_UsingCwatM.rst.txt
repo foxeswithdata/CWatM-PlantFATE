@@ -3,7 +3,6 @@
 **4. Using CWatM**
 ##################
 
-
 .. contents:: 
     :depth: 3
 

@@ -405,11 +405,11 @@ Update options for crop transpiration disaggregation
 * Update wastewater extensive threshold
 * Revert "update_modflowpreprocess"
 This reverts commit b4670111fcf83a839b6962eb7963ee131cdf3470.
-* Revert "update_modflowpreprocess"
+Revert "update_modflowpreprocess"
 This reverts commit b4670111fcf83a839b6962eb7963ee131cdf3470.
-* Revert "Update wastewater extensive threshold"
+Revert "Update wastewater extensive threshold"
 This reverts commit 9d476fc9ef8351009af1f58a6bc95eecedaee33a.
-* update extensive treatment thershold
+update extensive treatment thershold
 
 
 | **Commit:  0d4cdc3**
@@ -532,13 +532,14 @@ Bugfix for EvapWaterBodyM and totalET_WB. EvapWaterBodyM had some missing values
 | **Commit:  328313c**
 | Date:    2024-04-29
 | Message: - Changed output tss
-Instead of the pcraster tss default out put for timeseries is now a .csv format with real date
-If you want to use th old output OPTION: reportOldTss = False
+
+-Instead of the pcraster tss default out put for timeseries is now a .csv format with real date
+-If you want to use th old output OPTION: reportOldTss = False
 - Changed unit for netcdf for month and year. Pandas does not recognize "Month since ...".  So instead of month it is ""Day since ..." with the first day of a month (or year)
 - Removed from OPTION: (now default)
- writeNetcdfStack = True, reportMap = True, reportTss = True
-- save netcdf only the valid cells in Option (faster save and load for split global run)
-netcdfasindex = True
+
+- writeNetcdfStack = True, reportMap = True, reportTss = True
+- save netcdf only the valid cells in Option (faster save and load for split global run) netcdfasindex = True
 - If GitPython is installed as a library - the git version is recorded in .nc and .csv
 - Snow: Snowcover fraction of each cell can be output: SnowFraction
 
@@ -937,12 +938,13 @@ line 293 was outcommented: self.var.initmap = {}
 | **Commit:  a3f6ba8**
 | Date:    2023-08-08
 | Message: Bugfixes
-Change run_cwatm.py in the mainfolder: added import mainwarm to be used by calibration
-Waterdemand.py: line 1908ff
-  - self.var.reservoir_releases[dateVar['doy']-1]  -> put in dateVar['doy']-1 -> it runs from 0-365 and works in leap year
-  - np.put(resStorage_maxFracForIrrigation, self.var.decompress_LR, resStorage_maxFracForIrrigationC) -> to have decompressed data
-lakes_reservoirs.py: line 600
-  -  self.var.reservoir_releases[dateVar['doy']-1]  -> dateVar['doy']-1  -> from 0 to 365
+
+- Change run_cwatm.py in the mainfolder: added import mainwarm to be used by calibration
+- Waterdemand.py: line 1908ff
+- self.var.reservoir_releases[dateVar['doy']-1]  -> put in dateVar['doy']-1 -> it runs from 0-365 and works in leap year
+- np.put(resStorage_maxFracForIrrigation, self.var.decompress_LR, resStorage_maxFracForIrrigationC) -> to have decompressed data
+- lakes_reservoirs.py: line 600
+-  self.var.reservoir_releases[dateVar['doy']-1]  -> dateVar['doy']-1  -> from 0 to 365
 
 
 | **Commit:  47bb8de**
@@ -1336,7 +1338,7 @@ data_handling.py
 | Message: ðŸ¤Ž Groundwater modules and limitAbstraction
 
 - Separation of groundwater modules with/out MODFLOW
--ðŸžZonal abstractions option for limitAbstraction=False
+- Zonal abstractions option for limitAbstraction=False
 - General organising
 
 
@@ -1756,12 +1758,15 @@ Deleted: includeIndusDomesDemand, ModFlow_modelV5.py
 | Date:    2021-06-02
 | Message: Crop specific
 - library panda,xlrd, openpyxl loaded with importlib only if includeCrops = True
+
 Groundwater
+
 - library flopy, xmipy loaded with importlib only if modflow_coupling = True
 - modflow_coupling = True  back to OPTIONs
 - include verbose in Groundwater_Modflow to make run not so noisy
 
 General
+
 - new layout for documentation
 - output during run goes in same line
 
@@ -3446,8 +3451,7 @@ bug: checked water balance
 | **Commit:  11948f5**
 | Date:    2017-07-13
 | Message: chg: soil part - using different maps -> map folder has to be updated!
-chg: meteo maps do not have to be merge before -> stack of maps can
- be used
+chg: meteo maps do not have to be merge before -> stack of maps can be used
 add: inflow to a catchment (still to work on)
 
 
@@ -3502,8 +3506,7 @@ new: readme.md for github
 
 | **Commit:  1ec94aa**
 | Date:    2017-04-06
-| Message: soil - Copy (2).py- removed bug in calculation of soildepth
-- change calc of arno beta
+| Message: soil - Copy (2).py- removed bug in calculation of soildepth. Change calc of arno beta
 
 
 | **Commit:  c05ca8d**
@@ -3539,15 +3542,16 @@ Laxenburg, Austria
 | **Commit:  2d7ef63**
 | Date:    2017-02-02
 | Message: - New kinematic routing
-   - c++ routine include
-    TODO: make it usable for linu/Unix
+
+- c++ routine include
+- TODO: make it usable for linu/Unix
 - removed pcraster GIS commands
 - new output routine for time series
 - Budyko output.html
 - corrected bug in snow modules
 - corrected bug in init read/save module
 - WORKING on lakes/reservoirs
-TODO: bug in reading maskmap from coordinates
+- TODO: bug in reading maskmap from coordinates
 
 
 | **Commit:  758ad8b**

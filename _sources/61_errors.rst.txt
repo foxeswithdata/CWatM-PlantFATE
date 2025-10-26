@@ -149,8 +149,6 @@ or::
 
 But many other error can occure too! Have fun.
 
-P.s. some error we captured and we give a hint. Please look at :ref:`rst_error`
-
 
 .. _rst_errorhandling:
 

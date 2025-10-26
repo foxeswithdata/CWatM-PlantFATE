@@ -1,0 +1,943 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>cwatm.hydrological_modules.water_demand.wastewater &mdash; Community Water Model</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/iiasa.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Community Water Model
+          
+
+          
+            
+            <img src="../../../../_static/IIASA_logo_white.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../11_forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Community Water Model</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cwatm.hydrological_modules.water_demand.wastewater</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cwatm.hydrological_modules.water_demand.wastewater</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># Name:        Wastewaster Treatment</span>
+<span class="c1"># Purpose: Wastewater treatment and return flow module for water recycling processes.</span>
+<span class="c1"># Simulates wastewater generation, treatment efficiency, and return flow dynamics.</span>
+<span class="c1"># Handles treated wastewater discharge and water quality improvement processes.</span>
+<span class="c1">#</span>
+<span class="c1"># Author:      DF</span>
+<span class="c1"># Created:     27/10/2021</span>
+<span class="c1"># CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+<span class="kn">from</span> <span class="nn">cwatm.management_modules.data_handling</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">cwatm.management_modules.globals</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="waterdemand_wastewater"><a class="viewcode-back" href="../../../../hydrological_modules.html#cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater">[docs]</a><span class="k">class</span> <span class="nc">waterdemand_wastewater</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wastewater treatment and return flow module for water recycling processes.</span>
+<span class="sd">    </span>
+<span class="sd">    This class simulates wastewater generation, treatment efficiency, and return flow</span>
+<span class="sd">    dynamics. It handles treated wastewater discharge, water quality improvement processes,</span>
+<span class="sd">    and supports many-to-many relations between wastewater treatment plants (WWTP) and</span>
+<span class="sd">    reservoirs. The module includes urban leakage, evaporation from treatment facilities,</span>
+<span class="sd">    and two types of wastewater export (untreated and treated).</span>
+<span class="sd">    </span>
+<span class="sd">    The module processes domestic and industrial wastewater through collection areas,</span>
+<span class="sd">    applies treatment with configurable parameters (volume, treatment time, efficiency),</span>
+<span class="sd">    and manages discharge to overflow points or reuse via distribution reservoirs.</span>
+<span class="sd">    </span>
+<span class="sd">    **Global variables**</span>
+
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
+<span class="sd">    Variable [self.var]                  Type          Description                                                             Unit </span>
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
+<span class="sd">    wwt_def                              Flag                                                                                  --   </span>
+<span class="sd">    wastewater_to_reservoirs             Array                                                                                 --   </span>
+<span class="sd">    compress_LR                          Array         boolean map as mask map for compressing lake/reservoir                  --   </span>
+<span class="sd">    waterBodyOut                         Array         biggest outlet (biggest accumulation of ldd network) of a waterbody     --   </span>
+<span class="sd">    decompress_LR                        Array         boolean map as mask map for decompressing lake/reservoir                --   </span>
+<span class="sd">    waterBodyOutC                        Array         compressed map biggest outlet of each lake/reservoir                    --   </span>
+<span class="sd">    resYear                              Array         Settings waterBodyYear, with first operating year of reservoirs         map  </span>
+<span class="sd">    resVolume                            Array         Reservoir volume                                                        m3   </span>
+<span class="sd">    EWRef                                Array         potential evaporation rate from water surface                           m    </span>
+<span class="sd">    wwtUrbanLeakage                      Array                                                                                 --   </span>
+<span class="sd">    wwtColArea                           Array                                                                                 --   </span>
+<span class="sd">    urbanleak                            Array                                                                                 --   </span>
+<span class="sd">    wwtID                                Array                                                                                 --   </span>
+<span class="sd">    compress_WWT                         Array                                                                                 --   </span>
+<span class="sd">    decompress_WWT                       Array                                                                                 --   </span>
+<span class="sd">    wwtC                                 Array                                                                                 --   </span>
+<span class="sd">    act_bigLakeResAbst_UNRestricted      Array                                                                                 --   </span>
+<span class="sd">    act_bigLakeResAbst_Restricted        Array                                                                                 --   </span>
+<span class="sd">    wwtOverflow                          Array                                                                                 --   </span>
+<span class="sd">    wwtStorage                           Array                                                                                 --   </span>
+<span class="sd">    wwtColShare                          Array                                                                                 --   </span>
+<span class="sd">    wwtSewerCollectedC                   Array                                                                                 --   </span>
+<span class="sd">    wwtSewerTreatedC                     Array                                                                                 --   </span>
+<span class="sd">    wwtExportedTreatedC                  Array                                                                                 --   </span>
+<span class="sd">    wwtSewerToTreatmentC                 Array                                                                                 --   </span>
+<span class="sd">    wwtSewerOverflowC                    Array                                                                                 --   </span>
+<span class="sd">    wwtSewerResOverflowC                 Array                                                                                 --   </span>
+<span class="sd">    wwtTreatedOverflowC                  Array                                                                                 --   </span>
+<span class="sd">    wwtSentToResC                        Array                                                                                 --   </span>
+<span class="sd">    wwtSewerCollection                   Array                                                                                 --   </span>
+<span class="sd">    wwtOverflowOut                       Array                                                                                 --   </span>
+<span class="sd">    wwtEvapC                             Array                                                                                 --   </span>
+<span class="sd">    wwtSewerCollected                    Array                                                                                 --   </span>
+<span class="sd">    wwtExportedCollected                 Array                                                                                 --   </span>
+<span class="sd">    wwtSewerTreated                      Array                                                                                 --   </span>
+<span class="sd">    wwtExportedTreated                   Array                                                                                 --   </span>
+<span class="sd">    wwtSewerToTreatment                  Array                                                                                 --   </span>
+<span class="sd">    wwtSewerExported                     Array                                                                                 --   </span>
+<span class="sd">    wwtSewerOverflow                     Array                                                                                 --   </span>
+<span class="sd">    wwtSentToRes                         Array                                                                                 --   </span>
+<span class="sd">    wwtSewerResOverflow                  Array                                                                                 --   </span>
+<span class="sd">    wwtTreatedOverflow                   Array                                                                                 --   </span>
+<span class="sd">    wwtEvap                              Array                                                                                 --   </span>
+<span class="sd">    wwtInTreatment                       Array                                                                                 --   </span>
+<span class="sd">    wwtIdsOrdered                        List                                                                                  --   </span>
+<span class="sd">    wwtVolC                              Array                                                                                 --   </span>
+<span class="sd">    wwtTimeC                             Array                                                                                 --   </span>
+<span class="sd">    toResManageC                         Array                                                                                 --   </span>
+<span class="sd">    minHRTC                              Array                                                                                 --   </span>
+<span class="sd">    maskDomesticCollection               Array                                                                                 --   </span>
+<span class="sd">    maskIndustryCollection               Array                                                                                 --   </span>
+<span class="sd">    extensive                            Flag                                                                                  --   </span>
+<span class="sd">    noPools_extensive                    Array                                                                                 --   </span>
+<span class="sd">    poolVolume_extensive                 Array                                                                                 --   </span>
+<span class="sd">    wwtSurfaceAreaC                      Array                                                                                 --   </span>
+<span class="sd">    extensive_counter                    Array                                                                                 --   </span>
+<span class="sd">    wwtResIDTemp_compress                Array                                                                                 --   </span>
+<span class="sd">    wwtResIDC                            Array                                                                                 --   </span>
+<span class="sd">    wwtResTypC                           Array                                                                                 --   </span>
+<span class="sd">    wwtResYearC                          Array                                                                                 --   </span>
+<span class="sd">    wwtSentToResC_LR                     Array                                                                                 --   </span>
+<span class="sd">    wwtOverflowOutM                      Array                                                                                 --   </span>
+<span class="sd">    cellArea                             Array         Area of cell                                                            m2   </span>
+<span class="sd">    includeWastewater                    Flag                                                                                  --   </span>
+<span class="sd">    waterBodyTyp_unchanged               Array                                                                                 --   </span>
+<span class="sd">    lakeVolumeM3C                        Array         compressed map of lake volume                                           m3   </span>
+<span class="sd">    lakeStorageC                         Array                                                                                 --   </span>
+<span class="sd">    reservoirStorageM3C                  Array                                                                                 --   </span>
+<span class="sd">    lakeResStorageC                      Array                                                                                 --   </span>
+<span class="sd">    lakeResStorage                       Array                                                                                 --   </span>
+<span class="sd">    wwtEffluentsGenerated                Array                                                                                 --   </span>
+<span class="sd">    wwtSewerCollection_domestic          Array                                                                                 --   </span>
+<span class="sd">    wwtSewerCollection_industry          Array                                                                                 --   </span>
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Required inputs:</span>
+<span class="sd">        - wwtID : Wastewater treatment plant identifiers</span>
+<span class="sd">        - wwtVol : Daily treatment volume capacity</span>
+<span class="sd">        - wwtYear : Year of establishment</span>
+<span class="sd">        - wwtTime : Treatment duration in days (default: 2 days, range: 1-3 days)</span>
+<span class="sd">        - wwtOverflow : Overflow/discharge point locations</span>
+<span class="sd">        - wwt_ColArea : Effluent collection area definitions</span>
+<span class="sd">    </span>
+<span class="sd">    Optional inputs:</span>
+<span class="sd">        - wwtColShare : Collection efficiency ratio (0-1)</span>
+<span class="sd">        - wwtToResManagement : Reservoir management strategy (-1, 0-1)</span>
+<span class="sd">        - urbanleak : Urban leakage coefficient</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    var : object</span>
+<span class="sd">        Model variables container from parent model</span>
+<span class="sd">    model : object</span>
+<span class="sd">        Parent CWatM model instance</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Treatment levels: 1=primary, 2=secondary, 3=tertiary</span>
+<span class="sd">    Management options: -1=discharge only, 0=send to reservoir, 0-1=export fraction</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the wastewater treatment module.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model : object</span>
+<span class="sd">            The CWatM model instance containing variables and methods</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">var</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+	
+<div class="viewcode-block" id="waterdemand_wastewater.initial"><a class="viewcode-back" href="../../../../hydrological_modules.html#cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater.initial">[docs]</a>    <span class="k">def</span> <span class="nf">initial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize wastewater treatment facilities and variables.</span>
+<span class="sd">        </span>
+<span class="sd">        Sets up wastewater treatment plant locations, collection areas, storage systems,</span>
+<span class="sd">        and output variables. Configures treatment facility parameters including daily</span>
+<span class="sd">        volumes, collection shares, and urban leakage coefficients. Initializes big maps</span>
+<span class="sd">        for tracking wastewater flows, treatment processes, and discharge outputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">includeWastewater</span><span class="p">:</span>
+            <span class="c1">## Setup wastewater treatment facilities</span>
+            <span class="c1"># load inputs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtID</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;wwtID&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtID</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtC</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtID</span><span class="p">)</span>
+                
+            <span class="c1"># Create maps for resLake irrigation/waster use</span>
+            <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;includeWaterBodies&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">act_bigLakeResAbst_UNRestricted</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>        
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">act_bigLakeResAbst_Restricted</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>            
+            
+            <span class="c1"># share to collect urban leakage</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">urbanleak</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;urbanleak&#39;</span><span class="p">)</span>
+
+            <span class="c1"># create outlet for overflow</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtOverflow</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;wwtOverflow&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> 
+
+            
+            <span class="c1"># Initiate WWTP Storage</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span> <span class="o">=</span> <span class="p">{}</span>
+            
+            <span class="c1">## Setup wastewater treatment facilities</span>
+            <span class="c1"># load collection area</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColArea</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;wwtColArea&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            
+            <span class="c1"># load collection share - default to 100% collected water</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColShare</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColShare</span> <span class="o">+=</span> <span class="mf">1.</span>
+            <span class="k">if</span> <span class="s1">&#39;wwtColShare&#39;</span> <span class="ow">in</span> <span class="n">binding</span><span class="p">:</span>
+               <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColShare</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;wwtColShare&#39;</span><span class="p">)</span>
+            <span class="c1"># create variables for output -&gt; collected, treatedWater, output, overflow</span>
+            
+            <span class="c1">## Create variables: wwtSewerCollection = wwtSewerCollectedC + wwtSewerOverflowC =  wwtSewerTreatedC + wwtSewerInTreatmentC + wwtSewerOverflowC </span>
+            <span class="c1"># wwtSewerCollection = act_SewerGeneration * wwtColShare </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollectedC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreatedC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerToTreatmentC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerOverflowC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerResOverflowC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTreatedOverflowC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;includeWaterBodies&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToResC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_LR</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtUrbanLeakage</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtEffluentsGenerated</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollection</span> <span class="o">=</span>  <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtOverflowOut</span> <span class="o">=</span>  <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtEvapC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            
+            <span class="c1"># Initiates bigmaps </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollected</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedCollected</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreated</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>   
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreated</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>            
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerToTreatment</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerExported</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerOverflow</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToRes</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerResOverflow</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTreatedOverflow</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtEvap</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtInTreatment</span> <span class="o">=</span>  <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+            <span class="c1"># get relevant reservoirs ids and their fill status. create an output status to save wwtSentToRes</span>
+            
+            <span class="c1"># to dynamic</span>
+            <span class="c1"># every year - if year &lt; established - set all collection area to zero - e.g., no collection. </span>
+            <span class="c1"># collect all water from each collection area; check daily limit &amp; calculate overflow;</span>
+            <span class="c1"># move storage, add to treatment, release water to output</span>
+            
+    
+<div class="viewcode-block" id="waterdemand_wastewater.dynamic_init"><a class="viewcode-back" href="../../../../hydrological_modules.html#cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater.dynamic_init">[docs]</a>    <span class="k">def</span> <span class="nf">dynamic_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize annual wastewater treatment plant configurations and storage systems.</span>
+<span class="sd">        </span>
+<span class="sd">        Updates wastewater treatment plant definitions from Excel settings for the current</span>
+<span class="sd">        simulation year. Filters facilities by operational years, creates ordered processing</span>
+<span class="sd">        lists, and sets up annual treatment parameters including volumes, treatment times,</span>
+<span class="sd">        and export shares. Configures extensive treatment systems with multiple pools and</span>
+<span class="sd">        calculates surface areas for evaporation processes.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Treatment plant definitions loaded from Excel include:</span>
+<span class="sd">        - Daily treatment capacity (Volume in mÂ³/day)</span>
+<span class="sd">        - Treatment duration (Days, typically 1-3)</span>
+<span class="sd">        - Treatment level (1=primary, 2=secondary, 3=tertiary)</span>
+<span class="sd">        - Export share (fraction of outflows exported from basin)</span>
+<span class="sd">        - Wastewater sources (Domestic and/or Industrial boolean flags)</span>
+<span class="sd">        - Minimum hydraulic retention time (min_HRT in days)</span>
+<span class="sd">        </span>
+<span class="sd">        The method handles technology changes by preserving existing storage when</span>
+<span class="sd">        treatment parameters change (e.g., from 30 to 20 days treatment time).</span>
+<span class="sd">        All stored water is allocated to the final treatment pool for release.</span>
+<span class="sd">        </span>
+<span class="sd">        Extensive systems (treatment time &gt;= 2 days) use multiple treatment pools</span>
+<span class="sd">        (default: 3 pools) to simulate realistic treatment processes and timing.</span>
+<span class="sd">        </span>
+<span class="sd">        Sets up the following annual arrays:</span>
+<span class="sd">        - wwtVolC : Daily treatment volumes [mÂ³/day]</span>
+<span class="sd">        - wwtTimeC : Treatment duration [days]</span>
+<span class="sd">        - toResManageC : Reservoir management strategy [-1 to 1]</span>
+<span class="sd">        - minHRTC : Minimum hydraulic retention times [days]</span>
+<span class="sd">        - wwtSurfaceAreaC : Treatment facility surface areas [mÂ²]</span>
+<span class="sd">        </span>
+<span class="sd">        Collection masks are updated for domestic and industrial wastewater</span>
+<span class="sd">        sources based on facility-specific configuration flags.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># filter wwtC by year and create ordered list for iteration</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;currDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span>
+        
+        <span class="c1"># get ordered wwt IDS for iteration</span>
+        <span class="n">wwtIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtC</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">resKeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span>  <span class="k">for</span>  <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wastewater_to_reservoirs</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span> <span class="o">=</span> <span class="n">resKeys</span> <span class="o">+</span> <span class="p">(</span><span class="n">wwtIds</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="n">wwtIds</span><span class="p">,</span> <span class="n">resKeys</span><span class="p">,</span> <span class="n">invert</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="n">annual_mask</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">annual_wwtpIdx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">wwtid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwt_def</span><span class="p">[</span><span class="n">wwtid</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">tmp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">year</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="n">tmp</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">year</span><span class="p">:</span>
+                        <span class="n">annual_mask</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">annual_wwtpIdx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                        <span class="c1"># if found the valid instance of WWTP ID - break and don&#39;t continute looking for another one</span>
+                        <span class="k">break</span>
+                <span class="k">elif</span> <span class="n">tmp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">annual_mask</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">annual_wwtpIdx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span><span class="p">)[</span><span class="n">annual_mask</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">annual_wwtpIdx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">annual_wwtpIdx</span><span class="p">)[</span><span class="n">annual_mask</span><span class="p">]</span>
+        
+        <span class="c1">## Create annual inputs</span>
+        
+        <span class="c1"># Volume, treatementTime, ExportAndMangement, minimum Hydrological Retention Time</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtVolC</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">toResManageC</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">minHRTC</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># initiate sector collection masks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maskDomesticCollection</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maskIndustryCollection</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">wwtid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span><span class="p">:</span>
+
+            <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span><span class="p">,</span> <span class="n">wwtid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtVolC</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwt_def</span><span class="p">[</span><span class="n">wwtid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">annual_wwtpIdx</span><span class="p">[</span><span class="n">i</span><span class="p">])][</span><span class="mi">2</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwt_def</span><span class="p">[</span><span class="n">wwtid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">annual_wwtpIdx</span><span class="p">[</span><span class="n">i</span><span class="p">])][</span><span class="mi">3</span><span class="p">])</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">minHRTC</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwt_def</span><span class="p">[</span><span class="n">wwtid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">annual_wwtpIdx</span><span class="p">[</span><span class="n">i</span><span class="p">])][</span><span class="mi">8</span><span class="p">],</span> <span class="mf">0.001</span><span class="p">))</span>
+            <span class="c1"># toResManageC control wwt2reservoir operations:</span>
+            <span class="c1">#   0: attempt to send all to reservior</span>
+            <span class="c1">#   1: export all treated wastewater</span>
+            <span class="c1"># 0-1: export the fraction and attempt sending the rest to reservoir</span>
+            <span class="c1">#  -1: only send to overflow point as discharge (do not send to reservoir)</span>
+            
+            <span class="n">mng</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwt_def</span><span class="p">[</span><span class="n">wwtid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">annual_wwtpIdx</span><span class="p">[</span><span class="n">i</span><span class="p">])][</span><span class="mi">5</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">toResManageC</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">mng</span><span class="p">),</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">mng</span><span class="p">)))</span>
+            <span class="c1"># sector collection masks</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maskDomesticCollection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColArea</span> <span class="o">==</span> <span class="n">wwtid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwt_def</span><span class="p">[</span><span class="n">wwtid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">annual_wwtpIdx</span><span class="p">[</span><span class="n">i</span><span class="p">])][</span><span class="mi">6</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maskDomesticCollection</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maskIndustryCollection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColArea</span> <span class="o">==</span> <span class="n">wwtid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwt_def</span><span class="p">[</span><span class="n">wwtid</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">annual_wwtpIdx</span><span class="p">[</span><span class="n">i</span><span class="p">])][</span><span class="mi">7</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maskIndustryCollection</span><span class="p">)</span>
+           
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtVolC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtVolC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">minHRTC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">minHRTC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">toResManageC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">toResManageC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span><span class="p">)</span>
+       
+        
+        <span class="c1">### Extensive WWTP ####</span>
+        <span class="c1"># Identify extensive systems - if timeLag &gt;= 2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+        <span class="c1"># number of days to fill a treatement pool in extensive systems - default no. of pools: 3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">noPools_extensive</span> <span class="o">=</span> <span class="mi">3</span>
+        
+        <span class="n">daysToFill_extensive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">noPools_extensive</span>
+        <span class="c1"># Volume for an extnesive treatement pool in extensive systems</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">poolVolume_extensive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtVolC</span> <span class="o">*</span> <span class="n">daysToFill_extensive</span>
+        
+        <span class="c1"># Calculate surface area of treatment pools for evaporation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSurfaceAreaC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">poolVolume_extensive</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtVolC</span><span class="p">)</span><span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span>  <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        
+        <span class="c1">#### Build WWTP Storage ####</span>
+        
+        <span class="c1"># If there is prior storage (e.g., start of model) - save a copy and re-allocate; storage start as empty array</span>
+        <span class="c1"># It aims to handle cases where technology chnages - e.g., from 30 days to 20 days treatment, or from 2 days to 1 day.</span>
+        <span class="c1"># In that case all water are being allocated to the last treatment pool, so they will be released next (this may result in a &quot;big&quot; sudden release of treated wastewater).</span>
+        
+        <span class="n">priorStorage</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">priorStorage</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">wwtStroage_last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            
+        <span class="c1"># create storage variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        
+        <span class="c1"># extensive wastewater treatement facilites have less pools than days</span>
+        <span class="n">timeForStorage</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">noPools_extensive</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">wwtid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwtid</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">timeForStorage</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">priorStorage</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="n">wwtid</span><span class="p">,</span> <span class="n">wwtStroage_last</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="n">l_new</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwtid</span><span class="p">])</span>
+                    <span class="n">l_old</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wwtStroage_last</span><span class="p">[</span><span class="n">wwtid</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">l_new</span> <span class="o">==</span> <span class="n">l_old</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwtid</span><span class="p">]</span> <span class="o">=</span> <span class="n">wwtStroage_last</span><span class="p">[</span><span class="n">wwtid</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwtid</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwtid</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">l_new</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">wwtStroage_last</span><span class="p">[</span><span class="n">wwtid</span><span class="p">])</span>
+            
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive_counter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+        <span class="c1">#print(self.var.wwtStorage)</span>
+        <span class="c1">#print(np.array(self.var.wwtStorage))</span>
+        <span class="c1">#print(np.nansum(np.array(self.var.wwtStorage), axis = 1))</span>
+        
+<div class="viewcode-block" id="waterdemand_wastewater.dynamic"><a class="viewcode-back" href="../../../../hydrological_modules.html#cwatm.hydrological_modules.water_demand.wastewater.waterdemand_wastewater.dynamic">[docs]</a>    <span class="k">def</span> <span class="nf">dynamic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute daily wastewater treatment operations for all active facilities.</span>
+<span class="sd">        </span>
+<span class="sd">        Performs the main processing cycle for each time step, handling sewer collection,</span>
+<span class="sd">        treatment processes, storage dynamics, evaporation losses, and discharge operations.</span>
+<span class="sd">        Processes wastewater through collection areas, applies treatment with facility-specific</span>
+<span class="sd">        parameters, and manages discharge to overflow points or distribution reservoirs.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Daily processing sequence:</span>
+<span class="sd">        1. Initialize annual configurations if new year/start</span>
+<span class="sd">        2. Calculate total sewer collection from domestic and industrial sources</span>
+<span class="sd">        3. Handle export of untreated wastewater from areas without facilities</span>
+<span class="sd">        4. Process each treatment facility in ordered sequence:</span>
+<span class="sd">           - Check daily capacity limits and calculate overflow</span>
+<span class="sd">           - Apply hydraulic retention time constraints</span>
+<span class="sd">           - Calculate evaporation losses from treatment pools</span>
+<span class="sd">           - Update storage arrays (extensive vs standard systems)</span>
+<span class="sd">           - Release treated water based on management strategy</span>
+<span class="sd">           - Allocate water to reservoirs or overflow discharge points</span>
+<span class="sd">        </span>
+<span class="sd">        Storage management:</span>
+<span class="sd">        - Standard systems: Simple queue with daily advancement</span>
+<span class="sd">        - Extensive systems: Multiple pools with residence time tracking</span>
+<span class="sd">        - Evaporation calculated from surface area and reference ET</span>
+<span class="sd">        </span>
+<span class="sd">        Discharge management strategies (toResManageC):</span>
+<span class="sd">        - -1: Discharge all treated water to overflow points</span>
+<span class="sd">        - 0: Send all treated water to reservoirs (if available)</span>
+<span class="sd">        - 0-1: Export fraction, send remainder to reservoirs</span>
+<span class="sd">        - 1: Export all treated wastewater</span>
+<span class="sd">        </span>
+<span class="sd">        Water allocation to reservoirs uses iterative proportional allocation</span>
+<span class="sd">        based on available capacity, with overflow handling for excess volumes.</span>
+<span class="sd">        </span>
+<span class="sd">        Updates all output variables including collected volumes, treated volumes,</span>
+<span class="sd">        overflow discharges, reservoir transfers, and evaporation losses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;newStart&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;newYear&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_init</span><span class="p">()</span>
+        
+        <span class="c1"># set daily overflow to zero - prevent double counting </span>
+        <span class="c1">### A PROBLEM OCCURS: in the result it seems that thse two variables are zero at the first day of each year - is it possible that the model initializes every year?</span>
+        <span class="n">overflow_temp</span> <span class="o">=</span>  <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToRes</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># Calculate total sewer collection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollection</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollection_domestic</span>  <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maskDomesticCollection</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollection_industry</span>  <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maskIndustryCollection</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColShare</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtUrbanLeakage</span>
+        
+        <span class="c1"># identify a list of collection areas with wastewater treatment facilities outside of the mask</span>
+        <span class="c1"># use wwtC instead of wwtIdsOrdered - so WWTP that are not present due to time constraints would not cause export.</span>
+        <span class="n">collectWtr2Export</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColArea</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColArea</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtC</span><span class="p">))]</span>
+       
+        <span class="n">collectWtr2Export</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">collectWtr2Export</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">collectWtr2Export</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+        
+        <span class="c1"># mask for water2export collection</span>
+        <span class="n">collection2ExportAreaMask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColArea</span><span class="p">,</span> <span class="n">collectWtr2Export</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span>
+        
+        <span class="c1"># document collection for export</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedCollected</span> <span class="o">=</span> <span class="n">collection2ExportAreaMask</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollection</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtInTreatment</span> <span class="o">=</span>  <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">wwt_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span><span class="p">:</span>
+            <span class="n">idIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtIdsOrdered</span> <span class="o">==</span> <span class="n">wwt_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="c1"># check year established</span>
+            
+            
+            <span class="n">simulatedYear</span> <span class="o">=</span>  <span class="nb">globals</span><span class="o">.</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;currDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span>
+            
+            <span class="c1">#if self.var.wwtYearC[idIndex] &gt; simulatedYear:</span>
+            <span class="c1">#    continue</span>
+            
+            <span class="c1"># if year established &lt;= simulated year:</span>
+            <span class="n">collectionAreaMask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtColArea</span> <span class="o">==</span> <span class="n">wwt_id</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># Check WWTP sectoral sewer collection preferences</span>
+            
+            <span class="c1"># sum sewer collection per facility [m3]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollectedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">collectionAreaMask</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollection</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span><span class="p">)</span>
+
+            <span class="c1"># calculate max water allowed</span>
+            <span class="n">max_collected_idIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtVolC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">minHRTC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> 
+          
+            
+            <span class="c1"># calculate to overflow</span>
+            <span class="n">toOverflow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollectedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">max_collected_idIndex</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+            
+            <span class="c1"># calculate collected</span>
+            <span class="n">wwtSewerCollected_idIndex2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollectedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">toOverflow</span>
+            
+            <span class="c1"># calculate HRT - for water quality calculations</span>
+            <span class="n">hrt_idIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtVolC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">/</span> <span class="n">wwtSewerCollected_idIndex2</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+            
+           
+            <span class="c1"># calculate overflow - if summed volume excceds daily capacity [m3]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerOverflowC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="n">toOverflow</span>
+
+            <span class="c1"># calculate toTreatment [m3]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerToTreatmentC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollectedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerOverflowC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>
+            <span class="c1"># calculate evaporation from treatment facilities - for daily</span>
+            <span class="n">wwtEvapPool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSurfaceAreaC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">EWRef</span><span class="p">)[</span><span class="n">idIndex</span><span class="p">]</span>
+            <span class="n">wwtEvapArray</span> <span class="o">=</span> <span class="n">wwtEvapPool</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+            
+            <span class="c1"># restrict pool evaporation by sewer volume</span>
+            <span class="n">wwtEvapArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">],</span> <span class="n">wwtEvapArray</span><span class="p">)</span>
+            
+            <span class="c1"># sum evaporation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtEvapC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">wwtEvapArray</span><span class="p">)</span>
+            
+            <span class="c1"># update storage with evaporation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">]</span> <span class="o">-=</span> <span class="n">wwtEvapArray</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            
+            <span class="c1"># handle storage </span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]:</span>
+      
+                <span class="c1">#print(idIndex)</span>
+                <span class="c1">#print(&quot;last Storage Ext&quot; + str(np.round(self.var.wwtStorage[idIndex][-1], 0)))</span>
+                <span class="c1"># extensive</span>
+                <span class="c1"># calculate remainStorage in pool 0</span>
+                <span class="n">remainStorage0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">poolVolume_extensive</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>
+                
+                <span class="c1"># calculate volume to add to storage0 and add to storage1</span>
+                <span class="n">addToStorage0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">remainStorage0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerToTreatmentC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">])</span>
+                <span class="n">addToStorage1</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerToTreatmentC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">addToStorage0</span>
+
+                <span class="c1"># add to storage</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">addToStorage0</span>
+                
+                <span class="c1"># if reservoir routing is off</span>
+                <span class="k">if</span> <span class="n">addToStorage1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1">#last storage to TreatedC [m3] - if all treatment pools are with water and more capacity is required</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    
+                    <span class="c1"># update storage - each element i to i+1; eliminate last [m3] </span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="c1"># move counter values respecitvely</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive_counter</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive_counter</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    
+                    <span class="c1"># update storage - element 0 is new collected [m3]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">addToStorage1</span>
+
+                <span class="n">cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive_counter</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTimeC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+  
+                <span class="c1"># empty pool if time in active pool exceeds treatment time</span>
+                <span class="k">if</span> <span class="n">cond</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                    
+                    <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">+=</span>  <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="n">cond</span><span class="p">])</span>
+
+                    <span class="c1"># update storage</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">])</span>
+
+                    <span class="c1">#self.var.extensive_counter[wwt_id] += (cond * 1)</span>
+                <span class="c1"># active treatement pools are those which are not receieving water inflows. Ther are being emptied (e.g., water are used after the defined treatment days)</span>
+                <span class="c1"># count days with positive water volume in active treatement pools</span>
+                <span class="n">cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+      
+                <span class="k">if</span> <span class="n">cond</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                    
+                    <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive_counter</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+=</span> <span class="p">(</span><span class="n">cond</span> <span class="o">*</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive_counter</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">extensive_counter</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtInTreatment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtID</span> <span class="o">==</span> <span class="n">wwt_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">])</span>  
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1">#last storage to TreatedC [m3]         </span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            
+                <span class="c1"># update storage - each element i to i+1; eliminate last [m3] </span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="c1"># update storage - element 0 is new collected [m3]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerToTreatmentC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+            <span class="n">sto_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtInTreatment</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtInTreatment</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtID</span> <span class="o">==</span> <span class="n">wwt_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtStorage</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">])</span>  
+            <span class="c1"># update overflow output map [m3]</span>
+            <span class="n">overflowMask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtOverflow</span> <span class="o">==</span> <span class="n">wwt_id</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">overflow_temp</span> <span class="o">+=</span> <span class="n">overflowMask</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerOverflowC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+
+            <span class="c1"># toResManageC control wwt2reservoir operations:</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">                -1: only send to overflow point as discharge (do not send to reservoir)</span>
+<span class="sd">                0 -1: between zero to one gives the fraction of treated wastewater to export; the rest are sent to reservoir (if exists)</span>
+<span class="sd">                An extreme case of 0 tries sending all treated wastewater to the reservoir (if exists), it send it to overflow point when it is full </span>
+<span class="sd">            </span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">toResManage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">toResManageC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+                
+            <span class="n">dischargeTreatedWaterBool</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">toResManage</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span>  <span class="ow">not</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;includeWaterBodies&#39;</span><span class="p">):</span>
+                <span class="n">dischargeTreatedWaterBool</span> <span class="o">=</span> <span class="kc">True</span>
+            
+            
+            <span class="k">if</span> <span class="p">(</span><span class="n">toResManage</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">toResManage</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">toResManage</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error: unexpected value in &#39;wwtToResManagement&#39;&quot;</span>
+                <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            
+            
+            <span class="k">if</span> <span class="n">dischargeTreatedWaterBool</span><span class="p">:</span>
+                
+                <span class="c1"># treated water are being discharged to overflow point</span>
+                <span class="n">overflow_temp</span> <span class="o">+=</span> <span class="n">overflowMask</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTreatedOverflowC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+            
+            
+            <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">wwt_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wastewater_to_reservoirs</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="c1"># account for exported treated water </span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">*</span> <span class="n">toResManage</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+
+                <span class="c1"># treated water are being discharged to overflow point</span>
+                <span class="n">overflow_temp</span> <span class="o">+=</span> <span class="n">overflowMask</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTreatedOverflowC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTreatedOverflowC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+               
+
+                
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># treated water are being sent to one or more reservoirs. If one reservoir, all water sent until it is full, access water are added to OverflowOut</span>
+                <span class="c1"># Id multiple reservoirs - water are split proportionally to the reservoirs&#39; current capacity to collect water (e.g., 1 - storage/volume). Access water are sent to OverflowOut.</span>
+                
+                    
+                <span class="c1"># account for exported treated water </span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">*</span> <span class="n">toResManage</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+                    
+                    
+                <span class="n">srch</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wastewater_to_reservoirs</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">waterBodyOut</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDTemp_compress</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">waterBodyOut</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="n">srch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wastewater_to_reservoirs</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">]))</span>
+                    
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDTemp_compress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">waterBodyOut</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResTypC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDTemp_compress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">waterBodyTyp_unchanged</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResYearC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDTemp_compress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">resYear</span><span class="p">)</span>
+                    
+                <span class="c1"># do not alow reservoir use if their type ids is zero (e.g., wetland) or id they have not been yet established</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDC</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResTypC</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResYearC</span> <span class="o">&gt;</span> <span class="n">simulatedYear</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDC</span><span class="p">))</span>
+                    
+                <span class="c1"># calculate allocation weights</span>
+                <span class="n">resVolumeC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDTemp_compress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">resVolume</span><span class="p">)</span>
+                    
+                <span class="n">resVolumeLeftC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">resVolumeC</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDTemp_compress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeResStorage</span><span class="p">),</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">resVolumeC</span><span class="p">)</span>
+                
+                <span class="n">treatedSewer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span>
+                <span class="c1">#### Iterate to allocate as much water as possible to res ####</span>
+                <span class="n">wwtResindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">waterBodyOutC</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wastewater_to_reservoirs</span><span class="p">[</span><span class="n">wwt_id</span><span class="p">])</span>
+                <span class="n">maxIter</span> <span class="o">=</span> <span class="mi">50</span>
+                <span class="n">iterCounter</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">sendToRes</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="n">treatedSewer</span> <span class="o">&gt;</span> <span class="mf">1e-10</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">resVolumeLeftC</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-10</span> <span class="ow">and</span> <span class="n">iterCounter</span> <span class="o">&lt;=</span> <span class="n">maxIter</span><span class="p">:</span>
+                    <span class="n">resAllocWeights</span> <span class="o">=</span> <span class="n">divideValues</span><span class="p">(</span><span class="n">resVolumeLeftC</span><span class="p">,</span> <span class="n">npareatotal</span><span class="p">(</span><span class="n">resVolumeLeftC</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDC</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDC</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+                
+                    <span class="c1"># Do not allow all reservoir to be zero - split wastewater proportionally to total storage</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">resAllocWeights</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">resAllocWeights</span> <span class="o">=</span> <span class="n">divideValues</span><span class="p">(</span><span class="n">resVolumeC</span><span class="p">,</span> <span class="n">npareatotal</span><span class="p">(</span><span class="n">resVolumeC</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDC</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDC</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+                        
+                    <span class="n">tmpSendToRes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">treatedSewer</span> <span class="o">*</span> <span class="n">resAllocWeights</span><span class="p">,</span> <span class="n">resVolumeLeftC</span><span class="p">)</span>
+                    <span class="n">sendToRes</span> <span class="o">+=</span> <span class="n">tmpSendToRes</span>
+                    <span class="n">resVolumeLeftC</span> <span class="o">-=</span> <span class="n">tmpSendToRes</span>
+                    <span class="n">treatedSewer</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">tmpSendToRes</span><span class="p">)</span>
+                    <span class="n">iterCounter</span> <span class="o">+=</span><span class="mi">1</span>
+                <span class="c1">###</span>
+                
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToResC</span><span class="p">[</span><span class="n">wwtResindex</span><span class="p">]</span> <span class="o">=</span> <span class="n">sendToRes</span>
+                <span class="c1"># split water and calcualte overflow in reservoirs - continute here ! error! - something doesnot work with res overflow - it is not written to the layer</span>
+                <span class="c1"># see lines 286 -295 for clues</span>
+
+                <span class="c1"># below it was originaly assignes (=); I suspect it overwritten</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerResOverflowC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">sendToRes</span><span class="p">)</span>
+
+                <span class="c1"># update overflow</span>
+                    
+                <span class="n">overflow_temp</span> <span class="o">+=</span> <span class="n">overflowMask</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerResOverflowC</span><span class="p">[</span><span class="n">idIndex</span><span class="p">])</span>
+      
+                <span class="n">wwtSentToRes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">in1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_LR</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">waterBodyOut</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtResIDC</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToResC</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+                <span class="n">addToSend</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">addToSend</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_LR</span><span class="p">,</span> <span class="n">wwtSentToRes</span><span class="p">)</span>
+
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToRes</span> <span class="o">+=</span> <span class="n">addToSend</span> 
+
+                <span class="c1"># get relevant reservoirs ids and their fill status. create an output status to save wwtSentToRes</span>
+                <span class="c1"># split treated between reservoirs</span>
+                <span class="c1"># check for access water - if no allocate, if yes - update: OverflowOut, SewerResOverflowC</span>
+                <span class="c1"># the wwtSentToRes should be used in the lakes_reservoir.py</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtOverflowOut</span> <span class="o">=</span> <span class="n">overflow_temp</span>        
+        <span class="c1"># Total overflow output map [m3 to M]</span>
+        <span class="c1">#self.var.wwtOverflowOutM = self.var.wwtOverflowOut / self.var.cellArea</span>
+        
+        <span class="c1"># decompress results [m3]</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollected</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerCollectedC</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreated</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerTreatedC</span><span class="p">)</span>     
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerToTreatment</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerToTreatmentC</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerOverflow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerOverflowC</span><span class="p">)</span> 
+        <span class="c1">#np.put(self.var.wwtSewerResOverflow, self.var.decompress_LR, self.var.wwtSewerResOverflowC)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerResOverflow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerResOverflowC</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTreatedOverflow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtTreatedOverflowC</span><span class="p">)</span>   
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtEvap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtEvapC</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreated</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">decompress_WWT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreatedC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSewerExported</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedTreated</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtExportedCollected</span>
+        <span class="k">if</span>  <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;includeWaterBodies&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToResC_LR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">compress_LR</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToRes</span><span class="p">)</span>
+        
+        
+        
+        <span class="c1"># add inflow from wwt treatment facilities</span>
+        <span class="c1">## add water from other source to distribution reservoirs</span>
+    
+        <span class="c1"># Reservoir inflow in [m3] at the end of all sub-timestep - source treated wastewater</span>
+        <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;includeWaterBodies&#39;</span><span class="p">):</span>               
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeVolumeM3C</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToResC_LR</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeStorageC</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToResC_LR</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">lakeResStorageC</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToResC_LR</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">reservoirStorageM3C</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtSentToResC_LR</span> 
+        
+        
+        <span class="c1"># convert OverflowOut from m3 to m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtOverflowOutM</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">wwtOverflowOut</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span></div></div>
+        
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2025, IIASA Water Security.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

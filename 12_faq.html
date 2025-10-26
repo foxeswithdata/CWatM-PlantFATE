@@ -42,7 +42,9 @@
 
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="13. CWatM Glossary" href="13_glossary.html" />
+    <link rel="prev" title="11. Forum" href="11_forum.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,7 +96,7 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="1_introduction.html"><strong>1. Introduction</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_news.html"><strong>2. NEWS</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
@@ -122,6 +124,120 @@
 <li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="11_forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>12. Frequently Asked Questions (FAQ)</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#community-water-model-cwatm-frequently-asked-questions">Community Water Model (CWatM) - Frequently Asked Questions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction-and-overview">Introduction and Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-is-cwatm"><strong>Q: What is CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-who-developed-cwatm"><strong>Q: Who developed CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-is-the-main-purpose-of-cwatm"><strong>Q: What is the main purpose of CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-why-was-cwatm-created"><strong>Q: Why was CWatM created?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation-and-setup">Installation and Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-are-the-system-requirements-for-cwatm"><strong>Q: What are the system requirements for CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-do-i-install-cwatm"><strong>Q: How do I install CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-python-packages-are-required"><strong>Q: What Python packages are required?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-do-i-run-cwatm"><strong>Q: How do I run CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-i-use-a-virtual-environment"><strong>Q: Can I use a virtual environment?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-are-there-pre-compiled-libraries-available"><strong>Q: Are there pre-compiled libraries available?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#technical-specifications">Technical Specifications</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-resolution-can-cwatm-run-at"><strong>Q: What resolution can CWatM run at?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-programming-language-is-cwatm-written-in"><strong>Q: What programming language is CWatM written in?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-is-cwatm-open-source"><strong>Q: Is CWatM open source?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-is-the-modular-structure-of-cwatm"><strong>Q: What is the modular structure of CWatM?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#model-features-and-capabilities">Model Features and Capabilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-processes-does-cwatm-simulate"><strong>Q: What processes does CWatM simulate?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-does-cwatm-handle-soil-processes"><strong>Q: How does CWatM handle soil processes?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-cwatm-simulate-groundwater"><strong>Q: Can CWatM simulate groundwater?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-are-lakes-and-reservoirs-handled"><strong>Q: How are lakes and reservoirs handled?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-routing-method-does-cwatm-use"><strong>Q: What routing method does CWatM use?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#model-integration">Model Integration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-cwatm-be-integrated-with-other-models"><strong>Q: Can CWatM be integrated with other models?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-does-model-coupling-work"><strong>Q: How does model coupling work?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-cwatm-work-with-modflow"><strong>Q: Can CWatM work with MODFLOW?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#climate-and-data">Climate and Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-climate-data-can-cwatm-use"><strong>Q: What climate data can CWatM use?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-data-formats-does-cwatm-use"><strong>Q: What data formats does CWatM use?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-does-cwatm-track-data-sources"><strong>Q: How does CWatM track data sources?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#calibration">Calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-is-cwatm-calibrated"><strong>Q: Is CWatM calibrated?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-parameters-can-be-calibrated"><strong>Q: What parameters can be calibrated?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-is-there-a-calibration-tool-available"><strong>Q: Is there a calibration tool available?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-performance-metrics-are-used"><strong>Q: What performance metrics are used?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#applications-and-use-cases">Applications and Use Cases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-are-the-main-applications-of-cwatm"><strong>Q: What are the main applications of CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-cwatm-be-used-for-regional-studies"><strong>Q: Can CWatM be used for regional studies?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-does-cwatm-consider-environmental-needs"><strong>Q: Does CWatM consider environmental needs?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-does-cwatm-handle-water-demand"><strong>Q: How does CWatM handle water demand?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-cwatm-be-used-for-climate-change-studies"><strong>Q: Can CWatM be used for climate change studies?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#model-output">Model Output</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-output-variables-does-cwatm-provide"><strong>Q: What output variables does CWatM provide?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-can-i-control-output-frequency"><strong>Q: How can I control output frequency?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-i-get-spatially-aggregated-outputs"><strong>Q: Can I get spatially aggregated outputs?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#documentation-and-support">Documentation and Support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-where-can-i-find-the-model-documentation"><strong>Q: Where can I find the model documentation?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-where-can-i-get-help-with-cwatm"><strong>Q: Where can I get help with CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-are-there-tutorials-available"><strong>Q: Are there tutorials available?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-should-i-do-if-i-encounter-errors"><strong>Q: What should I do if I encounter errors?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#future-development">Future Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-future-developments-are-planned-for-cwatm"><strong>Q: What future developments are planned for CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-does-cwatm-contribute-to-nexus-analysis"><strong>Q: How does CWatM contribute to nexus analysis?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-will-cwatm-include-water-quality-modeling"><strong>Q: Will CWatM include water quality modeling?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#settings-and-configuration">Settings and Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-is-a-settings-file"><strong>Q: What is a settings file?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-i-use-excel-for-settings"><strong>Q: Can I use Excel for settings?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-do-i-set-the-simulation-period"><strong>Q: How do I set the simulation period?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-i-save-and-load-model-states"><strong>Q: Can I save and load model states?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-and-requirements">Performance and Requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-computationally-intensive-is-cwatm"><strong>Q: How computationally intensive is CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-cwatm-run-in-parallel"><strong>Q: Can CWatM run in parallel?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-is-the-typical-runtime"><strong>Q: What is the typical runtime?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#comparison-with-other-models">Comparison with Other Models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-how-does-cwatm-compare-to-other-hydrological-models"><strong>Q: How does CWatM compare to other hydrological models?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-makes-cwatm-unique"><strong>Q: What makes CWatM unique?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#license-and-access">License and Access</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-what-license-is-cwatm-released-under"><strong>Q: What license is CWatM released under?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-where-can-i-download-cwatm"><strong>Q: Where can I download CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-is-there-a-cost-to-use-cwatm"><strong>Q: Is there a cost to use CWatM?</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-resources">Additional Resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#q-where-can-i-find-example-applications"><strong>Q: Where can I find example applications?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-are-there-scientific-publications-about-cwatm"><strong>Q: Are there scientific publications about CWatM?</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#q-can-cwatm-be-used-for-educational-purposes"><strong>Q: Can CWatM be used for educational purposes?</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
 </ul>
 
             
@@ -190,252 +306,502 @@
            <div itemprop="articleBody">
             
   <div class="section" id="frequently-asked-questions-faq">
-<h1><a class="toc-backref" href="#id2"><strong>12. Frequently Asked Questions (FAQ)</strong></a><a class="headerlink" href="#frequently-asked-questions-faq" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id1"><strong>12. Frequently Asked Questions (FAQ)</strong></a><a class="headerlink" href="#frequently-asked-questions-faq" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#frequently-asked-questions-faq" id="id2"><strong>12. Frequently Asked Questions (FAQ)</strong></a></p>
+<li><p><a class="reference internal" href="#frequently-asked-questions-faq" id="id1"><strong>12. Frequently Asked Questions (FAQ)</strong></a></p>
 <ul>
-<li><p><a class="reference internal" href="#general-questions" id="id3">General Questions</a></p>
+<li><p><a class="reference internal" href="#community-water-model-cwatm-frequently-asked-questions" id="id2">Community Water Model (CWatM) - Frequently Asked Questions</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="community-water-model-cwatm-frequently-asked-questions">
+<h2><a class="toc-backref" href="#id2">Community Water Model (CWatM) - Frequently Asked Questions</a><a class="headerlink" href="#community-water-model-cwatm-frequently-asked-questions" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction-and-overview" id="id3">Introduction and Overview</a></p>
 <ul>
 <li><p><a class="reference internal" href="#q-what-is-cwatm" id="id4"><strong>Q: What is CWatM?</strong></a></p></li>
 <li><p><a class="reference internal" href="#q-who-developed-cwatm" id="id5"><strong>Q: Who developed CWatM?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-what-is-the-purpose-of-cwatm" id="id6"><strong>Q: What is the purpose of CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-is-the-main-purpose-of-cwatm" id="id6"><strong>Q: What is the main purpose of CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-why-was-cwatm-created" id="id7"><strong>Q: Why was CWatM created?</strong></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#technical-specifications" id="id7">Technical Specifications</a></p>
+<li><p><a class="reference internal" href="#installation-and-setup" id="id8">Installation and Setup</a></p>
 <ul>
-<li><p><a class="reference internal" href="#q-what-resolution-can-cwatm-run-at" id="id8"><strong>Q: What resolution can CWatM run at?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-what-programming-language-is-cwatm-written-in" id="id9"><strong>Q: What programming language is CWatM written in?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-is-cwatm-open-source" id="id10"><strong>Q: Is CWatM open source?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-are-the-system-requirements-for-cwatm" id="id9"><strong>Q: What are the system requirements for CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-do-i-install-cwatm" id="id10"><strong>Q: How do I install CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-python-packages-are-required" id="id11"><strong>Q: What Python packages are required?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-do-i-run-cwatm" id="id12"><strong>Q: How do I run CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-i-use-a-virtual-environment" id="id13"><strong>Q: Can I use a virtual environment?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-are-there-pre-compiled-libraries-available" id="id14"><strong>Q: Are there pre-compiled libraries available?</strong></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#model-features-and-capabilities" id="id11">Model Features and Capabilities</a></p>
+<li><p><a class="reference internal" href="#technical-specifications" id="id15">Technical Specifications</a></p>
 <ul>
-<li><p><a class="reference internal" href="#q-what-processes-does-cwatm-simulate" id="id12"><strong>Q: What processes does CWatM simulate?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-can-cwatm-be-integrated-with-other-models" id="id13"><strong>Q: Can CWatM be integrated with other models?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-resolution-can-cwatm-run-at" id="id16"><strong>Q: What resolution can CWatM run at?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-programming-language-is-cwatm-written-in" id="id17"><strong>Q: What programming language is CWatM written in?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-is-cwatm-open-source" id="id18"><strong>Q: Is CWatM open source?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-is-the-modular-structure-of-cwatm" id="id19"><strong>Q: What is the modular structure of CWatM?</strong></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#applications-and-use-cases" id="id14">Applications and Use Cases</a></p>
+<li><p><a class="reference internal" href="#model-features-and-capabilities" id="id20">Model Features and Capabilities</a></p>
 <ul>
-<li><p><a class="reference internal" href="#q-what-are-the-main-applications-of-cwatm" id="id15"><strong>Q: What are the main applications of CWatM?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-can-cwatm-be-used-for-regional-studies" id="id16"><strong>Q: Can CWatM be used for regional studies?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-does-cwatm-consider-environmental-needs" id="id17"><strong>Q: Does CWatM consider environmental needs?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-processes-does-cwatm-simulate" id="id21"><strong>Q: What processes does CWatM simulate?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-does-cwatm-handle-soil-processes" id="id22"><strong>Q: How does CWatM handle soil processes?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-cwatm-simulate-groundwater" id="id23"><strong>Q: Can CWatM simulate groundwater?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-are-lakes-and-reservoirs-handled" id="id24"><strong>Q: How are lakes and reservoirs handled?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-routing-method-does-cwatm-use" id="id25"><strong>Q: What routing method does CWatM use?</strong></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#data-and-documentation" id="id18">Data and Documentation</a></p>
+<li><p><a class="reference internal" href="#model-integration" id="id26">Model Integration</a></p>
 <ul>
-<li><p><a class="reference internal" href="#q-where-can-i-find-the-model-documentation" id="id19"><strong>Q: Where can I find the model documentation?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-what-kind-of-data-does-cwatm-use" id="id20"><strong>Q: What kind of data does CWatM use?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-is-there-input-data-available-for-cwatm" id="id21"><strong>Q: Is there input data available for CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-cwatm-be-integrated-with-other-models" id="id27"><strong>Q: Can CWatM be integrated with other models?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-does-model-coupling-work" id="id28"><strong>Q: How does model coupling work?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-cwatm-work-with-modflow" id="id29"><strong>Q: Can CWatM work with MODFLOW?</strong></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#future-development" id="id22">Future Development</a></p>
+<li><p><a class="reference internal" href="#climate-and-data" id="id30">Climate and Data</a></p>
 <ul>
-<li><p><a class="reference internal" href="#q-what-future-developments-are-planned-for-cwatm" id="id23"><strong>Q: What future developments are planned for CWatM?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-how-does-cwatm-contribute-to-the-water-energy-food-nexus-analysis" id="id24"><strong>Q: How does CWatM contribute to the water-energy-food nexus analysis?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-climate-data-can-cwatm-use" id="id31"><strong>Q: What climate data can CWatM use?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-data-formats-does-cwatm-use" id="id32"><strong>Q: What data formats does CWatM use?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-does-cwatm-track-data-sources" id="id33"><strong>Q: How does CWatM track data sources?</strong></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#support-and-community" id="id25">Support and Community</a></p>
+<li><p><a class="reference internal" href="#calibration" id="id34">Calibration</a></p>
 <ul>
-<li><p><a class="reference internal" href="#q-where-can-i-get-help-with-cwatm" id="id26"><strong>Q: Where can I get help with CWatM?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-how-can-i-track-data-sources-and-model-versions" id="id27"><strong>Q: How can I track data sources and model versions?</strong></a></p></li>
-<li><p><a class="reference internal" href="#q-is-there-a-calibration-tool-available" id="id28"><strong>Q: Is there a calibration tool available?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-is-cwatm-calibrated" id="id35"><strong>Q: Is CWatM calibrated?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-parameters-can-be-calibrated" id="id36"><strong>Q: What parameters can be calibrated?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-is-there-a-calibration-tool-available" id="id37"><strong>Q: Is there a calibration tool available?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-performance-metrics-are-used" id="id38"><strong>Q: What performance metrics are used?</strong></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#additional-resources" id="id29">Additional Resources</a></p>
+<li><p><a class="reference internal" href="#applications-and-use-cases" id="id39">Applications and Use Cases</a></p>
 <ul>
-<li><p><a class="reference internal" href="#official-website" id="id30">Official Website</a></p></li>
-<li><p><a class="reference internal" href="#github-repositories" id="id31">GitHub Repositories</a></p></li>
-<li><p><a class="reference internal" href="#publications" id="id32">Publications</a></p></li>
-<li><p><a class="reference internal" href="#license" id="id33">License</a></p></li>
+<li><p><a class="reference internal" href="#q-what-are-the-main-applications-of-cwatm" id="id40"><strong>Q: What are the main applications of CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-cwatm-be-used-for-regional-studies" id="id41"><strong>Q: Can CWatM be used for regional studies?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-does-cwatm-consider-environmental-needs" id="id42"><strong>Q: Does CWatM consider environmental needs?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-does-cwatm-handle-water-demand" id="id43"><strong>Q: How does CWatM handle water demand?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-cwatm-be-used-for-climate-change-studies" id="id44"><strong>Q: Can CWatM be used for climate change studies?</strong></a></p></li>
 </ul>
 </li>
+<li><p><a class="reference internal" href="#model-output" id="id45">Model Output</a></p>
+<ul>
+<li><p><a class="reference internal" href="#q-what-output-variables-does-cwatm-provide" id="id46"><strong>Q: What output variables does CWatM provide?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-can-i-control-output-frequency" id="id47"><strong>Q: How can I control output frequency?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-i-get-spatially-aggregated-outputs" id="id48"><strong>Q: Can I get spatially aggregated outputs?</strong></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#documentation-and-support" id="id49">Documentation and Support</a></p>
+<ul>
+<li><p><a class="reference internal" href="#q-where-can-i-find-the-model-documentation" id="id50"><strong>Q: Where can I find the model documentation?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-where-can-i-get-help-with-cwatm" id="id51"><strong>Q: Where can I get help with CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-are-there-tutorials-available" id="id52"><strong>Q: Are there tutorials available?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-should-i-do-if-i-encounter-errors" id="id53"><strong>Q: What should I do if I encounter errors?</strong></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#future-development" id="id54">Future Development</a></p>
+<ul>
+<li><p><a class="reference internal" href="#q-what-future-developments-are-planned-for-cwatm" id="id55"><strong>Q: What future developments are planned for CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-does-cwatm-contribute-to-nexus-analysis" id="id56"><strong>Q: How does CWatM contribute to nexus analysis?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-will-cwatm-include-water-quality-modeling" id="id57"><strong>Q: Will CWatM include water quality modeling?</strong></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#settings-and-configuration" id="id58">Settings and Configuration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#q-what-is-a-settings-file" id="id59"><strong>Q: What is a settings file?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-i-use-excel-for-settings" id="id60"><strong>Q: Can I use Excel for settings?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-how-do-i-set-the-simulation-period" id="id61"><strong>Q: How do I set the simulation period?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-i-save-and-load-model-states" id="id62"><strong>Q: Can I save and load model states?</strong></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#performance-and-requirements" id="id63">Performance and Requirements</a></p>
+<ul>
+<li><p><a class="reference internal" href="#q-how-computationally-intensive-is-cwatm" id="id64"><strong>Q: How computationally intensive is CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-cwatm-run-in-parallel" id="id65"><strong>Q: Can CWatM run in parallel?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-is-the-typical-runtime" id="id66"><strong>Q: What is the typical runtime?</strong></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#comparison-with-other-models" id="id67">Comparison with Other Models</a></p>
+<ul>
+<li><p><a class="reference internal" href="#q-how-does-cwatm-compare-to-other-hydrological-models" id="id68"><strong>Q: How does CWatM compare to other hydrological models?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-what-makes-cwatm-unique" id="id69"><strong>Q: What makes CWatM unique?</strong></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#license-and-access" id="id70">License and Access</a></p>
+<ul>
+<li><p><a class="reference internal" href="#q-what-license-is-cwatm-released-under" id="id71"><strong>Q: What license is CWatM released under?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-where-can-i-download-cwatm" id="id72"><strong>Q: Where can I download CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-is-there-a-cost-to-use-cwatm" id="id73"><strong>Q: Is there a cost to use CWatM?</strong></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#additional-resources" id="id74">Additional Resources</a></p>
+<ul>
+<li><p><a class="reference internal" href="#q-where-can-i-find-example-applications" id="id75"><strong>Q: Where can I find example applications?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-are-there-scientific-publications-about-cwatm" id="id76"><strong>Q: Are there scientific publications about CWatM?</strong></a></p></li>
+<li><p><a class="reference internal" href="#q-can-cwatm-be-used-for-educational-purposes" id="id77"><strong>Q: Can CWatM be used for educational purposes?</strong></a></p></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="general-questions">
-<h2><a class="toc-backref" href="#id3">General Questions</a><a class="headerlink" href="#general-questions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="introduction-and-overview">
+<h3><a class="toc-backref" href="#table-of-contents">Introduction and Overview</a><a class="headerlink" href="#introduction-and-overview" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="q-what-is-cwatm">
-<h3><a class="toc-backref" href="#id4"><strong>Q: What is CWatM?</strong></a><a class="headerlink" href="#q-what-is-cwatm" title="Permalink to this headline">¶</a></h3>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What is CWatM?</strong></a><a class="headerlink" href="#q-what-is-cwatm" title="Permalink to this headline">¶</a></h4>
 <p>A: CWatM (Community Water Model) is a hydrological model that simulates the water cycle daily at global and local levels, both historically and into the future. It’s maintained by IIASA’s Water Security research group and is designed to assess water availability, water demand, and environmental needs.</p>
 </div>
 <div class="section" id="q-who-developed-cwatm">
-<h3><a class="toc-backref" href="#id5"><strong>Q: Who developed CWatM?</strong></a><a class="headerlink" href="#q-who-developed-cwatm" title="Permalink to this headline">¶</a></h3>
-<p>A: CWatM was developed by the IIASA (International Institute for Applied Systems Analysis) Water Security program, with the current version being 1.06 as of October 2024.</p>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Who developed CWatM?</strong></a><a class="headerlink" href="#q-who-developed-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM was developed by the IIASA (International Institute for Applied Systems Analysis) Water Security program, with the current version being 1.10 as of October 2025.</p>
 </div>
-<div class="section" id="q-what-is-the-purpose-of-cwatm">
-<h3><a class="toc-backref" href="#id6"><strong>Q: What is the purpose of CWatM?</strong></a><a class="headerlink" href="#q-what-is-the-purpose-of-cwatm" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-what-is-the-main-purpose-of-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What is the main purpose of CWatM?</strong></a><a class="headerlink" href="#q-what-is-the-main-purpose-of-cwatm" title="Permalink to this headline">¶</a></h4>
 <p>A: The model is designed for assessing water availability, water demand, and environmental needs. It includes an accounting of how future water demands will evolve in response to socioeconomic change and how water availability will change in response to climate.</p>
+</div>
+<div class="section" id="q-why-was-cwatm-created">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Why was CWatM created?</strong></a><a class="headerlink" href="#q-why-was-cwatm-created" title="Permalink to this headline">¶</a></h4>
+<p>A: The Community Water Model will help to develop a next-generation hydro-economic modeling tool that represents the economic trade-offs among water supply technologies and demands. The tool will track water use from all sectors and will identify the least-cost solutions for meeting future water demands under policy constraints.</p>
+</div>
+</div>
+<div class="section" id="installation-and-setup">
+<h3><a class="toc-backref" href="#table-of-contents">Installation and Setup</a><a class="headerlink" href="#installation-and-setup" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-what-are-the-system-requirements-for-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What are the system requirements for CWatM?</strong></a><a class="headerlink" href="#q-what-are-the-system-requirements-for-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM requires:</p>
+<ul class="simple">
+<li><p>Python 3.7 or higher</p></li>
+<li><p>Operating Systems: Windows, Linux, macOS</p></li>
+<li><p>Python libraries: numpy, scipy, netCDF4, GDAL, pandas, xarray</p></li>
+</ul>
+</div>
+<div class="section" id="q-how-do-i-install-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How do I install CWatM?</strong></a><a class="headerlink" href="#q-how-do-i-install-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM can be cloned through the CWatM GitHub repository. For those new to GitHub, using GitHub desktop is recommended.</p>
+</div>
+<div class="section" id="q-what-python-packages-are-required">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What Python packages are required?</strong></a><a class="headerlink" href="#q-what-python-packages-are-required" title="Permalink to this headline">¶</a></h4>
+<p>A: Essential packages include:</p>
+<ul class="simple">
+<li><p>numpy (version 1.26 recommended)</p></li>
+<li><p>scipy</p></li>
+<li><p>GDAL (version 3.8)</p></li>
+<li><p>netCDF4</p></li>
+<li><p>pandas</p></li>
+<li><p>xarray</p></li>
+</ul>
+<p>Additional packages for post-processing:</p>
+<ul class="simple">
+<li><p>Jupyter Notebook</p></li>
+<li><p>plotly</p></li>
+<li><p>XlsxWriter</p></li>
+</ul>
+<p>For CWatM-MODFLOW coupling:</p>
+<ul class="simple">
+<li><p>FloPy</p></li>
+<li><p>xmipy</p></li>
+</ul>
+</div>
+<div class="section" id="q-how-do-i-run-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How do I run CWatM?</strong></a><a class="headerlink" href="#q-how-do-i-run-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: Use the command: python cwatm.py settings.ini (You may need to adjust the path to your python version and to cwatm.py). You need either to add Python to the PATH Environmental Variable or start Python with full path.</p>
+</div>
+<div class="section" id="q-can-i-use-a-virtual-environment">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can I use a virtual environment?</strong></a><a class="headerlink" href="#q-can-i-use-a-virtual-environment" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, virtual environments are useful for controlling package versions but are totally optional. The virtual environment helps maintain specific package versions for your code while allowing different versions for other projects.</p>
+</div>
+<div class="section" id="q-are-there-pre-compiled-libraries-available">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Are there pre-compiled libraries available?</strong></a><a class="headerlink" href="#q-are-there-pre-compiled-libraries-available" title="Permalink to this headline">¶</a></h4>
+<p>A: For computationally demanding parts like routing, CWatM comes with a C++ library. A pre-compiled version is included for Windows and Linux. CWatM detects automatically which system is running and which compiled version is needed.</p>
 </div>
 </div>
 <div class="section" id="technical-specifications">
-<h2><a class="toc-backref" href="#id7">Technical Specifications</a><a class="headerlink" href="#technical-specifications" title="Permalink to this headline">¶</a></h2>
+<h3><a class="toc-backref" href="#table-of-contents">Technical Specifications</a><a class="headerlink" href="#technical-specifications" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="q-what-resolution-can-cwatm-run-at">
-<h3><a class="toc-backref" href="#id8"><strong>Q: What resolution can CWatM run at?</strong></a><a class="headerlink" href="#q-what-resolution-can-cwatm-run-at" title="Permalink to this headline">¶</a></h3>
-<p>A: CWatM can be run at daily resolution globally from 5 arcminutes to 0.5 degrees, or separately for any basin or region.</p>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What resolution can CWatM run at?</strong></a><a class="headerlink" href="#q-what-resolution-can-cwatm-run-at" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM can be run at daily resolution globally from 5 arcminutes to 0.5 degrees, or separately for any basin or region. For some regions CWatM has version with 1km or 1 arcmin resoution. Sub-grid resolution taking topography and land cover into account.</p>
 </div>
 <div class="section" id="q-what-programming-language-is-cwatm-written-in">
-<h3><a class="toc-backref" href="#id9"><strong>Q: What programming language is CWatM written in?</strong></a><a class="headerlink" href="#q-what-programming-language-is-cwatm-written-in" title="Permalink to this headline">¶</a></h3>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What programming language is CWatM written in?</strong></a><a class="headerlink" href="#q-what-programming-language-is-cwatm-written-in" title="Permalink to this headline">¶</a></h4>
 <p>A: CWatM is open source in the Python programming environment and has a modular structure. It uses global, freely available data in the netCDF4 file format for reading, storage, and production of data.</p>
 </div>
 <div class="section" id="q-is-cwatm-open-source">
-<h3><a class="toc-backref" href="#id10"><strong>Q: Is CWatM open source?</strong></a><a class="headerlink" href="#q-is-cwatm-open-source" title="Permalink to this headline">¶</a></h3>
-<p>A: Yes, CWatM is open source and available on GitHub. Its modular structure facilitates integration with other models.</p>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Is CWatM open source?</strong></a><a class="headerlink" href="#q-is-cwatm-open-source" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, CWatM is open source and available on GitHub. Its modular structure facilitates integration with other models. The source code of CWatM is freely available under the GNU General Public License V3.</p>
+</div>
+<div class="section" id="q-what-is-the-modular-structure-of-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What is the modular structure of CWatM?</strong></a><a class="headerlink" href="#q-what-is-the-modular-structure-of-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: Each module is identically composed of an initialization class and a dynamic class operating through time. Alternative descriptions of processes can be included in a module as different initial and dynamic classes.</p>
 </div>
 </div>
 <div class="section" id="model-features-and-capabilities">
-<h2><a class="toc-backref" href="#id11">Model Features and Capabilities</a><a class="headerlink" href="#model-features-and-capabilities" title="Permalink to this headline">¶</a></h2>
+<h3><a class="toc-backref" href="#table-of-contents">Model Features and Capabilities</a><a class="headerlink" href="#model-features-and-capabilities" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="q-what-processes-does-cwatm-simulate">
-<h3><a class="toc-backref" href="#id12"><strong>Q: What processes does CWatM simulate?</strong></a><a class="headerlink" href="#q-what-processes-does-cwatm-simulate" title="Permalink to this headline">¶</a></h3>
-<p>A: CWatM includes general surface and groundwater hydrological processes but also takes into account human activities, such as:</p>
-<ul class="simple">
-<li><p>Water use and reservoir regulation</p></li>
-<li><p>Calculating water demands, water use, and return flows</p></li>
-<li><p>Reservoirs and lakes management</p></li>
-</ul>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What processes does CWatM simulate?</strong></a><a class="headerlink" href="#q-what-processes-does-cwatm-simulate" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM includes general surface and groundwater hydrological processes but also takes into account human activities, such as water use and reservoir regulation, by calculating water demands, water use, and return flows. Reservoirs and lakes are included in the model scheme.</p>
 </div>
+<div class="section" id="q-how-does-cwatm-handle-soil-processes">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How does CWatM handle soil processes?</strong></a><a class="headerlink" href="#q-how-does-cwatm-handle-soil-processes" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM uses the Van Genuchten model for soil water transport. Soil hydraulic parameters are derived via pedotransfer functions from standard soil properties. The soil moisture equation is solved iteratively on a subdaily time step.</p>
+</div>
+<div class="section" id="q-can-cwatm-simulate-groundwater">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can CWatM simulate groundwater?</strong></a><a class="headerlink" href="#q-can-cwatm-simulate-groundwater" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, CWatM includes groundwater simulation. CWatM can integrate with MODFLOW for detailed groundwater modeling. The coupled CWatM-MODFLOW version requires creating a MODFLOW grid and defining the resolution and coordinate systems.</p>
+</div>
+<div class="section" id="q-how-are-lakes-and-reservoirs-handled">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How are lakes and reservoirs handled?</strong></a><a class="headerlink" href="#q-how-are-lakes-and-reservoirs-handled" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM differentiates between big lakes and reservoirs connected inside the river network and smaller ones that are part of a single grid cell. The HydroLakes database provides 1.4 million global lakes and reservoirs with surface area ≥10ha.</p>
+</div>
+<div class="section" id="q-what-routing-method-does-cwatm-use">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What routing method does CWatM use?</strong></a><a class="headerlink" href="#q-what-routing-method-does-cwatm-use" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM applies the kinematic wave approximation of the Saint-Venant equations for routing water through channels. Soil and river routing runs on 10 time-steps per day for improved accuracy.</p>
+</div>
+</div>
+<div class="section" id="model-integration">
+<h3><a class="toc-backref" href="#table-of-contents">Model Integration</a><a class="headerlink" href="#model-integration" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="q-can-cwatm-be-integrated-with-other-models">
-<h3><a class="toc-backref" href="#id13"><strong>Q: Can CWatM be integrated with other models?</strong></a><a class="headerlink" href="#q-can-cwatm-be-integrated-with-other-models" title="Permalink to this headline">¶</a></h3>
-<p>A: Yes, CWatM is designed to be flexible and link to different aspects of the water-energy-food nexus. It will be coupled to existing IIASA models, including:</p>
-<ul class="simple">
-<li><p>EPIC</p></li>
-<li><p>MESSAGE</p></li>
-<li><p>GLOBIOM</p></li>
-<li><p>Global Hydro-Economic Model</p></li>
-</ul>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can CWatM be integrated with other models?</strong></a><a class="headerlink" href="#q-can-cwatm-be-integrated-with-other-models" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, CWatM is designed to be flexible and link to different aspects of the water-energy-food nexus. It will be coupled to existing IIASA models, including EPIC, MESSAGE, GLOBIOM, and the Global Hydro-Economic Model.</p>
+</div>
+<div class="section" id="q-how-does-model-coupling-work">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How does model coupling work?</strong></a><a class="headerlink" href="#q-how-does-model-coupling-work" title="Permalink to this headline">¶</a></h4>
+<p>A: Linking to other models can be done by transfer via input and output files. Every global variable of CWatM can be written as annual, monthly, or daily time series as text files for specific points, aggregated to basins, or as maps.</p>
+</div>
+<div class="section" id="q-can-cwatm-work-with-modflow">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can CWatM work with MODFLOW?</strong></a><a class="headerlink" href="#q-can-cwatm-work-with-modflow" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, CWatM can integrate with MODFLOW. This requires creating a MODFLOW grid using Main_Preprocess_ModFlow.py with your CWatM mask map and topographic map, defining the resolution and coordinate systems.</p>
+</div>
+</div>
+<div class="section" id="climate-and-data">
+<h3><a class="toc-backref" href="#table-of-contents">Climate and Data</a><a class="headerlink" href="#climate-and-data" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-what-climate-data-can-cwatm-use">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What climate data can CWatM use?</strong></a><a class="headerlink" href="#q-what-climate-data-can-cwatm-use" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM can use different datasets of meteorological forcing for current climate (e.g., MSWEP, WFDEI, PGMFD, GSWP3, or EWEMBI) or future climate projections from different general circulation models (GCMs).</p>
+</div>
+<div class="section" id="q-what-data-formats-does-cwatm-use">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What data formats does CWatM use?</strong></a><a class="headerlink" href="#q-what-data-formats-does-cwatm-use" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM uses the netCDF4 file format for reading, storage, and production of data in a compact way. As long as the forcing data use the CF 1.6 Convention, CWatM takes care of different names of input variables.</p>
+</div>
+<div class="section" id="q-how-does-cwatm-track-data-sources">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How does CWatM track data sources?</strong></a><a class="headerlink" href="#q-how-does-cwatm-track-data-sources" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM implements FAIR data principles - model data used (name and date) is stored in discharge netcdf files, complete settings files are stored in netcdf outputs, and version numbers with GitHub hash are tracked in global attributes.</p>
+</div>
+</div>
+<div class="section" id="calibration">
+<h3><a class="toc-backref" href="#table-of-contents">Calibration</a><a class="headerlink" href="#calibration" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-is-cwatm-calibrated">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Is CWatM calibrated?</strong></a><a class="headerlink" href="#q-is-cwatm-calibrated" title="Permalink to this headline">¶</a></h4>
+<p>A: Calibrating CWatM is of major importance, as the model is developed to quantify water demand versus availability for detailed regional water resources assessments that will act as the basis for interactions with stakeholders and regional policy development.</p>
+</div>
+<div class="section" id="q-what-parameters-can-be-calibrated">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What parameters can be calibrated?</strong></a><a class="headerlink" href="#q-what-parameters-can-be-calibrated" title="Permalink to this headline">¶</a></h4>
+<p>A: Calibration parameters include: Snowmelt coefficient, Crop factor, Soil depth factor, Preferential bypass flow, Infiltration capacity parameter, Interflow factor, Recession coefficient factor, and Runoff concentration factor.</p>
+</div>
+<div class="section" id="q-is-there-a-calibration-tool-available">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Is there a calibration tool available?</strong></a><a class="headerlink" href="#q-is-there-a-calibration-tool-available" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, CWatM includes a dedicated calibration tool with accompanying tutorial documentation. The calibration uses DEAP (Distributed Evolutionary Algorithms in Python) and can run multiple parameter combinations.</p>
+</div>
+<div class="section" id="q-what-performance-metrics-are-used">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What performance metrics are used?</strong></a><a class="headerlink" href="#q-what-performance-metrics-are-used" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM uses metrics like Nash-Sutcliffe Efficiency (NSE) and Kling-Gupta Efficiency (KGE) for model calibration and validation.</p>
 </div>
 </div>
 <div class="section" id="applications-and-use-cases">
-<h2><a class="toc-backref" href="#id14">Applications and Use Cases</a><a class="headerlink" href="#applications-and-use-cases" title="Permalink to this headline">¶</a></h2>
+<h3><a class="toc-backref" href="#table-of-contents">Applications and Use Cases</a><a class="headerlink" href="#applications-and-use-cases" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="q-what-are-the-main-applications-of-cwatm">
-<h3><a class="toc-backref" href="#id15"><strong>Q: What are the main applications of CWatM?</strong></a><a class="headerlink" href="#q-what-are-the-main-applications-of-cwatm" title="Permalink to this headline">¶</a></h3>
-<p>A: CWatM helps develop next-generation hydro-economic modeling tools that:</p>
-<ul class="simple">
-<li><p>Represent economic trade-offs among water supply technologies and demands</p></li>
-<li><p>Track water use from all sectors</p></li>
-<li><p>Identify least-cost solutions for meeting future water demands under policy constraints</p></li>
-</ul>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What are the main applications of CWatM?</strong></a><a class="headerlink" href="#q-what-are-the-main-applications-of-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM helps develop next-generation hydro-economic modeling tools that represent economic trade-offs among water supply technologies and demands. It tracks water use from all sectors and identifies least-cost solutions for meeting future water demands under policy constraints.</p>
 </div>
 <div class="section" id="q-can-cwatm-be-used-for-regional-studies">
-<h3><a class="toc-backref" href="#id16"><strong>Q: Can CWatM be used for regional studies?</strong></a><a class="headerlink" href="#q-can-cwatm-be-used-for-regional-studies" title="Permalink to this headline">¶</a></h3>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can CWatM be used for regional studies?</strong></a><a class="headerlink" href="#q-can-cwatm-be-used-for-regional-studies" title="Permalink to this headline">¶</a></h4>
 <p>A: Yes, CWatM can simulate hydrology both globally and regionally at different resolutions from 30 arcmin to 30 arcsec at daily time steps. It can be run for any specific basin or region.</p>
 </div>
 <div class="section" id="q-does-cwatm-consider-environmental-needs">
-<h3><a class="toc-backref" href="#id17"><strong>Q: Does CWatM consider environmental needs?</strong></a><a class="headerlink" href="#q-does-cwatm-consider-environmental-needs" title="Permalink to this headline">¶</a></h3>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Does CWatM consider environmental needs?</strong></a><a class="headerlink" href="#q-does-cwatm-consider-environmental-needs" title="Permalink to this headline">¶</a></h4>
 <p>A: Yes, the tool incorporates environmental flow requirements to ensure sufficient water for environmental needs.</p>
 </div>
+<div class="section" id="q-how-does-cwatm-handle-water-demand">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How does CWatM handle water demand?</strong></a><a class="headerlink" href="#q-how-does-cwatm-handle-water-demand" title="Permalink to this headline">¶</a></h4>
+<p>A: Water demand is estimated for irrigation, livestock, industry and energy, and households. Irrigation water demand estimates account for soil moisture, seasonal variability, irrigation methods and climatic conditions.</p>
 </div>
-<div class="section" id="data-and-documentation">
-<h2><a class="toc-backref" href="#id18">Data and Documentation</a><a class="headerlink" href="#data-and-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="q-can-cwatm-be-used-for-climate-change-studies">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can CWatM be used for climate change studies?</strong></a><a class="headerlink" href="#q-can-cwatm-be-used-for-climate-change-studies" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, CWatM can be used to evaluate hydrological effects of climate change by employing different climate scenarios (SSPs) and can simulate both historical and future periods.</p>
+</div>
+</div>
+<div class="section" id="model-output">
+<h3><a class="toc-backref" href="#table-of-contents">Model Output</a><a class="headerlink" href="#model-output" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-what-output-variables-does-cwatm-provide">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What output variables does CWatM provide?</strong></a><a class="headerlink" href="#q-what-output-variables-does-cwatm-provide" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM provides numerous output variables including:</p>
+<ul class="simple">
+<li><p>Discharge (river flow)</p></li>
+<li><p>Evapotranspiration</p></li>
+<li><p>Soil moisture</p></li>
+<li><p>Groundwater storage</p></li>
+<li><p>Snow cover and SWE</p></li>
+<li><p>Total water storage</p></li>
+<li><p>Lake and reservoir storage</p></li>
+<li><p>Water demand by sector</p></li>
+<li><p>Return flows</p></li>
+</ul>
+</div>
+<div class="section" id="q-how-can-i-control-output-frequency">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How can I control output frequency?</strong></a><a class="headerlink" href="#q-how-can-i-control-output-frequency" title="Permalink to this headline">¶</a></h4>
+<p>A: Output can be generated as daily (OUT_TSS_Daily), monthly average (OUT_TSS_MonthAvg), or at other temporal resolutions as specified in the settings file.</p>
+</div>
+<div class="section" id="q-can-i-get-spatially-aggregated-outputs">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can I get spatially aggregated outputs?</strong></a><a class="headerlink" href="#q-can-i-get-spatially-aggregated-outputs" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, outputs can be written as text files for specific points, aggregated to basins, or as maps showing the value for each cell.</p>
+</div>
+</div>
+<div class="section" id="documentation-and-support">
+<h3><a class="toc-backref" href="#table-of-contents">Documentation and Support</a><a class="headerlink" href="#documentation-and-support" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="q-where-can-i-find-the-model-documentation">
-<h3><a class="toc-backref" href="#id19"><strong>Q: Where can I find the model documentation?</strong></a><a class="headerlink" href="#q-where-can-i-find-the-model-documentation" title="Permalink to this headline">¶</a></h3>
-<p>A: The complete user manual and model documentation is available at <a class="reference external" href="https://cwatm.iiasa.ac.at">https://cwatm.iiasa.ac.at</a>, which includes:</p>
-<ul class="simple">
-<li><p>Tutorials</p></li>
-<li><p>Setup instructions</p></li>
-<li><p>Error handling guides</p></li>
-<li><p>Example applications</p></li>
-</ul>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Where can I find the model documentation?</strong></a><a class="headerlink" href="#q-where-can-i-find-the-model-documentation" title="Permalink to this headline">¶</a></h4>
+<p>A: The complete user manual and model documentation is available at <a class="reference external" href="https://cwatm.iiasa.ac.at">https://cwatm.iiasa.ac.at</a>, which includes tutorials, setup instructions, error handling guides, and example applications.</p>
 </div>
-<div class="section" id="q-what-kind-of-data-does-cwatm-use">
-<h3><a class="toc-backref" href="#id20"><strong>Q: What kind of data does CWatM use?</strong></a><a class="headerlink" href="#q-what-kind-of-data-does-cwatm-use" title="Permalink to this headline">¶</a></h3>
-<p>A: CWatM uses various data including:</p>
-<ul class="simple">
-<li><p>Drainage direction maps</p></li>
-<li><p>Channel geometry data</p></li>
-<li><p>Manning’s roughness coefficients</p></li>
-<li><p>Lake/reservoir data from sources like HydroLakes database (1.4 million global lakes and reservoirs)</p></li>
-</ul>
+<div class="section" id="q-where-can-i-get-help-with-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Where can I get help with CWatM?</strong></a><a class="headerlink" href="#q-where-can-i-get-help-with-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: You can start a discussion on the GitHub forum and check out CWatM tutorials on YouTube. The website also includes a forum section for community support.</p>
 </div>
-<div class="section" id="q-is-there-input-data-available-for-cwatm">
-<h3><a class="toc-backref" href="#id21"><strong>Q: Is there input data available for CWatM?</strong></a><a class="headerlink" href="#q-is-there-input-data-available-for-cwatm" title="Permalink to this headline">¶</a></h3>
-<p>A: Yes, the repository <strong>CWatM-Earth-30min</strong> contains input data for CWatM at 30 arcminutes and provides links to climate and higher resolution input data.</p>
+<div class="section" id="q-are-there-tutorials-available">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Are there tutorials available?</strong></a><a class="headerlink" href="#q-are-there-tutorials-available" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, CWatM tutorials are available on YouTube, and the documentation website includes detailed tutorial sections.</p>
+</div>
+<div class="section" id="q-what-should-i-do-if-i-encounter-errors">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What should I do if I encounter errors?</strong></a><a class="headerlink" href="#q-what-should-i-do-if-i-encounter-errors" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM captures a number of possible wrong inputs and provides error numbers. Check the Error handling section of the documentation for specific error codes and solutions.</p>
 </div>
 </div>
 <div class="section" id="future-development">
-<h2><a class="toc-backref" href="#id22">Future Development</a><a class="headerlink" href="#future-development" title="Permalink to this headline">¶</a></h2>
+<h3><a class="toc-backref" href="#table-of-contents">Future Development</a><a class="headerlink" href="#future-development" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="q-what-future-developments-are-planned-for-cwatm">
-<h3><a class="toc-backref" href="#id23"><strong>Q: What future developments are planned for CWatM?</strong></a><a class="headerlink" href="#q-what-future-developments-are-planned-for-cwatm" title="Permalink to this headline">¶</a></h3>
-<p>A: The vision for the short to medium term includes:</p>
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What future developments are planned for CWatM?</strong></a><a class="headerlink" href="#q-what-future-developments-are-planned-for-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: The vision for the short to medium term includes introducing a water quality component (e.g., salinization in deltas and eutrophication associated with mega cities) and considering how to include qualitative and quantitative measures of transboundary river and groundwater governance.</p>
+</div>
+<div class="section" id="q-how-does-cwatm-contribute-to-nexus-analysis">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How does CWatM contribute to nexus analysis?</strong></a><a class="headerlink" href="#q-how-does-cwatm-contribute-to-nexus-analysis" title="Permalink to this headline">¶</a></h4>
+<p>A: The modular structure makes linking CWatM with other IIASA models possible to develop an integrated assessment modeling framework for nexus issues (water-food-energy) or hydro-economic modeling for quantifying water infrastructure investment options.</p>
+</div>
+<div class="section" id="q-will-cwatm-include-water-quality-modeling">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Will CWatM include water quality modeling?</strong></a><a class="headerlink" href="#q-will-cwatm-include-water-quality-modeling" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, future development includes adding water quality components such as salinization in deltas and eutrophication associated with mega cities.</p>
+</div>
+</div>
+<div class="section" id="settings-and-configuration">
+<h3><a class="toc-backref" href="#table-of-contents">Settings and Configuration</a><a class="headerlink" href="#settings-and-configuration" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-what-is-a-settings-file">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What is a settings file?</strong></a><a class="headerlink" href="#q-what-is-a-settings-file" title="Permalink to this headline">¶</a></h4>
+<p>A: The model needs a settings file as an argument. This .ini file contains all configuration parameters including paths, time periods, calibration parameters, and output specifications.</p>
+</div>
+<div class="section" id="q-can-i-use-excel-for-settings">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can I use Excel for settings?</strong></a><a class="headerlink" href="#q-can-i-use-excel-for-settings" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, cwatm4r provides a convenient way to define all model parameters using a settings.xlsx spreadsheet, which can be converted to the required .ini file format.</p>
+</div>
+<div class="section" id="q-how-do-i-set-the-simulation-period">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How do I set the simulation period?</strong></a><a class="headerlink" href="#q-how-do-i-set-the-simulation-period" title="Permalink to this headline">¶</a></h4>
+<p>A: In the settings file, specify StepStart (start date), SpinUp (warm-up period), and StepEnd (end date) in the TIME-RELATED_CONSTANTS section.</p>
+</div>
+<div class="section" id="q-can-i-save-and-load-model-states">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can I save and load model states?</strong></a><a class="headerlink" href="#q-can-i-save-and-load-model-states" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, you can save initial conditions (save_initial = True) and load them for warm starts (load_initial = True) using netCDF files.</p>
+</div>
+</div>
+<div class="section" id="performance-and-requirements">
+<h3><a class="toc-backref" href="#table-of-contents">Performance and Requirements</a><a class="headerlink" href="#performance-and-requirements" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-how-computationally-intensive-is-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How computationally intensive is CWatM?</strong></a><a class="headerlink" href="#q-how-computationally-intensive-is-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: For computationally demanding parts like routing, CWatM uses C++ libraries for speed. The model includes pre-compiled versions for Windows and Linux.</p>
+</div>
+<div class="section" id="q-can-cwatm-run-in-parallel">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can CWatM run in parallel?</strong></a><a class="headerlink" href="#q-can-cwatm-run-in-parallel" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, the calibration tool supports multiprocessing (use_multiprocessing parameter) for running multiple simulations in parallel.</p>
+</div>
+<div class="section" id="q-what-is-the-typical-runtime">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What is the typical runtime?</strong></a><a class="headerlink" href="#q-what-is-the-typical-runtime" title="Permalink to this headline">¶</a></h4>
+<p>A: Runtime depends on:</p>
 <ul class="simple">
-<li><p>Introducing a water quality component</p>
-<ul>
-<li><p>Salinization in deltas</p></li>
-<li><p>Eutrophication associated with mega cities</p></li>
+<li><p>Spatial resolution</p></li>
+<li><p>Temporal extent</p></li>
+<li><p>Domain size</p></li>
+<li><p>Number of processes simulated</p></li>
+<li><p>Hardware specifications</p></li>
 </ul>
-</li>
-<li><p>Including qualitative and quantitative measures of transboundary river and groundwater governance</p></li>
-</ul>
+<p>Higher resolution and longer periods increase computational time.</p>
 </div>
-<div class="section" id="q-how-does-cwatm-contribute-to-the-water-energy-food-nexus-analysis">
-<h3><a class="toc-backref" href="#id24"><strong>Q: How does CWatM contribute to the water-energy-food nexus analysis?</strong></a><a class="headerlink" href="#q-how-does-cwatm-contribute-to-the-water-energy-food-nexus-analysis" title="Permalink to this headline">¶</a></h3>
-<p>A: The modular structure makes linking CWatM with other IIASA models possible to:</p>
+</div>
+<div class="section" id="comparison-with-other-models">
+<h3><a class="toc-backref" href="#table-of-contents">Comparison with Other Models</a><a class="headerlink" href="#comparison-with-other-models" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-how-does-cwatm-compare-to-other-hydrological-models">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: How does CWatM compare to other hydrological models?</strong></a><a class="headerlink" href="#q-how-does-cwatm-compare-to-other-hydrological-models" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM is used in the framework of the Inter-Sectoral Impact Model Intercomparison Project (ISIMIP), which compares global model outputs. Studies have compared CWatM (as a Large-scale Hydrologic Model) with watershed models like VIC, showing similar performance for water balance variables.</p>
+</div>
+<div class="section" id="q-what-makes-cwatm-unique">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What makes CWatM unique?</strong></a><a class="headerlink" href="#q-what-makes-cwatm-unique" title="Permalink to this headline">¶</a></h4>
+<p>A: Key features include:</p>
 <ul class="simple">
-<li><p>Develop an integrated assessment modeling framework for nexus issues (water-food-energy)</p></li>
-<li><p>Enable hydro-economic modeling for quantifying water infrastructure investment options</p></li>
+<li><p>Open source with modular structure</p></li>
+<li><p>Integration capability with economic models</p></li>
+<li><p>Global to local scale applicability</p></li>
+<li><p>Human water use representation</p></li>
+<li><p>Water-energy-food nexus focus</p></li>
+<li><p>FAIR data principles implementation</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="support-and-community">
-<h2><a class="toc-backref" href="#id25">Support and Community</a><a class="headerlink" href="#support-and-community" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="q-where-can-i-get-help-with-cwatm">
-<h3><a class="toc-backref" href="#id26"><strong>Q: Where can I get help with CWatM?</strong></a><a class="headerlink" href="#q-where-can-i-get-help-with-cwatm" title="Permalink to this headline">¶</a></h3>
-<p>A: Several resources are available:</p>
+<div class="section" id="license-and-access">
+<h3><a class="toc-backref" href="#table-of-contents">License and Access</a><a class="headerlink" href="#license-and-access" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-what-license-is-cwatm-released-under">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: What license is CWatM released under?</strong></a><a class="headerlink" href="#q-what-license-is-cwatm-released-under" title="Permalink to this headline">¶</a></h4>
+<p>A: The source code of CWatM is freely available under the GNU General Public License.</p>
+</div>
+<div class="section" id="q-where-can-i-download-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Where can I download CWatM?</strong></a><a class="headerlink" href="#q-where-can-i-download-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: CWatM is available from:</p>
 <ul class="simple">
-<li><p>Start a discussion on the <a class="reference external" href="https://github.com/iiasa/CWatM">GitHub forum</a></p></li>
-<li><p>Check out CWatM tutorials on YouTube</p></li>
-<li><p>Visit the forum section on the website for community support</p></li>
+<li><p>GitHub repository: <a class="reference external" href="https://github.com/iiasa/CWatM">https://github.com/iiasa/CWatM</a></p></li>
+<li><p>Documentation: <a class="reference external" href="https://cwatm.iiasa.ac.at/">https://cwatm.iiasa.ac.at/</a></p></li>
+<li><p>Input data: <a class="reference external" href="https://github.com/iiasa/CWatM-Earth-30min">https://github.com/iiasa/CWatM-Earth-30min</a></p></li>
 </ul>
 </div>
-<div class="section" id="q-how-can-i-track-data-sources-and-model-versions">
-<h3><a class="toc-backref" href="#id27"><strong>Q: How can I track data sources and model versions?</strong></a><a class="headerlink" href="#q-how-can-i-track-data-sources-and-model-versions" title="Permalink to this headline">¶</a></h3>
-<p>A: CWatM includes FAIR data principles implementation:</p>
-<ul class="simple">
-<li><p>Model data used (name and date) is stored in discharge netCDF files</p></li>
-<li><p>Complete settings files are stored in netCDF outputs</p></li>
-<li><p>Version numbers with GitHub hash are tracked in global attributes</p></li>
-</ul>
-</div>
-<div class="section" id="q-is-there-a-calibration-tool-available">
-<h3><a class="toc-backref" href="#id28"><strong>Q: Is there a calibration tool available?</strong></a><a class="headerlink" href="#q-is-there-a-calibration-tool-available" title="Permalink to this headline">¶</a></h3>
-<p>A: Yes, there is a dedicated calibration tool with accompanying tutorial documentation available as part of the CWatM package.</p>
+<div class="section" id="q-is-there-a-cost-to-use-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Is there a cost to use CWatM?</strong></a><a class="headerlink" href="#q-is-there-a-cost-to-use-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: No, CWatM is free and open source. The source code is free, but support is limited due to limited person power.</p>
 </div>
 </div>
 <div class="section" id="additional-resources">
-<h2><a class="toc-backref" href="#id29">Additional Resources</a><a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="official-website">
-<h3><a class="toc-backref" href="#id30">Official Website</a><a class="headerlink" href="#official-website" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>Main documentation: <a class="reference external" href="https://cwatm.iiasa.ac.at">https://cwatm.iiasa.ac.at</a></p></li>
-<li><p>IIASA Water Security Group: <a class="reference external" href="https://iiasa.ac.at/models-tools-data/cwatm">https://iiasa.ac.at/models-tools-data/cwatm</a></p></li>
-</ul>
+<h3><a class="toc-backref" href="#table-of-contents">Additional Resources</a><a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="q-where-can-i-find-example-applications">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Where can I find example applications?</strong></a><a class="headerlink" href="#q-where-can-i-find-example-applications" title="Permalink to this headline">¶</a></h4>
+<p>A: The documentation includes example applications such as the Zambezi basin case study. Various studies have used CWatM for basins like the Aga-Foua-Djilas basin and the Liard River basin.</p>
 </div>
-<div class="section" id="github-repositories">
-<h3><a class="toc-backref" href="#id31">GitHub Repositories</a><a class="headerlink" href="#github-repositories" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>Main repository: <a class="reference external" href="https://github.com/iiasa/CWatM">https://github.com/iiasa/CWatM</a></p></li>
-<li><p>Tutorial repository: <a class="reference external" href="https://github.com/iiasa/CWatM_tutorial">https://github.com/iiasa/CWatM_tutorial</a></p></li>
-<li><p>Input data repository: CWatM-Earth-30min</p></li>
-</ul>
+<div class="section" id="q-are-there-scientific-publications-about-cwatm">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Are there scientific publications about CWatM?</strong></a><a class="headerlink" href="#q-are-there-scientific-publications-about-cwatm" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, the main reference is: Burek P., et al. (2020). “Development of the Community Water Model (CWatM v1.04) – a high-resolution hydrological model for global and regional assessment of integrated water resources management”. Geoscientific Model Development 13(7): 3267-3298.</p>
 </div>
-<div class="section" id="publications">
-<h3><a class="toc-backref" href="#id32">Publications</a><a class="headerlink" href="#publications" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>Burek P., et al. (2020). “Development of the Community Water Model (CWatM v1.04) – a high-resolution hydrological model for global and regional assessment of integrated water resources management”. Geoscientific Model Development 13(7): 3267-3298. DOI:10.5194/gmd-13-3267-2020</p></li>
-</ul>
-</div>
-<div class="section" id="license">
-<h3><a class="toc-backref" href="#id33">License</a><a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h3>
-<p>The source code of CWatM is freely available under the GNU General Public License.</p>
+<div class="section" id="q-can-cwatm-be-used-for-educational-purposes">
+<h4><a class="toc-backref" href="#table-of-contents"><strong>Q: Can CWatM be used for educational purposes?</strong></a><a class="headerlink" href="#q-can-cwatm-be-used-for-educational-purposes" title="Permalink to this headline">¶</a></h4>
+<p>A: Yes, CWatM is suitable for education and research. Tutorials, documentation, and the open-source nature make it accessible for learning hydrological modeling.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The source code is free, but support is limited due to resource constraints. For the most up-to-date information, always refer to the official documentation at the IIASA website.</p>
+<p>This FAQ is based on CWatM version 1.06 (October 2024). Features and specifications may change in newer versions. Always refer to the official documentation for the most current information.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p>Official Website: <a class="reference external" href="https://cwatm.iiasa.ac.at/">https://cwatm.iiasa.ac.at/</a></p></li>
+<li><p>GitHub Repository: <a class="reference external" href="https://github.com/iiasa/CWatM">https://github.com/iiasa/CWatM</a></p></li>
+<li><p>IIASA Water Security: <a class="reference external" href="https://iiasa.ac.at/models-tools-data/cwatm">https://iiasa.ac.at/models-tools-data/cwatm</a></p></li>
+<li><p>YouTube Tutorials: Search for “CWatM tutorials”</p></li>
+</ul>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This FAQ is based on information available as of October 2024. Features and specifications may have been updated since then. Please check the official website for the most current information.</p>
+<p>While CWatM is free to use, technical support is limited due to resource constraints. Users are encouraged to use the GitHub forum for community support.</p>
+</div>
 </div>
 </div>
 </div>
@@ -446,6 +812,10 @@
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="13_glossary.html" class="btn btn-neutral float-right" title="13. CWatM Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="11_forum.html" class="btn btn-neutral float-left" title="11. Forum" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 
