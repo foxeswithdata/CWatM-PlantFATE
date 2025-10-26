@@ -79,8 +79,7 @@ Fork our code from https://github.com/iiasa/CWatM and create your own branch.
 
 We also have a pyTest framework
 
-
-
+.. _license:
 
 GNU General public license
 ==========================

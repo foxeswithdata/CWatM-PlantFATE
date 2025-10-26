@@ -102,22 +102,21 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#"><strong>3. The Community Water Model</strong></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#model-philosophy">Model Philosophy</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#open-source-open-data-open-community">Open source/ open data/ open community</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functions-follow-form">Functions follow form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-follows-form">Function follows form</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#fair-software">FAIR software</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fair-r-software">FAIR(R) software</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#findable-f">Findable (F)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#accesable-a">Accesable (A)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessible-a">Accessible (A)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#interoperable-i">Interoperable (I)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#reusable-r">Reusable (R)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#and-reproducable">And  Reproducable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reproducible-r">Reproducible (R)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#model-design-and-processes">Model design and processes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#design">Design</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#processes">Processes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#calculation-of-potential-evaporation">Calculation of potential Evaporation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#calculation-of-rain-snow-snowmelt">Calculation of rain, snow, snowmelt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculation-of-rain-snow-and-snowmelt">Calculation of rain, snow, and snowmelt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#land-cover">Land cover</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#water-demand">Water demand</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#vegetation">Vegetation</a></li>
@@ -159,10 +158,8 @@
 <li class="toctree-l1"><a class="reference internal" href="9_technical.html"><strong>9. Technical Guide</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="91_sourcecode.html">Source code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="92_testing.html">Testing Framework</a></li>
-<li class="toctree-l1"><a class="reference internal" href="zambezi.html"><strong>10. Example Zambezi</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="forum.html"><strong>11. Forum</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_forum.html"><strong>11. Forum</strong></a></li>
 </ul>
 
             
@@ -238,7 +235,7 @@
 <li><p><a class="reference internal" href="#the-community-water-model" id="id1"><strong>3. The Community Water Model</strong></a></p>
 <ul>
 <li><p><a class="reference internal" href="#model-philosophy" id="id2">Model Philosophy</a></p></li>
-<li><p><a class="reference internal" href="#fair-software" id="id3">FAIR software</a></p></li>
+<li><p><a class="reference internal" href="#fair-r-software" id="id3">FAIR(R) software</a></p></li>
 <li><p><a class="reference internal" href="#model-design-and-processes" id="id4">Model design and processes</a></p></li>
 <li><p><a class="reference internal" href="#features-of-the-model" id="id5">Features of the Model</a></p></li>
 <li><p><a class="reference internal" href="#performance" id="id6">Performance</a></p></li>
@@ -250,77 +247,127 @@
 <span id="rst-philosophy"></span><h2><a class="toc-backref" href="#id2">Model Philosophy</a><a class="headerlink" href="#model-philosophy" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="open-source-open-data-open-community">
 <h3>Open source/ open data/ open community<a class="headerlink" href="#open-source-open-data-open-community" title="Permalink to this headline">¶</a></h3>
-<p>blablabla</p>
+<p>“<strong>Open source</strong> software embodies three ideals: freedom, collaboration, and transparency within the sphere of software development. If anything, this is a methodology or even a licensing model, reflecting a philosophy whose underpinnings are deeply rooted in values about how technology is to be created, shared, and used. The principles of open source are based on the convictions that technologies must empower and not constrain, and that the greatest innovations come from joint efforts.“ (Medium.com, Diaa Atya: The Philosophy and Ethics Behind Open-Source Software - 26/10/2025)</p>
+<p>We think users should have the freedom to use, study, share, and change our software without restriction (ok, we have restrictions: to cite use and to stick to the license). This freedom will allow users to deploy CWatM to their needs and maybe go even further than we intended, as developers.
+Our software has an open source code. We hope that this transparency will help us build trust. The users have the possibility to see how it all works.</p>
+<p>Open source goes in line with IIASA`s policy: <a class="reference external" href="https://iiasa.ac.at/publications/open-access">https://iiasa.ac.at/publications/open-access</a></p>
 </div>
-<div class="section" id="functions-follow-form">
-<h3>Functions follow form<a class="headerlink" href="#functions-follow-form" title="Permalink to this headline">¶</a></h3>
-<p>Inverse Bauhaus statment:</p>
-<p>blablabla the form is given by:
-- non hydrological parts e.g. (data managment, management of date/time, output functions)
-- hydrological functions
-- hydrological processes (e.g. snow, soil, routing)
-- hydrological subprocesses or alternative ways to calculate this.</p>
-<p>Hydrological processes are split up in:
-- initialization phase
+<div class="section" id="function-follows-form">
+<h3>Function follows form<a class="headerlink" href="#function-follows-form" title="Permalink to this headline">¶</a></h3>
+<p><em>Function follows form</em> is the inverse design principle of Bauhaus.</p>
+<p>For CWatM the form (the structure) is given by:
+- non-hydrological parts e.g. (data management, management of date/time, output functions)
+- hydrological functions</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>hydrological processes (e.g. snow, soil, routing)</p></li>
+<li><p>hydrological subprocesses or alternative ways to calculate this.</p></li>
+</ul>
+</div></blockquote>
+<p>Hydrological processes are split up:
+- initialization phase, where static, non-temporal data are read
 - dynamic phase, where the model runs through the time period</p>
-<p>CWatM functions follow this form.</p>
+<p>CWatM functions follow this form, to ensure that the code is not redundant and easy to follow.</p>
 </div>
 </div>
-<div class="section" id="fair-software">
-<h2><a class="toc-backref" href="#id3">FAIR software</a><a class="headerlink" href="#fair-software" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="fair-r-software">
+<h2><a class="toc-backref" href="#id3">FAIR(R) software</a><a class="headerlink" href="#fair-r-software" title="Permalink to this headline">¶</a></h2>
+<p>The FAIR principles were published in 2016 in:</p>
+<p><em>Wilkinson, M., Dumontier, M., Aalbersberg, I. et al. The FAIR Guiding Principles for scientific data management and stewardship. Sci Data 3, 160018 (2016). https://doi.org/10.1038/sdata.2016.18</em></p>
+<p>And used on software in:
+<em>Barker, M., Chue Hong, N.P., Katz, D.S. et al. Introducing the FAIR Principles for research software. Sci Data 9, 622 (2022). https://doi.org/10.1038/s41597-022-01710-x</em></p>
 <p>FAIR software refers to research software that adheres to the Findable, Accessible, Interoperable, and Reusable principles, adapted from data management to make software easier for humans and machines to discover, use, and share.</p>
+<p>We put in another <strong>R</strong> (Reproducible) – research software should be able to produce the same results given the same environment.</p>
 <div class="section" id="findable-f">
 <h3>Findable (F)<a class="headerlink" href="#findable-f" title="Permalink to this headline">¶</a></h3>
-<p>Software is assigned a globally unique and persistent identifier, like a DOI.
-<a class="reference external" href="https://doi.org/10.5281/zenodo.10044318">https://doi.org/10.5281/zenodo.10044318</a></p>
-<p>It is described using rich metadata, which are also FAIR and searchable.
-<a class="reference external" href="https://iiasa.ac.at/models-tools-data/cwatm">https://iiasa.ac.at/models-tools-data/cwatm</a>
-<a class="reference external" href="https://cwatm.iiasa.ac.at/">https://cwatm.iiasa.ac.at/</a></p>
-<p>Different versions of the software have distinct identifiers. YES</p>
-<p>Software is registered in a repository or registry to improve its visibility.
-<a class="reference external" href="https://github.com/iiasa/CWatM">https://github.com/iiasa/CWatM</a>
-<a class="reference external" href="https://doi.org/10.5281/zenodo.10044318">https://doi.org/10.5281/zenodo.10044318</a></p>
+<p><em>Software and its associated metadata must be easy to discover by humans and machines</em></p>
+<div class="line-block">
+<div class="line">Software is assigned a globally unique and persistent identifier, like a DOI.</div>
+<div class="line">- CWatM: <a class="reference external" href="https://doi.org/10.5281/zenodo.10044318">https://doi.org/10.5281/zenodo.10044318</a></div>
 </div>
-<div class="section" id="accesable-a">
-<h3>Accesable (A)<a class="headerlink" href="#accesable-a" title="Permalink to this headline">¶</a></h3>
-<p>blablabla</p>
+<div class="line-block">
+<div class="line">It is described using rich metadata, which are also FAIR and searchable.</div>
+<div class="line">- <a class="reference external" href="https://iiasa.ac.at/models-tools-data/cwatm">https://iiasa.ac.at/models-tools-data/cwatm</a></div>
+<div class="line">- <a class="reference external" href="https://cwatm.iiasa.ac.at/">https://cwatm.iiasa.ac.at/</a></div>
+</div>
+<div class="line-block">
+<div class="line">Different versions of the software have distinct identifiers.</div>
+<div class="line">- Yes</div>
+</div>
+<div class="line-block">
+<div class="line">Software is registered in a repository or registry to improve its visibility.</div>
+<div class="line">- <a class="reference external" href="https://github.com/iiasa/CWatM">https://github.com/iiasa/CWatM</a></div>
+<div class="line">- <a class="reference external" href="https://doi.org/10.5281/zenodo.10044318">https://doi.org/10.5281/zenodo.10044318</a></div>
+</div>
+</div>
+<div class="section" id="accessible-a">
+<h3>Accessible (A)<a class="headerlink" href="#accessible-a" title="Permalink to this headline">¶</a></h3>
+<p><em>In order to reuse software, the software and its metadata must be retrievable by standard protocols, free and legally usable</em></p>
+<div class="line-block">
+<div class="line">Software has a license:</div>
+<div class="line">- CWatM: GNU General public license V3. See <a class="reference internal" href="4_UsingCwatM.html#license"><span class="std std-ref">GNU General public license</span></a>.</div>
+</div>
+<div class="line-block">
+<div class="line">The protocol is open, free, and universally implementable.</div>
+<div class="line">- The source code is open and free (according to the license) to use</div>
+</div>
 </div>
 <div class="section" id="interoperable-i">
 <h3>Interoperable (I)<a class="headerlink" href="#interoperable-i" title="Permalink to this headline">¶</a></h3>
-<p>blablabla</p>
+<p><em>When interacting with other software it must be done by exchanging data and/or metadata through standardised protocols and application programming interfaces</em></p>
+<div class="line-block">
+<div class="line">Software reads, writes and exchanges data in a way that meets domain-relevant community standards.</div>
+<div class="line">- CWatM uses standard output formats like netcdf and .csv</div>
+</div>
+<div class="line-block">
+<div class="line">Software includes qualified references to other objects.</div>
+<div class="line">- CWatM source code classes and functions are documented using a numpy doc format.</div>
+</div>
 </div>
 <div class="section" id="reusable-r">
 <h3>Reusable (R)<a class="headerlink" href="#reusable-r" title="Permalink to this headline">¶</a></h3>
-<p>Software is described with a plurality of relevant attributes.
-It has a clear and accessible license, which is vital for reuse
-Detailed provenance information is included to show its origin and history.
-The software meets community standards to ensure it can be understood, modified, or built upon</p>
+<div class="line-block">
+<div class="line">Software is described with a plurality of relevant attributes.</div>
+<div class="line">- CWatM has a documentation of the software (the webpage you are looking at)</div>
 </div>
-<div class="section" id="and-reproducable">
-<h3>And  Reproducable<a class="headerlink" href="#and-reproducable" title="Permalink to this headline">¶</a></h3>
-<p>Model results can be reproduced, given the same inputdata, same model version and some environment setting.
-This is not state in FAIR principles, but during the years it occured sveral times that we need additional effort to find out which
-model version and dataset where used to produce the results.</p>
-<p>This happens, especially if we dig out a region which we modelled some year ago.</p>
-<p>blablabla</p>
+<div class="line-block">
+<div class="line">It has a clear and accessible license, which is vital for reuse.</div>
+<div class="line">- CWatM: GNU General public license V3. See <a class="reference internal" href="4_UsingCwatM.html#license"><span class="std std-ref">GNU General public license</span></a>.</div>
+</div>
+<div class="line-block">
+<div class="line">Software includes qualified references to other software</div>
+<div class="line">- Yes</div>
+</div>
+<div class="line-block">
+<div class="line">The software meets community standards to ensure it can be understood, modified, or built upon</div>
+<div class="line">- We hope so, but our experience that the software is used and modified by others shows this.</div>
+</div>
+</div>
+<div class="section" id="reproducible-r">
+<h3>Reproducible (R)<a class="headerlink" href="#reproducible-r" title="Permalink to this headline">¶</a></h3>
+<p>Model results can be reproduced with the same input data, model version, and Python environment settings.
+This is not stated in the FAIR principles, but over the years, we have had to put in additional effort to determine which model version and dataset were used to produce the results.
+To facilitate this process, we put the metainformation in the result files. The name and the date of the settingsfile and the github hash number in the header line of the timeseries results and into the global attributes of the output netcdf files.</p>
+<p>In addition, we include the complete settings file, the names and creation dates of all input data, and the Python and library versions in each discharge output netCDF.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A description how to recover the information is given in:  <a class="reference internal" href="57_reproduce.html#rst-recover"><span class="std std-ref">recover or reproduce former runs</span></a></p>
+</div>
 </div>
 </div>
 <div class="section" id="model-design-and-processes">
 <h2><a class="toc-backref" href="#id4">Model design and processes</a><a class="headerlink" href="#model-design-and-processes" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="design">
-<h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3>
-<p>The Community Water Model (CWatM) will be designed for the purpose to assess water availability, water demand and environmental needs. It includes an accounting of how future water demands will evolve in response to socioeconomic change and how water availability will change in response to climate.</p>
+<p>The Community Water Model (CWatM) will be designed to assess water availability, water demand and environmental needs. It includes an accounting of how future water demands will evolve in response to socioeconomic change and how water availability will change in response to climate.</p>
 <a class="reference internal image-reference" href="_images/Hydrological-model2.jpg"><img alt="_images/Hydrological-model2.jpg" src="_images/Hydrological-model2.jpg" style="width: 800px;" /></a>
-<p>Figure 3: CWatM - Water related processes included in the model design</p>
-</div>
+<p>Figure 3: CWatM - Water-related processes included in the model design</p>
 <div class="section" id="processes">
 <h3>Processes<a class="headerlink" href="#processes" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="calculation-of-potential-evaporation">
 <h4>Calculation of potential Evaporation<a class="headerlink" href="#calculation-of-potential-evaporation" title="Permalink to this headline">¶</a></h4>
 <p>Using Penman-Montheith equations based on FAO 56</p>
 </div>
-<div class="section" id="calculation-of-rain-snow-snowmelt">
-<h4>Calculation of rain, snow, snowmelt<a class="headerlink" href="#calculation-of-rain-snow-snowmelt" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="calculation-of-rain-snow-and-snowmelt">
+<h4>Calculation of rain, snow, and snowmelt<a class="headerlink" href="#calculation-of-rain-snow-and-snowmelt" title="Permalink to this headline">¶</a></h4>
 <p>Using day-degree approach with up to 10 vertical layers
 Including snow- and glacier melt.</p>
 </div>
@@ -339,14 +386,14 @@ Including snow- and glacier melt.</p>
 <div class="section" id="water-demand">
 <h4>Water demand<a class="headerlink" href="#water-demand" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li><p>including water demand from industry and domestic land use via precalculated monhly spatial maps</p></li>
-<li><p>including agricultural water use from calculation of plant water demand and livestock water demand</p></li>
+<li><p>including water demand from industry and domestic land use via precalculated monthly spatial maps</p></li>
+<li><p>including agricultural water use from the calculation of plant water demand and livestock water demand</p></li>
 <li><p>Return flows ((water withdrawn but not consumed and returned to the water circle)</p></li>
 </ul>
 </div>
 <div class="section" id="vegetation">
 <h4>Vegetation<a class="headerlink" href="#vegetation" title="Permalink to this headline">¶</a></h4>
-<p>Vegetation taken into account for calculating</p>
+<p>Vegetation is taken into account in the calculation.</p>
 <ul class="simple">
 <li><p>Albedo</p></li>
 <li><p>Transpiration (including rooting depth, crop  phenology, and potential evapotranspiration)</p></li>
@@ -355,9 +402,9 @@ Including snow- and glacier melt.</p>
 </div>
 <div class="section" id="soil">
 <h4>Soil<a class="headerlink" href="#soil" title="Permalink to this headline">¶</a></h4>
-<p>Three soil layers for each land cover type including processes:</p>
+<p>Three soil layers for each land cover type, including processes:</p>
 <ul class="simple">
-<li><p>Frost interupting soil processes</p></li>
+<li><p>Frost interrupts soil processes</p></li>
 <li><p>Infiltration</p></li>
 <li><p>Preferential flow</p></li>
 <li><p>Capillary rise</p></li>

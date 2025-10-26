@@ -280,7 +280,7 @@ The output should be::
 
 .. warning:: We are using run_cwatm.py inside the main repository (CWatM\\run_cwatm.py), not one folder deeper (CWatM\\cwatm\\run_cwatm.py).
 
-
+.. note:: Possible errors are adressed in:  :ref:`rst_errors` 
 
 
 Run with a settingsfile

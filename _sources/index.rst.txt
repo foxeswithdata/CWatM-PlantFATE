@@ -25,6 +25,7 @@ Community Water Model
 **Content:**
 		
 .. toctree::
+   :maxdepth: 2
    
    1_introduction.rst
    2_news.rst
@@ -51,7 +52,6 @@ Community Water Model
    9_technical.rst
    91_sourcecode.rst
    92_testing.rst   
-   zambezi.rst
-   forum.rst
-   12_faq.rst
-   13_glossary.rst
+   10_zambezi.rst
+   11_forum.rst
+

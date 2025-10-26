@@ -8,8 +8,7 @@ Recover
 
 .. _rst_recover:
 
-
-recover or reproduce formar runs
+recover or reproduce former runs
 ================================
 
 
@@ -30,7 +29,7 @@ and in each output netcdf as global attributes:
 
 - Path and name of the settingsfile
 - Date of creation
-- Path to the CwatM programm
+- Path to the CWatM programm
 - git commit hash
 
 More information
