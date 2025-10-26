@@ -34,6 +34,24 @@ class outputTssMap(object):
     and progress reporting. It handles various temporal aggregations (daily, monthly,
     annual) and spatial aggregations (point values, catchment averages/sums).
 
+    **Global variables**
+    
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    dirUp                                Array         river network in upstream direction                                     --   
+    meteo                                Array         store all meteo data in memeory for warm start (eg calibration)         compl
+    sampleAdresses                       List          outflowpoints as 1D index                                               --   
+    outpoints                            List          output points (Gauges)                                                  --   
+    noOutpoints                          Number        number of output points                                                 --   
+    evalCatch                            Array         indeces of a subbasin in the mask                                       --   
+    catcharea                            Array         catchment area of the subbaSIN                                          m2   
+    netcdfasindex                        Flag          save netcdf file in a compressed way - for splitting runs in several b  bool 
+    firstout                             Number        discharge of the first gauge                                            m3/s 
+    discharge                            Array         Channel discharge                                                       m3/s 
+    cellArea                             Array         Area of cell                                                            m2   
+    ===================================  ==========    ======================================================================  =====
+
     Attributes
     ----------
     var : object
@@ -54,23 +72,6 @@ class outputTssMap(object):
     - Month-end, monthly totals, monthly averages  
     - Annual outputs with various aggregations
     - Simulation-total aggregations
-
-    **Global variables**
-    ===================================  ==========    ======================================================================  =====
-    Variable [self.var]                  Type          Description                                                             Unit 
-    ===================================  ==========    ======================================================================  =====
-    dirUp                                Array         river network in upstream direction                                     --   
-    meteo                                Array         store all meteo data in memeory for warm start (eg calibration)         compl
-    sampleAdresses                       List          outflowpoints as 1D index                                               --   
-    outpoints                            List          output points (Gauges)                                                  --   
-    noOutpoints                          Number        number of output points                                                 --   
-    evalCatch                            Array         indeces of a subbasin in the mask                                       --   
-    catcharea                            Array         catchment area of the subbaSIN                                          m2   
-    netcdfasindex                        Flag          save netcdf file in a compressed way - for splitting runs in several b  bool 
-    firstout                             Number        discharge of the first gauge                                            m3/s 
-    discharge                            Array         Channel discharge                                                       m3/s 
-    cellArea                             Array         Area of cell                                                            m2   
-    ===================================  ==========    ======================================================================  =====
 
     """
 

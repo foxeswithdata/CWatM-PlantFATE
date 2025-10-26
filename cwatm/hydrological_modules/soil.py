@@ -23,27 +23,8 @@ class soil(object):
     percolation, capillary rise, preferential flow, and transpiration processes
     across different land cover types.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-        
-    Notes
-    -----
-    The module implements:
-    - Multi-layer soil water balance (typically 3 layers)
-    - Arno scheme for heterogeneous runoff generation
-    - Root zone dynamics for transpiration
-    - Preferential flow and interflow processes
-    - Soil hydraulic property management
-    - Capillary rise from groundwater
-    
-    Based on concepts from PCRGLOBE, LISFLOOD, and HBV models.
-    References the Arno scheme for spatially variable soil moisture.
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -159,6 +140,26 @@ class soil(object):
     act_irrNonpaddyWithdrawal            Array         non-paddy irrigation withdrawal                                         m    
     act_irrPaddyWithdrawal               Array         paddy irrigation withdrawal                                             m    
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    The module implements:
+    - Multi-layer soil water balance (typically 3 layers)
+    - Arno scheme for heterogeneous runoff generation
+    - Root zone dynamics for transpiration
+    - Preferential flow and interflow processes
+    - Soil hydraulic property management
+    - Capillary rise from groundwater
+    
+    Based on concepts from PCRGLOBE, LISFLOOD, and HBV models.
+    References the Arno scheme for spatially variable soil moisture.
 
     """
 

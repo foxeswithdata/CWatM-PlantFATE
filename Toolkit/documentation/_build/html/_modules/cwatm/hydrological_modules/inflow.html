@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.1.0
               </div>
             
           
@@ -95,23 +95,33 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../11_forum.html"><strong>11. Forum</strong></a></li>
 </ul>
 
             
@@ -180,12 +190,14 @@
   <h1>Source code for cwatm.hydrological_modules.inflow</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -------------------------------------------------------------------------</span>
 <span class="c1"># Name:        INFLOW HYDROGRAPHS module (OPTIONAL)</span>
-<span class="c1"># Purpose:</span>
+<span class="c1"># Purpose: External inflow hydrographs module for adding prescribed water inputs.</span>
+<span class="c1"># Manages point source water additions and boundary condition flows.</span>
+<span class="c1"># Supports observed streamflow integration and water system augmentation.</span>
 <span class="c1">#</span>
 <span class="c1"># Author:      PB</span>
 <span class="c1">#</span>
 <span class="c1"># Created:     13/07/2016</span>
-<span class="c1"># Copyright:   (c) PB 2016</span>
+<span class="c1"># CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.</span>
 <span class="c1"># -------------------------------------------------------------------------</span>
 
 
@@ -193,67 +205,106 @@
 <span class="kn">from</span> <span class="nn">cwatm.management_modules.data_handling</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="inflow"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.inflow.inflow">[docs]</a><span class="k">class</span> <span class="nc">inflow</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    READ INFLOW HYDROGRAPHS (OPTIONAL)</span>
-<span class="sd">    If option &quot;inflow&quot; is set to 1 the inflow hydrograph code is used otherwise dummy code is used</span>
-
+<span class="sd">    Inflow hydrographs module for adding external water inputs.</span>
+<span class="sd">    </span>
+<span class="sd">    Processes inflow hydrograph time series data from external files and applies</span>
+<span class="sd">    them at specified spatial locations within the model domain. This module is</span>
+<span class="sd">    optional and only activates when the &#39;inflow&#39; option is enabled.</span>
+<span class="sd">    </span>
 
 <span class="sd">    **Global variables**</span>
 
-<span class="sd">    =====================================  ======================================================================  =====</span>
-<span class="sd">    Variable [self.var]                    Description                                                             Unit </span>
-<span class="sd">    =====================================  ======================================================================  =====</span>
-<span class="sd">    sampleInflow                           location of inflow point                                                lat/l</span>
-<span class="sd">    noinflowpoints                         number of inflow points                                                 --   </span>
-<span class="sd">    inflowTs                               inflow time series data                                                 m3/s </span>
-<span class="sd">    totalQInM3                             total inflow over time (for mass balance calculation)                   m3   </span>
-<span class="sd">    inflowM3                               inflow to basin                                                         m3   </span>
-<span class="sd">    DtSec                                  number of seconds per timestep (default = 86400)                        s    </span>
-<span class="sd">    QInM3Old                               Inflow from previous day                                                m3   </span>
-<span class="sd">    =====================================  ======================================================================  =====</span>
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
+<span class="sd">    Variable [self.var]                  Type          Description                                                             Unit </span>
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
+<span class="sd">    sampleInflow                         Number        location of inflow point                                                lat/l</span>
+<span class="sd">    noinflowpoints                       Array         number of inflow points                                                 --   </span>
+<span class="sd">    inflowTs                             Array         inflow time series data                                                 m3/s </span>
+<span class="sd">    totalQInM3                           Array         total inflow over time (for mass balance calculation)                   m3   </span>
+<span class="sd">    inflowM3                             Array         inflow to basin                                                         m3   </span>
+<span class="sd">    DtSec                                Array         number of seconds per timestep (default = 86400)                        s    </span>
+<span class="sd">    QInM3Old                             Array         Inflow from previous day                                                m3   </span>
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
 
-<span class="sd">    **Functions**</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    var : object</span>
+<span class="sd">        Reference to model variables object containing state variables</span>
+<span class="sd">    model : object</span>
+<span class="sd">        Reference to the main CWatM model instance</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize inflow module.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model : object</span>
+<span class="sd">            CWatM model instance providing access to variables and configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">var</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
 
 <div class="viewcode-block" id="inflow.initial"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.inflow.inflow.initial">[docs]</a>    <span class="k">def</span> <span class="nf">initial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initial part of the inflow module</span>
-<span class="sd">        Get the inflow points</span>
-
-<span class="sd">        calls function :meth:`hydrological_modules.getlocOutpoints`</span>
-<span class="sd">        calls function :meth:`hydrological_modules.join_struct_arrays2`</span>
-
+<span class="sd">        Initialize inflow points and load time series data.</span>
+<span class="sd">        </span>
+<span class="sd">        Reads inflow point locations from configuration files or coordinates,</span>
+<span class="sd">        loads time series data from multiple files, and prepares data structures</span>
+<span class="sd">        for dynamic inflow application during model execution.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method performs several key operations:</span>
+<span class="sd">        - Identifies spatial locations for inflow application</span>
+<span class="sd">        - Reads and validates time series data from multiple files</span>
+<span class="sd">        - Merges time series data from different sources</span>
+<span class="sd">        - Initializes cumulative inflow tracking variables</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">getlocOutpoints</span><span class="p">(</span><span class="n">out</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Get location from Inflow (same as outflow) points</span>
-
-<span class="sd">            :param out: get out</span>
-<span class="sd">            :return: sampleAdresses - number and locs of the output</span>
+<span class="sd">            Extract spatial locations of inflow points from input array.</span>
+<span class="sd">            </span>
+<span class="sd">            Processes an array of inflow point identifiers and creates a dictionary</span>
+<span class="sd">            mapping point IDs to their corresponding linear array indices.</span>
+<span class="sd">            </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            out : numpy.ndarray</span>
+<span class="sd">                Array containing inflow point identifiers (positive integers)</span>
+<span class="sd">                </span>
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            dict</span>
+<span class="sd">                Dictionary mapping inflow point IDs to linear array indices</span>
 <span class="sd">            &quot;&quot;&quot;</span>
 
             <span class="n">sampleAdresses</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
-                <span class="k">if</span> <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">sampleAdresses</span><span class="p">[</span><span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i</span>
             <span class="k">return</span> <span class="n">sampleAdresses</span>
 
         <span class="k">def</span> <span class="nf">join_struct_arrays2</span><span class="p">(</span><span class="n">arrays</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Join arrays to a combined one</span>
-
-<span class="sd">            :param arrays:</span>
-<span class="sd">            :return: combined arry</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-            <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            :param arrays: </span>
-<span class="sd">            :return: </span>
+<span class="sd">            Merge multiple structured numpy arrays into a single array.</span>
+<span class="sd">            </span>
+<span class="sd">            Combines structured arrays with potentially different field names</span>
+<span class="sd">            into a unified structured array containing all fields from input arrays.</span>
+<span class="sd">            </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            arrays : list of numpy.ndarray</span>
+<span class="sd">                List of structured numpy arrays to be merged</span>
+<span class="sd">                </span>
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            numpy.ndarray</span>
+<span class="sd">                Combined structured array containing all fields from input arrays</span>
 <span class="sd">            &quot;&quot;&quot;</span>
 
             <span class="n">newdtype</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">descr</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">),</span> <span class="p">[])</span>
@@ -308,7 +359,7 @@
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">no</span><span class="p">):</span>
                         <span class="n">line</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">inflowNames</span><span class="p">:</span>
-                            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 217:&quot;</span> <span class="o">+</span> <span class="n">line</span>  <span class="o">+</span> <span class="s2">&quot; in: &quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; is used already&quot;</span>
+                            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 217:&quot;</span> <span class="o">+</span> <span class="n">line</span> <span class="o">+</span> <span class="s2">&quot; in: &quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; is used already&quot;</span>
                             <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
                         <span class="n">inflowNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
@@ -317,9 +368,10 @@
                     <span class="n">skiplines</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">no</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 218: Mistake reading inflow file</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">inDir</span><span class="p">,</span><span class="n">name</span><span class="p">),</span> <span class="n">sname</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">inDir</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">sname</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
-                <span class="n">tempTssData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">skiplines</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">filling_values</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+                <span class="n">tempTssData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">skiplines</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span> 
+                                            <span class="n">usecols</span><span class="o">=</span><span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">filling_values</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">flagFirstTss</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">inflowTs</span> <span class="o">=</span> <span class="n">tempTssData</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -329,8 +381,8 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">inflowTs</span> <span class="o">=</span> <span class="n">join_struct_arrays2</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">inflowTs</span><span class="p">,</span> <span class="n">tempTssData</span><span class="p">))</span>
                     <span class="c1"># join this dataset with the ones before</span>
 
-                <span class="c1">###import numpy.lib.recfunctions as rfn</span>
-                <span class="c1">###d = rfn.merge_arrays((a,b), flatten=True, usemask=False)</span>
+                <span class="c1"># import numpy.lib.recfunctions as rfn</span>
+                <span class="c1"># d = rfn.merge_arrays((a,b), flatten=True, usemask=False)</span>
 
 
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">QInM3Old</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -342,8 +394,19 @@
 
 <div class="viewcode-block" id="inflow.dynamic"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.inflow.inflow.dynamic">[docs]</a>    <span class="k">def</span> <span class="nf">dynamic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Dynamic part of the inflow module</span>
-<span class="sd">        Use the inflow points to add inflow from time series file(s)</span>
+<span class="sd">        Apply inflow hydrographs at specified locations for current time step.</span>
+<span class="sd">        </span>
+<span class="sd">        Retrieves inflow values from time series data for the current time step,</span>
+<span class="sd">        applies them at the corresponding spatial locations, and updates cumulative</span>
+<span class="sd">        inflow tracking variables.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Inflow values are:</span>
+<span class="sd">        - Read from pre-loaded time series data</span>
+<span class="sd">        - Converted from mÂ³/s to mÂ³ per time step</span>
+<span class="sd">        - Applied at specified inflow point locations</span>
+<span class="sd">        - Accumulated for mass balance tracking</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;inflow&#39;</span><span class="p">):</span>
@@ -352,7 +415,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">inflowM3</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sampleInflow</span><span class="p">:</span>
                 <span class="n">loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sampleInflow</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;curr&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;curr&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">inflowM3</span><span class="p">[</span><span class="n">loc</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">inflowTs</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)][</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">DtSec</span>
                 <span class="c1"># Convert to [m3] per time step</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">totalQInM3</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">inflowM3</span></div></div>
@@ -370,7 +433,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, IIASA Water Security.
+        &#169; Copyright 2025, IIASA Water Security.
 
     </p>
   </div>

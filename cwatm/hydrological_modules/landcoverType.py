@@ -48,28 +48,8 @@ class landcoverType(object):
     managing land cover fractions, calling appropriate soil routines for each
     type, and integrating results for comprehensive water balance calculations.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-        
-    Notes
-    -----
-    Manages six primary land cover types:
-    0. Forest
-    1. Grassland
-    2. Irrigated paddy
-    3. Irrigated non-paddy
-    4. Sealed surfaces
-    5. Water bodies
-    
-    The module handles land cover fraction dynamics, calls soil processes
-    for each type, and aggregates results weighted by land cover fractions
-    for pixel-scale water balance calculations.
-
     **Global variables**
+    
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -223,6 +203,30 @@ class landcoverType(object):
     pitLatrinToGW                        Array                                                                                 --   
     addtoevapotrans                      Array         Irrigation application loss to evaporation                              m    
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    
+    Manages six primary land cover types:
+    0. Forest
+    1. Grassland
+    2. Irrigated paddy
+    3. Irrigated non-paddy
+    4. Sealed surfaces
+    5. Water bodies
+    
+    The module handles land cover fraction dynamics, calls soil processes
+    for each type, and aggregates results weighted by land cover fractions
+    for pixel-scale water balance calculations.
+
 
     """
 

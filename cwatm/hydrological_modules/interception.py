@@ -20,14 +20,8 @@ class interception(object):
     evaporation of intercepted water for different land cover types. Calculates
     throughfall, interception storage, and evaporation from intercepted water.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -46,6 +40,13 @@ class interception(object):
     Rain                                 Array         Precipitation less snow                                                 m    
     actualET                             Array         simulated evapotranspiration from soil, flooded area and vegetation     m    
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
 
     """
 

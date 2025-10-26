@@ -14,25 +14,6 @@ from cwatm.management_modules.data_handling import returnBool, binding, cbinding
 import numpy as np
 
 
-# from cwatm.management_modules.data_handling import *  # luca for testing
-# import matplotlib.pyplot as plt
-
-
-# def decompress(map, nanvalue=None):
-#    """
-#    Decompressing CWatM maps from 1D to 2D with missing values
-#
-#    :param map: compressed map
-#    :return: decompressed 2D map
-#    """
-#
-#    dmap = maskinfo['maskall'].copy()
-#    dmap[~maskinfo['maskflat']] = map[:]
-#    if nanvalue is not None:
-#        dmap.data[np.isnan(dmap.data)] = nanvalue
-#
-#    return dmap.data
-
 class waterdemand_irrigation:
     """
     Agricultural irrigation water demand module for crop water requirements.
@@ -43,14 +24,8 @@ class waterdemand_irrigation:
     consumption based on soil water availability, crop coefficients, and infiltration
     capacity, considering irrigation efficiency and return flow fractions.
     
-    Attributes
-    ----------
-    var : object
-        Model variables container from parent model
-    model : object
-        Parent CWatM model instance
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -88,6 +63,13 @@ class waterdemand_irrigation:
     irrNonpaddyDemand                    Array                                                                                 --   
     totalIrrDemand                       Array         Irrigation demand                                                       m    
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Model variables container from parent model
+    model : object
+        Parent CWatM model instance
 
     """
 

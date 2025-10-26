@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.1.0
               </div>
             
           
@@ -95,23 +95,35 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../11_forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
 </ul>
 
             
@@ -178,14 +190,50 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cwatm.cwatm_model</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">cwatm.cwatm_initial</span> <span class="kn">import</span> <span class="n">CWATModel_ini</span>
+<span></span><span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># Name: CWATM Model</span>
+<span class="c1"># Purpose: Primary CWatM model class integrating initialization and dynamic components.</span>
+<span class="c1"># Combines CWATModel_ini and CWATModel_dyn through multiple inheritance.</span>
+<span class="c1"># Provides unified interface for complete hydrological modeling framework.</span>
+<span class="c1">#</span>
+<span class="c1"># CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+
+
+<span class="kn">from</span> <span class="nn">cwatm.cwatm_initial</span> <span class="kn">import</span> <span class="n">CWATModel_ini</span>
 <span class="kn">from</span> <span class="nn">cwatm.cwatm_dynamic</span> <span class="kn">import</span> <span class="n">CWATModel_dyn</span>
 
 <div class="viewcode-block" id="CWATModel"><a class="viewcode-back" href="../../cwatm_model.html#cwatm.cwatm_model.CWATModel">[docs]</a><span class="k">class</span> <span class="nc">CWATModel</span><span class="p">(</span><span class="n">CWATModel_ini</span><span class="p">,</span> <span class="n">CWATModel_dyn</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Initial and dynamic part of the CWATM model</span>
-<span class="sd">    * initial part takes care of all the non temporal initialiation procedures</span>
-<span class="sd">    * dynamic part loops over time</span>
+<span class="sd">    Main CWatM model class combining initialization and dynamics.</span>
+
+<span class="sd">    This class serves as the primary interface for the Community Water Model (CWatM),</span>
+<span class="sd">    inheriting from both the initialization (CWATModel_ini) and dynamic (CWATModel_dyn)</span>
+<span class="sd">    components to provide a complete hydrological modeling framework.</span>
+
+<span class="sd">    The model handles:</span>
+<span class="sd">    </span>
+<span class="sd">    - Initial setup and parameter configuration</span>
+<span class="sd">    - Temporal simulation loops</span>
+<span class="sd">    - Integration of all hydrological processes</span>
+<span class="sd">    - Model state management</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+<span class="sd">    Inherits all attributes from CWATModel_ini and CWATModel_dyn including:</span>
+<span class="sd">    </span>
+<span class="sd">    - var : object: Model variables container</span>
+<span class="sd">    - model : object: Model configuration and state</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    </span>
+<span class="sd">    The initial part handles all non-temporal initialization procedures including</span>
+<span class="sd">    reading input data, setting up model parameters, and initializing state variables.</span>
+<span class="sd">    The dynamic part manages the temporal simulation loop, executing hydrological</span>
+<span class="sd">    processes for each time step.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 </pre></div>
 
@@ -198,7 +246,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, IIASA Water Security.
+        &#169; Copyright 2025, IIASA Water Security.
 
     </p>
   </div>

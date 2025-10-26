@@ -18,6 +18,20 @@ class sealed_water(object):
     (sealed/urban areas) and open water land cover types. Accounts for water bodies
     not explicitly represented in the lakes/reservoirs/channels framework.
     
+    **Global variables**
+
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    modflow                              Flag          True if modflow_coupling = True in settings file                        bool 
+    EWRef                                Array         potential evaporation rate from water surface                           m    
+    availWaterInfiltration               Array         quantity of water reaching the soil after interception, more snowmelt   m    
+    actualET                             Array         simulated evapotranspiration from soil, flooded area and vegetation     m    
+    directRunoff                         Array         Simulated surface runoff                                                m    
+    openWaterEvap                        Array         Simulated evaporation from open areas                                   m    
+    capillar                             Array         Flow from groundwater to the third CWATM soil layer. Used with MODFLOW  m    
+    ===================================  ==========    ======================================================================  =====
+
     Attributes
     ----------
     var : object
@@ -39,19 +53,6 @@ class sealed_water(object):
     Evaporation rates differ by surface type:
     - Water surfaces: Full reference evapotranspiration rate
     - Sealed surfaces: Reduced rate (0.2 Ã— reference) for ponded water
-
-    **Global variables**
-    ===================================  ==========    ======================================================================  =====
-    Variable [self.var]                  Type          Description                                                             Unit 
-    ===================================  ==========    ======================================================================  =====
-    modflow                              Flag          True if modflow_coupling = True in settings file                        bool 
-    EWRef                                Array         potential evaporation rate from water surface                           m    
-    availWaterInfiltration               Array         quantity of water reaching the soil after interception, more snowmelt   m    
-    actualET                             Array         simulated evapotranspiration from soil, flooded area and vegetation     m    
-    directRunoff                         Array         Simulated surface runoff                                                m    
-    openWaterEvap                        Array         Simulated evaporation from open areas                                   m    
-    capillar                             Array         Flow from groundwater to the third CWATM soil layer. Used with MODFLOW  m    
-    ===================================  ==========    ======================================================================  =====
 
     """
 

@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.1.0
               </div>
             
           
@@ -95,23 +95,33 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../11_forum.html"><strong>11. Forum</strong></a></li>
 </ul>
 
             
@@ -180,50 +190,121 @@
   <h1>Source code for cwatm.management_modules.timestep</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -------------------------------------------------------------------------</span>
 <span class="c1"># Name:        Handling of timesteps and dates</span>
-<span class="c1"># Purpose:</span>
+<span class="c1"># Purpose: Temporal management system handling dates, calendars, and time stepping.</span>
+<span class="c1"># Supports multiple calendar systems and NetCDF temporal coordinate processing.</span>
+<span class="c1"># Manages simulation period validation and time-based data indexing.</span>
 <span class="c1">#</span>
 <span class="c1"># Author:      P. Burek</span>
-<span class="c1">#</span>
 <span class="c1"># Created:     09/08/2016</span>
-<span class="c1"># Copyright:   (c) burekpe 2016</span>
+<span class="c1"># CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.</span>
 <span class="c1"># -------------------------------------------------------------------------</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">calendar</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">difflib</span>  <span class="c1"># to check the closest word in settingsfile, if an error occurs</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">xtime</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">num2date</span><span class="p">,</span> <span class="n">date2num</span><span class="p">,</span> <span class="n">date2index</span>
+
 <span class="kn">from</span> <span class="nn">cwatm.management_modules.data_handling</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">cwatm.management_modules.globals</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">cwatm.management_modules.messages</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span><span class="n">num2date</span><span class="p">,</span><span class="n">date2num</span><span class="p">,</span><span class="n">date2index</span>
-
-<span class="kn">import</span> <span class="nn">difflib</span>  <span class="c1"># to check the closest word in settingsfile, if an error occurs</span>
 
 <div class="viewcode-block" id="datenum"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.datenum">[docs]</a><span class="k">def</span> <span class="nf">datenum</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    converts date to a int number based on the calender and unit of the netcdf file</span>
-<span class="sd">    :param date:</span>
-<span class="sd">    :return: number of the date</span>
+<span class="sd">    Convert date to integer number based on NetCDF calendar and units.</span>
+<span class="sd">    </span>
+<span class="sd">    Converts a datetime object to an integer representation based on the</span>
+<span class="sd">    calendar system and time units defined in the NetCDF meteorological</span>
+<span class="sd">    data files. This enables consistent temporal indexing across different</span>
+<span class="sd">    calendar systems (standard, 360-day, noleap) used in climate data.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    date : datetime.datetime</span>
+<span class="sd">        Date to convert to numeric representation.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        Integer representation of the date in NetCDF time units.</span>
+<span class="sd">        Adjusted for the unit conversion factor (daily, hourly, etc.).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Uses global dateVar dictionary containing:</span>
+<span class="sd">    - unit: NetCDF time units (e.g., &quot;days since 1901-01-01&quot;)</span>
+<span class="sd">    - calendar: Calendar system (&#39;standard&#39;, &#39;360_day&#39;, &#39;noleap&#39;, etc.)</span>
+<span class="sd">    - unitConv: Conversion factor for different time resolutions</span>
+<span class="sd">    </span>
+<span class="sd">    The function applies rounding to handle NetCDF files that use 12:00</span>
+<span class="sd">    as the starting time, which results in half-day offsets.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">num</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">date2num</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;unit&#39;</span><span class="p">],</span> <span class="n">calendar</span><span class="o">=</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;calendar&#39;</span><span class="p">]))</span>
     <span class="c1"># changed to round because some date in netcdf have 12:00 as starting time -&gt; results in -0.5</span>
     <span class="k">return</span> <span class="n">num</span> <span class="o">//</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;unitConv&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="numdate"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.numdate">[docs]</a><span class="k">def</span> <span class="nf">numdate</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">add</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="numdate"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.numdate">[docs]</a><span class="k">def</span> <span class="nf">numdate</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">add</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    converts int into date based on the calender and unit of the netcdf file</span>
-<span class="sd">    :param num:  number of the day</span>
-<span class="sd">    :param add:  addition to date in days</span>
-<span class="sd">    :return: date</span>
+<span class="sd">    Convert integer to date based on NetCDF calendar and units.</span>
+<span class="sd">    </span>
+<span class="sd">    Converts an integer representation back to a datetime object using</span>
+<span class="sd">    the calendar system and time units from NetCDF meteorological files.</span>
+<span class="sd">    This is the inverse operation of datenum() and maintains temporal</span>
+<span class="sd">    consistency across different calendar systems.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num : int or float</span>
+<span class="sd">        Numeric representation of the date in NetCDF time units.</span>
+<span class="sd">    add : int, optional</span>
+<span class="sd">        Additional days to add to the resulting date. Default is 0.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    datetime.datetime</span>
+<span class="sd">        Datetime object corresponding to the numeric representation.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Uses global dateVar dictionary for calendar and unit information.</span>
+<span class="sd">    The function handles various NetCDF time representations and</span>
+<span class="sd">    calendar systems commonly used in meteorological and climate data.</span>
+<span class="sd">    </span>
+<span class="sd">    Used primarily for:</span>
+<span class="sd">    - Converting NetCDF time indices back to calendar dates</span>
+<span class="sd">    - Temporal calculations requiring date arithmetic</span>
+<span class="sd">    - Output timestamp generation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">num2date</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">*</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;unitConv&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">add</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;unit&#39;</span><span class="p">],</span> <span class="n">calendar</span><span class="o">=</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;calendar&#39;</span><span class="p">]))</span></div>
 
 <div class="viewcode-block" id="date2str"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.date2str">[docs]</a><span class="k">def</span> <span class="nf">date2str</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert date to string of date e.g. 27/12/2018</span>
-<span class="sd">    :param date: date as (datetime)</span>
-<span class="sd">    :return: date string</span>
+<span class="sd">    Convert datetime object to standardized date string format.</span>
+<span class="sd">    </span>
+<span class="sd">    Converts a datetime object to a consistent string representation</span>
+<span class="sd">    used throughout CWatM for output formatting, logging, and user</span>
+<span class="sd">    display. The format is day/month/year with zero padding.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    date : datetime.datetime</span>
+<span class="sd">        Date to convert to string representation.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Date string in format &quot;dd/mm/yyyy&quot; (e.g., &quot;27/12/2018&quot;).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Uses zero-padding for single-digit days and months</span>
+<span class="sd">    - Provides consistent date formatting across all CWatM outputs</span>
+<span class="sd">    - Handles dates before 1900 that cause issues with strftime()</span>
+<span class="sd">    - Used in progress reporting, output headers, and user interfaces</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">)</span></div>
@@ -231,11 +312,38 @@
 
 <div class="viewcode-block" id="ctbinding"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.ctbinding">[docs]</a><span class="k">def</span> <span class="nf">ctbinding</span><span class="p">(</span><span class="n">inBinding</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if variable in settings file has a counterpart in source code</span>
-
-<span class="sd">    :param x: variable in settings file to be tested</span>
-<span class="sd">    :return: -</span>
-<span class="sd">    :raises: if variable is not found send an error: :meth:`management_modules.messages.CWATMError`</span>
+<span class="sd">    Check and retrieve configuration binding with error handling.</span>
+<span class="sd">    </span>
+<span class="sd">    Validates that a configuration parameter exists in the settings file</span>
+<span class="sd">    and retrieves its value. Provides helpful error messages with closest</span>
+<span class="sd">    matches when parameters are not found, assisting with debugging</span>
+<span class="sd">    configuration issues.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inBinding : str</span>
+<span class="sd">        Configuration parameter name to look up in the binding dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Value of the configuration parameter from the binding dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    CWATMError</span>
+<span class="sd">        If the parameter is not found in the binding dictionary.</span>
+<span class="sd">        Error message includes closest matching parameter names for debugging.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Used specifically for time-related configuration parameters</span>
+<span class="sd">    - Provides fuzzy matching suggestions using difflib for typo detection</span>
+<span class="sd">    - Part of the configuration validation system</span>
+<span class="sd">    - Essential for robust parameter handling in temporal calculations</span>
+<span class="sd">    </span>
+<span class="sd">    The function helps ensure that all required time-related parameters</span>
+<span class="sd">    are properly configured before model execution begins.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">test</span> <span class="o">=</span> <span class="n">inBinding</span> <span class="ow">in</span> <span class="n">binding</span>
@@ -250,22 +358,49 @@
         <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Closest key to the required one is: </span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="o">+</span> <span class="n">closest</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
         <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="timemeasure"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.timemeasure">[docs]</a><span class="k">def</span> <span class="nf">timemeasure</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">loops</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">update</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">sample</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="timemeasure"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.timemeasure">[docs]</a><span class="k">def</span> <span class="nf">timemeasure</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">loops</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Measuring of the time for each subroutine</span>
-
-<span class="sd">    :param name: name of the subroutine</span>
-<span class="sd">    :param loops: if it it called several times this is added to the name</span>
-<span class="sd">    :param update:</span>
-<span class="sd">    :param sample:</span>
-<span class="sd">    :return: add a string to the time measure string: timeMesString</span>
+<span class="sd">    Measure execution time for model subroutines and components.</span>
+<span class="sd">    </span>
+<span class="sd">    Records high-precision timestamps for performance profiling of CWatM</span>
+<span class="sd">    components. Enables detailed analysis of computational bottlenecks</span>
+<span class="sd">    and optimization of model performance. Part of the timing infrastructure</span>
+<span class="sd">    used when the printtime flag is enabled.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the subroutine or component being measured.</span>
+<span class="sd">    loops : int, optional</span>
+<span class="sd">        Loop counter appended to name for repeated calls. Default is 0.</span>
+<span class="sd">    update : bool, optional</span>
+<span class="sd">        Flag for updating measurements (currently unused). Default is False.</span>
+<span class="sd">    sample : int, optional</span>
+<span class="sd">        Sampling parameter (currently unused). Default is 1.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Appends timestamp and identifier to global timing arrays.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Uses global arrays:</span>
+<span class="sd">    - timeMes: List of high-precision timestamps (perf_counter)</span>
+<span class="sd">    - timeMesString: List of corresponding subroutine identifiers</span>
+<span class="sd">    </span>
+<span class="sd">    When loops &gt; 0, the identifier becomes &quot;name_N&quot; where N is the loop number.</span>
+<span class="sd">    This allows tracking of iterative processes and repeated function calls.</span>
+<span class="sd">    </span>
+<span class="sd">    Timing information is processed and reported when the model completes</span>
+<span class="sd">    if the printtime command-line option is specified.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">timeMes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xtime</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">())</span>
     <span class="k">if</span> <span class="n">loops</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">name</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span><span class="s2">&quot;_</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">loops</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">loops</span>
     <span class="n">timeMesString</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
     <span class="k">return</span></div>
 
@@ -273,14 +408,48 @@
 <span class="c1"># Calendar routines</span>
 <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Calendar"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.Calendar">[docs]</a><span class="k">def</span> <span class="nf">Calendar</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="n">errorNo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Calendar"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.Calendar">[docs]</a><span class="k">def</span> <span class="nf">Calendar</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">errorNo</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the date from CalendarDayStart in the settings xml</span>
-<span class="sd">    Reformatting the date till it fits to datetime</span>
-
-<span class="sd">    :param input: string from the settingsfile should be somehow a date</span>
-<span class="sd">    :param errorNo: 0: check startdate, enddate 1: check startinit</span>
-<span class="sd">    :return: a datetime date</span>
+<span class="sd">    Parse and validate date strings from configuration settings.</span>
+<span class="sd">    </span>
+<span class="sd">    Robust date parser that handles multiple date formats commonly used</span>
+<span class="sd">    in configuration files. Converts various date representations to</span>
+<span class="sd">    datetime objects while providing specific error messages for different</span>
+<span class="sd">    contexts (start dates, initialization dates, etc.).</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input : str or float</span>
+<span class="sd">        Date string or numeric value from settings file.</span>
+<span class="sd">        Supports formats: dd/mm/yyyy, dd-mm-yyyy, dd.mm.yyyy, or numeric.</span>
+<span class="sd">    errorNo : int, optional</span>
+<span class="sd">        Error context identifier:</span>
+<span class="sd">        - 0: Start/end date validation (default)</span>
+<span class="sd">        - 1: Initialization date validation  </span>
+<span class="sd">        - &gt;1: Returns -99999 for invalid dates instead of raising error</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    datetime.datetime or float or int</span>
+<span class="sd">        - datetime.datetime: Successfully parsed date</span>
+<span class="sd">        - float: Numeric input passed through unchanged</span>
+<span class="sd">        - int: Special return value (-99999) for invalid dates when errorNo &gt; 1</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    CWATMError</span>
+<span class="sd">        If date parsing fails and errorNo &lt;= 1, with context-specific messages.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Date format handling:</span>
+<span class="sd">    - Automatically detects 2-digit vs 4-digit years</span>
+<span class="sd">    - Handles various separators (/, -, .)</span>
+<span class="sd">    - Supports both European (dd/mm/yyyy) and numeric formats</span>
+<span class="sd">    - Provides flexibility for international date conventions</span>
+<span class="sd">    </span>
+<span class="sd">    Used throughout the temporal configuration system for parsing</span>
+<span class="sd">    start dates, end dates, and initialization timestamps.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">date</span> <span class="o">=</span> <span class="kc">None</span>
@@ -305,7 +474,8 @@
             <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">formatstr</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">errorNo</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 119: Either date in StepStart is not a date or in SpinUp or StepEnd it is neither a number or a date!&quot;</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Error 119: Either date in StepStart is not a date or in SpinUp or StepEnd &quot;</span>
+                       <span class="s2">&quot;it is neither a number or a date!&quot;</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">errorNo</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 120: First date in StepInit is neither a number or a date!&quot;</span>
@@ -316,62 +486,158 @@
     <span class="k">return</span> <span class="n">date</span></div>
 
 
-<div class="viewcode-block" id="datetoInt"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.datetoInt">[docs]</a><span class="k">def</span> <span class="nf">datetoInt</span><span class="p">(</span><span class="n">dateIn</span><span class="p">,</span><span class="n">begin</span><span class="p">,</span><span class="n">both</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="datetoInt"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.datetoInt">[docs]</a><span class="k">def</span> <span class="nf">datetoInt</span><span class="p">(</span><span class="n">dateIn</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">both</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the integer of a date from a reference date</span>
-
-<span class="sd">    :param dateIn: date</span>
-<span class="sd">    :param begin: reference date</span>
-<span class="sd">    :param both: if set to True both the int and the string of the date are returned</span>
-<span class="sd">    :return: integer value of a date, starting from begin date</span>
+<span class="sd">    Convert date to integer offset from reference date.</span>
+<span class="sd">    </span>
+<span class="sd">    Calculates the integer number of days between a given date and a</span>
+<span class="sd">    reference date, handling various calendar systems. This is fundamental</span>
+<span class="sd">    for CWatM&#39;s internal time indexing system, enabling consistent temporal</span>
+<span class="sd">    calculations across different calendar types.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dateIn : str or float</span>
+<span class="sd">        Input date string or numeric value to convert.</span>
+<span class="sd">    begin : datetime.datetime</span>
+<span class="sd">        Reference date for calculating the offset.</span>
+<span class="sd">    both : bool, optional</span>
+<span class="sd">        If True, returns both integer offset and string representation.</span>
+<span class="sd">        Default is False (returns only integer).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int or tuple</span>
+<span class="sd">        If both=False: Integer day offset from reference date (1-based).</span>
+<span class="sd">        If both=True: Tuple of (integer_offset, date_string).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function handles two input types:</span>
+<span class="sd">    1. Date strings: Parsed using Calendar() and converted to day offsets</span>
+<span class="sd">    2. Numeric values: Used directly as integer offsets</span>
+<span class="sd">    </span>
+<span class="sd">    The offset is 1-based, meaning the reference date itself returns 1.</span>
+<span class="sd">    This aligns with CWatM&#39;s internal timestep numbering system.</span>
+<span class="sd">    </span>
+<span class="sd">    Critical for:</span>
+<span class="sd">    - Converting configuration dates to internal timesteps</span>
+<span class="sd">    - Temporal indexing in meteorological data</span>
+<span class="sd">    - Simulation period calculations</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">date1</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">(</span><span class="n">dateIn</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span> <span class="ow">is</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
-         <span class="c1">#str1 = date1.strftime(&quot;%d/%m/%Y&quot;)</span>
-         <span class="c1"># to cope with dates before 1990</span>
-         <span class="n">str1</span> <span class="o">=</span> <span class="n">date2str</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
-         <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
-         <span class="n">d2</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
-         <span class="n">int1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># str1 = date1.strftime(&quot;%d/%m/%Y&quot;)</span>
+        <span class="c1"># to cope with dates before 1990</span>
+        <span class="n">str1</span> <span class="o">=</span> <span class="n">date2str</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
+        <span class="n">int1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
          <span class="c1"># to be used with different days in a year e.g. 360_years</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">int1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
         <span class="n">str1</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">both</span><span class="p">:</span> <span class="k">return</span> <span class="n">int1</span><span class="p">,</span><span class="n">str1</span>
-    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="n">int1</span></div>
+    <span class="k">if</span> <span class="n">both</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">int1</span><span class="p">,</span> <span class="n">str1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">int1</span></div>
 
 
-<div class="viewcode-block" id="addmonths"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.addmonths">[docs]</a><span class="k">def</span> <span class="nf">addmonths</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="addmonths"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.addmonths">[docs]</a><span class="k">def</span> <span class="nf">addmonths</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Adds months to a date</span>
-
-<span class="sd">    :param d: date</span>
-<span class="sd">    :param x: month to add</span>
-<span class="sd">    :return: date with added months</span>
+<span class="sd">    Add months to a date with proper handling of month boundaries.</span>
+<span class="sd">    </span>
+<span class="sd">    Performs date arithmetic that correctly handles month addition</span>
+<span class="sd">    across year boundaries and varying month lengths. Ensures that</span>
+<span class="sd">    invalid dates (e.g., February 30) are adjusted to valid dates</span>
+<span class="sd">    by using the last valid day of the target month.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : datetime.datetime</span>
+<span class="sd">        Starting date for the addition operation.</span>
+<span class="sd">    x : int</span>
+<span class="sd">        Number of months to add (can be negative for subtraction).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    datetime.datetime</span>
+<span class="sd">        New date with the specified number of months added.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Month addition algorithm:</span>
+<span class="sd">    - Calculates target month and year accounting for wraparound</span>
+<span class="sd">    - Handles leap years and varying month lengths correctly</span>
+<span class="sd">    - Adjusts day to last valid day if original day exceeds month length</span>
+<span class="sd">    </span>
+<span class="sd">    For example:</span>
+<span class="sd">    - January 31 + 1 month = February 28 (or 29 in leap years)</span>
+<span class="sd">    - December 15 + 2 months = February 15</span>
+<span class="sd">    - May 31 + 1 month = June 30</span>
+<span class="sd">    </span>
+<span class="sd">    Used in initialization date calculations and temporal sequence generation</span>
+<span class="sd">    for save state operations and periodic output scheduling.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">days_of_month</span> <span class="o">=</span> <span class="p">[</span><span class="mi">31</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">]</span>
-    <span class="n">newmonth</span> <span class="o">=</span> <span class="p">(((</span> <span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">12</span> <span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">newyear</span>  <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="p">(((</span> <span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span> <span class="p">)</span> <span class="o">//</span> <span class="mi">12</span> <span class="p">)</span>
-    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">day</span> <span class="o">&gt;</span> <span class="n">days_of_month</span><span class="p">[</span><span class="n">newmonth</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-       <span class="n">newday</span> <span class="o">=</span> <span class="n">days_of_month</span><span class="p">[</span><span class="n">newmonth</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">newmonth</span> <span class="o">=</span> <span class="p">(((</span><span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">newyear</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="p">(((</span><span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">//</span> <span class="mi">12</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">day</span> <span class="o">&gt;</span> <span class="n">days_of_month</span><span class="p">[</span><span class="n">newmonth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+        <span class="n">newday</span> <span class="o">=</span> <span class="n">days_of_month</span><span class="p">[</span><span class="n">newmonth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-       <span class="n">newday</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">day</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span> <span class="n">newyear</span><span class="p">,</span> <span class="n">newmonth</span><span class="p">,</span> <span class="n">newday</span><span class="p">)</span></div>
+        <span class="n">newday</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">day</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">newyear</span><span class="p">,</span> <span class="n">newmonth</span><span class="p">,</span> <span class="n">newday</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="datetosaveInit"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.datetosaveInit">[docs]</a><span class="k">def</span> <span class="nf">datetosaveInit</span><span class="p">(</span><span class="n">initdates</span><span class="p">,</span><span class="n">begin</span><span class="p">,</span><span class="n">end</span><span class="p">):</span>
+<div class="viewcode-block" id="datetosaveInit"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.datetosaveInit">[docs]</a><span class="k">def</span> <span class="nf">datetosaveInit</span><span class="p">(</span><span class="n">initdates</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the save init dates</span>
-
-<span class="sd">    :param initdates: one or several dates</span>
-<span class="sd">    :param begin: reference date</span>
-<span class="sd">    :param end: end date</span>
-<span class="sd">    :return: integer value of a dates, starting from begin date</span>
+<span class="sd">    Calculate and validate initialization save dates for model state output.</span>
+<span class="sd">    </span>
+<span class="sd">    Processes a list of dates or date patterns to determine when the model</span>
+<span class="sd">    should save its internal state for initialization purposes. Supports</span>
+<span class="sd">    both explicit dates and periodic patterns (yearly, monthly, daily).</span>
+<span class="sd">    This is critical for model restarts and warm start capabilities.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    initdates : list</span>
+<span class="sd">        List of date specifications that can include:</span>
+<span class="sd">        - Explicit date strings</span>
+<span class="sd">        - Numeric offsets</span>
+<span class="sd">        - Periodic patterns (e.g., &quot;2y&quot;, &quot;6m&quot;, &quot;30d&quot;)</span>
+<span class="sd">    begin : datetime.datetime</span>
+<span class="sd">        Reference start date for the simulation period.</span>
+<span class="sd">    end : datetime.datetime</span>
+<span class="sd">        End date limiting the save date generation.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Populates global dateVar[&#39;intInit&#39;] list with integer timesteps.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    CWATMError</span>
+<span class="sd">        If date patterns are malformed or numeric values are invalid.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Periodic pattern formats:</span>
+<span class="sd">    - &quot;Ny&quot;: Every N years (e.g., &quot;2y&quot; = every 2 years)</span>
+<span class="sd">    - &quot;Nm&quot;: Every N months (e.g., &quot;6m&quot; = every 6 months)  </span>
+<span class="sd">    - &quot;Nd&quot;: Every N days (e.g., &quot;30d&quot; = every 30 days)</span>
+<span class="sd">    </span>
+<span class="sd">    The function generates sequences of save dates starting from the first</span>
+<span class="sd">    specified date and continuing until the simulation end date. This</span>
+<span class="sd">    enables flexible state saving strategies for long simulations.</span>
+<span class="sd">    </span>
+<span class="sd">    Global variables modified:</span>
+<span class="sd">    - dateVar[&#39;intInit&#39;]: List of integer timesteps for state saving</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># datetosaveInit(initdates, dateVar[&#39;dateBegin&#39;], dateVar[&#39;dateEnd&#39;])</span>
@@ -381,17 +647,17 @@
 
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intInit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">dd</span> <span class="o">=</span><span class="p">[]</span>
+    <span class="n">dd</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">initdates</span><span class="p">:</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">date1</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">date1</span> <span class="o">=</span> <span class="n">Calendar</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
 
         <span class="c1"># check if it a row of dates</span>
         <span class="k">if</span> <span class="n">date1</span> <span class="o">==</span> <span class="o">-</span><span class="mi">99999</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">]):</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 121: Second value in StepInit is not a number or date nor indicating a repetition of year(y), month(m) or day(d) </span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="n">msg</span> <span class="o">+=</span><span class="s2">&quot;e.g. 2y for every 2 years or 6m for every 6 month&quot;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;e.g. 2y for every 2 years or 6m for every 6 month&quot;</span>
                 <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -399,9 +665,9 @@
                 <span class="k">except</span><span class="p">:</span>
                     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 122: Third value in StepInit is not an integer after &#39;y&#39; or &#39;m&#39; or &#39;d&#39;&quot;</span>
                     <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-                <span class="c1">#start = begin + datetime.timedelta(days=dateVar[&#39;intInit&#39;][0]-1)</span>
+                <span class="c1"># start = begin + datetime.timedelta(days=dateVar[&#39;intInit&#39;][0]-1)</span>
                 <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
-                <span class="n">start</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intInit&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intInit&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 
                 <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
                 <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -411,23 +677,23 @@
                         <span class="k">try</span><span class="p">:</span>
                             <span class="n">date2</span> <span class="o">=</span> <span class="n">date2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">date2</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">add</span> <span class="o">*</span> <span class="n">j</span><span class="p">)</span>
                         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                            <span class="c1">#date2 = date2 - datetime.timedelta(days = 1)</span>
+                            <span class="c1"># date2 = date2 - datetime.timedelta(days = 1)</span>
                             <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">date2</span><span class="p">)</span>
                             <span class="n">date2</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
                             <span class="n">date2</span> <span class="o">=</span> <span class="n">date2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">date2</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">add</span> <span class="o">*</span> <span class="n">j</span><span class="p">)</span>
 
                     <span class="k">elif</span> <span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span>
-                        <span class="c1">#date2 = start + relativedelta(months=+ add * j)</span>
+                        <span class="c1"># date2 = start + relativedelta(months=+ add * j)</span>
                         <span class="n">date2</span> <span class="o">=</span> <span class="n">addmonths</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">add</span> <span class="o">*</span> <span class="n">j</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="c1">#date2 = start + datetime.timedelta(days= add * j)</span>
+                        <span class="c1"># date2 = start + datetime.timedelta(days= add * j)</span>
                         <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-                        <span class="n">date2</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">add</span><span class="o">*</span><span class="n">j</span><span class="p">)</span>
+                        <span class="n">date2</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">add</span> <span class="o">*</span> <span class="n">j</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">date2</span> <span class="o">&gt;</span> <span class="n">end</span><span class="p">:</span>
                         <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="c1">#int1 = (date2 - begin).days + 1</span>
+                        <span class="c1"># int1 = (date2 - begin).days + 1</span>
                         <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">date2</span><span class="p">)</span>
                         <span class="n">d2</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
                         <span class="n">int1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
@@ -438,7 +704,7 @@
 
 
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span> <span class="ow">is</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
-            <span class="c1">#int1 = (date1 - begin).days + 1</span>
+            <span class="c1"># int1 = (date1 - begin).days + 1</span>
             <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">date1</span><span class="p">)</span>
             <span class="n">d2</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
             <span class="n">int1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d1</span> <span class="o">-</span> <span class="n">d2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
@@ -450,18 +716,59 @@
     <span class="n">ii</span> <span class="o">=</span> <span class="mi">1</span></div>
 
 <span class="c1"># noinspection PyTypeChecker</span>
-<div class="viewcode-block" id="checkifDate"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.checkifDate">[docs]</a><span class="k">def</span> <span class="nf">checkifDate</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">spinup</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="checkifDate"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.checkifDate">[docs]</a><span class="k">def</span> <span class="nf">checkifDate</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">spinup</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Checks if start date is earlier than end date etc</span>
-<span class="sd">    And set some date variables</span>
-
-<span class="sd">    :param start: start date</span>
-<span class="sd">    :param end: end date</span>
-<span class="sd">    :param spinup: date till no output is generated = warming up time</span>
-<span class="sd">    :return: a list of date variable in: dateVar</span>
+<span class="sd">    Validate temporal configuration and initialize date variables.</span>
+<span class="sd">    </span>
+<span class="sd">    Comprehensive validation of simulation temporal bounds, including</span>
+<span class="sd">    start/end dates, spinup period, and calendar system setup. Extracts</span>
+<span class="sd">    calendar information from meteorological data files and performs</span>
+<span class="sd">    extensive date consistency checks. Critical for proper temporal</span>
+<span class="sd">    framework initialization.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    start : str</span>
+<span class="sd">        Configuration key for simulation start date.</span>
+<span class="sd">    end : str</span>
+<span class="sd">        Configuration key for simulation end date.</span>
+<span class="sd">    spinup : str</span>
+<span class="sd">        Configuration key for spinup end date (when outputs begin).</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Path to meteorological file for calendar system extraction.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Populates global dateVar dictionary with temporal parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    CWATMFileError</span>
+<span class="sd">        If meteorological file cannot be found or accessed.</span>
+<span class="sd">    CWATMError</span>
+<span class="sd">        If date validation fails or temporal bounds are inconsistent.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function performs:</span>
+<span class="sd">    1. NetCDF calendar and units extraction from meteorological data</span>
+<span class="sd">    2. Unit conversion factor calculation (daily, hourly, etc.)</span>
+<span class="sd">    3. Date parsing and validation for start, end, and spinup dates</span>
+<span class="sd">    4. Temporal consistency checks (start &lt; spinup &lt;= end)</span>
+<span class="sd">    5. Calendar-specific day counting and period calculations</span>
+<span class="sd">    </span>
+<span class="sd">    Global dateVar dictionary populated with:</span>
+<span class="sd">    - Date objects: dateBegin, dateStart, dateEnd</span>
+<span class="sd">    - Integer offsets: intStart, intEnd, intSpin</span>
+<span class="sd">    - Calendar info: calendar, unit, unitConv</span>
+<span class="sd">    - Temporal markers: checked list for month/year boundaries</span>
+<span class="sd">    - Period counts: diffdays, diffMonth, diffYear</span>
+<span class="sd">    </span>
+<span class="sd">    Essential for all subsequent temporal operations in CWatM.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#begin = Calendar(ctbinding(&#39;CalendarDayStart&#39;))</span>
+    <span class="c1"># begin = Calendar(ctbinding(&#39;CalendarDayStart&#39;))</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">name</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
@@ -494,35 +801,36 @@
         <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="c1"># spinup date = date from which maps are written</span>
-    <span class="k">if</span> <span class="n">ctbinding</span><span class="p">(</span><span class="n">spinup</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span> <span class="ow">or</span> <span class="n">ctbinding</span><span class="p">(</span><span class="n">spinup</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>  <span class="n">spinup</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">if</span> <span class="n">ctbinding</span><span class="p">(</span><span class="n">spinup</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span> <span class="ow">or</span> <span class="n">ctbinding</span><span class="p">(</span><span class="n">spinup</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span>
+        <span class="n">spinup</span> <span class="o">=</span> <span class="n">start</span>
 
-    <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intStart&#39;</span><span class="p">],</span><span class="n">strStart</span> <span class="o">=</span> <span class="n">datetoInt</span><span class="p">(</span><span class="n">ctbinding</span><span class="p">(</span><span class="n">start</span><span class="p">),</span><span class="n">begin</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intEnd&#39;</span><span class="p">],</span><span class="n">strEnd</span> <span class="o">=</span> <span class="n">datetoInt</span><span class="p">(</span><span class="n">ctbinding</span><span class="p">(</span><span class="n">end</span><span class="p">),</span><span class="n">begin</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intStart&#39;</span><span class="p">],</span> <span class="n">strStart</span> <span class="o">=</span> <span class="n">datetoInt</span><span class="p">(</span><span class="n">ctbinding</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">begin</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intEnd&#39;</span><span class="p">],</span> <span class="n">strEnd</span> <span class="o">=</span> <span class="n">datetoInt</span><span class="p">(</span><span class="n">ctbinding</span><span class="p">(</span><span class="n">end</span><span class="p">),</span> <span class="n">begin</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intSpin&#39;</span><span class="p">],</span> <span class="n">strSpin</span> <span class="o">=</span> <span class="n">datetoInt</span><span class="p">(</span><span class="n">ctbinding</span><span class="p">(</span><span class="n">spinup</span><span class="p">),</span> <span class="n">begin</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
 
     <span class="c1"># test if start and end &gt; begin</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intStart&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intEnd&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intEnd&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intStart&#39;</span><span class="p">])</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">):</span>
-        <span class="c1">#strBegin = begin.strftime(&quot;%d/%m/%Y&quot;)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intStart&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intEnd&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intEnd&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intStart&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># strBegin = begin.strftime(&quot;%d/%m/%Y&quot;)</span>
         <span class="n">strBegin</span> <span class="o">=</span> <span class="n">date2str</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
-        <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Error 124: Start Date: &quot;</span><span class="o">+</span><span class="n">strStart</span><span class="o">+</span><span class="s2">&quot; and/or end date: &quot;</span><span class="o">+</span> <span class="n">strEnd</span> <span class="o">+</span> <span class="s2">&quot; are wrong!</span><span class="se">\n</span><span class="s2"> or smaller than the first time step date: &quot;</span><span class="o">+</span><span class="n">strBegin</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 124: Start Date: &quot;</span> <span class="o">+</span> <span class="n">strStart</span> <span class="o">+</span> <span class="s2">&quot; and/or end date: &quot;</span> <span class="o">+</span> <span class="n">strEnd</span> <span class="o">+</span> <span class="s2">&quot; are wrong!</span><span class="se">\n</span><span class="s2"> or smaller than the first time step date: &quot;</span> <span class="o">+</span> <span class="n">strBegin</span>
         <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intSpin&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intStart&#39;</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intSpin&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intEnd&#39;</span><span class="p">]):</span>
-        <span class="c1">#strBegin = begin.strftime(&quot;%d/%m/%Y&quot;)</span>
+        <span class="c1"># strBegin = begin.strftime(&quot;%d/%m/%Y&quot;)</span>
         <span class="n">strBegin</span> <span class="o">=</span> <span class="n">date2str</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
-        <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;Error 125: Spin Date: &quot;</span><span class="o">+</span><span class="n">strSpin</span> <span class="o">+</span> <span class="s2">&quot; is wrong!</span><span class="se">\n</span><span class="s2"> or smaller/bigger than the first/last time step date: &quot;</span><span class="o">+</span><span class="n">strBegin</span><span class="o">+</span> <span class="s2">&quot; - &quot;</span><span class="o">+</span> <span class="n">strEnd</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 125: Spin Date: &quot;</span> <span class="o">+</span> <span class="n">strSpin</span> <span class="o">+</span> <span class="s2">&quot; is wrong!</span><span class="se">\n</span><span class="s2"> or smaller/bigger than the first/last time step date: &quot;</span> <span class="o">+</span> <span class="n">strBegin</span> <span class="o">+</span> <span class="s2">&quot; - &quot;</span> <span class="o">+</span> <span class="n">strEnd</span>
         <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;currDate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">begin</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;dateBegin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">begin</span>
-    <span class="c1">#dateVar[&#39;dateStart&#39;] = begin + datetime.timedelta(days=dateVar[&#39;intSpin&#39;]-1)</span>
+    <span class="c1"># dateVar[&#39;dateStart&#39;] = begin + datetime.timedelta(days=dateVar[&#39;intSpin&#39;]-1)</span>
 
     <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
-    <span class="n">startint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d1</span> <span class="o">+</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intSpin&#39;</span><span class="p">]</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">startint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">d1</span> <span class="o">+</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intSpin&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;dateStart&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">startint</span><span class="p">)</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;diffdays&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intEnd&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intSpin&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="c1">#dateVar[&#39;dateEnd&#39;] = dateVar[&#39;dateStart&#39;] + datetime.timedelta(days=dateVar[&#39;diffdays&#39;]-1)</span>
+    <span class="c1"># dateVar[&#39;dateEnd&#39;] = dateVar[&#39;dateStart&#39;] + datetime.timedelta(days=dateVar[&#39;diffdays&#39;]-1)</span>
 
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;dateStart1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">begin</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;intSpin&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;dateEnd1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;dateStart1&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;diffdays&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -545,15 +853,19 @@
 
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;checked&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># noinspection PyTypeChecker</span>
-    <span class="c1">#dates = np.arange(dateVar[&#39;dateStart&#39;], dateVar[&#39;dateEnd&#39;]+ datetime.timedelta(days=1), datetime.timedelta(days = 1)).astype(datetime.datetime)</span>
-    <span class="c1">#for d in dates:</span>
+    <span class="c1"># dates = np.arange(dateVar[&#39;dateStart&#39;], dateVar[&#39;dateEnd&#39;]+ datetime.timedelta(days=1), datetime.timedelta(days = 1)).astype(datetime.datetime)</span>
+    <span class="c1"># for d in dates:</span>
 
     <span class="c1"># mid of month days</span>
 
     <span class="k">for</span> <span class="n">dint</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">startint</span><span class="p">,</span> <span class="n">endint</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">dint</span><span class="p">)</span>
-        <span class="n">dnext</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">dint</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="c1">#if d.day == calendar.monthrange(d.year, d.month)[1]:</span>
+        <span class="c1">#dnext = numdate(dint, 1)</span>
+        <span class="n">dnext</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">dint</span><span class="p">,</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;unitConv&#39;</span><span class="p">])</span>
+        <span class="c1"># changed PB 25/09/25 -&gt; if precitpuiation comes as second -&gt; use the convertion anyway</span>
+
+
+        <span class="c1"># if d.day == calendar.monthrange(d.year, d.month)[1]:</span>
         <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">!=</span> <span class="n">dnext</span><span class="o">.</span><span class="n">month</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">month</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
                 <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;checked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -561,9 +873,9 @@
                 <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;checked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># mark mid of month day</span>
-            <span class="c1">#if d.month == 2 and d.day==14:</span>
+            <span class="c1"># if d.month == 2 and d.day==14:</span>
             <span class="c1">#    dateVar[&#39;checked&#39;].append(-1)</span>
-            <span class="c1">#if d.month != 2 and d.day==15:</span>
+            <span class="c1"># if d.month != 2 and d.day==15:</span>
             <span class="c1">#    dateVar[&#39;checked&#39;].append(-1)</span>
 
             <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;checked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -572,24 +884,54 @@
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;diffYear&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;checked&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="date2indexNew"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.date2indexNew">[docs]</a><span class="k">def</span> <span class="nf">date2indexNew</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">nctime</span><span class="p">,</span> <span class="n">calendar</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="date2indexNew"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.date2indexNew">[docs]</a><span class="k">def</span> <span class="nf">date2indexNew</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">nctime</span><span class="p">,</span> <span class="n">calendar</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The original netCDF4 library cannot handle month and years</span>
-<span class="sd">    Replace: date2index</span>
-<span class="sd">    This one checks for days, month and years</span>
-<span class="sd">    And set some date variables</span>
-
-<span class="sd">    :param date: date</span>
-<span class="sd">    :param nctime: time unit of the netcdf file</span>
-<span class="sd">    :param select: (optional) which date is selected, default: nearest</span>
-<span class="sd">    :param name: (optional) name of th dataset</span>
-<span class="sd">    :return: index</span>
+<span class="sd">    Enhanced date-to-index conversion for NetCDF files with extended time unit support.</span>
+<span class="sd">    </span>
+<span class="sd">    Extends the standard NetCDF4 date2index functionality to handle monthly</span>
+<span class="sd">    and yearly time units that are not supported by the original implementation.</span>
+<span class="sd">    Critical for accessing climatological data with non-daily temporal resolution</span>
+<span class="sd">    commonly used in hydrological modeling.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    date : datetime.datetime</span>
+<span class="sd">        Target date to find in the NetCDF time dimension.</span>
+<span class="sd">    nctime : netCDF4.Variable</span>
+<span class="sd">        NetCDF time variable containing units and values.</span>
+<span class="sd">    calendar : str</span>
+<span class="sd">        Calendar system used in the NetCDF file.</span>
+<span class="sd">    select : str, optional</span>
+<span class="sd">        Selection method for nearest date matching. Default is &#39;nearest&#39;.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Dataset name for enhanced error reporting. Default is empty string.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        Array index corresponding to the specified date in the NetCDF time dimension.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Supported time units:</span>
+<span class="sd">    - DAYS: Standard daily resolution (uses original netCDF4.date2index)</span>
+<span class="sd">    - MONTHS: Monthly resolution with year-month indexing</span>
+<span class="sd">    - YEARS: Annual resolution with year indexing</span>
+<span class="sd">    </span>
+<span class="sd">    For monthly/yearly data, the function:</span>
+<span class="sd">    - Calculates temporal offset from reference date in units</span>
+<span class="sd">    - Handles cases where requested date exceeds available data range</span>
+<span class="sd">    - Issues warnings when using boundary data for out-of-range requests</span>
+<span class="sd">    - Performs array lookup to find matching time indices</span>
+<span class="sd">    </span>
+<span class="sd">    Essential for accessing diverse climatological datasets with varying</span>
+<span class="sd">    temporal resolutions in hydrological modeling applications.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">unit</span> <span class="o">=</span> <span class="n">nctime</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">unit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span><span class="s2">&quot;DAYS&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">unit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;DAYS&quot;</span><span class="p">:</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">date2index</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">nctime</span><span class="p">,</span> <span class="n">calendar</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">calendar</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">unit</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span><span class="s2">&quot;MONTH&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">unit</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;MONTH&quot;</span><span class="p">:</span>
         <span class="n">year0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">unit</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
         <span class="n">month0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">unit</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">6</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span>
         <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">year0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">12</span> <span class="o">+</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="n">month0</span><span class="p">)</span>
@@ -599,7 +941,7 @@
             <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; instead last year/month dataset is used&quot;</span>
             <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;loud&#39;</span><span class="p">]:</span>
                 <span class="n">iiii</span> <span class="o">=</span> <span class="mi">1</span>
-                <span class="c1">#print(CWATMWarning(msg))</span>
+                <span class="c1"># print(CWATMWarning(msg))</span>
 
 
         <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:]</span> <span class="o">==</span> <span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -612,14 +954,14 @@
             <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; instead last year dataset is used&quot;</span>
             <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;loud&#39;</span><span class="p">]:</span>
                 <span class="n">iiii</span> <span class="o">=</span> <span class="mi">1</span>
-                <span class="c1">#print(CWATMWarning(msg))</span>
+                <span class="c1"># print(CWATMWarning(msg))</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:]):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:])</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot; - &quot;</span> <span class="o">+</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is earlier then the first dataset in &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; -&quot;</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; instead first year dataset is used&quot;</span>
             <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;loud&#39;</span><span class="p">]:</span>
-                <span class="n">iiii</span> <span class="o">=</span><span class="mi">1</span>
-                <span class="c1">#print(CWATMWarning(msg))</span>
+                <span class="n">iiii</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="c1"># print(CWATMWarning(msg))</span>
 
 
         <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:]</span> <span class="o">==</span> <span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -632,28 +974,61 @@
 
 <div class="viewcode-block" id="timestep_dynamic"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.timestep.timestep_dynamic">[docs]</a><span class="k">def</span> <span class="nf">timestep_dynamic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Dynamic part of setting the date</span>
-<span class="sd">    Current date is increasing, checking if beginning of month, year</span>
-
-<span class="sd">    :return: a list of date variable in: dateVar</span>
+<span class="sd">    Update temporal state variables during dynamic model execution.</span>
+<span class="sd">    </span>
+<span class="sd">    Core temporal processing function called at each timestep to advance</span>
+<span class="sd">    the model&#39;s temporal state. Updates current date, calculates temporal</span>
+<span class="sd">    markers (month/year boundaries), and maintains counters for output</span>
+<span class="sd">    scheduling and temporal aggregation. Essential for coordinating all</span>
+<span class="sd">    time-dependent model processes.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    self : object</span>
+<span class="sd">        Model instance (parameter not used but maintains method signature).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Updates global dateVar dictionary with current temporal state.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function updates dateVar with:</span>
+<span class="sd">    - currDate: Current simulation date (datetime object)</span>
+<span class="sd">    - currDatestr: Current date as formatted string</span>
+<span class="sd">    - doy: Day of year (1-366)</span>
+<span class="sd">    - 10day, 30day: Dekadal and monthly period indices</span>
+<span class="sd">    - laststep: Boolean flag for final timestep</span>
+<span class="sd">    - newStart, newMonth, newYear: Boolean flags for temporal boundaries</span>
+<span class="sd">    - currMonth, currYear: Cumulative month/year counters for output</span>
+<span class="sd">    - daysInMonth, daysInYear: Current period lengths for averaging</span>
+<span class="sd">    </span>
+<span class="sd">    Temporal boundary detection:</span>
+<span class="sd">    - Identifies first timestep, month start, year start</span>
+<span class="sd">    - Enables conditional execution of periodic processes</span>
+<span class="sd">    - Supports flexible output scheduling and aggregation</span>
+<span class="sd">    </span>
+<span class="sd">    Called once per timestep during the main simulation loop,</span>
+<span class="sd">    providing the temporal framework for all model components.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#print &quot;leap:&quot;, globals.leap_flag[0]</span>
-    <span class="c1">#dateVar[&#39;currDate&#39;] = dateVar[&#39;dateBegin&#39;] + datetime.timedelta(days=dateVar[&#39;curr&#39;])</span>
+    <span class="c1"># print &quot;leap:&quot;, globals.leap_flag[0]</span>
+    <span class="c1"># dateVar[&#39;currDate&#39;] = dateVar[&#39;dateBegin&#39;] + datetime.timedelta(days=dateVar[&#39;curr&#39;])</span>
     <span class="n">d1</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;dateBegin&#39;</span><span class="p">])</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;currDate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numdate</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;curr&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;unitConv&#39;</span><span class="p">])</span>
     <span class="n">datevarInt</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">+</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;curr&#39;</span><span class="p">]</span>
 
-    <span class="c1">#dateVar[&#39;currDatestr&#39;] = dateVar[&#39;currDate&#39;].strftime(&quot;%d/%m/%Y&quot;)</span>
+    <span class="c1"># dateVar[&#39;currDatestr&#39;] = dateVar[&#39;currDate&#39;].strftime(&quot;%d/%m/%Y&quot;)</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;currDatestr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date2str</span><span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;currDate&#39;</span><span class="p">])</span>
 
-    <span class="c1">#dateVar[&#39;doy&#39;] = int(dateVar[&#39;currDate&#39;].strftime(&#39;%j&#39;))</span>
+    <span class="c1"># dateVar[&#39;doy&#39;] = int(dateVar[&#39;currDate&#39;].strftime(&#39;%j&#39;))</span>
     <span class="c1"># replacing this because date less than 1900 is not used</span>
-    <span class="n">firstdoy</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;currDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c1">#dateVar[&#39;doy&#39;] = (dateVar[&#39;currDate&#39;] - firstdoy).days + 1</span>
+    <span class="n">firstdoy</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;currDate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># dateVar[&#39;doy&#39;] = (dateVar[&#39;currDate&#39;] - firstdoy).days + 1</span>
     <span class="n">firstdoyInt</span> <span class="o">=</span> <span class="n">datenum</span><span class="p">(</span><span class="n">firstdoy</span><span class="p">)</span>
-    <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">datevarInt</span>  <span class="o">-</span> <span class="n">firstdoyInt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;10day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">datevarInt</span> <span class="o">-</span> <span class="n">firstdoyInt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;10day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;30day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;doy&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">30</span><span class="p">)</span>
 
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;laststep&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
@@ -702,7 +1077,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, IIASA Water Security.
+        &#169; Copyright 2025, IIASA Water Security.
 
     </p>
   </div>

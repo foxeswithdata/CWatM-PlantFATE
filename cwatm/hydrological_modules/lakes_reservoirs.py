@@ -31,32 +31,8 @@ class lakes_reservoirs(object):
     - Water body initialization from spatial datasets and Excel configurations
     - Reservoir transfers and water supply/demand management
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-        
-    Notes
-    -----
-    Lake calculations use the Modified Puls Method with assumptions:
-    1. Storage volume increases proportionally to elevation: S = A * H
-    2. Outflow follows parabolic weir relationship: Q = a * H^2
-    
-    Mathematical formulation:
-    (Qin1 + Qin2)/2 - (Qout1 + Qout2)/2 = (S2 - S1)/dt
-    
-    Solved as quadratic equation:
-    Q = (-LakeFactor + sqrt(LakeFactor^2 + 2*SI))^2
-    
-    References
-    ----------
-    LISFLOOD manual Annex 3 (Burek et al. 2013)
-    Maniak hydraulics textbook, p.331ff
-    Aigner (2008) for parabolic cross-section relationships
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -179,6 +155,31 @@ class lakes_reservoirs(object):
     reservoir_supply                     Array                                                                                 --   
     waterBodyTypCTemp                    Array         waterbody temp e.g. lake, reservoir, wetlands -> compressed             --   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    Lake calculations use the Modified Puls Method with assumptions:
+    1. Storage volume increases proportionally to elevation: S = A * H
+    2. Outflow follows parabolic weir relationship: Q = a * H^2
+    
+    Mathematical formulation:
+    (Qin1 + Qin2)/2 - (Qout1 + Qout2)/2 = (S2 - S1)/dt
+    
+    Solved as quadratic equation:
+    Q = (-LakeFactor + sqrt(LakeFactor^2 + 2*SI))^2
+    
+    References
+    ----------
+    LISFLOOD manual Annex 3 (Burek et al. 2013)
+    Maniak hydraulics textbook, p.331ff
+    Aigner (2008) for parabolic cross-section relationships
 
     """
 

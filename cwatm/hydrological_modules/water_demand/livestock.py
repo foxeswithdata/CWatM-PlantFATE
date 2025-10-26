@@ -22,14 +22,8 @@ class waterdemand_livestock:
     on precalculated maps. The module supports both monthly and yearly demand calculations
     and can be enabled or disabled through configuration settings.
     
-    Attributes
-    ----------
-    var : object
-        Model variables container from parent model
-    model : object
-        Parent CWatM model instance
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -44,6 +38,13 @@ class waterdemand_livestock:
     pot_livestockConsumption             Array         Potential livestock consumption                                         m    
     liv_efficiency                       Number        Livestock water use efficiency                                          --   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Model variables container from parent model
+    model : object
+        Parent CWatM model instance
 
     """
     def __init__(self, model):

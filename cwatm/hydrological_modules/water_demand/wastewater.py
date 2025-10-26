@@ -28,34 +28,8 @@ class waterdemand_wastewater(object):
     applies treatment with configurable parameters (volume, treatment time, efficiency),
     and manages discharge to overflow points or reuse via distribution reservoirs.
     
-    Parameters
-    ----------
-    Required inputs:
-        - wwtID : Wastewater treatment plant identifiers
-        - wwtVol : Daily treatment volume capacity
-        - wwtYear : Year of establishment
-        - wwtTime : Treatment duration in days (default: 2 days, range: 1-3 days)
-        - wwtOverflow : Overflow/discharge point locations
-        - wwt_ColArea : Effluent collection area definitions
-    
-    Optional inputs:
-        - wwtColShare : Collection efficiency ratio (0-1)
-        - wwtToResManagement : Reservoir management strategy (-1, 0-1)
-        - urbanleak : Urban leakage coefficient
-    
-    Attributes
-    ----------
-    var : object
-        Model variables container from parent model
-    model : object
-        Parent CWatM model instance
-    
-    Notes
-    -----
-    Treatment levels: 1=primary, 2=secondary, 3=tertiary
-    Management options: -1=discharge only, 0=send to reservoir, 0-1=export fraction
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -133,6 +107,33 @@ class waterdemand_wastewater(object):
     wwtSewerCollection_domestic          Array                                                                                 --   
     wwtSewerCollection_industry          Array                                                                                 --   
     ===================================  ==========    ======================================================================  =====
+
+    Parameters
+    ----------
+    Required inputs:
+        - wwtID : Wastewater treatment plant identifiers
+        - wwtVol : Daily treatment volume capacity
+        - wwtYear : Year of establishment
+        - wwtTime : Treatment duration in days (default: 2 days, range: 1-3 days)
+        - wwtOverflow : Overflow/discharge point locations
+        - wwt_ColArea : Effluent collection area definitions
+    
+    Optional inputs:
+        - wwtColShare : Collection efficiency ratio (0-1)
+        - wwtToResManagement : Reservoir management strategy (-1, 0-1)
+        - urbanleak : Urban leakage coefficient
+    
+    Attributes
+    ----------
+    var : object
+        Model variables container from parent model
+    model : object
+        Parent CWatM model instance
+    
+    Notes
+    -----
+    Treatment levels: 1=primary, 2=secondary, 3=tertiary
+    Management options: -1=discharge only, 0=send to reservoir, 0-1=export fraction
 
     """
 

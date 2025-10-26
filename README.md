@@ -26,13 +26,6 @@ we included a possibility to track the source of inputdata, settingsfile, model 
 - model data (global attribute: version_inputfiles) and settingsfile (global attribute: version_settingsfile) are store in discharge.nc results
 - version number with github hash is loaded and stored in global attribute: git_commit
 
-## FAIR model
-
-In order to redo simulations with the same model, settingsfile and data
-we included a possibility to track the source of inputdata, settingsfile, model version
-- model data and settingsfile are store in discharge.nc results
-- version number with github hash is loaded
-
 ## Waterdemand 
 
 - moved water transfer to reservoirs

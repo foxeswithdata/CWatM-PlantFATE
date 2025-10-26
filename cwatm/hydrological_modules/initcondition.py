@@ -19,26 +19,8 @@ class initcondition(object):
     crop parameterization from Excel files, reservoir configuration, and other
     initialization data required for model setup and restart functionality.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-        
-    Notes
-    -----
-    The module provides functionality for:
-    - Saving and loading model state variables for warm starts
-    - Crop parameter initialization from Excel configurations
-    - Reservoir operational parameter setup
-    - Water transfer and wastewater configuration
-    - Desalination capacity initialization
-    
-    All initial conditions can be stored at the end of a model run
-    to be used as a warm start for subsequent model executions.
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -60,6 +42,25 @@ class initcondition(object):
     reservoir_transfers                  Array         [['Giving reservoir'][i], ['Receiving reservoir'][i], ['Fraction of li  array
     coverTypes                           Array         land cover types - forest - grassland - irrPaddy - irrNonPaddy - water  --   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    The module provides functionality for:
+    - Saving and loading model state variables for warm starts
+    - Crop parameter initialization from Excel configurations
+    - Reservoir operational parameter setup
+    - Water transfer and wastewater configuration
+    - Desalination capacity initialization
+    
+    All initial conditions can be stored at the end of a model run
+    to be used as a warm start for subsequent model executions.
 
     """
 

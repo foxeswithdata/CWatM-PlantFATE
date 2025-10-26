@@ -27,30 +27,11 @@ class CWATModel_dyn(DynamicModel):
     to simulate the complete water cycle including precipitation, evapotranspiration,
     soil processes, groundwater, surface runoff, routing, and water management.
     
-    The dynamic execution follows a specific sequence to maintain physical
-    consistency and proper water balance accounting throughout the hydrological
-    system.
+    The dynamic execution follows a specific sequence to maintain physical 
+    consistency and proper water balance accounting throughout the hydrological system.
     
-    Attributes
-    ----------
-    All attributes are inherited from the parent DynamicModel class and
-    initialized in the CWATModel_ini class, including:
-    - Hydrological module instances
-    - Model state variables (self.var)
-    - Configuration parameters (self.conf)
-    - Timing and output systems
-    
-    Notes
-    -----
-    The execution order is critical for maintaining water balance and
-    physical consistency. The sequence follows the natural hydrological
-    cycle from atmospheric inputs through terrestrial processes to
-    surface water routing and water management.
-    
-    Performance timing is tracked for each major process group to
-    identify computational bottlenecks and optimize model efficiency.
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -74,6 +55,28 @@ class CWATModel_dyn(DynamicModel):
     smalllakeStorage                     Array                                                                                 --   
     unmetDemand                          Array         Unmet groundwater demand to determine potential fossil groundwaterwate  m    
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    
+    All attributes are inherited from the parent DynamicModel class and
+    initialized in the CWATModel_ini class, including:
+    
+    - Hydrological module instances
+    - Model state variables (self.var)
+    - Configuration parameters (self.conf)
+    - Timing and output systems
+    
+    Notes
+    -----
+    
+    The execution order is critical for maintaining water balance and
+    physical consistency. The sequence follows the natural hydrological
+    cycle from atmospheric inputs through terrestrial processes to
+    surface water routing and water management.
+    
+    Performance timing is tracked for each major process group to
+    identify computational bottlenecks and optimize model efficiency.
 
     """
 

@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.1.0
               </div>
             
           
@@ -95,23 +95,35 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../11_forum.html"><strong>11. Forum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../12_faq.html"><strong>12. Frequently Asked Questions (FAQ)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../13_glossary.html"><strong>13. CWatM Glossary</strong></a></li>
 </ul>
 
             
@@ -179,92 +191,126 @@
             
   <h1>Source code for cwatm.hydrological_modules.runoff_concentration</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -------------------------------------------------------------------------</span>
-<span class="c1"># Name:        runoff concentration module</span>
-<span class="c1"># Purpose:	   this is the part between runoff generation and routing</span>
-<span class="c1">#              for each gridcell and for each land cover class the generated runoff is concentrated at a corner of a gridcell</span>
+<span class="c1"># Name:        Runoff concentration module</span>
+<span class="c1"># Purpose:     this is the part between runoff generation and routing</span>
+<span class="c1">#              for each gridcell and for each land cover class the generated runoff is concentrated </span>
+<span class="c1">#              at a corner of a gridcell</span>
 <span class="c1">#              this concentration needs some lag-time (and peak time) and leads to diffusion</span>
 <span class="c1">#              lag-time/ peak time is calculated using slope, length and land cover class</span>
 <span class="c1">#              diffusion is calculated using a triangular-weighting-function</span>
 <span class="c1"># Author:      PB</span>
-<span class="c1">#</span>
 <span class="c1"># Created:     16/12/2016</span>
-<span class="c1"># Copyright:   (c) PB 2016</span>
+<span class="c1"># CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.</span>
 <span class="c1"># -------------------------------------------------------------------------</span>
 
 <span class="kn">from</span> <span class="nn">cwatm.management_modules.data_handling</span> <span class="kn">import</span> <span class="o">*</span>
 
+
 <div class="viewcode-block" id="runoff_concentration"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.runoff_concentration.runoff_concentration">[docs]</a><span class="k">class</span> <span class="nc">runoff_concentration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Runoff concentration</span>
-<span class="sd">    this is the part between runoff generation and routing</span>
-<span class="sd">    for each gridcell and for each land cover class the generated runoff is concentrated at a corner of a gridcell</span>
-<span class="sd">    this concentration needs some lag-time (and peak time) and leads to diffusion</span>
-<span class="sd">    lag-time/ peak time is calculated using slope, length and land cover class</span>
-<span class="sd">    diffusion is calculated using a triangular-weighting-function</span>
-
-<span class="sd">    :math:`Q(t) = sum_{i=0}^{max} c(i) * Q_{mathrm{GW}} (t - i + 1)`</span>
-<span class="sd">    where :math:`c(i) = int_{i-1}^{i} {2 over{max}} - | u - {max over {2}} | * {4 over{max^2}} du`</span>
-
-<span class="sd">    see also:</span>
-
-<span class="sd">    http://stackoverflow.com/questions/24040984/transformation-using-triangular-weighting-function-in-python</span>
-
-
+<span class="sd">    Runoff concentration module for temporal flow concentration within grid cells.</span>
+<span class="sd">    </span>
+<span class="sd">    Handles the intermediate process between runoff generation and channel routing,</span>
+<span class="sd">    concentrating runoff from different land cover classes within each grid cell</span>
+<span class="sd">    using lag-time and diffusion processes based on topographic and land cover</span>
+<span class="sd">    characteristics.</span>
+<span class="sd">    </span>
 <span class="sd">    **Global variables**</span>
+<span class="sd">    </span>
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
+<span class="sd">    Variable [self.var]                  Type          Description                                                             Unit </span>
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
+<span class="sd">    load_initial                         Flag          Settings initLoad holds initial conditions for variables                bool </span>
+<span class="sd">    leakageIntoRunoff                    Array         Canal leakage leading to runoff                                         m    </span>
+<span class="sd">    fracGlacierCover                     Array         Fraction of glacier cover in a grid cell                                %    </span>
+<span class="sd">    includeGlaciers                      Flag          Include glaciers                                                        bool </span>
+<span class="sd">    includeOnlyGlaciersMelt              Flag          Include only glacier melt but not rain on glacier                       bool </span>
+<span class="sd">    coverTypes                           Array         land cover types - forest - grassland - irrPaddy - irrNonPaddy - water  --   </span>
+<span class="sd">    runoff                               Array         Total runoff from surface, interflow and groundwater                    m    </span>
+<span class="sd">    sum_interflow                        Array         sum of iterflow from all land cover types                               m    </span>
+<span class="sd">    GlacierMelt                          Array         melt from glacier                                                       m    </span>
+<span class="sd">    GlacierRain                          Array         rain on glacier                                                         m    </span>
+<span class="sd">    runoff_peak                          Array         peak time of runoff in seconds for each land use class                  s    </span>
+<span class="sd">    tpeak_interflow                      Array         peak time of interflow                                                  s    </span>
+<span class="sd">    tpeak_baseflow                       Array         peak time of baseflow                                                   s    </span>
+<span class="sd">    tpeak_glaciers                       Array         peak time of glacier                                                    s    </span>
+<span class="sd">    maxtime_runoff_conc                  Array         maximum time till all flow is at the outlet                             s    </span>
+<span class="sd">    runoff_conc                          Array         runoff after concentration - triangular-weighting method                m    </span>
+<span class="sd">    gridcell_storage                     Array         storage of water due to runoff concentration                            m    </span>
+<span class="sd">    sum_landSurfaceRunoff                Array         Runoff concentration above the soil more interflow including all landc  m    </span>
+<span class="sd">    landSurfaceRunoff                    Array         Runoff concentration above the soil more interflow                      m    </span>
+<span class="sd">    directRunoffGlacier                  Array         direct runoff from glacier                                              m    </span>
+<span class="sd">    directRunoff                         Array         Simulated surface runoff                                                m    </span>
+<span class="sd">    interflow                            Array         Simulated flow reaching runoff instead of groundwater                   m    </span>
+<span class="sd">    baseflow                             Array         simulated baseflow (= groundwater discharge to river)                   m    </span>
+<span class="sd">    fracVegCover                         Array         Fraction of specific land covers (0=forest, 1=grasslands, etc.)         %    </span>
+<span class="sd">    cellArea                             Array         Area of cell                                                            m2   </span>
+<span class="sd">    ===================================  ==========    ======================================================================  =====</span>
 
-<span class="sd">    =====================================  ======================================================================  =====</span>
-<span class="sd">    Variable [self.var]                    Description                                                             Unit </span>
-<span class="sd">    =====================================  ======================================================================  =====</span>
-<span class="sd">    load_initial                           Settings initLoad holds initial conditions for variables                input</span>
-<span class="sd">    leakageIntoRunoff                      Canal leakage leading to runoff                                         m    </span>
-<span class="sd">    fracGlacierCover                                                                                               --   </span>
-<span class="sd">    sum_interflow                                                                                                  --   </span>
-<span class="sd">    cellArea                               Area of cell                                                            m2   </span>
-<span class="sd">    coverTypes                             land cover types - forest - grassland - irrPaddy - irrNonPaddy - water  --   </span>
-<span class="sd">    runoff                                                                                                         --   </span>
-<span class="sd">    includeGlaciers                                                                                                --   </span>
-<span class="sd">    includeOnlyGlaciersMelt                                                                                        --   </span>
-<span class="sd">    GlacierMelt                                                                                                    --   </span>
-<span class="sd">    GlacierRain                                                                                                    --   </span>
-<span class="sd">    runoff_peak                            peak time of runoff in seconds for each land use class                  s    </span>
-<span class="sd">    tpeak_interflow                        peak time of interflow                                                  s    </span>
-<span class="sd">    tpeak_baseflow                         peak time of baseflow                                                   s    </span>
-<span class="sd">    tpeak_glaciers                                                                                                 --   </span>
-<span class="sd">    maxtime_runoff_conc                    maximum time till all flow is at the outlet                             s    </span>
-<span class="sd">    runoff_conc                            runoff after concentration - triangular-weighting method                m    </span>
-<span class="sd">    gridcell_storage                                                                                               --   </span>
-<span class="sd">    sum_landSurfaceRunoff                  Runoff concentration above the soil more interflow including all landc  m    </span>
-<span class="sd">    landSurfaceRunoff                      Runoff concentration above the soil more interflow                      m    </span>
-<span class="sd">    directRunoffGlacier                                                                                            --   </span>
-<span class="sd">    directRunoff                           Simulated surface runoff                                                m    </span>
-<span class="sd">    interflow                              Simulated flow reaching runoff instead of groundwater                   m    </span>
-<span class="sd">    baseflow                               simulated baseflow (= groundwater discharge to river)                   m    </span>
-<span class="sd">    fracVegCover                           Fraction of specific land covers (0=forest, 1=grasslands, etc.)         %    </span>
-<span class="sd">    prergridcell                                                                                                   --   </span>
-<span class="sd">    =====================================  ======================================================================  =====</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    var : object</span>
+<span class="sd">        Reference to model variables object containing state variables</span>
+<span class="sd">    model : object</span>
+<span class="sd">        Reference to the main CWatM model instance</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The concentration process accounts for:</span>
+<span class="sd">    - Variable lag times based on slope, length, and land cover</span>
+<span class="sd">    - Temporal diffusion using triangular weighting functions</span>
+<span class="sd">    - Different peak times for surface runoff, interflow, and baseflow</span>
+<span class="sd">    - Land cover-specific concentration parameters</span>
+<span class="sd">    </span>
+<span class="sd">    Mathematical formulation:</span>
+<span class="sd">    Q(t) = sum_{i=0}^{max} c(i) * Q_source(t - i + 1)</span>
+<span class="sd">    </span>
+<span class="sd">    where c(i) represents the triangular weighting coefficients:</span>
+<span class="sd">    c(i) = integral from (i-1) to i of [2/max - (u - max/2) * 4/max^2] du</span>
+<span class="sd">    </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Based on triangular weighting function concepts for temporal concentration</span>
 
-<span class="sd">    **Functions**</span>
+
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize runoff concentration module.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model : object</span>
+<span class="sd">            CWatM model instance providing access to variables and configuration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">var</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
 
 <div class="viewcode-block" id="runoff_concentration.initial"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.runoff_concentration.runoff_concentration.initial">[docs]</a>    <span class="k">def</span> <span class="nf">initial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initial part of the  runoff concentration module</span>
-
-<span class="sd">        Setting the peak time for:</span>
-
-<span class="sd">        * surface runoff = 3</span>
-<span class="sd">        * interflow = 4</span>
-<span class="sd">        * baseflow = 5</span>
-
-<span class="sd">        based on the slope the concentration time for each land cover type is calculated</span>
-
-<span class="sd">        Note:</span>
-<span class="sd">            only if option **includeRunoffConcentration** is TRUE</span>
+<span class="sd">        Initialize runoff concentration parameters and lag time calculations.</span>
+<span class="sd">        </span>
+<span class="sd">        Sets up concentration time parameters for different runoff components</span>
+<span class="sd">        and calculates land cover-specific lag times based on topographic</span>
+<span class="sd">        characteristics and flow path properties.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Peak time settings:</span>
+<span class="sd">        - Surface runoff: 3 time steps</span>
+<span class="sd">        - Interflow: 4 time steps  </span>
+<span class="sd">        - Baseflow: 5 time steps</span>
+<span class="sd">        </span>
+<span class="sd">        Concentration time calculation considers:</span>
+<span class="sd">        - Grid cell slope and length</span>
+<span class="sd">        - Land cover-specific Manning roughness</span>
+<span class="sd">        - Flow velocity relationships</span>
+<span class="sd">        - Triangular weighting function parameters</span>
+<span class="sd">        </span>
+<span class="sd">        The lag times determine the temporal distribution of runoff</span>
+<span class="sd">        concentration for each land cover type within grid cells.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;includeRunoffConcentration&#39;</span><span class="p">):</span>
@@ -279,17 +325,15 @@
             <span class="c1"># K paved = 6, k forest = 0.3, grass  = 0.6</span>
 
             <span class="c1"># time to peak in days</span>
-            <span class="n">tpeak</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="mf">50000.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1440.0</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">tanslope</span><span class="p">,</span><span class="mf">0.5</span><span class="p">))</span>
+            <span class="n">tpeak</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">*</span> <span class="mf">50000.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1440.0</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">tanslope</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
 
-
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">coverTypes</span><span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">cbinding</span><span class="p">(</span><span class="s2">&quot;coverTypes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">coverTypes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">,</span> <span class="n">cbinding</span><span class="p">(</span><span class="s2">&quot;coverTypes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)))</span>
 
             <span class="c1">#     /\   peak time for concentrated runoff</span>
             <span class="c1">#   /   \</span>
             <span class="c1">#  ---*--</span>
-            <span class="c1">#landcoverAll = [&#39;runoff_peak&#39;]</span>
-            <span class="c1">#for variable in landcoverAll:  vars(self.var)[variable] = np.tile(globals.inZero, (6, 1))</span>
+            <span class="c1"># landcoverAll = [&#39;runoff_peak&#39;]</span>
+            <span class="c1"># for variable in landcoverAll:  vars(self.var)[variable] = np.tile(globals.inZero, (6, 1))</span>
 
             <span class="c1"># Load run off concentration coefficient</span>
 
@@ -301,11 +345,11 @@
             <span class="nb">max</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span>
             <span class="k">for</span> <span class="n">coverType</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">coverTypes</span><span class="p">:</span>
                 <span class="n">tpeak_cover</span> <span class="o">=</span> <span class="n">runoffConc_factor</span> <span class="o">*</span> <span class="n">tpeak</span> <span class="o">*</span> <span class="n">loadmap</span><span class="p">(</span><span class="n">coverType</span> <span class="o">+</span> <span class="s2">&quot;_runoff_peaktime&quot;</span><span class="p">)</span>
-                <span class="n">tpeak_cover</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">tpeak_cover</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,),</span><span class="mf">3.0</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s2">&quot;coverType&quot;</span> <span class="o">==</span> <span class="s2">&quot;water&quot;</span><span class="p">:</span> <span class="n">tpeak_cover</span> <span class="o">=</span> <span class="mf">0.5</span>
-                <span class="c1">#tpeak_cover = 0.5</span>
+                <span class="n">tpeak_cover</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">tpeak_cover</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="mf">3.0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;coverType&quot;</span> <span class="o">==</span> <span class="s2">&quot;water&quot;</span><span class="p">:</span>
+                    <span class="n">tpeak_cover</span> <span class="o">=</span> <span class="mf">0.5</span>
+                <span class="c1"># tpeak_cover = 0.5</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_peak</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tpeak_cover</span><span class="p">)</span>
-
 
                 <span class="nb">max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_peak</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_peak</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">max</span><span class="p">)</span>
                 <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -314,30 +358,31 @@
             <span class="c1">#  ------*</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_interflow</span> <span class="o">=</span> <span class="n">runoffConc_factor</span> <span class="o">*</span> <span class="n">tpeak</span> <span class="o">*</span> <span class="n">loadmap</span><span class="p">(</span><span class="s2">&quot;interflow_runoff_peaktime&quot;</span><span class="p">)</span>
-            <span class="c1">#self.var.tpeak_interflow = 0.5</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_interflow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_interflow</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">),</span> <span class="mf">4.0</span><span class="p">)</span>
+            <span class="c1"># self.var.tpeak_interflow = 0.5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_interflow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_interflow</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="mf">4.0</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span> <span class="o">=</span> <span class="n">runoffConc_factor</span> <span class="o">*</span> <span class="n">tpeak</span> <span class="o">*</span> <span class="n">loadmap</span><span class="p">(</span><span class="s2">&quot;baseflow_runoff_peaktime&quot;</span><span class="p">)</span>
-            <span class="c1">#self.var.tpeak_baseflow = 0.5</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">),</span> <span class="mf">5.0</span><span class="p">)</span>
+            <span class="c1"># self.var.tpeak_baseflow = 0.5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="mf">5.0</span><span class="p">)</span>
             
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">includeGlaciers</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_glaciers</span> <span class="o">=</span> <span class="n">runoffConc_factor</span> <span class="o">*</span> <span class="n">tpeak</span> <span class="o">*</span> <span class="n">loadmap</span><span class="p">(</span><span class="s2">&quot;glaciers_runoff_peaktime&quot;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_glaciers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_glaciers</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,),</span><span class="mf">3.0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_glaciers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_glaciers</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="mf">3.0</span><span class="p">)</span>
 
             <span class="nb">max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="nb">max</span><span class="p">)))</span>
             <span class="nb">max</span> <span class="o">=</span> <span class="mi">10</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span> <span class="nb">max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="nb">max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span>
 
             <span class="c1"># array with concentrated runoff</span>
-            <span class="c1">#self.var.runoff_conc = np.tile(globals.inZero, (self.var.maxtime_runoff_conc, 1))</span>
+            <span class="c1"># self.var.runoff_conc = np.tile(globals.inZero, (self.var.maxtime_runoff_conc, 1))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="c1">#self.var.runoff_conc = np.tile(globals.inZero, (self.var.maxtime_runoff_conc, 1))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="p">,(</span><span class="nb">max</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+            <span class="c1"># self.var.runoff_conc = np.tile(globals.inZero, (self.var.maxtime_runoff_conc, 1))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="p">,</span> <span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">load_initial</span><span class="p">(</span><span class="s2">&quot;runoff_conc&quot;</span><span class="p">,</span> <span class="n">number</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">load_initial</span><span class="p">(</span><span class="s2">&quot;runoff_conc&quot;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">gridcell_storage</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[:],</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">gridcell_storage</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[:],</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">gridcell_storage</span> <span class="o">=</span> <span class="mi">0</span></div>
@@ -346,9 +391,28 @@
 
 
 
-<span class="c1"># --------------------------------------------------------------------------		</span>
-		
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="runoff_concentration.dynamic"><a class="viewcode-back" href="../../../hydrological_modules.html#cwatm.hydrological_modules.runoff_concentration.runoff_concentration.dynamic">[docs]</a>    <span class="k">def</span> <span class="nf">dynamic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate runoff concentration for current time step.</span>
+<span class="sd">        </span>
+<span class="sd">        Applies temporal concentration to runoff components from different</span>
+<span class="sd">        land cover types, distributing flow over time using pre-calculated</span>
+<span class="sd">        lag times and triangular weighting functions.</span>
+<span class="sd">        </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Processing includes:</span>
+<span class="sd">        - Temporal distribution of surface runoff, interflow, and baseflow</span>
+<span class="sd">        - Application of triangular weighting functions</span>
+<span class="sd">        - Integration of concentrated flows from all land cover types</span>
+<span class="sd">        - Update of flow concentration arrays for routing</span>
+<span class="sd">        </span>
+<span class="sd">        The concentration process smooths the temporal distribution of</span>
+<span class="sd">        runoff, representing the natural lag between runoff generation</span>
+<span class="sd">        and arrival at grid cell outlets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dynamic part of the runoff concentration module</span>
 
@@ -359,8 +423,37 @@
 <span class="sd">            the time demanding part is calculated in a c++ library</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        def runoff_concentration(lagtime, peak, fraction,flow, flow_conc):</span>
+        <span class="k">def</span> <span class="nf">runoff_concentration</span><span class="p">(</span><span class="n">lagtime</span><span class="p">,</span> <span class="n">peak</span><span class="p">,</span> <span class="n">fraction</span><span class="p">,</span> <span class="n">flow</span><span class="p">,</span> <span class="n">flow_conc</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Apply triangular weighting function for temporal concentration.</span>
+<span class="sd">            </span>
+<span class="sd">            Distributes current runoff over multiple time steps using a</span>
+<span class="sd">            triangular weighting function based on lag time and peak parameters.</span>
+<span class="sd">            </span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            lagtime : numpy.ndarray</span>
+<span class="sd">                Lag time for concentration [time steps]</span>
+<span class="sd">            peak : float</span>
+<span class="sd">                Peak time multiplier for concentration</span>
+<span class="sd">            fraction : numpy.ndarray</span>
+<span class="sd">                Land cover fraction for weighting</span>
+<span class="sd">            flow : numpy.ndarray</span>
+<span class="sd">                Current runoff flux to be concentrated [m/time step]</span>
+<span class="sd">            flow_conc : numpy.ndarray</span>
+<span class="sd">                Array for storing concentrated flow over time</span>
+<span class="sd">                </span>
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            numpy.ndarray</span>
+<span class="sd">                Updated concentrated flow array</span>
+<span class="sd">                </span>
+<span class="sd">            Notes</span>
+<span class="sd">            -----</span>
+<span class="sd">            Uses triangular distribution to spread instantaneous runoff</span>
+<span class="sd">            over time based on calculated lag and peak times for realistic</span>
+<span class="sd">            temporal flow concentration within grid cells.</span>
+
 <span class="sd">        </span>
 <span class="sd">            Part which is transferred to C++ for computational speed</span>
 
@@ -390,16 +483,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_landSurfaceRunoff</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_directRunoff</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">No</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-            <span class="c1">#self.var.sum_directRunoff += self.var.fracVegCover[No] * self.var.directRunoff[No]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_directRunoff</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracVegCover</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoff</span><span class="p">[</span><span class="n">No</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">landSurfaceRunoff</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoff</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">interflow</span><span class="p">[</span><span class="n">No</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_landSurfaceRunoff</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracVegCover</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">landSurfaceRunoff</span><span class="p">[</span><span class="n">No</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_landSurfaceRunoff</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">baseflow</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">leakageIntoRunoff</span>
 
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">includeGlaciers</span><span class="p">:</span>
-            <span class="c1">#from m3/d to m/d by dividing by the cell area</span>
+            <span class="c1"># from m3/d to m/d by dividing by the cell area</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">includeOnlyGlaciersMelt</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoffGlacier</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span><span class="p">,</span>
                                                          <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracGlacierCover</span><span class="p">),</span>
@@ -408,39 +502,47 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoffGlacier</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierRain</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracGlacierCover</span><span class="p">),</span> <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span><span class="p">),</span> <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracGlacierCover</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoffGlacier</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierRain</span><span class="p">,</span> 
+                                                         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracGlacierCover</span><span class="p">),</span> 
+                                                         <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span><span class="p">),</span> 
+                                                         <span class="n">where</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracGlacierCover</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierRain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierRain</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">cellArea</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierMelt</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">GlacierRain</span>
 
-        <span class="c1">#print(self.var.runoff)</span>
+        <span class="c1"># print(self.var.runoff)</span>
         <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;includeRunoffConcentration&#39;</span><span class="p">):</span>
             <span class="c1"># -------------------------------------------------------</span>
             <span class="c1"># runoff concentration: triangular-weighting method</span>
 
-            <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;calcWaterBalance&#39;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">prergridcell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">gridcell_storage</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
             <span class="c1"># shifting array</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span>
 
             <span class="k">for</span> <span class="n">No</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-               <span class="c1">#self.var.runoff_conc = runoff_concentration(self.var.maxtime_runoff_conc,self.var.runoff_peak[No],self.var.fracVegCover[No] ,self.var.directRunoff[No], self.var.runoff_conc)</span>
-               <span class="n">lib2</span><span class="o">.</span><span class="n">runoffConc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_peak</span><span class="p">[</span><span class="n">No</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracVegCover</span><span class="p">[</span><span class="n">No</span><span class="p">]</span> <span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoff</span><span class="p">[</span><span class="n">No</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">,</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="c1"># self.var.runoff_conc = runoff_concentration(self.var.maxtime_runoff_conc,self.var.runoff_peak[No],</span>
+                <span class="c1">#                                           self.var.fracVegCover[No] ,self.var.directRunoff[No], </span>
+                <span class="c1">#                                           self.var.runoff_conc)</span>
+                <span class="n">lib2</span><span class="o">.</span><span class="n">runoffConc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_peak</span><span class="p">[</span><span class="n">No</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracVegCover</span><span class="p">[</span><span class="n">No</span><span class="p">],</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoff</span><span class="p">[</span><span class="n">No</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">,</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
             <span class="c1"># glacier melt time of concentration</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">includeGlaciers</span><span class="p">:</span>
-               <span class="n">lib2</span><span class="o">.</span><span class="n">runoffConc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_glaciers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracGlacierCover</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoffGlacier</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">,</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">lib2</span><span class="o">.</span><span class="n">runoffConc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_glaciers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">fracGlacierCover</span><span class="p">,</span> 
+                                <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">directRunoffGlacier</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">,</span> 
+                                <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
             <span class="c1"># interflow time of concentration</span>
-            <span class="c1">#self.var.runoff_conc = runoff_concentration(self.var.maxtime_runoff_conc, self.var.tpeak_interflow, 1.0, self.var.sum_interflow, self.var.runoff_conc)</span>
-            <span class="n">lib2</span><span class="o">.</span><span class="n">runoffConc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_interflow</span><span class="p">,</span><span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span> <span class="o">+</span><span class="mi">1</span> <span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_interflow</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">,</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="c1">#self.var.sum_landSurfaceRunoff = self.var.runoff_conc[0].copy()</span>
+            <span class="c1"># self.var.runoff_conc = runoff_concentration(self.var.maxtime_runoff_conc, self.var.tpeak_interflow, </span>
+            <span class="c1">#                                           1.0, self.var.sum_interflow, self.var.runoff_conc)</span>
+            <span class="n">lib2</span><span class="o">.</span><span class="n">runoffConc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_interflow</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_interflow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">,</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># self.var.sum_landSurfaceRunoff = self.var.runoff_conc[0].copy()</span>
 
             <span class="c1"># baseflow time of concentration</span>
-            <span class="c1">#self.var.baseflow = self.var.baseflow.astype(np.float64)</span>
-            <span class="n">lib2</span><span class="o">.</span><span class="n">runoffConc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span><span class="p">,</span><span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span> <span class="o">+</span><span class="mi">1</span> <span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">baseflow</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">,</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="c1">#self.var.baseflow = self.var.runoff_conc[0] - self.var.sum_landSurfaceRunoff</span>
+            <span class="c1"># self.var.baseflow = self.var.baseflow.astype(np.float64)</span>
+            <span class="n">lib2</span><span class="o">.</span><span class="n">runoffConc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">tpeak_baseflow</span><span class="p">,</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">baseflow</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">maxtime_runoff_conc</span><span class="p">,</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># self.var.baseflow = self.var.runoff_conc[0] - self.var.sum_landSurfaceRunoff</span>
             <span class="c1"># -------------------------------------------------------------------------------</span>
             <span class="c1">#  --- from routing module -------</span>
             <span class="c1"># runoff from landSurface cells (unit: m)</span>
@@ -448,33 +550,7 @@
             <span class="c1"># storage in each grid cell. Total runoff - runoff for the timestep</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">gridcell_storage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">gridcell_storage</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff</span>
             <span class="n">sumnewrunoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-            <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;calcWaterBalance&#39;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">waterbalance_module</span><span class="o">.</span><span class="n">waterBalanceCheck</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">sumnewrunoff</span><span class="p">],</span>  <span class="c1"># In</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>  <span class="c1"># Out</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">prergridcell</span><span class="p">],</span>  <span class="c1"># prev storage</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">gridcell_storage</span><span class="p">],</span>
-                    <span class="s2">&quot;runoff-conc1&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">checkOption</span><span class="p">(</span><span class="s1">&#39;calcWaterBalance&#39;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">waterbalance_module</span><span class="o">.</span><span class="n">waterBalanceCheck</span><span class="p">(</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sum_landSurfaceRunoff</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">baseflow</span><span class="p">],</span>  <span class="c1"># In</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>  <span class="c1"># Out</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">prergridcell</span><span class="p">],</span>  <span class="c1"># prev storage</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">gridcell_storage</span><span class="p">],</span>
-                    <span class="s2">&quot;runoff-conc2&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div></div>
-
-
-
-
-
-
-
-
-
-
+            <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">runoff_conc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>
@@ -486,7 +562,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, IIASA Water Security.
+        &#169; Copyright 2025, IIASA Water Security.
 
     </p>
   </div>

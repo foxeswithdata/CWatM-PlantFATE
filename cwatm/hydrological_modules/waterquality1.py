@@ -18,6 +18,26 @@ class waterquality1(object):
     and water temperature in river channels and floodplains. Provides essential
     parameters for water quality modeling and pollutant transport calculations.
     
+    **Global variables**
+
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    DtSec                                Array         number of seconds per timestep (default = 86400)                        s    
+    Tavg                                 Array         Input, average air Temperature                                          K    
+    discharge                            Array         Channel discharge                                                       m3/s 
+    chanLength                           Array         Input, Channel length                                                   m    
+    totalCrossSectionArea                Array                                                                                 --   
+    cellArea                             Array         Area of cell                                                            m2   
+    waterquality                         Flag          Flag to use waterquality                                                bool 
+    celllength                           Array         Cell length, defined as the square root of cell area                    m    
+    downdist                             Array         flowdistance inside a cell. Diagonal = 1.414* celllength                m    
+    travelDistance                       Array         travel distance of water: flow velocity per day                         m    
+    travelTime                           List          time to travel a gridcell: chanLength / flowVelocity                    day  
+    waterLevel                           Array         Water level                                                             m    
+    waterTemperature                     Array         Temperature of water                                                    deg C
+    ===================================  ==========    ======================================================================  =====
+
     Attributes
     ----------
     var : object
@@ -39,24 +59,6 @@ class waterquality1(object):
     Water temperature estimation follows the logistic relationship from
     Morrill et al. (2005) and Mohseni et al. (1998).
 
-    **Global variables**
-    ===================================  ==========    ======================================================================  =====
-    Variable [self.var]                  Type          Description                                                             Unit 
-    ===================================  ==========    ======================================================================  =====
-    DtSec                                Array         number of seconds per timestep (default = 86400)                        s    
-    Tavg                                 Array         Input, average air Temperature                                          K    
-    discharge                            Array         Channel discharge                                                       m3/s 
-    chanLength                           Array         Input, Channel length                                                   m    
-    totalCrossSectionArea                Array                                                                                 --   
-    cellArea                             Array         Area of cell                                                            m2   
-    waterquality                         Flag          Flag to use waterquality                                                bool 
-    celllength                           Array         Cell length, defined as the square root of cell area                    m    
-    downdist                             Array         flowdistance inside a cell. Diagonal = 1.414* celllength                m    
-    travelDistance                       Array         travel distance of water: flow velocity per day                         m    
-    travelTime                           List          time to travel a gridcell: chanLength / flowVelocity                    day  
-    waterLevel                           Array         Water level                                                             m    
-    waterTemperature                     Array         Temperature of water                                                    deg C
-    ===================================  ==========    ======================================================================  =====
 
     """
 

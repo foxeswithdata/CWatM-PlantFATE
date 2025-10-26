@@ -24,14 +24,8 @@ class waterdemand_domestic:
     The module handles both agent-based and traditional demand calculations, supporting
     surface water and groundwater abstraction fractions.
     
-    Attributes
-    ----------
-    var : object
-        Model variables container from parent model
-    model : object
-        Parent CWatM model instance
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -55,6 +49,14 @@ class waterdemand_domestic:
     gwAbstractionFraction_Domestic       Array         Fraction of domestic water demand to be satisfied by groundwater        %    
     dom_efficiency                       Array                                                                                 --   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Model variables container from parent model
+    model : object
+        Parent CWatM model instance
+
 
     """
 

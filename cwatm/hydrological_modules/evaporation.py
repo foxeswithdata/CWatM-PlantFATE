@@ -20,14 +20,8 @@ class evaporation(object):
     for different land cover types. It processes crop coefficients, calculates bare soil
     evaporation, and manages crop-specific evapotranspiration calculations.
 
-    Attributes
-    ----------
-    var : object
-        Model variables container
-    model : object
-        CWatM model instance
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -104,6 +98,13 @@ class evaporation(object):
     adminSegments                        Array         Domestic agents                                                         Int  
     cellArea                             Array         Area of cell                                                            m2   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Model variables container
+    model : object
+        CWatM model instance
 
     """
 

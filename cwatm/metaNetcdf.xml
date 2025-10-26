@@ -103,7 +103,7 @@
 <metanetcdf varname="Snow1" unit=""  standard_name="" long_name="" description=""  title="CWATM" author="IIASA WAT" />
 <metanetcdf varname="Rain1" unit=""  standard_name="" long_name="" description=""  title="CWATM" author="IIASA WAT" />
 <metanetcdf varname="snow_redistributed_previous" unit=""  standard_name="" long_name="" description=""  title="CWATM" author="IIASA WAT" />
-<metanetcdf varname="precipitation_sn" unit=""  standard_name="" long_name="" description=""  title="CWATM" author="IIASA WAT" />
+<metanetcdf varname="precipitation_sn" unit="m"  standard_name="Precipitation_SN" long_name="Precipitation with snow correction" description="CWatM uses a snow undercatch correction if calibrated. This precipitation is precipitation from meteo data + snow correction"  title="CWATM" author="IIASA WAT" />
 <metanetcdf varname="irr_Paddy_month" unit=""  standard_name="" long_name="" description=""  title="CWATM" author="IIASA WAT" />
 <metanetcdf varname="ET_crop_Irr_paddy" unit=""  standard_name="" long_name="" description=""  title="CWATM" author="IIASA WAT" />
 <metanetcdf varname="ET_crop_Irr_paddy_fraccrop" unit=""  standard_name="" long_name="" description=""  title="CWATM" author="IIASA WAT" />

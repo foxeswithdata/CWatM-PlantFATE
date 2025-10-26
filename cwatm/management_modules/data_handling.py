@@ -2065,7 +2065,17 @@ def writenetcdf(netfile, prename, addname, varunits, inputmap, timeStamp, posCnt
             if gname[0:9] == "discharge" or gname[0:1] == "E":
                 nf1.version_inputfiles = versioning['input']
                 with open(settings, 'r', encoding='utf-8') as file:
-                    nf1.version_settingsfile = file.read().splitlines()
+                    #nf1.version_settingsfile = file.read().splitlines()
+
+                    nf1.version_settingsfile = '\n'.join(file.read().splitlines())
+
+                # save the python version
+                python_modules = sys.version
+                for name, module in sorted(sys.modules.items()):
+                    if module and hasattr(module, '__version__') and not name.startswith('_'):
+                        python_modules += "; "+f"{name}: {module.__version__}"
+                nf1.version_modules = python_modules
+
 
         except:
             ii =1

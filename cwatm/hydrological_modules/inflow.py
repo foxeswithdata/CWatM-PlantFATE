@@ -22,14 +22,9 @@ class inflow(object):
     them at specified spatial locations within the model domain. This module is
     optional and only activates when the 'inflow' option is enabled.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
 
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -41,6 +36,13 @@ class inflow(object):
     DtSec                                Array         number of seconds per timestep (default = 86400)                        s    
     QInM3Old                             Array         Inflow from previous day                                                m3   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
 
     """
 

@@ -23,32 +23,8 @@ class runoff_concentration(object):
     using lag-time and diffusion processes based on topographic and land cover
     characteristics.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-        
-    Notes
-    -----
-    The concentration process accounts for:
-    - Variable lag times based on slope, length, and land cover
-    - Temporal diffusion using triangular weighting functions
-    - Different peak times for surface runoff, interflow, and baseflow
-    - Land cover-specific concentration parameters
-    
-    Mathematical formulation:
-    Q(t) = sum_{i=0}^{max} c(i) * Q_source(t - i + 1)
-    
-    where c(i) represents the triangular weighting coefficients:
-    c(i) = integral from (i-1) to i of [2/max - |u - max/2| * 4/maxÂ²] du
-    
-    References
-    ----------
-    Based on triangular weighting function concepts for temporal concentration
-
     **Global variables**
+    
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -78,6 +54,33 @@ class runoff_concentration(object):
     fracVegCover                         Array         Fraction of specific land covers (0=forest, 1=grasslands, etc.)         %    
     cellArea                             Array         Area of cell                                                            m2   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    The concentration process accounts for:
+    - Variable lag times based on slope, length, and land cover
+    - Temporal diffusion using triangular weighting functions
+    - Different peak times for surface runoff, interflow, and baseflow
+    - Land cover-specific concentration parameters
+    
+    Mathematical formulation:
+    Q(t) = sum_{i=0}^{max} c(i) * Q_source(t - i + 1)
+    
+    where c(i) represents the triangular weighting coefficients:
+    c(i) = integral from (i-1) to i of [2/max - (u - max/2) * 4/max^2] du
+    
+    References
+    ----------
+    Based on triangular weighting function concepts for temporal concentration
+
+
 
     """
 

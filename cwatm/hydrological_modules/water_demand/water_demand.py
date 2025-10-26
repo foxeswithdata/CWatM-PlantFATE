@@ -41,45 +41,8 @@ class water_demand:
     operations when configured. It supports both traditional grid-based modeling and
     agent-based approaches for enhanced spatial representation of water management decisions.
     
-    Parameters
-    ----------
-    model : object
-        The main CWatM model instance containing all model variables and configuration.
-        
-    Attributes
-    ----------
-    var : object
-        Reference to model variables container for accessing and storing model state variables.
-    model : object
-        Reference to the main CWatM model instance.
-    domestic : waterdemand_domestic
-        Domestic water demand calculation module.
-    industry : waterdemand_industry
-        Industrial water demand calculation module.
-    livestock : waterdemand_livestock
-        Livestock water demand calculation module.
-    irrigation : waterdemand_irrigation
-        Irrigation water demand calculation module.
-    environmental_need : waterdemand_environmental_need
-        Environmental flow requirements calculation module.
-    wastewater : waterdemand_wastewater
-        Wastewater treatment and reuse calculation module.
-        
-    Notes
-    -----
-    This is the main orchestrating module that coordinates all water demand sectors.
-    Industrial, domestic, and livestock demands are based on precalculated spatial maps,
-    while agricultural water demand is computed dynamically based on crop water requirements.
-    
-    The module supports advanced features including:
-    - Agent-based modeling for spatially explicit water management decisions
-    - Sector-specific and source-specific water abstraction strategies
-    - Command area operations for coordinated irrigation water allocation
-    - Integration with MODFLOW for groundwater-surface water interactions
-    - Desalination operations for augmenting water supply
-    - Complex water allocation algorithms with priority-based distribution
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -326,6 +289,44 @@ class water_demand:
     wwtSewerCollectedBySoruce            Array                                                                                 --   
     waterabstraction                     Array                                                                                 --   
     ===================================  ==========    ======================================================================  =====
+
+    Parameters
+    ----------
+    model : object
+        The main CWatM model instance containing all model variables and configuration.
+        
+    Attributes
+    ----------
+    var : object
+        Reference to model variables container for accessing and storing model state variables.
+    model : object
+        Reference to the main CWatM model instance.
+    domestic : waterdemand_domestic
+        Domestic water demand calculation module.
+    industry : waterdemand_industry
+        Industrial water demand calculation module.
+    livestock : waterdemand_livestock
+        Livestock water demand calculation module.
+    irrigation : waterdemand_irrigation
+        Irrigation water demand calculation module.
+    environmental_need : waterdemand_environmental_need
+        Environmental flow requirements calculation module.
+    wastewater : waterdemand_wastewater
+        Wastewater treatment and reuse calculation module.
+        
+    Notes
+    -----
+    This is the main orchestrating module that coordinates all water demand sectors.
+    Industrial, domestic, and livestock demands are based on precalculated spatial maps,
+    while agricultural water demand is computed dynamically based on crop water requirements.
+    
+    The module supports advanced features including:
+    - Agent-based modeling for spatially explicit water management decisions
+    - Sector-specific and source-specific water abstraction strategies
+    - Command area operations for coordinated irrigation water allocation
+    - Integration with MODFLOW for groundwater-surface water interactions
+    - Desalination operations for augmenting water supply
+    - Complex water allocation algorithms with priority-based distribution
 
     """
 

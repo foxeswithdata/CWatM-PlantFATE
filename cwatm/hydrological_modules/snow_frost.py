@@ -37,14 +37,8 @@ class snow_frost(object):
     redistribution across elevation zones, and computes frost index for soil freezing.
     Supports multi-layer snow zones for topographic variability representation.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-
     **Global variables**
+    
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -104,6 +98,13 @@ class snow_frost(object):
     precipitation_sn                     Array                                                                                 --   
     fracVegCover                         Array         Fraction of specific land covers (0=forest, 1=grasslands, etc.)         %    
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
 
     """
 

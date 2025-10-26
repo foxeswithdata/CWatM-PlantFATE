@@ -22,16 +22,8 @@ class routing_kinematic(object):
     the kinematic wave approximation of the Saint-Venant equations. It handles
     channel flow routing, evaporation from channels, and water body interactions.
 
-    Attributes
-    ----------
-    var : object
-        Model variables container
-    model : object
-        CWatM model instance
-    lakes_reservoirs_module : object
-        Lakes and reservoirs module instance
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -124,6 +116,15 @@ class routing_kinematic(object):
     act_nonIrrWithdrawal                 Array         Non-irrigation withdrawals                                              m    
     act_irrWithdrawal                    Array         Irrigation withdrawals                                                  m    
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Model variables container
+    model : object
+        CWatM model instance
+    lakes_reservoirs_module : object
+        Lakes and reservoirs module instance
 
     """
 

@@ -21,14 +21,8 @@ class readmeteo(object):
     spatial downscaling using WorldClim data, manages temporal interpolation,
     and provides data preprocessing for hydrological calculations.
     
-    Attributes
-    ----------
-    model : object
-        Reference to the main CWatM model instance
-    var : object
-        Reference to model variables object containing state variables
-
     **Global variables**
+    
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -91,6 +85,15 @@ class readmeteo(object):
     SnowFactor                           Array         Multiplier applied to precipitation that falls as snow                  --   
     ===================================  ==========    ======================================================================  =====
 
+    Attributes
+    ----------
+    
+    model : object
+        Reference to the main CWatM model instance
+    var : object
+        Reference to model variables object containing state variables
+
+   
     """
 
     def __init__(self, model):

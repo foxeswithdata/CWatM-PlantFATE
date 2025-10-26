@@ -23,14 +23,8 @@ class waterdemand_industry:
     trends and supports both monthly and yearly demand calculations with scaling factors.
     The module processes withdrawal and consumption data separately.
     
-    Attributes
-    ----------
-    var : object
-        Model variables container from parent model
-    model : object
-        Parent CWatM model instance
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -44,6 +38,13 @@ class waterdemand_industry:
     industryDemand                       Array                                                                                 --   
     ind_efficiency                       Array                                                                                 --   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Model variables container from parent model
+    model : object
+        Parent CWatM model instance
 
     """
 

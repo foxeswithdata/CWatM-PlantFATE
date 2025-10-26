@@ -52,6 +52,7 @@ def datenum(date):
     The function applies rounding to handle NetCDF files that use 12:00
     as the starting time, which results in half-day offsets.
     """
+    
     num = round(date2num(date, units=dateVar['unit'], calendar=dateVar['calendar']))
     # changed to round because some date in netcdf have 12:00 as starting time -> results in -0.5
     return num // dateVar['unitConv']

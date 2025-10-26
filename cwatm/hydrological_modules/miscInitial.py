@@ -19,25 +19,8 @@ class miscInitial(object):
     temporal parameters, unit conversion factors, and commonly used mathematical
     expressions that are repeatedly accessed throughout model execution.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-        
-    Notes
-    -----
-    This module handles essential initialization tasks:
-    - Grid cell area determination (user-defined or derived from projection)
-    - Time step definitions and conversion factors
-    - Unit conversion factors (mm to m, mÂ³ to m, etc.)
-    - Precipitation and evaporation conversion parameters
-    - Mathematical constants and frequently used expressions
-    
-    Only used during model initialization phase.
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -55,6 +38,24 @@ class miscInitial(object):
     con_e                                Array         conversion factor for evaporation                                       --   
     cellArea                             Array         Area of cell                                                            m2   
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    This module handles essential initialization tasks:
+    - Grid cell area determination (user-defined or derived from projection)
+    - Time step definitions and conversion factors
+    - Unit conversion factors (mm to m, mÂ³ to m, etc.)
+    - Precipitation and evaporation conversion parameters
+    - Mathematical constants and frequently used expressions
+    
+    Only used during model initialization phase.
 
     """
 

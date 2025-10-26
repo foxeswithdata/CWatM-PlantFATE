@@ -21,14 +21,8 @@ class environflow(object):
     which are the minimum water requirements needed to maintain ecosystem health
     in rivers and streams.
 
-    Attributes
-    ----------
-    var : object
-        Model variables container
-    model : object
-        CWatM model instance
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -39,6 +33,13 @@ class environflow(object):
     EF_VMF                               Array         EF requirement with Variable Monthly Flow: Pastor et al.(2014): Accoun  m3/s 
     cut_ef_map                           Flag          if TRUE calculated maps of environmental flow are clipped to the area   bool 
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    var : object
+        Model variables container
+    model : object
+        CWatM model instance
 
     """
 

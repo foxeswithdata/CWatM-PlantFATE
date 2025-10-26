@@ -20,15 +20,10 @@ class waterdemand_environmental_need:
     It supports environmental flow standards and habitat preservation water needs based on
     precalculated maps. The module handles monthly environmental flow data and converts
     flow rates to water depths for hydrological calculations.
-    
-    Attributes
-    ----------
-    var : object
-        Model variables container from parent model
-    model : object
-        Parent CWatM model instance
+
 
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -40,6 +35,14 @@ class waterdemand_environmental_need:
     channelAlpha                         Array                                                                                 --   
     envFlow                              Array                                                                                 --   
     ===================================  ==========    ======================================================================  =====
+
+    
+    Attributes
+    ----------
+    var : object
+        Model variables container from parent model
+    model : object
+        Parent CWatM model instance
 
     """
 

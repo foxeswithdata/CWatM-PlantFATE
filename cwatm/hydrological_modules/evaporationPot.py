@@ -20,19 +20,8 @@ class evaporationPot(object):
     primarily based on FAO 56 guidelines and LISVAP. The calculations are based on
     the Penman-Monteith equation for reference evapotranspiration.
 
-    Attributes
-    ----------
-    var : object
-        Model variables container
-    model : object
-        CWatM model instance
-
-    References
-    ----------
-    FAO 56 Guidelines: http://www.fao.org/docrep/X0490E/x0490e08.htm#penman%20monteith%20equation
-    LISVAP Documentation: https://ec.europa.eu/jrc/en/publication/eur-scientific-and-technical-research-reports/lisvap-evaporation-pre-processor-lisflood-water-balance-and-flood-simulation-model
-
     **Global variables**
+    
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -61,6 +50,20 @@ class evaporationPot(object):
     dem                                  Array         Digital elevation model                                                 m    
     lat                                  Array         Latitude                                                                deg  
     ===================================  ==========    ======================================================================  =====
+
+    Attributes
+    ----------
+    
+    var : object
+        Model variables container
+    model : object
+        CWatM model instance
+
+    References
+    ----------
+    
+    FAO 56 Guidelines: http://www.fao.org/docrep/X0490E/x0490e08.htm#penman%20monteith%20equation
+    LISVAP Documentation: https://ec.europa.eu/jrc/en/publication/eur-scientific-and-technical-research-reports/lisvap-evaporation-pre-processor-lisflood-water-balance-and-flood-simulation-model
 
     """
 

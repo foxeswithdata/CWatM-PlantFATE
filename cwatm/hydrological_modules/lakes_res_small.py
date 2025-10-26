@@ -25,25 +25,8 @@ class lakes_res_small(object):
     approach. Processes distributed small water bodies within grid cells rather
     than individual large water bodies.
     
-    Attributes
-    ----------
-    var : object
-        Reference to model variables object containing state variables
-    model : object
-        Reference to the main CWatM model instance
-        
-    Notes
-    -----
-    Small water bodies are treated as distributed features within grid cells,
-    with each cell containing a fraction of water body coverage. The module
-    uses the same modified Puls method as large water bodies but applies it
-    to aggregated small water body characteristics.
-    
-    References
-    ----------
-    LISFLOOD manual Annex 3 (Burek et al. 2013)
-
     **Global variables**
+
     ===================================  ==========    ======================================================================  =====
     Variable [self.var]                  Type          Description                                                             Unit 
     ===================================  ==========    ======================================================================  =====
@@ -73,6 +56,20 @@ class lakes_res_small(object):
     smalllakeStorage                     Array                                                                                 --   
     ===================================  ==========    ======================================================================  =====
 
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    Small water bodies are treated as distributed features within grid cells,
+    with each cell containing a fraction of water body coverage. The module
+    uses the same modified Puls method as large water bodies but applies it
+    to aggregated small water body characteristics.
+    
     """
 
     def __init__(self, model):

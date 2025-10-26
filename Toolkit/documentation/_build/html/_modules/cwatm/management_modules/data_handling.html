@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.1.0
               </div>
             
           
@@ -95,23 +95,33 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../modeldesign.html">2. Model Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../publication.html">3. Publication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../setup.html">4. Setup of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">5. Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../errorHandling.html">6. Error handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../listVariables.html">7. List of output variables</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../results.html">8. Demo of the model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../todo.html">9. The Model Itself</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../data.html">10. Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration.html">11. Calibration tool</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../calibration_tutorial.html">12. Calibration tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../resolution.html">13. Increasing resolution</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../zambezi.html">14. Example Zambezi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">15. License and download info</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../sourcecode.html">16. Source code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../forum.html">17. Forum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../1_introduction.html"><strong>1. Introduction</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../2_news.html"><strong>2. NEWS</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../3_modeldesign.html"><strong>3. The Community Water Model</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../4_UsingCwatM.html"><strong>4. Using CWatM</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../5_howto.html"><strong>5. HOW-TO-GUIDE</strong> Problem oriented</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../51_installCwatM.html">Installing CWatM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../52_settingsfile.html">Settingsfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../53_output.html">Output Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../54_testingdata.html">Testing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../55_initialization.html">Initialization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../56_calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../57_reproduce.html">Recover</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../58_tricks.html">Tips and Tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../6_references.html"><strong>6. REFERENCES</strong> – Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../61_variables.html">List of output variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../7_tutorials.html"><strong>7. TUTORIALS</strong> – Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../71_offline.html">Offline Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../72_online.html">Online Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../8_explanation.html"><strong>8. EXPLANATION</strong> - Understanding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../81_data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../82_processes.html">Hydrological processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../9_technical.html"><strong>9. Technical Guide</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../91_sourcecode.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../92_testing.html">Testing Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../10_zambezi.html"><strong>10. Example Zambezi</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../11_forum.html"><strong>11. Forum</strong></a></li>
 </ul>
 
             
@@ -183,125 +193,71 @@
 <span class="c1"># Purpose:     Transforming netcdf to numpy arrays, checking mask file</span>
 <span class="c1">#</span>
 <span class="c1"># Author:      PB</span>
-<span class="c1">#</span>
 <span class="c1"># Created:     13/07/2016 </span>
-<span class="c1"># Copyright:   (c) PB 2016</span>
+<span class="c1"># CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.</span>
 <span class="c1"># -------------------------------------------------------------------------</span>
 
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">calendar</span>
-
-<span class="c1">#import numpy as np</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="nb">globals</span>
-<span class="kn">from</span> <span class="nn">cwatm.management_modules.checks</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">cwatm.management_modules.timestep</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">cwatm.management_modules.replace_pcr</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">cwatm.management_modules.messages</span> <span class="kn">import</span> <span class="o">*</span>
-
 <span class="kn">import</span> <span class="nn">difflib</span>  <span class="c1"># to check the closest word in settingsfile, if an error occurs</span>
+<span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">cwatm.management_modules.dynamicModel</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span><span class="n">num2date</span><span class="p">,</span><span class="n">date2num</span><span class="p">,</span><span class="n">date2index</span>
-<span class="c1">#from netcdftime import utime</span>
-
-<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
-<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">osr</span>
-<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdalconst</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="c1">#import xarray as xr</span>
-<span class="c1">#from concurrent.futures import ThreadPoolExecutor</span>
-<span class="c1">#import asyncio</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">num2date</span><span class="p">,</span> <span class="n">date2num</span><span class="p">,</span> <span class="n">date2index</span>
+<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
+<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdalconst</span>
+<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">osr</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="nb">globals</span>
+<span class="kn">from</span> <span class="nn">cwatm.management_modules.checks</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">cwatm.management_modules.dynamicModel</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">cwatm.management_modules.messages</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">cwatm.management_modules.replace_pcr</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">cwatm.management_modules.timestep</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># -------------------------------------</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd"># Asychron reading of meteomaps to speed up - with the help of Jens de Bruijn</span>
-
-<span class="sd">class AsyncReader:</span>
-<span class="sd">    def __init__(self, filepath, variable_name):</span>
-<span class="sd">    #def __init__(self,no):</span>
-<span class="sd">        #filepath = netcdf_file[no]</span>
-<span class="sd">        self.filepath = filepath</span>
-<span class="sd">        #variable_name = varnameGl[no]</span>
-<span class="sd">        #self.nf1 = Dataset(filepath,&quot;r&quot;)</span>
-<span class="sd">        #self.ds = self.nf1.variables[variable_name]</span>
-<span class="sd">        self.ds = xr.open_dataset(filepath, chunks={&quot;time&quot;: 1})[variable_name]</span>
-<span class="sd">        #self.ds = xr.open_dataarray(filepath)</span>
-
-<span class="sd">        # Adjust chunk size based on your data</span>
-<span class="sd">        self.executor = ThreadPoolExecutor(max_workers=1)</span>
-<span class="sd">        self.preloaded_data_future = None</span>
-<span class="sd">        self.current_index = -1  # Initialize to -1 to indicate no data loaded yet</span>
-<span class="sd">        #self.time_index = self.ds.time.values</span>
-<span class="sd">        #self.time_index = nf1.variables[&quot;time&quot;][:]</span>
-<span class="sd">        try:</span>
-<span class="sd">            self.loop = asyncio.get_running_loop()</span>
-<span class="sd">        except RuntimeError:</span>
-<span class="sd">            self.loop = asyncio.new_event_loop()</span>
-
-<span class="sd">    def load(self, index,loc):</span>
-<span class="sd">        #a = self.ds[index + 1, loc[0]:loc[1], loc[2]:loc[3]]</span>
-<span class="sd">        #a = self.ds.values[index,loc[0]:loc[1],loc[2]:loc[3]]</span>
-<span class="sd">        #a = self.ds.isel(time=index).values</span>
-<span class="sd">        a = self.ds.isel(time=index, lat=slice(loc[0], loc[1]), lon=slice(loc[2],loc[3])).values</span>
-<span class="sd">        return a</span>
-
-
-<span class="sd">    def preload_next(self, index,loc):</span>
-<span class="sd">        # Preload the next timestep asynchronously</span>
-<span class="sd">        #if index + 1 &lt; self.ds.time.size:</span>
-<span class="sd">        if index+1 &lt; 14444111:</span>
-<span class="sd">            future = self.loop.run_in_executor(</span>
-<span class="sd">                self.executor, lambda: self.load(index + 1,loc) )</span>
-<span class="sd">            return future</span>
-<span class="sd">        return None</span>
-
-<span class="sd">    async def read_timestep_async(self, index, loc):</span>
-<span class="sd">        #assert index &lt; self.ds.time.size, &quot;Index out of bounds.&quot;</span>
-<span class="sd">        #assert index &gt;= 0, &quot;Index out of bounds.&quot;</span>
-<span class="sd">        # Check if the requested data is already preloaded, if so, just return that data</span>
-<span class="sd">        if index == self.current_index:</span>
-<span class="sd">            return self.current_data</span>
-<span class="sd">        # Check if the data for the next timestep is preloaded, if so, await for it to complete</span>
-<span class="sd">        if self.preloaded_data_future is not None and self.current_index + 1 == index:</span>
-<span class="sd">            data = await self.preloaded_data_future</span>
-<span class="sd">        # Load the requested data if not preloaded</span>
-<span class="sd">        else:</span>
-<span class="sd">            data = await self.loop.run_in_executor(</span>
-<span class="sd">                self.executor, lambda: self.load(index,loc))</span>
-
-<span class="sd">        # Initiate preloading the next timestep, do not await here, this returns a future</span>
-<span class="sd">        self.preloaded_data_future = self.preload_next(index,loc)</span>
-
-<span class="sd">        self.current_index = index</span>
-<span class="sd">        self.current_data = data</span>
-<span class="sd">        return data</span>
-
-<span class="sd">    def read_timestep(self, index, loc):</span>
-<span class="sd">        #index = self.get_index(date)</span>
-<span class="sd">        return self.loop.run_until_complete(self.read_timestep_async(index,loc))</span>
-
-<span class="sd">    def read_timestepxxx(self, index,loc):</span>
-<span class="sd">        #def read_timestep_not_async(self, index):</span>
-<span class="sd">        #index = self.get_index(date)</span>
-<span class="sd">        return self.load(index,loc)</span>
-<span class="sd">        #return self.ds[index,loc[0]:loc[1],loc[2]:loc[3]]</span>
-
-<span class="sd">    def close(self):</span>
-<span class="sd">        #self.nf1.close()</span>
-<span class="sd">        self.ds.close()</span>
-<span class="sd">        self.executor.shutdown()</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="c1"># --------------------------------------</span>
-<div class="viewcode-block" id="valuecell"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.valuecell">[docs]</a><span class="k">def</span> <span class="nf">valuecell</span><span class="p">(</span> <span class="n">coordx</span><span class="p">,</span> <span class="n">coordstr</span><span class="p">,</span> <span class="n">returnmap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="valuecell"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.valuecell">[docs]</a><span class="k">def</span> <span class="nf">valuecell</span><span class="p">(</span><span class="n">coordx</span><span class="p">,</span> <span class="n">coordstr</span><span class="p">,</span> <span class="n">returnmap</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    to put a value into a raster map -&gt; invert of cellvalue, map is converted into a numpy array first</span>
-
-<span class="sd">    :param coordx: x,y or lon/lat coordinate</span>
-<span class="sd">    :param coordstr: String of coordinates</span>
-<span class="sd">    :return: 1D array with new value</span>
+<span class="sd">    Convert geographic coordinates to raster cell values for gauge placement.</span>
+<span class="sd">    </span>
+<span class="sd">    This function creates a raster map with numbered cells corresponding to</span>
+<span class="sd">    gauge locations specified by coordinates. It performs coordinate validation,</span>
+<span class="sd">    converts geographic coordinates to raster row/column indices, and creates</span>
+<span class="sd">    a compressed array suitable for CWatM processing. Essential for linking</span>
+<span class="sd">    point observations to the model grid.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordx : list</span>
+<span class="sd">        List of coordinate values in alternating x,y or lon/lat format.</span>
+<span class="sd">        Even indices are x-coordinates, odd indices are y-coordinates.</span>
+<span class="sd">    coordstr : str</span>
+<span class="sd">        String representation of coordinates for error reporting.</span>
+<span class="sd">    returnmap : bool, optional</span>
+<span class="sd">        If True, return compressed 1D array. If False, return column/row indices.</span>
+<span class="sd">        Default is True.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray or tuple</span>
+<span class="sd">        If returnmap=True: 1D compressed array with gauge numbers (1-based indexing).</span>
+<span class="sd">        If returnmap=False: tuple of (column_indices, row_indices) lists.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    CWATMError</span>
+<span class="sd">        If coordinate strings cannot be converted to float values.</span>
+<span class="sd">        If any coordinate falls outside the model domain (mask map bounds).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Uses maskmapAttr global dictionary for spatial reference information</span>
+<span class="sd">    - Coordinates outside domain trigger detailed error message with boundary box</span>
+<span class="sd">    - Background cells are set to -9999 (NoData value)</span>
+<span class="sd">    - Gauge cells are numbered sequentially starting from 1</span>
+<span class="sd">    - Coordinate transformation uses inverse cell size for efficiency</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">coord</span> <span class="o">=</span> <span class="p">[]</span>
@@ -315,24 +271,25 @@
             <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
+
     <span class="n">null</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;row&#39;</span><span class="p">],</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">]))</span>
     <span class="n">null</span><span class="p">[</span><span class="n">null</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9999</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)):</span>
-        <span class="n">col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="n">coord</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span>  <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;invcell&#39;</span><span class="p">]))</span>
+        <span class="n">col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="n">coord</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;invcell&#39;</span><span class="p">]))</span>
         <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">coord</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;invcell&#39;</span><span class="p">]))</span>
 
         <span class="k">if</span> <span class="n">col</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">col</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;row&#39;</span><span class="p">]:</span>
             <span class="n">null</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">col</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">x1</span> <span class="o">=</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
-            <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span><span class="o">*</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">]</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">]</span>
             <span class="n">y1</span> <span class="o">=</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
-            <span class="n">y2</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span><span class="o">*</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;row&#39;</span><span class="p">]</span>
-            <span class="n">box</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%5s</span><span class="s2"> </span><span class="si">%5.1f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">y1</span><span class="p">)</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;row&#39;</span><span class="p">]</span>
+            <span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%5s</span><span class="s2"> </span><span class="si">%5.1f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span>
             <span class="n">box</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%5s</span><span class="s2"> ---------</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;&quot;</span>
             <span class="n">box</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%5s</span><span class="s2"> |       |</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;&quot;</span>
-            <span class="n">box</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%5.1f</span><span class="s2"> |       |</span><span class="si">%5.1f</span><span class="s2">     &lt;-- Box of mask map</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">)</span>
+            <span class="n">box</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%5.1f</span><span class="s2"> |       |</span><span class="si">%5.1f</span><span class="s2">     &lt;-- Box of mask map</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
             <span class="n">box</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%5s</span><span class="s2"> |       |</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;&quot;</span>
             <span class="n">box</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%5s</span><span class="s2"> ---------</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;&quot;</span>
             <span class="n">box</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%5s</span><span class="s2"> </span><span class="si">%5.1f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
@@ -344,7 +301,7 @@
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 102: Coordinates: x = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">coord</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;  y = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
                 <span class="n">coord</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; of gauge is outside mask map</span><span class="se">\n\n</span><span class="s2">&quot;</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="n">box</span>
-            <span class="n">msg</span> <span class="o">+=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Please have a look at </span><span class="se">\&quot;</span><span class="s2">MaskMap</span><span class="se">\&quot;</span><span class="s2"> or </span><span class="se">\&quot;</span><span class="s2">Gauges</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Please have a look at </span><span class="se">\&quot;</span><span class="s2">MaskMap</span><span class="se">\&quot;</span><span class="s2"> or </span><span class="se">\&quot;</span><span class="s2">Gauges</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
             <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">returnmap</span><span class="p">:</span>
         <span class="n">mapnp</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">null</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
@@ -353,29 +310,64 @@
         <span class="k">return</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span></div>
 
 
-<div class="viewcode-block" id="setmaskmapAttr"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.setmaskmapAttr">[docs]</a><span class="k">def</span> <span class="nf">setmaskmapAttr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">cell</span><span class="p">):</span>
+<div class="viewcode-block" id="setmaskmapAttr"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.setmaskmapAttr">[docs]</a><span class="k">def</span> <span class="nf">setmaskmapAttr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Definition of cell size, coordinates of the meteo maps and maskmap</span>
-
-<span class="sd">    :param x: upper left corner x</span>
-<span class="sd">    :param y: upper left corner y</span>
-<span class="sd">    :param col: number of cols</span>
-<span class="sd">    :param row: number of rows</span>
-<span class="sd">    :param cell: cell size</span>
-<span class="sd">    :return: -</span>
+<span class="sd">    Set global spatial reference attributes for the model domain.</span>
+<span class="sd">    </span>
+<span class="sd">    Defines the spatial reference system parameters that are used throughout</span>
+<span class="sd">    CWatM for coordinate transformations, data alignment, and spatial operations.</span>
+<span class="sd">    These attributes are stored in the global maskmapAttr dictionary and used</span>
+<span class="sd">    by all spatial data processing functions.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : float</span>
+<span class="sd">        X-coordinate of the upper-left corner of the model domain.</span>
+<span class="sd">        Typically longitude in decimal degrees or projected coordinate.</span>
+<span class="sd">    y : float</span>
+<span class="sd">        Y-coordinate of the upper-left corner of the model domain.</span>
+<span class="sd">        Typically latitude in decimal degrees or projected coordinate.</span>
+<span class="sd">    col : int</span>
+<span class="sd">        Number of columns in the raster grid.</span>
+<span class="sd">    row : int</span>
+<span class="sd">        Number of rows in the raster grid.</span>
+<span class="sd">    cell : float</span>
+<span class="sd">        Cell size (spatial resolution) in the same units as x,y coordinates.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Results stored in global maskmapAttr dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function performs precision adjustments to handle floating-point</span>
+<span class="sd">    arithmetic issues in coordinate calculations:</span>
+<span class="sd">    - Calculates inverse cell size for efficient coordinate transformations</span>
+<span class="sd">    - Rounds coordinates to appropriate precision based on magnitude</span>
+<span class="sd">    - Handles edge cases where getgeotransform provides limited precision</span>
+<span class="sd">    </span>
+<span class="sd">    Global variables modified:</span>
+<span class="sd">    - maskmapAttr: Dictionary with keys &#39;x&#39;, &#39;y&#39;, &#39;col&#39;, &#39;row&#39;, &#39;cell&#39;, &#39;invcell&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    This spatial reference is used by functions like valuecell(), loadmap(),</span>
+<span class="sd">    and coordinate transformation routines throughout the model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">invcell</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">cell</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">invcell</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">cell</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="c1"># getgeotransform only delivers single precision!</span>
-    <span class="k">if</span> <span class="n">invcell</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="n">invcell</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">cell</span>
+    <span class="k">if</span> <span class="n">invcell</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">invcell</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">cell</span>
     <span class="n">cell</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">invcell</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1e9</span><span class="p">:</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1e9</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)),</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
     <span class="c1"># This is still not ok! Some rounding issues still appear sometimes</span>
 
     <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
@@ -386,15 +378,40 @@
     <span class="n">maskmapAttr</span><span class="p">[</span><span class="s1">&#39;invcell&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">invcell</span></div>
 
 
-<div class="viewcode-block" id="loadsetclone"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.loadsetclone">[docs]</a><span class="k">def</span> <span class="nf">loadsetclone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="loadsetclone"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.loadsetclone">[docs]</a><span class="k">def</span> <span class="nf">loadsetclone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    load the maskmap and set as clone</span>
-
-<span class="sd">    :param name: name of mask map, can be a file or - row col cellsize xupleft yupleft -</span>
-<span class="sd">    :return: new mask map</span>
-
+<span class="sd">    Load and set the clone map that defines the model domain.</span>
+<span class="sd">    </span>
+<span class="sd">    The clone map is the fundamental spatial reference for CWatM, defining</span>
+<span class="sd">    the model grid, coordinate system, and computational domain. This function</span>
+<span class="sd">    loads the clone map from various formats (NetCDF, GeoTIFF), extracts spatial</span>
+<span class="sd">    attributes, and sets up the global spatial reference system used throughout</span>
+<span class="sd">    the model.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Path to the clone map file. Can be NetCDF or GeoTIFF format.</span>
+<span class="sd">        The binding key for the clone map in the configuration.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Sets up global spatial reference and mask attributes.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The clone map determines:</span>
+<span class="sd">    - Model grid dimensions and spatial resolution</span>
+<span class="sd">    - Coordinate reference system and geotransformation</span>
+<span class="sd">    - Active model domain (non-NoData cells)</span>
+<span class="sd">    - Spatial attributes for all subsequent data loading</span>
+<span class="sd">    </span>
+<span class="sd">    This function must be called before any other spatial data operations.</span>
+<span class="sd">    It populates the global maskmapAttr dictionary and sets the model&#39;s</span>
+<span class="sd">    spatial framework.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
+  
     <span class="n">filename</span> <span class="o">=</span> <span class="n">cbinding</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="n">coord</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 
@@ -447,7 +464,6 @@
                 <span class="n">mapnp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">nrRows</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">nrCols</span><span class="p">])</span>
             <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">setmaskmapAttr</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">nrCols</span><span class="p">,</span> <span class="n">nrRows</span><span class="p">,</span> <span class="n">cellSize</span><span class="p">)</span>
-
             <span class="n">flagmap</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">except</span><span class="p">:</span>
@@ -466,17 +482,12 @@
                 <span class="c1"># 10 because that includes all valid LDD values [1-9]</span>
                 <span class="n">mapnp</span><span class="p">[</span><span class="n">mapnp</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">mapnp</span><span class="p">[</span><span class="n">mapnp</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-
+                <span class="n">addtoversiondate</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
                 <span class="n">flagmap</span> <span class="o">=</span> <span class="kc">True</span>
+
 
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 201: File reading Error</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sname</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-
-
-        <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-            <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="n">flagmap</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-
 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 103: Maskmap: &quot;</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; is not a valid mask map nor valid coordinates nor valid point</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -507,19 +518,32 @@
 
     <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">])</span>
 
-    <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-        <span class="n">checkmap</span><span class="p">(</span><span class="s2">&quot;Mask+Ldd&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span><span class="n">mask</span><span class="p">),</span> <span class="n">flagmap</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
-
     <span class="n">outpoints</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
        <span class="n">outpoints</span> <span class="o">=</span> <span class="n">valuecell</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
        <span class="n">outpoints</span><span class="p">[</span><span class="n">outpoints</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-
        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create catchment from point and river network&quot;</span><span class="p">)</span>
-       <span class="n">mask2D</span><span class="p">,</span> <span class="n">xleft</span><span class="p">,</span> <span class="n">yup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">routing_kinematic_module</span><span class="o">.</span><span class="n">catchment</span><span class="p">(</span><span class="n">outpoints</span><span class="p">)</span>
+       <span class="n">ldd</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">)</span>
+       <span class="n">mask2D</span><span class="p">,</span> <span class="n">xleft</span><span class="p">,</span> <span class="n">yup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">routing_kinematic_module</span><span class="o">.</span><span class="n">catchment</span><span class="p">(</span><span class="n">outpoints</span><span class="p">,</span><span class="n">ldd</span><span class="p">)</span>
        <span class="n">mapC</span> <span class="o">=</span> <span class="n">maskfrompoint</span><span class="p">(</span><span class="n">mask2D</span><span class="p">,</span> <span class="n">xleft</span><span class="p">,</span> <span class="n">yup</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+       <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
+           <span class="n">checkmap</span><span class="p">(</span><span class="s2">&quot;MaskMap&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">~</span><span class="n">mask2D</span><span class="p">)</span>
+           <span class="n">ldd</span> <span class="o">=</span> <span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;Ldd&#39;</span><span class="p">)</span>
+       <span class="c1"># load area to print out basin area</span>
        <span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">loadmap</span><span class="p">(</span><span class="s1">&#39;CellArea&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1e-6</span>
        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of cells in catchment: </span><span class="si">%6i</span><span class="s2"> = </span><span class="si">%7.0f</span><span class="s2"> km2&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask2D</span><span class="p">),</span> <span class="n">area</span><span class="p">))</span>
+       <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;maskmap&#39;</span><span class="p">]:</span>
+           <span class="k">return</span> <span class="n">mask2D</span><span class="p">,</span> <span class="n">xleft</span><span class="p">,</span> <span class="n">yup</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
+            <span class="n">checkmap</span><span class="p">(</span><span class="s2">&quot;Mask+Ldd&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">~</span><span class="n">mask</span><span class="p">)</span>
+            <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
+            <span class="n">checkmap</span><span class="p">(</span><span class="s2">&quot;Ldd&quot;</span><span class="p">,</span> <span class="n">cbinding</span><span class="p">(</span><span class="s2">&quot;Ldd&quot;</span><span class="p">),</span> <span class="n">maskldd</span><span class="p">)</span>
+
+
+
 
     <span class="c1"># if the final results map should be cover up with some mask:</span>
     <span class="k">if</span> <span class="s2">&quot;coverresult&quot;</span> <span class="ow">in</span> <span class="n">binding</span><span class="p">:</span>
@@ -529,11 +553,44 @@
             <span class="n">cover</span><span class="p">[</span><span class="n">cover</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">cover</span><span class="p">[</span><span class="n">cover</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">coverresult</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cover</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">coverresult</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">coverresult</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
 
     <span class="k">return</span> <span class="n">mapC</span></div>
 
 
 <div class="viewcode-block" id="maskfrompoint"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.maskfrompoint">[docs]</a><span class="k">def</span> <span class="nf">maskfrompoint</span><span class="p">(</span><span class="n">mask2D</span><span class="p">,</span> <span class="n">xleft</span><span class="p">,</span> <span class="n">yup</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert 2D mask array to compressed 1D format for CWatM processing.</span>
+<span class="sd">    </span>
+<span class="sd">    Transforms a full 2D boolean mask to the compressed 1D format used</span>
+<span class="sd">    internally by CWatM. This compression removes NoData cells and creates</span>
+<span class="sd">    efficient storage for hydrological computations, significantly reducing</span>
+<span class="sd">    memory usage and computation time for sparse domains.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mask2D : numpy.ndarray</span>
+<span class="sd">        2D boolean array where True indicates active model cells.</span>
+<span class="sd">    xleft : float</span>
+<span class="sd">        X-coordinate of the left edge of the domain.</span>
+<span class="sd">    yup : float</span>
+<span class="sd">        Y-coordinate of the upper edge of the domain.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        1D compressed mask array containing only active cells.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Uses global spatial reference attributes from maskmapAttr</span>
+<span class="sd">    - Creates mapping between 2D grid positions and 1D compressed indices</span>
+<span class="sd">    - Essential for CWatM&#39;s efficient spatial data handling</span>
+<span class="sd">    - All subsequent spatial operations use this compressed format</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    load a static map either value or pc raster map or netcdf</span>
 
@@ -570,17 +627,96 @@
     <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mapC&#39;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">mapC</span></div>
 
+<div class="viewcode-block" id="addtoversiondate"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.addtoversiondate">[docs]</a><span class="k">def</span> <span class="nf">addtoversiondate</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">history</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate version and timestamp information for output files.</span>
+<span class="sd">    </span>
+<span class="sd">    Creates standardized version metadata that includes git information,</span>
+<span class="sd">    build timestamp, and model version. This information is embedded in</span>
+<span class="sd">    output NetCDF files to ensure full traceability and reproducibility</span>
+<span class="sd">    of model results.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Name of the file being created (used in history string).</span>
+<span class="sd">    history : str, optional</span>
+<span class="sd">        Additional history information to include. Default is empty string.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Formatted history string containing version, timestamp, and git info.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The version string includes:</span>
+<span class="sd">    - CWatM version number</span>
+<span class="sd">    - Git commit hash and branch information</span>
+<span class="sd">    - Whether the build has uncommitted changes (&quot;dirty&quot; vs &quot;verified&quot;)</span>
+<span class="sd">    - Build timestamp</span>
+<span class="sd">    - User-provided history information</span>
+<span class="sd">    </span>
+<span class="sd">    This ensures complete provenance tracking for all model outputs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">history</span> <span class="o">!=</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\w</span><span class="si">{3}</span><span class="s1"> \w</span><span class="si">{3}</span><span class="s1"> \d{1,2} \d</span><span class="si">{2}</span><span class="s1">:\d</span><span class="si">{2}</span><span class="s1">:\d</span><span class="si">{2}</span><span class="s1"> \d</span><span class="si">{4}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">history</span><span class="p">)</span>
+            <span class="n">date1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">timestamp</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="s1">&#39;</span><span class="si">%a</span><span class="s1"> %b </span><span class="si">%d</span><span class="s1"> %H:%M:%S %Y&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">date1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getctime</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">date1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getctime</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+    <span class="n">add</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">+</span> <span class="n">date1</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%m/%Y %H:%M&#39;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;;&#39;</span>
+    <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">add</span>
+    <span class="n">ii</span> <span class="o">=</span><span class="mi">1</span></div>
+
 
 <div class="viewcode-block" id="loadmap"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.loadmap">[docs]</a><span class="k">def</span> <span class="nf">loadmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">lddflag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">compress</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">local</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">cut</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    load a static map either value or pc raster map or netcdf</span>
-
-<span class="sd">    :param name: name of map</span>
-<span class="sd">    :param lddflag: if True the map is used as a ldd map</span>
-<span class="sd">    :param compress: if True the return map will be compressed</span>
-<span class="sd">    :param local: if True the map is local and will be not cut</span>
-<span class="sd">    :param cut: if True the map will be not cut</span>
-<span class="sd">    :return:  1D numpy array of map</span>
+<span class="sd">    Load spatial data from various file formats into CWatM arrays.</span>
+<span class="sd">    </span>
+<span class="sd">    Universal data loading function that handles NetCDF, GeoTIFF, and other</span>
+<span class="sd">    raster formats. Performs coordinate checking, data validation, format</span>
+<span class="sd">    conversion, and optional compression. This is the primary interface for</span>
+<span class="sd">    loading static spatial data (parameters, initial conditions) in CWatM.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Configuration binding key or file path for the data to load.</span>
+<span class="sd">    lddflag : bool, optional</span>
+<span class="sd">        If True, treat as Local Drain Direction data with special handling.</span>
+<span class="sd">        Default is False.</span>
+<span class="sd">    compress : bool, optional</span>
+<span class="sd">        If True, return data in compressed 1D format. If False, return 2D array.</span>
+<span class="sd">        Default is True.</span>
+<span class="sd">    local : bool, optional</span>
+<span class="sd">        If True, load data relative to local directory. Default is False.</span>
+<span class="sd">    cut : bool, optional</span>
+<span class="sd">        If True, clip data to model domain. Default is True.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Loaded spatial data, either as 2D array or compressed 1D format.</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    CWATMFileError</span>
+<span class="sd">        If file cannot be found or read.</span>
+<span class="sd">    CWATMError</span>
+<span class="sd">        If spatial dimensions don&#39;t match the model domain.</span>
+<span class="sd">        If coordinate systems are incompatible.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Automatically detects file format (NetCDF vs GeoTIFF)</span>
+<span class="sd">    - Performs spatial consistency checks against clone map</span>
+<span class="sd">    - Handles coordinate system transformations</span>
+<span class="sd">    - Supports both static parameters and time-varying data</span>
+<span class="sd">    - LDD flag enables special processing for flow direction data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">value</span> <span class="o">=</span> <span class="n">cbinding</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -592,7 +728,7 @@
         <span class="n">flagmap</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">load</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-            <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapC</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="n">load</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -644,6 +780,11 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][:]</span>
 
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">history</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">getncattr</span><span class="p">(</span><span class="s1">&#39;history&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">history</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">addtoversiondate</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">history</span><span class="p">)</span>
             <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
         <span class="k">except</span><span class="p">:</span>
@@ -658,6 +799,7 @@
                     <span class="k">if</span> <span class="n">cut</span><span class="p">:</span>
                         <span class="n">cut0</span><span class="p">,</span> <span class="n">cut1</span><span class="p">,</span> <span class="n">cut2</span><span class="p">,</span> <span class="n">cut3</span> <span class="o">=</span> <span class="n">mapattrTiff</span><span class="p">(</span><span class="n">nf2</span><span class="p">)</span>
                         <span class="n">mapnp</span> <span class="o">=</span> <span class="n">mapnp</span><span class="p">[</span><span class="n">cut2</span><span class="p">:</span><span class="n">cut3</span><span class="p">,</span> <span class="n">cut0</span><span class="p">:</span><span class="n">cut1</span><span class="p">]</span>
+                <span class="n">addtoversiondate</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 203: File does not exists&quot;</span>
                 <span class="k">raise</span> <span class="n">CWATMFileError</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">msg</span><span class="p">,</span><span class="n">sname</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
@@ -671,11 +813,11 @@
         <span class="k">if</span> <span class="n">compress</span><span class="p">:</span>
             <span class="n">mapC</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-                <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
+                <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mapC</span> <span class="o">=</span> <span class="n">mapnp</span>
-            <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-                <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span><span class="p">(</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;Ldd&quot;</span><span class="p">):</span>
+                <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
 
 
     <span class="k">return</span> <span class="n">mapC</span></div>
@@ -687,12 +829,34 @@
 
 <div class="viewcode-block" id="compressArray"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.compressArray">[docs]</a><span class="k">def</span> <span class="nf">compressArray</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="n">zeros</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compress 2D array with missing values to 1D array without missing values</span>
-
-<span class="sd">    :param map: in map</span>
-<span class="sd">    :param name: filename of the map</span>
-<span class="sd">    :param zeros: add zeros (default= 0) if values of map are to big or too small</span>
-<span class="sd">    :return: Compressed 1D array</span>
+<span class="sd">    Compress 2D array to 1D format by removing inactive cells.</span>
+<span class="sd">    </span>
+<span class="sd">    Core data compression function that converts full 2D spatial arrays</span>
+<span class="sd">    to the efficient 1D compressed format used throughout CWatM. This</span>
+<span class="sd">    compression removes NoData cells and cells outside the model domain,</span>
+<span class="sd">    significantly reducing memory usage and computational overhead.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    map : numpy.ndarray</span>
+<span class="sd">        2D spatial array to be compressed.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Variable name for error reporting. Default is &quot;None&quot;.</span>
+<span class="sd">    zeros : float, optional</span>
+<span class="sd">        Value to use for replacing zero values. Default is 0.0.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        1D compressed array containing only active model cells.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Uses global maskinfo for determining active cells</span>
+<span class="sd">    - Preserves spatial relationships through index mapping</span>
+<span class="sd">    - Essential for CWatM&#39;s memory-efficient spatial operations</span>
+<span class="sd">    - All hydrological calculations use this compressed format</span>
+<span class="sd">    - Zero replacement helps avoid numerical issues in computations</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="nb">map</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">maskinfo</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
@@ -716,10 +880,29 @@
 
 <div class="viewcode-block" id="decompress"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.decompress">[docs]</a><span class="k">def</span> <span class="nf">decompress</span><span class="p">(</span><span class="nb">map</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Decompress 1D array without missing values to 2D array with missing values</span>
-
-<span class="sd">    :param map: numpy 1D array as input</span>
-<span class="sd">    :return: 2D array for displaying</span>
+<span class="sd">    Expand compressed 1D array back to full 2D spatial format.</span>
+<span class="sd">    </span>
+<span class="sd">    Inverse operation of compressArray, converting CWatM&#39;s internal 1D</span>
+<span class="sd">    compressed format back to full 2D spatial arrays for output, visualization,</span>
+<span class="sd">    or interface with external tools. Inactive cells are filled with NoData values.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    map : numpy.ndarray</span>
+<span class="sd">        1D compressed array from CWatM internal processing.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        2D spatial array with full model domain dimensions.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Uses global maskinfo and maskmapAttr for spatial reconstruction</span>
+<span class="sd">    - Inactive cells filled with -9999 (NoData value)</span>
+<span class="sd">    - Preserves spatial relationships and coordinate system</span>
+<span class="sd">    - Required for creating output files and maps</span>
+<span class="sd">    - Inverse operation of compressArray function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># dmap=np.ma.masked_all(maskinfo[&#39;shapeflat&#39;], dtype=map.dtype)</span>
@@ -748,14 +931,34 @@
 <span class="c1"># NETCDF</span>
 <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="getmeta"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.getmeta">[docs]</a><span class="k">def</span> <span class="nf">getmeta</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">varname</span><span class="p">,</span><span class="n">alternative</span><span class="p">):</span>
+<div class="viewcode-block" id="getmeta"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.getmeta">[docs]</a><span class="k">def</span> <span class="nf">getmeta</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">varname</span><span class="p">,</span> <span class="n">alternative</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    get the meta data information for the netcdf output from the global</span>
-<span class="sd">    variable metaNetcdfVar</span>
-
-<span class="sd">    :param key: key</span>
-<span class="sd">    :param varname: variable name e.g. self.var.Precipitation</span>
-<span class="sd">    :return: metadata information</span>
+<span class="sd">    Retrieve metadata attributes for NetCDF variable creation.</span>
+<span class="sd">    </span>
+<span class="sd">    Looks up variable metadata from the global metaNetcdfVar dictionary</span>
+<span class="sd">    to ensure proper CF-compliant attributes in output NetCDF files.</span>
+<span class="sd">    Provides fallback values when specific metadata is not available.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : str</span>
+<span class="sd">        Metadata attribute key (e.g., &#39;unit&#39;, &#39;long_name&#39;, &#39;standard_name&#39;).</span>
+<span class="sd">    varname : str</span>
+<span class="sd">        Variable name to look up in metadata dictionary.</span>
+<span class="sd">    alternative : str</span>
+<span class="sd">        Default value to use if metadata not found for the variable.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Metadata value for the specified key and variable.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Searches global metaNetcdfVar dictionary populated from XML metadata</span>
+<span class="sd">    - Ensures consistent metadata across all model outputs</span>
+<span class="sd">    - Supports CF convention compliance for scientific data exchange</span>
+<span class="sd">    - Falls back to sensible defaults when specific metadata unavailable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">ret</span> <span class="o">=</span> <span class="n">alternative</span>
@@ -766,6 +969,32 @@
 
 
 <div class="viewcode-block" id="metaNetCDF"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.metaNetCDF">[docs]</a><span class="k">def</span> <span class="nf">metaNetCDF</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate standard NetCDF metadata attributes for CWatM outputs.</span>
+<span class="sd">    </span>
+<span class="sd">    Creates a dictionary of global attributes that provide essential</span>
+<span class="sd">    information about the model run, including version, contact information,</span>
+<span class="sd">    and data description. These attributes ensure proper documentation</span>
+<span class="sd">    and traceability of CWatM output files.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Dictionary of NetCDF global attributes including title, institution,</span>
+<span class="sd">        source, history, and contact information.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Standard attributes include:</span>
+<span class="sd">    - title: Descriptive name for the dataset</span>
+<span class="sd">    - institution: Organization responsible for the data</span>
+<span class="sd">    - source: Model version and configuration information  </span>
+<span class="sd">    - history: Processing history and timestamps</span>
+<span class="sd">    - contact: Maintainer contact information</span>
+<span class="sd">    </span>
+<span class="sd">    These attributes follow CF conventions and support data discovery</span>
+<span class="sd">    and provenance tracking in scientific workflows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    get the map metadata from precipitation netcdf maps</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -784,11 +1013,28 @@
 
 <div class="viewcode-block" id="readCoord"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readCoord">[docs]</a><span class="k">def</span> <span class="nf">readCoord</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    get the meta data information for the netcdf output from the global</span>
-<span class="sd">    variable metaNetcdfVar</span>
-
-<span class="sd">    :param name: name of the netcdf file</span>
-<span class="sd">    :return: latitude, longitude, cell size, inverse cell size</span>
+<span class="sd">    Read coordinate information from various raster file formats.</span>
+<span class="sd">    </span>
+<span class="sd">    Extracts spatial reference information including extent, resolution,</span>
+<span class="sd">    and coordinate system from raster files. Supports multiple formats</span>
+<span class="sd">    and provides unified coordinate information for spatial data alignment.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Path to the raster file or configuration binding key.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Coordinate information (extent, resolution, projection details).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Supports GeoTIFF, NetCDF, and other GDAL-supported formats</span>
+<span class="sd">    - Extracts geotransform and projection information</span>
+<span class="sd">    - Used for spatial consistency checking and data alignment</span>
+<span class="sd">    - Provides foundation for coordinate transformations</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">namenc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.nc&#39;</span>
@@ -822,13 +1068,32 @@
 
 <div class="viewcode-block" id="readCoordNetCDF"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readCoordNetCDF">[docs]</a><span class="k">def</span> <span class="nf">readCoordNetCDF</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">check</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    reads the map attributes col, row etc from a netcdf map</span>
-
-<span class="sd">    :param name: name of the netcdf file</span>
-<span class="sd">    :param check:  checking if netcdffile exists</span>
-<span class="sd">    :return: latitude, longitude, cell size, inverse cell size</span>
-
-<span class="sd">    :raises if no netcdf map can be found: :meth:`management_modules.messages.CWATMFileError`</span>
+<span class="sd">    Read coordinate system information from NetCDF files.</span>
+<span class="sd">    </span>
+<span class="sd">    Specialized function for extracting spatial reference information</span>
+<span class="sd">    from NetCDF files, including dimension sizes, coordinate variables,</span>
+<span class="sd">    and geospatial metadata. Handles both CF-compliant and legacy NetCDF</span>
+<span class="sd">    spatial conventions.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Path to NetCDF file or configuration binding key.</span>
+<span class="sd">    check : bool, optional</span>
+<span class="sd">        If True, perform spatial consistency checks. Default is True.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Spatial reference information including dimensions, coordinates,</span>
+<span class="sd">        and transformation parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Handles various NetCDF coordinate conventions</span>
+<span class="sd">    - Supports both regular and irregular grids</span>
+<span class="sd">    - Performs coordinate system validation when check=True</span>
+<span class="sd">    - Essential for proper NetCDF data integration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">check</span><span class="p">:</span>
@@ -878,20 +1143,61 @@
     <span class="k">return</span> <span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span><span class="n">invcell</span><span class="p">,</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span></div>
 
 <div class="viewcode-block" id="readCalendar"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readCalendar">[docs]</a><span class="k">def</span> <span class="nf">readCalendar</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract calendar information from NetCDF time dimensions.</span>
+<span class="sd">    </span>
+<span class="sd">    Reads time coordinate metadata to determine the calendar system</span>
+<span class="sd">    used in NetCDF files. This is essential for proper temporal</span>
+<span class="sd">    alignment and date calculations in CWatM.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Path to NetCDF file or configuration binding key.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Calendar type (&#39;standard&#39;, &#39;gregorian&#39;, &#39;365_day&#39;, etc.).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Supports CF-compliant calendar conventions</span>
+<span class="sd">    - Defaults to &#39;standard&#39; calendar if not specified</span>
+<span class="sd">    - Critical for accurate temporal data processing</span>
+<span class="sd">    - Used by date conversion and time indexing functions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">nf1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
     <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;calendar&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">calendar</span>
     <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="checkMeteo_Wordclim"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.checkMeteo_Wordclim">[docs]</a><span class="k">def</span> <span class="nf">checkMeteo_Wordclim</span><span class="p">(</span><span class="n">meteodata</span><span class="p">,</span> <span class="n">wordclimdata</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    reads the map attributes of meteo dataset and wordclima dataset</span>
-<span class="sd">    and compare if it has the same map extend</span>
-
-<span class="sd">    :param nmeteodata: name of the meteo netcdf file</span>
-<span class="sd">    :param wordlclimdata:  cname of the wordlclim netcdf file</span>
-<span class="sd">    :return: True if meteo and wordclim has the same mapextend</span>
-
-<span class="sd">    :raises if map extend is different :meth:`management_modules.messages.CWATMFileError`</span>
+<span class="sd">    Validate consistency between meteorological and WorldClim climatology data.</span>
+<span class="sd">    </span>
+<span class="sd">    Performs quality control checks to ensure that meteorological forcing</span>
+<span class="sd">    data is reasonable compared to long-term climatological averages from</span>
+<span class="sd">    WorldClim. This helps detect data quality issues and potential errors</span>
+<span class="sd">    in meteorological inputs.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    meteodata : numpy.ndarray</span>
+<span class="sd">        Current meteorological data values.</span>
+<span class="sd">    wordclimdata : numpy.ndarray</span>
+<span class="sd">        WorldClim climatological reference values.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool or numpy.ndarray</span>
+<span class="sd">        Validation results indicating data quality status.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Compares current values against climatological norms</span>
+<span class="sd">    - Helps identify unrealistic meteorological data</span>
+<span class="sd">    - Supports quality assurance in operational modeling</span>
+<span class="sd">    - Can flag potential data processing errors</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -959,14 +1265,33 @@
 
 <div class="viewcode-block" id="mapattrNetCDF"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.mapattrNetCDF">[docs]</a><span class="k">def</span> <span class="nf">mapattrNetCDF</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    get the 4 corners of a netcdf map to cut the map</span>
-<span class="sd">    defines the rectangular of the mask map inside the netcdf map</span>
-<span class="sd">    calls function :meth:`management_modules.data_handling.readCoord`</span>
-
-<span class="sd">    :param name: name of the netcdf file</span>
-<span class="sd">    :param check:  checking if netcdffile exists</span>
-<span class="sd">    :return: cut1,cut2,cut3,cut4</span>
-<span class="sd">    :raises if cell size is different: :meth:`management_modules.messages.CWATMError`</span>
+<span class="sd">    Extract complete spatial attributes from NetCDF files.</span>
+<span class="sd">    </span>
+<span class="sd">    Comprehensive function for reading all spatial metadata from NetCDF</span>
+<span class="sd">    files including dimensions, coordinates, projection, and extent.</span>
+<span class="sd">    Provides complete spatial reference information needed for data</span>
+<span class="sd">    alignment and processing.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Path to NetCDF file or configuration binding key.</span>
+<span class="sd">    check : bool, optional</span>
+<span class="sd">        If True, validate spatial consistency with model domain.</span>
+<span class="sd">        Default is True.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Complete spatial attribute dictionary with coordinate information,</span>
+<span class="sd">        dimensions, and transformation parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Handles both meteorological and static NetCDF files</span>
+<span class="sd">    - Extracts coordinate reference system information</span>
+<span class="sd">    - Validates spatial consistency when check=True</span>
+<span class="sd">    - Used for proper data alignment and processing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">invcell</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">readCoord</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -990,13 +1315,30 @@
 
 <div class="viewcode-block" id="mapattrNetCDFMeteo"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.mapattrNetCDFMeteo">[docs]</a><span class="k">def</span> <span class="nf">mapattrNetCDFMeteo</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    get the map attributes like col, row etc from a netcdf map</span>
-<span class="sd">    and define the rectangular of the mask map inside the netcdf map</span>
-<span class="sd">    calls function :meth:`management_modules.data_handling.readCoordNetCDF`</span>
-
-<span class="sd">    :param name: name of the netcdf file</span>
-<span class="sd">    :param check:  checking if netcdffile exists</span>
-<span class="sd">    :return: cut0,cut1,cut2,cut3,cut4,cut5,cut6,cut7</span>
+<span class="sd">    Extract spatial attributes specifically for meteorological NetCDF files.</span>
+<span class="sd">    </span>
+<span class="sd">    Specialized version of mapattrNetCDF optimized for meteorological data</span>
+<span class="sd">    files, which often have specific conventions and temporal dimensions.</span>
+<span class="sd">    Handles time-series data with proper temporal coordinate processing.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Path to meteorological NetCDF file or configuration binding key.</span>
+<span class="sd">    check : bool, optional</span>
+<span class="sd">        If True, validate spatial and temporal consistency. Default is True.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Spatial and temporal attribute dictionary for meteorological data.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Optimized for time-series meteorological data</span>
+<span class="sd">    - Handles temporal dimension metadata</span>
+<span class="sd">    - Supports various meteorological data conventions</span>
+<span class="sd">    - Essential for proper forcing data integration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">invcell</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">readCoordNetCDF</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">check</span><span class="p">)</span>
@@ -1051,10 +1393,29 @@
 
 <div class="viewcode-block" id="mapattrTiff"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.mapattrTiff">[docs]</a><span class="k">def</span> <span class="nf">mapattrTiff</span><span class="p">(</span><span class="n">nf2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    map attributes of a geotiff file</span>
-
-<span class="sd">    :param nf2:</span>
-<span class="sd">    :return: cut0,cut1,cut2,cut3</span>
+<span class="sd">    Extract spatial attributes from GeoTIFF files using GDAL.</span>
+<span class="sd">    </span>
+<span class="sd">    Reads complete spatial reference information from GeoTIFF files</span>
+<span class="sd">    including geotransform, projection, dimensions, and extent.</span>
+<span class="sd">    Provides unified spatial metadata extraction for raster data.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nf2 : gdal.Dataset</span>
+<span class="sd">        Opened GDAL dataset object for the GeoTIFF file.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Spatial attribute dictionary containing coordinate reference</span>
+<span class="sd">        information, dimensions, and transformation parameters.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Extracts geotransform coefficients</span>
+<span class="sd">    - Reads projection and coordinate system information</span>
+<span class="sd">    - Handles various GeoTIFF conventions and formats</span>
+<span class="sd">    - Provides foundation for raster data integration</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">geotransform</span> <span class="o">=</span> <span class="n">nf2</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
@@ -1097,13 +1458,34 @@
 
 <div class="viewcode-block" id="multinetdf"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.multinetdf">[docs]</a><span class="k">def</span> <span class="nf">multinetdf</span><span class="p">(</span><span class="n">meteomaps</span><span class="p">,</span> <span class="n">usebuffer</span><span class="p">,</span><span class="n">startcheck</span> <span class="o">=</span> <span class="s1">&#39;dateBegin&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    :param meteomaps: list of meteomaps to define start and end time</span>
-<span class="sd">    .param usebuffer: for certain map downscaling an additional cell around the maps is needed</span>
-<span class="sd">    :param startcheck: date of beginning simulation</span>
-<span class="sd">    :return</span>
-
-<span class="sd">    :raises if no map stack in meteo map folder: :meth:`management_modules.messages.CWATMFileError`</span>
+<span class="sd">    Set up multiple NetCDF meteorological files for efficient reading.</span>
+<span class="sd">    </span>
+<span class="sd">    Initializes data structures and index mappings for reading from</span>
+<span class="sd">    multiple meteorological NetCDF files. Optimizes data access patterns</span>
+<span class="sd">    and supports buffering strategies for improved I/O performance during</span>
+<span class="sd">    long model runs.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    meteomaps : list</span>
+<span class="sd">        List of meteorological variable names to process.</span>
+<span class="sd">    usebuffer : bool</span>
+<span class="sd">        If True, enable data buffering for improved performance.</span>
+<span class="sd">    startcheck : str, optional</span>
+<span class="sd">        Date key to use for temporal validation. Default is &#39;dateBegin&#39;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Sets up global data structures for efficient meteorological</span>
+<span class="sd">        data access.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Optimizes I/O patterns for multiple meteorological files</span>
+<span class="sd">    - Sets up buffering strategies based on available memory</span>
+<span class="sd">    - Handles temporal indexing across file boundaries</span>
+<span class="sd">    - Critical for efficient forcing data processing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">end</span> <span class="o">=</span> <span class="n">dateVar</span><span class="p">[</span><span class="s1">&#39;dateEnd&#39;</span><span class="p">]</span>
@@ -1136,6 +1518,12 @@
                 <span class="n">datediv</span> <span class="o">=</span> <span class="n">unitconv2</span><span class="p">[</span><span class="n">unitconv1</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">unitconv3</span><span class="p">)]</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">datediv</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">history</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">getncattr</span><span class="p">(</span><span class="s1">&#39;history&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">history</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">addtoversiondate</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">history</span><span class="p">)</span>
 
             <span class="n">datestart</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">nctime</span><span class="p">[:][</span><span class="mi">0</span><span class="p">],</span><span class="mi">0</span><span class="p">)),</span> <span class="n">units</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">calendar</span><span class="o">=</span><span class="n">nctime</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
 
@@ -1262,7 +1650,6 @@
 
             <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="c1"># --- End Netcdf -------------</span>
-
         <span class="n">meteofiles</span><span class="p">[</span><span class="n">maps</span><span class="p">]</span> <span class="o">=</span>  <span class="n">meteolist</span>
         <span class="n">flagmeteo</span><span class="p">[</span><span class="n">maps</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -1270,28 +1657,55 @@
 
 
 
-<div class="viewcode-block" id="readmeteodata"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readmeteodata">[docs]</a><span class="k">def</span> <span class="nf">readmeteodata</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">addZeros</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">zeros</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span><span class="n">mapsscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extendback</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="readmeteodata"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readmeteodata">[docs]</a><span class="k">def</span> <span class="nf">readmeteodata</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">addZeros</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">zeros</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">mapsscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                  <span class="n">buffering</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">extendback</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    load stack of maps 1 at each timestamp in netcdf format</span>
-
-<span class="sd">    :param name: file name</span>
-<span class="sd">    :param date:</span>
-<span class="sd">    :param value: if set the name of the parameter is defined</span>
-<span class="sd">    :param addZeros:</span>
-<span class="sd">    :param zeros: default value</span>
-<span class="sd">    :param mapsscale: if meteo maps have the same extend as the other spatial static m</span>
-<span class="sd">    :param buffering: if buffer should be applied before cutting the map to the mask extent</span>
-<span class="sd">    :return: Compressed 1D array of meteo data</span>
-
-<span class="sd">    :raises if data is wrong: :meth:`management_modules.messages.CWATMError`</span>
-<span class="sd">    :raises if meteo netcdf file cannot be opened: :meth:`management_modules.messages.CWATMFileError`</span>
+<span class="sd">    Read meteorological forcing data for specific time steps.</span>
+<span class="sd">    </span>
+<span class="sd">    Primary function for loading time-varying meteorological data during</span>
+<span class="sd">    model execution. Handles temporal indexing, data extraction, scaling,</span>
+<span class="sd">    and format conversion for various meteorological variables. Supports</span>
+<span class="sd">    efficient buffering and caching strategies for improved performance.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Variable name or configuration binding key for meteorological data.</span>
+<span class="sd">    date : datetime-like</span>
+<span class="sd">        Target date for data extraction.</span>
+<span class="sd">    value : str, optional</span>
+<span class="sd">        NetCDF variable name if different from binding key. Default is &#39;None&#39;.</span>
+<span class="sd">    addZeros : bool, optional</span>
+<span class="sd">        If True, replace missing values with zeros value. Default is False.</span>
+<span class="sd">    zeros : float, optional</span>
+<span class="sd">        Value to use when addZeros=True. Default is 0.0.</span>
+<span class="sd">    mapsscale : bool, optional</span>
+<span class="sd">        If True, apply scaling factors and offsets. Default is True.</span>
+<span class="sd">    buffering : bool, optional</span>
+<span class="sd">        If True, use buffered reading for performance. Default is False.</span>
+<span class="sd">    extendback : bool, optional</span>
+<span class="sd">        If True, extend data backward in time if needed. Default is False.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Meteorological data array for the specified date, in compressed</span>
+<span class="sd">        1D format or 2D depending on configuration.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Handles various temporal conventions and calendars</span>
+<span class="sd">    - Supports data scaling and unit conversions</span>
+<span class="sd">    - Implements efficient caching and buffering</span>
+<span class="sd">    - Critical for model forcing data integration</span>
+<span class="sd">    - Manages memory usage during long simulations</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">meteoInfo</span> <span class="o">=</span> <span class="n">meteofiles</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">flagmeteo</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">inputcounter</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
         <span class="n">filename</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">meteoInfo</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
+      
     <span class="k">except</span><span class="p">:</span>
         <span class="n">date1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 210: Netcdf map error for: &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; -&gt; &quot;</span> <span class="o">+</span> <span class="n">cbinding</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; on: &quot;</span> <span class="o">+</span> <span class="n">date1</span> <span class="o">+</span> <span class="s2">&quot;: </span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -1364,11 +1778,11 @@
 
         <span class="n">mapC</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span><span class="n">zeros</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-            <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
+            <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span> <span class="c1"># if static map extend not equal meteo maps -&gt; downscaling in readmeteo</span>
         <span class="n">mapC</span> <span class="o">=</span> <span class="n">mapnp</span>
         <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-            <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">checkmap</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
 
     <span class="c1"># increase index and check if next file</span>
     <span class="c1">#if (dateVar[&#39;leapYear&#39;] == 1) and calendar.isleap(date.year):</span>
@@ -1386,24 +1800,51 @@
 
 
 
-<div class="viewcode-block" id="readnetcdf2"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readnetcdf2">[docs]</a><span class="k">def</span> <span class="nf">readnetcdf2</span><span class="p">(</span><span class="n">namebinding</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">useDaily</span><span class="o">=</span><span class="s1">&#39;daily&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">addZeros</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">cut</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">zeros</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span><span class="n">meteo</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">usefilename</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">compress</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="readnetcdf2"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readnetcdf2">[docs]</a><span class="k">def</span> <span class="nf">readnetcdf2</span><span class="p">(</span><span class="n">namebinding</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">useDaily</span><span class="o">=</span><span class="s1">&#39;daily&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">addZeros</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cut</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                <span class="n">zeros</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">meteo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">usefilename</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    load stack of maps 1 at each timestamp in netcdf format</span>
-
-<span class="sd">    :param namebinding: file name in settings file</span>
-<span class="sd">    :param date:</span>
-<span class="sd">    :param useDaily: if True daily values are used</span>
-<span class="sd">    :param value: if set the name of the parameter is defined</span>
-<span class="sd">    :param addZeros:</span>
-<span class="sd">    :param cut: if True the map is clipped to mask map</span>
-<span class="sd">    :param zeros: default value</span>
-<span class="sd">    :param meteo: if map are meteo maps</span>
-<span class="sd">    :param usefilename: if True filename is given False: filename is in settings file</span>
-<span class="sd">    :param compress: True - compress data to 1D</span>
-<span class="sd">    :return: Compressed 1D array of netcdf stored data</span>
-
-<span class="sd">    :raises if netcdf file cannot be opened: :meth:`management_modules.messages.CWATMFileError`</span>
-<span class="sd">    :raises if netcdf file is not of the size of mask map: :meth:`management_modules.messages.CWATMWarning`</span>
+<span class="sd">    Generic NetCDF data reader with flexible temporal and spatial options.</span>
+<span class="sd">    </span>
+<span class="sd">    Versatile function for reading NetCDF data with various temporal</span>
+<span class="sd">    aggregation options, spatial clipping, and format conversions.</span>
+<span class="sd">    Supports both meteorological and static data with comprehensive</span>
+<span class="sd">    error handling and data validation.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    namebinding : str</span>
+<span class="sd">        Configuration binding key or file path.</span>
+<span class="sd">    date : datetime-like</span>
+<span class="sd">        Target date for temporal data extraction.</span>
+<span class="sd">    useDaily : str, optional</span>
+<span class="sd">        Temporal aggregation method (&#39;daily&#39;, &#39;monthly&#39;, etc.).</span>
+<span class="sd">        Default is &#39;daily&#39;.</span>
+<span class="sd">    value : str, optional</span>
+<span class="sd">        NetCDF variable name. Default is &#39;None&#39;.</span>
+<span class="sd">    addZeros : bool, optional</span>
+<span class="sd">        Replace missing values with zeros value. Default is False.</span>
+<span class="sd">    cut : bool, optional</span>
+<span class="sd">        Clip data to model domain. Default is True.</span>
+<span class="sd">    zeros : float, optional</span>
+<span class="sd">        Replacement value for missing data. Default is 0.0.</span>
+<span class="sd">    meteo : bool, optional</span>
+<span class="sd">        True if reading meteorological data. Default is False.</span>
+<span class="sd">    usefilename : bool, optional</span>
+<span class="sd">        Use filename as variable name. Default is False.</span>
+<span class="sd">    compress : bool, optional</span>
+<span class="sd">        Return compressed 1D format. Default is True.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Extracted data in requested format (1D compressed or 2D).</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Supports multiple temporal aggregation methods</span>
+<span class="sd">    - Handles various NetCDF conventions and structures</span>
+<span class="sd">    - Provides comprehensive error handling and validation</span>
+<span class="sd">    - Used throughout CWatM for diverse data loading needs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># in case a filename is used e.g. because of direct loading of pre results</span>
@@ -1459,6 +1900,15 @@
 
             <span class="k">if</span> <span class="n">meteo</span><span class="p">:</span> <span class="n">inputcounter</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span>
 
+    <span class="c1"># if first day store the name and the date</span>
+    <span class="k">if</span> <span class="n">dateVar</span><span class="p">[</span><span class="s2">&quot;curr&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">getncattr</span><span class="p">(</span><span class="s1">&#39;history&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">addtoversiondate</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">history</span><span class="p">)</span>
+
+
     <span class="c1">#checkif latitude is reversed</span>
     <span class="n">turn_latitude</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1503,17 +1953,38 @@
 
     <span class="n">mapC</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-        <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
+        <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">mapC</span></div>
 
 
-<div class="viewcode-block" id="readnetcdfWithoutTime"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readnetcdfWithoutTime">[docs]</a><span class="k">def</span> <span class="nf">readnetcdfWithoutTime</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="readnetcdfWithoutTime"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readnetcdfWithoutTime">[docs]</a><span class="k">def</span> <span class="nf">readnetcdfWithoutTime</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    load maps in netcdf format (has no time format)</span>
-
-<span class="sd">    :param namebinding: file name in settings file</span>
-<span class="sd">    :param value: (optional) netcdf variable name. If not given -&gt; last variable is taken</span>
-<span class="sd">    :return: Compressed 1D array of netcdf stored data</span>
+<span class="sd">    Read static (time-independent) data from NetCDF files.</span>
+<span class="sd">    </span>
+<span class="sd">    Specialized function for loading static spatial data that does not</span>
+<span class="sd">    have a temporal dimension. Used for parameters, initial conditions,</span>
+<span class="sd">    and other time-invariant model inputs.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Configuration binding key or file path.</span>
+<span class="sd">    value : str, optional</span>
+<span class="sd">        NetCDF variable name. Default is &quot;None&quot;.</span>
+<span class="sd">    counter : int, optional</span>
+<span class="sd">        Array index for multi-layer data. Default is 0.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Static spatial data in compressed format.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Optimized for static data without temporal dimensions</span>
+<span class="sd">    - Handles multi-layer datasets with counter parameter</span>
+<span class="sd">    - Performs spatial consistency checking</span>
+<span class="sd">    - Used for loading parameters and initial conditions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">filename</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -1533,21 +2004,50 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">cutmap</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="c1"># store date</span>
+    <span class="k">if</span> <span class="n">counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">getncattr</span><span class="p">(</span><span class="s1">&#39;history&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">addtoversiondate</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">history</span><span class="p">)</span>
+
     <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="n">mapC</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-        <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
+        <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">mapC</span></div>
 
 <div class="viewcode-block" id="readnetcdf12month"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readnetcdf12month">[docs]</a><span class="k">def</span> <span class="nf">readnetcdf12month</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    load maps in netcdf format (12 maps for each month)</span>
-
-<span class="sd">    :param namebinding: file name in settings file</span>
-<span class="sd">    :month number: of month from 0 to 11</span>
-<span class="sd">    :param value: (optional) netcdf variable name. If not given -&gt; last variable is taken</span>
-<span class="sd">    :return: Compressed 1D array of netcdf stored data</span>
+<span class="sd">    Read monthly climatological data from 12-month NetCDF files.</span>
+<span class="sd">    </span>
+<span class="sd">    Specialized reader for climatological data organized as 12-month</span>
+<span class="sd">    time series. Commonly used for seasonal parameters, climatologies,</span>
+<span class="sd">    and cyclic forcing data that varies by month but not by year.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Configuration binding key or file path.</span>
+<span class="sd">    month : int</span>
+<span class="sd">        Month number (1-12) for data extraction.</span>
+<span class="sd">    value : str, optional</span>
+<span class="sd">        NetCDF variable name. Default is &quot;None&quot;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Monthly climatological data in compressed format.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Handles seasonal and climatological data</span>
+<span class="sd">    - Assumes 12-month temporal dimension</span>
+<span class="sd">    - Used for cyclic parameters and seasonal forcing</span>
+<span class="sd">    - Supports monthly varying model parameters</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">filename</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -1565,21 +2065,38 @@
 
     <span class="n">mapC</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-        <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
+        <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">mapC</span></div>
 
 
 <div class="viewcode-block" id="readnetcdfInitial"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.readnetcdfInitial">[docs]</a><span class="k">def</span> <span class="nf">readnetcdfInitial</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span><span class="n">default</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    load initial condition from netcdf format</span>
-
-<span class="sd">    :param name: file name</span>
-<span class="sd">    :param value: netcdf variable name</span>
-<span class="sd">    :param default: (optional) if no variable is found a warning is given and value is set to default</span>
-<span class="sd">    :return: Compressed 1D array of netcdf stored data</span>
-
-<span class="sd">    :raises if netcdf file is not of the size of mask map: :meth:`management_modules.messages.CWATMError`</span>
-<span class="sd">    :raises if varibale name is not included in the netcdf file: :meth:`management_modules.messages.CWATMWarning`</span>
+<span class="sd">    Read initial condition data with fallback defaults.</span>
+<span class="sd">    </span>
+<span class="sd">    Specialized function for loading initial conditions and state variables</span>
+<span class="sd">    at model startup. Provides fallback to default values when initial</span>
+<span class="sd">    condition files are not available, enabling model cold starts.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Configuration binding key for initial condition file.</span>
+<span class="sd">    value : str</span>
+<span class="sd">        Variable name within the NetCDF file.</span>
+<span class="sd">    default : float, optional</span>
+<span class="sd">        Default value to use if file not found. Default is 0.0.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Initial condition data or default values in compressed format.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Essential for model initialization and warm starts</span>
+<span class="sd">    - Provides graceful handling of missing initial condition files</span>
+<span class="sd">    - Supports both warm starts (from files) and cold starts (defaults)</span>
+<span class="sd">    - Used for hydrological state variables and storage initialization</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;storGroundwater&quot;</span><span class="p">:</span>
@@ -1607,11 +2124,18 @@
 
             <span class="c1">#mapnp = (nf1.variables[value][:].astype(np.float64))</span>
             <span class="n">mapnp</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">value</span><span class="p">][</span><span class="n">cut2</span><span class="p">:</span><span class="n">cut3</span><span class="p">,</span> <span class="n">cut0</span><span class="p">:</span><span class="n">cut1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+            <span class="c1"># read creating date</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">history</span> <span class="o">=</span> <span class="n">nf1</span><span class="o">.</span><span class="n">getncattr</span><span class="p">(</span><span class="s1">&#39;history&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">history</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">addtoversiondate</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">history</span><span class="p">)</span>
             
             <span class="n">nf1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">mapC</span> <span class="o">=</span> <span class="n">compressArray</span><span class="p">(</span><span class="n">mapnp</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">Flags</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">]:</span>
-                <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">mapC</span><span class="p">)</span>
+                <span class="n">checkmap</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mapnp</span><span class="p">)</span>
             <span class="n">a</span> <span class="o">=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span>
             <span class="k">if</span> <span class="n">mapC</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="nb">globals</span><span class="o">.</span><span class="n">inZero</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 113: map shape is different than mask shape</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -1632,22 +2156,55 @@
 
 <span class="c1"># --------------------------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="writenetcdf"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.writenetcdf">[docs]</a><span class="k">def</span> <span class="nf">writenetcdf</span><span class="p">(</span><span class="n">netfile</span><span class="p">,</span><span class="n">prename</span><span class="p">,</span><span class="n">addname</span><span class="p">,</span><span class="n">varunits</span><span class="p">,</span><span class="n">inputmap</span><span class="p">,</span> <span class="n">timeStamp</span><span class="p">,</span> <span class="n">posCnt</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span><span class="n">flagTime</span><span class="p">,</span> <span class="n">nrdays</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dateunit</span><span class="o">=</span><span class="s2">&quot;days&quot;</span><span class="p">,</span><span class="n">netcdfindex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="writenetcdf"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.writenetcdf">[docs]</a><span class="k">def</span> <span class="nf">writenetcdf</span><span class="p">(</span><span class="n">netfile</span><span class="p">,</span> <span class="n">prename</span><span class="p">,</span> <span class="n">addname</span><span class="p">,</span> <span class="n">varunits</span><span class="p">,</span> <span class="n">inputmap</span><span class="p">,</span> <span class="n">timeStamp</span><span class="p">,</span> <span class="n">posCnt</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">flagTime</span><span class="p">,</span> 
+                <span class="n">nrdays</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dateunit</span><span class="o">=</span><span class="s2">&quot;days&quot;</span><span class="p">,</span> <span class="n">netcdfindex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    write a netcdf stack</span>
-
-<span class="sd">    :param netfile: file name</span>
-<span class="sd">    :param prename: 1st part of variable name with tell which variable e.g. discharge</span>
-<span class="sd">    :param addname: part of the variable name with tells about the timestep e.g. daily, monthly</span>
-<span class="sd">    :param varunits: unit of the variable</span>
-<span class="sd">    :param inputmap: 1D array to be put as netcdf</span>
-<span class="sd">    :param timeStamp: time</span>
-<span class="sd">    :param posCnt: calculate nummer of the indece for time</span>
-<span class="sd">    :param flag: to indicate if the file is new -&gt; netcdf header has to be written,or simply appending data</span>
-<span class="sd">    :param flagtime: to indicate the variable is time dependend (not a single array!)</span>
-<span class="sd">    :param nrdays: (optional) if indicate number of days are set in the time variable (makes files smaller!)</span>
-<span class="sd">    :param dateunit: (optional) dateunit indicate if the timestep in netcdf is days, month or years</span>
-<span class="sd">    :return: flag: to indicate if the file is set up</span>
+<span class="sd">    Write CWatM results to NetCDF output files with proper metadata.</span>
+<span class="sd">    </span>
+<span class="sd">    Primary output function for writing model results to CF-compliant</span>
+<span class="sd">    NetCDF files. Handles spatial decompression, temporal indexing,</span>
+<span class="sd">    metadata attribution, and file management for various output types</span>
+<span class="sd">    including maps, time series, and aggregated results.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    netfile : str</span>
+<span class="sd">        Output NetCDF file path.</span>
+<span class="sd">    prename : str</span>
+<span class="sd">        Variable name prefix for organization.</span>
+<span class="sd">    addname : str</span>
+<span class="sd">        Additional name component for the variable.</span>
+<span class="sd">    varunits : str</span>
+<span class="sd">        Physical units for the variable.</span>
+<span class="sd">    inputmap : numpy.ndarray</span>
+<span class="sd">        Data array to write (1D compressed format).</span>
+<span class="sd">    timeStamp : datetime-like</span>
+<span class="sd">        Timestamp for the data.</span>
+<span class="sd">    posCnt : int</span>
+<span class="sd">        Position counter for time indexing.</span>
+<span class="sd">    flag : str</span>
+<span class="sd">        Output type flag (&#39;end&#39;, &#39;sum&#39;, &#39;avg&#39;, etc.).</span>
+<span class="sd">    flagTime : str</span>
+<span class="sd">        Temporal aggregation flag (&#39;daily&#39;, &#39;monthly&#39;, etc.).</span>
+<span class="sd">    nrdays : int, optional</span>
+<span class="sd">        Number of days for averaging calculations. Default is None.</span>
+<span class="sd">    dateunit : str, optional</span>
+<span class="sd">        Time unit specification. Default is &quot;days&quot;.</span>
+<span class="sd">    netcdfindex : bool, optional</span>
+<span class="sd">        Use NetCDF indexing format. Default is False.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Writes data to NetCDF file with proper formatting and metadata.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Creates CF-compliant NetCDF files with full metadata</span>
+<span class="sd">    - Handles spatial decompression from 1D to 2D format</span>
+<span class="sd">    - Supports various temporal aggregation methods</span>
+<span class="sd">    - Includes version tracking and provenance information</span>
+<span class="sd">    - Essential for model output and result distribution</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">cutmap</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -1681,19 +2238,38 @@
         <span class="c1"># general Attributes</span>
         <span class="n">settings</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">settingsfile</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">settingsfile</span> <span class="o">=</span> <span class="n">settings</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">xtime</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">settings</span><span class="p">))</span>
-        <span class="n">nf1</span><span class="o">.</span><span class="n">run_created</span> <span class="o">=</span> <span class="n">xtime</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">xtime</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
-        <span class="n">nf1</span><span class="o">.</span><span class="n">Source_Software</span> <span class="o">=</span> <span class="s1">&#39;CWATM Python: &#39;</span> <span class="o">+</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;exe&#39;</span><span class="p">]</span>
+        <span class="n">nf1</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="s2">&quot;Created &quot;</span><span class="o">+</span> <span class="n">xtime</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">xtime</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+        <span class="n">nf1</span><span class="o">.</span><span class="n">Source_Software</span> <span class="o">=</span> <span class="s1">&#39;CWatM Python: &#39;</span> <span class="o">+</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;exe&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; Git Branch:&quot;</span> <span class="o">+</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;git&#39;</span><span class="p">][</span><span class="s2">&quot;git_branch&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; Hash:&quot;</span> <span class="o">+</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;git&#39;</span><span class="p">][</span><span class="s2">&quot;git_hash&quot;</span><span class="p">]</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">Platform</span> <span class="o">=</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;platform&#39;</span><span class="p">]</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">Version</span> <span class="o">=</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>  <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;lastfile&#39;</span><span class="p">]</span>  <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;lastdate&#39;</span><span class="p">]</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">institution</span> <span class="o">=</span> <span class="n">cbinding</span> <span class="p">(</span><span class="s2">&quot;institution&quot;</span><span class="p">)</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">cbinding</span> <span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;CWATM output maps&#39;</span>
         <span class="n">nf1</span><span class="o">.</span><span class="n">Conventions</span> <span class="o">=</span> <span class="s1">&#39;CF-1.6&#39;</span>
+
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">git</span>
-            <span class="n">nf1</span><span class="o">.</span><span class="n">git_commit</span> <span class="o">=</span> <span class="n">git</span><span class="o">.</span><span class="n">Repo</span><span class="p">(</span><span class="n">search_parent_directories</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">hexsha</span>
+            <span class="n">nf1</span><span class="o">.</span><span class="n">git_commit</span> <span class="o">=</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;git&#39;</span><span class="p">][</span><span class="s2">&quot;git_hash&quot;</span><span class="p">]</span>
+            <span class="n">gname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">netfile</span><span class="p">)</span>
+            <span class="c1"># save the versioning of input files in discharge or ET EW maps</span>
+            <span class="c1"># save the settingsfile</span>
+            <span class="k">if</span> <span class="n">gname</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;discharge&quot;</span> <span class="ow">or</span> <span class="n">gname</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;E&quot;</span><span class="p">:</span>
+                <span class="n">nf1</span><span class="o">.</span><span class="n">version_inputfiles</span> <span class="o">=</span> <span class="n">versioning</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                    <span class="c1">#nf1.version_settingsfile = file.read().splitlines()</span>
+
+                    <span class="n">nf1</span><span class="o">.</span><span class="n">version_settingsfile</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+                <span class="c1"># save the python version</span>
+                <span class="n">python_modules</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                    <span class="k">if</span> <span class="n">module</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s1">&#39;__version__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                        <span class="n">python_modules</span> <span class="o">+=</span> <span class="s2">&quot;; &quot;</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">module</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">nf1</span><span class="o">.</span><span class="n">version_modules</span> <span class="o">=</span> <span class="n">python_modules</span>
+
+
         <span class="k">except</span><span class="p">:</span>
             <span class="n">ii</span> <span class="o">=</span><span class="mi">1</span>
+
 
         <span class="c1"># put the additional genaral meta data information from the xml file into the netcdf file</span>
         <span class="c1"># infomation from the settingsfile comes first</span>
@@ -1937,12 +2513,33 @@
 
 <div class="viewcode-block" id="writeIniNetcdf"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.writeIniNetcdf">[docs]</a><span class="k">def</span> <span class="nf">writeIniNetcdf</span><span class="p">(</span><span class="n">netfile</span><span class="p">,</span><span class="n">varlist</span><span class="p">,</span> <span class="n">inputlist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    write variables to netcdf init file</span>
-
-<span class="sd">    :param netfile: file name</span>
-<span class="sd">    :param varlist: list of variable to be written in the netcdf file</span>
-<span class="sd">    :param inputlist: stack of 1D arrays</span>
-<span class="sd">    :return: -</span>
+<span class="sd">    Write initial condition NetCDF files for model restart.</span>
+<span class="sd">    </span>
+<span class="sd">    Creates NetCDF files containing model state variables for warm start</span>
+<span class="sd">    and restart capabilities. Saves hydrological state information that</span>
+<span class="sd">    can be used to initialize subsequent model runs, enabling operational</span>
+<span class="sd">    workflows and long-term simulations.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    netfile : str</span>
+<span class="sd">        Output NetCDF file path for initial conditions.</span>
+<span class="sd">    varlist : list</span>
+<span class="sd">        List of variable names to include in the file.</span>
+<span class="sd">    inputlist : list</span>
+<span class="sd">        List of corresponding data arrays (1D compressed format).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Creates NetCDF initial condition file with state variables.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Essential for model restart and warm start capabilities</span>
+<span class="sd">    - Saves complete hydrological state information</span>
+<span class="sd">    - Enables operational modeling and long simulations</span>
+<span class="sd">    - Includes spatial decompression and proper metadata</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cutmap</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">cutmap</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -2065,18 +2662,33 @@
 
 <div class="viewcode-block" id="report"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.report">[docs]</a><span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="n">valueIn</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">compr</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    For debugging: Save the 2D array as .map or .tif</span>
-
-<span class="sd">    :param name: Filename of the map</span>
-<span class="sd">    :param valueIn: 1D or 2D array in</span>
-<span class="sd">    :param compr: (optional) array is 1D (default) or 2D</span>
-<span class="sd">    :return: -</span>
-
-<span class="sd">    ::</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">        &gt; report(c:/temp/ksat1.map, self_.var_.ksat1)</span>
-
+<span class="sd">    Generate standardized output reports for model variables.</span>
+<span class="sd">    </span>
+<span class="sd">    Universal reporting function that handles output formatting,</span>
+<span class="sd">    spatial decompression, and file writing for various CWatM outputs.</span>
+<span class="sd">    Supports multiple output formats and handles the conversion between</span>
+<span class="sd">    internal compressed format and standard output formats.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    valueIn : numpy.ndarray</span>
+<span class="sd">        Input data to report (typically 1D compressed format).</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Variable name for output identification.</span>
+<span class="sd">    compr : bool, optional</span>
+<span class="sd">        If True, input data is in compressed format. Default is True.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Generates output files according to configuration settings.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Handles various output formats (NetCDF, GeoTIFF, text)</span>
+<span class="sd">    - Manages spatial decompression and coordinate information</span>
+<span class="sd">    - Supports temporal aggregation and statistical reporting</span>
+<span class="sd">    - Central function for all model output generation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -2140,10 +2752,29 @@
 
 <div class="viewcode-block" id="returnBool"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.returnBool">[docs]</a><span class="k">def</span> <span class="nf">returnBool</span><span class="p">(</span><span class="n">inBinding</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Test if parameter is a boolean and return an error message if not, and the boolean if everything is ok</span>
-
-<span class="sd">    :param inBinding: parameter in settings file</span>
-<span class="sd">    :return: boolean of inBinding</span>
+<span class="sd">    Convert configuration strings to boolean values.</span>
+<span class="sd">    </span>
+<span class="sd">    Utility function for parsing boolean configuration options from</span>
+<span class="sd">    the settings file. Handles various string representations of</span>
+<span class="sd">    boolean values and provides consistent boolean interpretation</span>
+<span class="sd">    throughout CWatM.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inBinding : str</span>
+<span class="sd">        Configuration value string to convert to boolean.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Boolean interpretation of the input string.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Handles common boolean string representations</span>
+<span class="sd">    - Provides consistent boolean parsing across CWatM</span>
+<span class="sd">    - Used for processing configuration file options</span>
+<span class="sd">    - Supports case-insensitive boolean interpretation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">b</span> <span class="o">=</span> <span class="n">cbinding</span><span class="p">(</span><span class="n">inBinding</span><span class="p">)</span>
@@ -2155,14 +2786,39 @@
         <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Error 115: Value in: </span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">inBinding</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2"> is not True or False! </span><span class="se">\n</span><span class="s2">but: &quot;</span> <span class="o">+</span> <span class="n">b</span>
         <span class="k">raise</span> <span class="n">CWATMError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="checkOption"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.checkOption">[docs]</a><span class="k">def</span> <span class="nf">checkOption</span><span class="p">(</span><span class="n">inBinding</span><span class="p">):</span>
+<div class="viewcode-block" id="checkOption"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.checkOption">[docs]</a><span class="k">def</span> <span class="nf">checkOption</span><span class="p">(</span><span class="n">inBinding</span><span class="p">,</span><span class="n">checkfirst</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if option in settings file has a counterpart in the source code</span>
-
-<span class="sd">    :param inBinding: parameter in settings file</span>
-
-<span class="sd">    Not tested because you need to change the name eg gridSizeUserDefined = True -&gt; gridSizeUser = True</span>
+<span class="sd">    Validate and process configuration option values.</span>
+<span class="sd">    </span>
+<span class="sd">    Performs validation and type checking for configuration options,</span>
+<span class="sd">    ensuring that values are appropriate for their intended use.</span>
+<span class="sd">    Provides error handling and default value assignment for</span>
+<span class="sd">    configuration processing.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inBinding : str</span>
+<span class="sd">        Configuration binding key to check and process.</span>
+<span class="sd">    checkfirst : bool, optional</span>
+<span class="sd">        If True, perform preliminary validation checks. Default is False.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    varies</span>
+<span class="sd">        Processed and validated configuration value.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Validates configuration option values and types</span>
+<span class="sd">    - Provides error handling for invalid configurations</span>
+<span class="sd">    - Supports default value assignment</span>
+<span class="sd">    - Used throughout configuration processing pipeline</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">checkfirst</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">inBinding</span> <span class="ow">in</span> <span class="n">option</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
     <span class="n">lineclosest</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">test</span> <span class="o">=</span> <span class="n">inBinding</span> <span class="ow">in</span> <span class="n">option</span>
     <span class="k">if</span> <span class="n">test</span><span class="p">:</span>
@@ -2189,11 +2845,29 @@
 
 <div class="viewcode-block" id="cbinding"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.cbinding">[docs]</a><span class="k">def</span> <span class="nf">cbinding</span><span class="p">(</span><span class="n">inBinding</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if variable in settings file has a counterpart in the source code</span>
-
-<span class="sd">    :param inBinding: parameter in settings file</span>
-
-<span class="sd">    Not tested because you need to change the name eg PrecipiationMaps = ... -&gt; Precipitation = ...</span>
+<span class="sd">    Process configuration binding with validation and type conversion.</span>
+<span class="sd">    </span>
+<span class="sd">    Core function for processing configuration bindings, performing</span>
+<span class="sd">    type conversion, validation, and error handling. Ensures that</span>
+<span class="sd">    configuration values are properly formatted and valid for use</span>
+<span class="sd">    throughout the model.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inBinding : str</span>
+<span class="sd">        Configuration binding key to process.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    varies</span>
+<span class="sd">        Processed configuration value with appropriate type conversion.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Central function for configuration value processing</span>
+<span class="sd">    - Handles type conversion and validation</span>
+<span class="sd">    - Provides consistent error handling and reporting</span>
+<span class="sd">    - Used extensively throughout CWatM configuration pipeline</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">lineclosest</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -2226,12 +2900,33 @@
 
 <div class="viewcode-block" id="divideValues"><a class="viewcode-back" href="../../../management_modules.html#cwatm.management_modules.data_handling.divideValues">[docs]</a><span class="k">def</span> <span class="nf">divideValues</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    returns the result of a division that possibly involves a zero</span>
-
-<span class="sd">    :param x:</span>
-<span class="sd">    :param y: divisor</span>
-<span class="sd">    :param default: return value if y =0</span>
-<span class="sd">    :return: result of :math:`x/y` or default if y = 0</span>
+<span class="sd">    Perform safe division with handling of zero denominators.</span>
+<span class="sd">    </span>
+<span class="sd">    Utility function for array division operations that handles</span>
+<span class="sd">    division by zero cases gracefully. Provides default values</span>
+<span class="sd">    when division is undefined, preventing numerical errors in</span>
+<span class="sd">    hydrological calculations.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : numpy.ndarray</span>
+<span class="sd">        Numerator array.</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        Denominator array.</span>
+<span class="sd">    default : float, optional</span>
+<span class="sd">        Default value to use when denominator is zero. Default is 0.0.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Result of safe division operation.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Prevents division by zero errors in hydrological calculations</span>
+<span class="sd">    - Provides consistent handling of undefined mathematical operations</span>
+<span class="sd">    - Used throughout CWatM for ratio and rate calculations</span>
+<span class="sd">    - Maintains numerical stability in model computations</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">y1</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">y1</span><span class="p">[</span><span class="n">y1</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -2254,7 +2949,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, IIASA Water Security.
+        &#169; Copyright 2025, IIASA Water Security.
 
     </p>
   </div>
