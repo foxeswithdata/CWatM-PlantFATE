@@ -14,8 +14,11 @@ Burek, P., Satoh, Y., Kahil, T., Tang, T., Greve, P., Smilovic, M., Guillaumot, 
  
 `Link to paper in Geoscientific Model Development <https://gmd.copernicus.org/articles/13/3267/2020>`_
 
+If you use CWatM with MODFLOW please also cite:
 
-Manual of CWatM (version 1.05, October 2020)
+Guillaumot, L., Smilovic, M., Burek, P., de Bruijn, J., Greve, P., Kahil, T., and Wada, Y.: Coupling a large-scale hydrological model (CWatM v1.1) with a high-resolution groundwater flow model (MODFLOW 6) to assess the impact of irrigation at regional scale, Geosci. Model Dev., 15, 7099–7120, https://doi.org/10.5194/gmd-15-7099-2022
+
+**Manual of CWatM (version 1.05, October 2020)**
 
 Burek, P., Smilovic, M., Guillaumot, L., de Bruijn, J., Greve, P., Satoh, Y., Islaam, A., Virgen-Urcelay, A., Tang, T., Kahil, T., and Wada, Y.: Community Water Model CWatM Manual, Laxenburg, Austria, IIASA Report, 2020.
 

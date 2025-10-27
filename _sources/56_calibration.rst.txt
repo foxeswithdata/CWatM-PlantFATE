@@ -6,7 +6,7 @@ Calibration
 .. contents:: 
     :depth: 3
 
-
+.. _rst_calibration:
 
 | Calibration tool for hydrological models
 | in ../CWatM/calibration

@@ -26,6 +26,7 @@
 - Initialization - Think of the model of an old Diesel engine - i9t needs to warm up first.
 - Calibration - How to calibrate the model for better results?
 - Recover - You run the model in 2025 and now it is 2030 and you want to have the same results?
+- Tricks and Tips - some hints.
 
 
 

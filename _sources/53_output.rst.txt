@@ -25,6 +25,7 @@ Example of a metaNetcdf.xml file:
 .. literalinclude:: _static/metaNetcdf.xml
 
 
+.. _rst_output:
 
 Model Output
 ============

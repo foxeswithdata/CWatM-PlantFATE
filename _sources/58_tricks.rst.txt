@@ -8,6 +8,14 @@ Tips and Tricks
 
 Here we collect some tricks which may mentioned on other pages of the documentation, but are overseen and might be helpful.
 
+Notepad++ for settingsfile
+---------------------------
+
+Notepad++ https://notepad-plus-plus.org is a very good editor for changing the settingsfile.
+
+With **Alt-0** and **Alt-Shift-0** you can fold/unfold a settingsfile 
+
+
 Generate a basin and an upstream map
 ------------------------------------
 
@@ -28,6 +36,31 @@ of the basin and the upstream area
     | a basin.tif is generated in the output folder, which you can copy and use next time as:
     | **MaskMap = your_directory/basin.tif**
 	
+Placeholder in settingsfile
+---------------------------
+
+You can use placeholder in the settingsfile. For example to put in the filepath only once:
+
+.. note::
+   
+    | [FILE_PATHS]
+    | PathRoot = C:/cwatm/basin
+	| **and somewhere else**
+	| [TOPOP]
+    | Ldd = $(FILE_PATHS:PathRoot)/input/routing/ldd.nc
+	
+You can also define a placeholder:
+
+.. note::
+
+    | [SIM]
+    |  gcm = CanESM5
+	| You can use this here to replace the scenario placeholder
+	| PathOut = $(PathRoot)/out/$(SIM:gcm)
+	
+
+	
+
 
 
 Output

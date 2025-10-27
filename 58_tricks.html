@@ -110,7 +110,9 @@
 <li class="toctree-l1"><a class="reference internal" href="56_calibration.html">Calibration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="57_reproduce.html">Recover</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tips and Tricks</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#generate-a-basin-and-an-upstream-map">Generate a basin and an upstream map</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#notepad-for-settingsfile">Notepad++ for settingsfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generate-a-basin-and-an-upstream-map">Generate a basin and an upstream map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#placeholder-in-settingsfile">Placeholder in settingsfile</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#output">Output</a></li>
 </ul>
 </li>
@@ -208,20 +210,27 @@
 <ul class="simple">
 <li><p><a class="reference internal" href="#tips-and-tricks" id="id1">Tips and Tricks</a></p>
 <ul>
-<li><p><a class="reference internal" href="#generate-a-basin-and-an-upstream-map" id="id2">Generate a basin and an upstream map</a></p>
+<li><p><a class="reference internal" href="#notepad-for-settingsfile" id="id2">Notepad++ for settingsfile</a></p></li>
+<li><p><a class="reference internal" href="#generate-a-basin-and-an-upstream-map" id="id3">Generate a basin and an upstream map</a></p></li>
+<li><p><a class="reference internal" href="#placeholder-in-settingsfile" id="id4">Placeholder in settingsfile</a></p>
 <ul>
-<li><p><a class="reference internal" href="#output" id="id3">Output</a></p></li>
+<li><p><a class="reference internal" href="#output" id="id5">Output</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#output-as-timeseries-of-area-averages-or-sums" id="id4">Output as timeseries of area averages or sums</a></p></li>
-<li><p><a class="reference internal" href="#output-of-indexed-variables" id="id5">Output of indexed variables</a></p></li>
+<li><p><a class="reference internal" href="#output-as-timeseries-of-area-averages-or-sums" id="id6">Output as timeseries of area averages or sums</a></p></li>
+<li><p><a class="reference internal" href="#output-of-indexed-variables" id="id7">Output of indexed variables</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 <p>Here we collect some tricks which may mentioned on other pages of the documentation, but are overseen and might be helpful.</p>
+<div class="section" id="notepad-for-settingsfile">
+<h2><a class="toc-backref" href="#id2">Notepad++ for settingsfile</a><a class="headerlink" href="#notepad-for-settingsfile" title="Permalink to this headline">¶</a></h2>
+<p>Notepad++ <a class="reference external" href="https://notepad-plus-plus.org">https://notepad-plus-plus.org</a> is a very good editor for changing the settingsfile.</p>
+<p>With <strong>Alt-0</strong> and <strong>Alt-Shift-0</strong> you can fold/unfold a settingsfile</p>
+</div>
 <div class="section" id="generate-a-basin-and-an-upstream-map">
-<h2><a class="toc-backref" href="#id2">Generate a basin and an upstream map</a><a class="headerlink" href="#generate-a-basin-and-an-upstream-map" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3">Generate a basin and an upstream map</a><a class="headerlink" href="#generate-a-basin-and-an-upstream-map" title="Permalink to this headline">¶</a></h2>
 <p>The modeling area can be defined by:</p>
 <ul class="simple">
 <li><p>a mask map e.g.: $(FILE_PATHS:PathRoot)/source/rhine30min.tif</p></li>
@@ -240,12 +249,38 @@ of the basin and the upstream area</p>
 <div class="line"><strong>MaskMap = your_directory/basin.tif</strong></div>
 </div>
 </div>
+</div>
+<div class="section" id="placeholder-in-settingsfile">
+<h2><a class="toc-backref" href="#id4">Placeholder in settingsfile</a><a class="headerlink" href="#placeholder-in-settingsfile" title="Permalink to this headline">¶</a></h2>
+<p>You can use placeholder in the settingsfile. For example to put in the filepath only once:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line">[FILE_PATHS]</div>
+<div class="line">PathRoot = C:/cwatm/basin
+| <strong>and somewhere else</strong>
+| [TOPOP]</div>
+<div class="line">Ldd = $(FILE_PATHS:PathRoot)/input/routing/ldd.nc</div>
+</div>
+</div>
+<p>You can also define a placeholder:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line">[SIM]</div>
+<div class="line-block">
+<div class="line">gcm = CanESM5
+| You can use this here to replace the scenario placeholder
+| PathOut = $(PathRoot)/out/$(SIM:gcm)</div>
+</div>
+</div>
+</div>
 <div class="section" id="output">
-<h3><a class="toc-backref" href="#id3">Output</a><a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id5">Output</a><a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="output-as-timeseries-of-area-averages-or-sums">
-<h2><a class="toc-backref" href="#id4">Output as timeseries of area averages or sums</a><a class="headerlink" href="#output-as-timeseries-of-area-averages-or-sums" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6">Output as timeseries of area averages or sums</a><a class="headerlink" href="#output-as-timeseries-of-area-averages-or-sums" title="Permalink to this headline">¶</a></h2>
 <p>For some variables it is more useful to get the sum (or the average) of the upstream area than the value for the cell.</p>
 <div class="line-block">
 <div class="line">With <em>AreaSum</em> or <em>AreaAvg</em> you can produce such .csv files.</div>
@@ -260,7 +295,7 @@ OUT_TSS_AreaAvg_MonthAvg = runoff        # monthly average sum of runoff for the
 </div>
 </div>
 <div class="section" id="output-of-indexed-variables">
-<h2><a class="toc-backref" href="#id5">Output of indexed variables</a><a class="headerlink" href="#output-of-indexed-variables" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id7">Output of indexed variables</a><a class="headerlink" href="#output-of-indexed-variables" title="Permalink to this headline">¶</a></h2>
 <p>CWatM uses 6 land cover classes:</p>
 <p>0: Forest
 1: Grassland (or Others)
