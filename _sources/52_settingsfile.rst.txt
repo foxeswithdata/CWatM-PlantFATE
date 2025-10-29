@@ -159,7 +159,7 @@ StepInit indicate the date(s) when initial conditions are saved::
 Calibration
 ************
 
-Any parameter can be used for calibration, but we used those which are most effective. Please have a look at  :ref:`rst_calibration` 
+Any parameter can be used for calibration, but we used those which are most effective. See the :ref:`Calibration <rst_calibration>` for more information.
 
 Calibration value can be a number (because it is not calibrated yet).
 

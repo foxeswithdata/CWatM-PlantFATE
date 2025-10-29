@@ -73,9 +73,9 @@ Abby C. Lute and Aranildo Lima and her/his team coupled CWatM with a sophisticat
 
 Lute, A. C., Abatzoglou, J., and Link, T.: SnowClim v1.0: high-resolution snow model and data for the western United States, Geosci. Model Dev., 15, 5045–5071, https://doi.org/10.5194/gmd-15-5045-202
 
-You now can choose if you want to use SnowClimPy or the degree-day approach.
+You now can choose if you want to use pySnowClim or the degree-day approach.
 
-.. note:: 24/10/25 Works but still testing
+.. attention:: 24/10/25 Works but still testing
 
 
 
@@ -88,7 +88,7 @@ Fork our code from https://github.com/iiasa/CWatM and create your own branch.
 
 .. note::  a good documention on this has: https://pandas.pydata.org/pandas-docs/stable/development/contributing.html and https://docs.oggm.org/en/stable/contributing.html
 
-We also have a pyTest framework
+We also have a pytest framework. See the :ref:`Testing framework <rst_testing>` for more information.
 
 .. _license:
 

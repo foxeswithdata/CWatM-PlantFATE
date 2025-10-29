@@ -8,6 +8,9 @@ Tips and Tricks
 
 Here we collect some tricks which may mentioned on other pages of the documentation, but are overseen and might be helpful.
 
+Settings file
+=============
+
 Notepad++ for settingsfile
 ---------------------------
 
