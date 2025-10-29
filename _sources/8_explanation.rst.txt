@@ -1,3 +1,14 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   Walle! walle Manche Strecke,
+   Daß, zum Zwecke, Wasser fließe
+   Und mit reichem, vollem Schwalle
+   Zu dem Bade sich ergieße.
+   Johann W. von Goethe, Der Zauberlehrling
+   </pre>
+
+
 
 ##################################
 **8. EXPLANATION** - Understanding

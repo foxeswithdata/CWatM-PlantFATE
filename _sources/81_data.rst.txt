@@ -111,6 +111,9 @@ Figure 1: Digital elevation based on SRTM for 30' and 5'
 
 Figure 2: Standard deviation of elevation based on SRTM and 5'
 
+
+.. _rst_ldd:
+
 River drainage maps
 -------------------
 

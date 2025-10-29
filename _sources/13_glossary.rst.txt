@@ -200,7 +200,7 @@ I
 =
 
 **IIASA**
-   International Institute for Applied Systems Analysis - Austrian research institute that developed and maintains CWatM.
+   International Institute for Applied Systems Analysis - Research institute based in Austria that developed and maintains CWatM.
 
 **Infiltration**
    Process of water entering soil from the surface. Rate depends on soil properties, moisture content, and surface conditions.

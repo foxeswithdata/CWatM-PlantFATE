@@ -1,3 +1,13 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   A lake is the landscape's most beautiful
+   and expressive feature. It is Earth's eye;
+   looking into which the beholder measures
+   the depth of his own nature
+   Henry David Thoreau, Walden
+   </pre>
+
 ################################
 **3. The Community Water Model**
 ################################

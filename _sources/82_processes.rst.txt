@@ -7,8 +7,6 @@ Hydrological processes
     :depth: 3
 
 
-.. warning:: Under construction! Might contain writing errors and misspellings. Keep away from small children!
-
 Overview
 ========
 
@@ -466,6 +464,118 @@ If the soil is frozen (F > critical threshold), both D1,2 and D2,gw are set to z
 :math:`w_2 = w_2 + D_{1,2} - D_{2,gw}`
 
 
+Interflow and groundwater recharge
+**********************************
+
+Interflow is the lateral movement of water through the subsurface, above the groundwater table but below the surface, Interflow, together with surface runoff and baseflow from groundwater creates runoff.
+
+PercolationImp is the fraction of area where percolation to interflow is impeded. To calculate PercolationImp a simplified approach from from Sloan and Moore (1984) as in van Beek and Bierkens (2009) is used:
+
+:math:`p = (2 k_s \tan(\text{slope})) / (0.4 \theta_s)`
+
+| where:
+| p: PercolationImp
+| ks: Saturated soil conductivity of the 2nd layer
+| tanslope: Tangens of the average slope
+| θ_s: Saturated soil moisture content 
+
+
+Interflow is calculated for each land cover class as:
+
+:math:`Interflow = (p \times calibration\_factor) \times (D_{2,gw} + D_{pref,gw})`
+
+and groundwater recharge as:
+
+:math:`GW_{recharge} = (1 - p * calibration_{factor}) * (D_{2,gw} + D_{pref,gw})`
+
+Groundwater
+-----------
+
+Groundwater storage and transport are modelled using a linear reservoirs, the outflow of the storage represent baseflow. 
+
+:math:`GW_{Storage} = GW_{Storage} + GW_{recharge,sum} - GW_{Abstraction}`
+
+:math:`baseflow = recession\_Coeff \times GW\_Storage`
+
+where recession_Coeff is a reservoir constant [1/days] and can be calculated like in Beck et al. 2013 as  base flow recession constant.
+
+:math:`GW_{Storage} = GW_{Storage} - baseflow`
+
+Runoff concentration
+--------------------
+
+Runoff concentration is the intermediate process between runoff generation and channel routing. It is concentrating runoff from different land cover classes within each grid cell by using lag-time and diffusion processes based on topographic and land cover characteristics. Calculation is based on triangular weighting function concepts for temporal concentration.
+	
+The concentration process accounts for:
+   - Variable lag times based on slope, length, and land cover
+   - Temporal diffusion using triangular weighting functions
+   - Different peak times for surface runoff, interflow, and baseflow
+   - Land cover-specific concentration parameters
+    
+Mathematical formulation:
+
+:math:`Q_t = \sum_{i=0}^{\text{max}} c_i \cdot Q_{\text{source},t-i+1}`
+
+where c(i) represents the triangular weighting coefficients:
+
+:math:`c_i = \int_{min}^{\text{i}} \left(\frac{2}{\text{max}} - (u - \frac{\text{max}}{2}) \cdot \frac{4}{\text{max}^2}\right) du`
+    
+
+
+
+
+River routing
+-------------
+
+The river drainage map or local drain direction (LDD) defines the flow direction of each grid cell and forming a river channel network. See :ref:`rst_ldd`
+
+.. image:: _static/ldd.jpg
+    :width: 400px
+
+Figure 10: River network for the Rhine basin
+
+Flow through the river channel network is calculated using the kinematic wave equations. The basic equations and the numerical solution are identical to those used for the surface runoff routing:
+
+:math:`q = \frac{\partial Q}{\partial x} + \frac{\partial A}{\partial t}`
+
+where Q is the channel discharge [m3 s-1], A is the cross-sectional area of the flow [m2] and q is the amount of lateral inflow per unit flow length [m2 s-1]. The momentum equation then becomes:
+
+:math:`\rho g A (S_0 - S_f) = 0`
+
+where ρ is the density of the flow [kg m-3], g is the gravity acceleration [m s-2], S0 is the topographical gradient and Sf is the friction gradient. From the momentum equation it follows that S0= Sf, which means that for the kinematic wave equations it is assumed that the water surface is parallel to the topographical surface. The continuity equation can also be written in the following finite-difference form:
+
+:math:`\frac{Q_{i+1}^{j+1}-Q_i^{j+1}}{\Delta x}+\frac{A_{i+1}^{j+1}-A_{i+1}^j}{\Delta t}=\frac{q_{i+1}^{j+1}-q_{i+1}^j}{2}`
+
+where j is a time index and i a space index. The momentum equation can also be expressed as (Chow et al., 1988)
+
+:math:`A = \alpha_k \cdot Q^{\beta_k}`
+
+If αk,sr and βk are known, this non-linear equation can be solved for each cell and during each time step (here we us sub-daily timesteps) using an iterative procedure. This numerical solution scheme is programmed in CWatM as C++ function to decrease computational time. The coefficients αk and βk are calculated by substituting Manning's equation:
+
+:math:`A = \left(\frac{n \cdot P^{2/3}}{\sqrt{S_0}}\right)^{3/5} \cdot Q^{3/5}`
+
+where n is Manning's roughness coefficient and Psr is the wetted perimeter of a cross-section of the surface flow. Substituting the right-hand side of this equation for A gives:
+
+:math:`\alpha_k = \left(\frac{n \cdot P^{2/3}}{\sqrt{S_0}}\right)^{0.6}` ; :math:`\beta_k = 0.6`
+
+CWatM uses values for αk,ch which are based on a static channel flow depth (half bankfull) and measured channel dimensions. The term q_ch (sideflow) represents the runoff that enters the channel per unit channel length:
+
+:math:`q_{ch} = (runoff_{surface} + interflow + baseflow + Q_{lake,res} + Q_{in}) / L_c`
+
+where runoff is the results from runoff concentration of surface, interflow and baseflow, Q_lake,res is water thats flows in from lakes and reservoirs and Q_in is the inflow from an external inflow hydrograph.
+
+
+
+Missing processes
+-----------------
+
+Not missing in the model, but in this description
+
+- Lake, reservoirs, wetlands
+- Water transfer
+- Crop specific evaporation
+- Water demand, consumption, withdrawal
+- Waste water
 
 
 **References**
@@ -473,6 +583,7 @@ If the soil is frozen (F > critical threshold), both D1,2 and D2,gw are set to z
 
 #. Anderson, E., 2006. Snow Accumulation and Ablation Model – SNOW-17. Technical report.
 #. Aston, A.R., 1979. Rainfall interception by eight small trees. Journal of Hydrology 42, 383-396.
+#. Beck, H. E., A. I. J. M. van Dijk, D. G. Miralles, R. A. M. de Jeu, L. A. Bruijnzeel, T. R. McVicar, and J. Schellekens (2013), Global patterns in base flow index and recession based on streamflow observations from 3394 catchments, Water Resour. Res., 49, 7843–7863, doi:10.1002/2013WR013918
 #. Bódis, K., 2009. Development of a data set for continental hydrologic modelling. Technical Report EUR 24087 EN JRC Catalogue number: LB-NA-24087-EN-C, Institute for Environment and Sustainability, Joint Research Centre of the European Commission Land Management and Natural Hazards Unit Action FLOOD. Input layers related to topography, channel geometry, land cover and soil characteristics of European and African river basins.
 #. Buck AL. 1981. New equations for computing vapor pressure and enhancement factor. Journal of Applied Meteorology 20 (12): 1527-1532 DOI: 10.1175/1520-0450(1981)020<1527:NEFCVP>2.0.CO;2
 #. Chow, V.T., Maidment, D.R., Mays, L.M., 1988. Applied Hydrology, McGraw-Hill, Singapore, 572 pp.
@@ -487,12 +598,14 @@ If the soil is frozen (F > critical threshold), both D1,2 and D2,gw are set to z
 #. Merriam, R.A., 1960. A note on the interception loss equation. Journal of Geophysical Research 65, 3850-3851.
 #. Molnau, M., Bissell, V.C., 1983. A continuous frozen ground index for flood forecasting. In: Proceedings 51st Annual Meeting Western Snow Conference, 109-119.
 #. Rao, C.X. and Maurer, E.P., 1996. A simplified model for predicting daily transmission losses in a stream channel. Water Resources Bulletin, Vol. 31, No. 6., 1139-1146.
+#. Sloan, P.G. and I.D. Moore (1984), Modeling subsurface stormflow on steeply sloping forested watersheds, Water Resources Research 20, 1815–1822.
 #. Speers, D.D. , Versteeg, J.D., 1979. Runoff forecasting for reservoir operations – the past and the future. In: Proceedings 52nd Western Snow Conference, 149-156.
 #. Stroosnijder, L., 1982. Simulation of the soil water balance. In: Penning de Vries, F.W.T., Van Laar, H.H. (eds), Simulation of Plant Growth and Crop Production, Simulation Monographs, Pudoc, Wageningen, pp. 175-193.
 #. Stroosnijder, L., 1987. Soil evaporation: test of a practical approach under semi-arid conditions. Netherlands Journal of Agricultural Science 35, 417-426.
 #. Supit I., A.A. Hooijer, C.A. van Diepen (eds.), 1994. System Description of the WOFOST 6.0 Crop Simulation Model Implemented in CGMS. Volume 1: Theory and Algorithms. EUR 15956, Office for Official Publications of the European Communities, Luxembourg.
 #. Supit, I. , van der Goot, E. (eds.), 2003. Updated System Description of the WOFOST Crop Growth Simulation Model as Implemented in the Crop Growth Monitoring System Applied by the European Commission, Treemail, Heelsum, The Netherlands, 120 pp.
 #. Todini, E., 1996. The ARNO rainfall––runoff model. Journal of Hydrology 175,  339-382.
+#. van Beek, L. P. H., and Bierkens, M. F. P.: The global hydrological model PCR-GLOBWB: Conceptualization, parameterization and verification [Available at http://vanbeek.geo.uu.nl/suppinfo/vanbeekbierkens2009.pdf], Dep. of Phys. Geogr., Utrecht University, Utrecht, Netherlands, 2009.
 #. Van Der Knijff, J., De Roo, A., 2006. LISFLOOD – Distributed Water Balance and Flood Simulation Model, User Manual. EUR 22166 EN, Office for Official Publications of the European Communities, Luxembourg, 88 pp.
 #. Van Genuchten, M.Th., 1980. A closed-form equation for predicting the hydraulic conductivity of unsaturated soils. Soil Science Society of America Journal 44, 892-898.
 #. Viviroli, D., Zappa, M., Gurtz, J., & Weingartner, R., 2009. An introduction to the hydrological modelling system PREVAH and its pre- and post-processing-tools. Environmental Modelling & Software, 24(10), 1209–1222.

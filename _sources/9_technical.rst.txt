@@ -1,3 +1,13 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   The sea was wet as wet could be,
+   The sands were dry as dry
+   Lewis Carroll
+   The Walrus and the Carpenter
+   </pre>
+
+
 
 #####################################
 **9. Technical Guide**

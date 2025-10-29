@@ -1,3 +1,12 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   古池や
+   蛙飛びこむ
+   水の音
+   Matsuo Bashō
+   </pre>
+
 
 ##################
 **4. Using CWatM**

@@ -1,3 +1,11 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   Vous revenez toujours a l'eau, sans que
+   je sache jamais de quoi vous parlez ...
+   Jacques Derrida, Parages
+   </pre>
+
 
 ###############################
 **6. REFERENCES** – Information

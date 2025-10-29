@@ -1,3 +1,12 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   La mar es el origen de todas lasaguas,
+   y el corazon del hombre, el origen de
+   todas los males
+   Miguel de Cervantes, Don Quijote
+   </pre>
+
 
 ###########
 **2. NEWS**

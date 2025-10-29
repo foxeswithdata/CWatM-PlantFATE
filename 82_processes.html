@@ -147,8 +147,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#preferential-bypass-flow">Preferential bypass flow</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#actual-infiltration-and-surface-runoff">Actual infiltration and surface runoff</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#soil-moisture-redistribution">Soil moisture redistribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interflow-and-groundwater-recharge">Interflow and groundwater recharge</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Groundwater</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#runoff-concentration">Runoff concentration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#river-routing">River routing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#missing-processes">Missing processes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#references"><strong>References</strong></a></li>
@@ -229,42 +234,42 @@
            <div itemprop="articleBody">
             
   <div class="section" id="hydrological-processes">
-<h1><a class="toc-backref" href="#id1">Hydrological processes</a><a class="headerlink" href="#hydrological-processes" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id2">Hydrological processes</a><a class="headerlink" href="#hydrological-processes" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#hydrological-processes" id="id1">Hydrological processes</a></p>
+<li><p><a class="reference internal" href="#hydrological-processes" id="id2">Hydrological processes</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p>
+<li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p>
 <ul>
-<li><p><a class="reference internal" href="#processes" id="id3">Processes</a></p></li>
-<li><p><a class="reference internal" href="#adressing-sub-grid-variability-in-land-cover" id="id4">Adressing sub-grid variability in land cover</a></p></li>
+<li><p><a class="reference internal" href="#processes" id="id4">Processes</a></p></li>
+<li><p><a class="reference internal" href="#adressing-sub-grid-variability-in-land-cover" id="id5">Adressing sub-grid variability in land cover</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#detailed-description-of-processes" id="id5">Detailed description of processes</a></p>
+<li><p><a class="reference internal" href="#detailed-description-of-processes" id="id6">Detailed description of processes</a></p>
 <ul>
-<li><p><a class="reference internal" href="#potential-evaporation" id="id6">Potential Evaporation</a></p></li>
-<li><p><a class="reference internal" href="#rain-and-snow-and-melt" id="id7">Rain and Snow and Melt</a></p></li>
-<li><p><a class="reference internal" href="#frost-index" id="id8">Frost Index</a></p></li>
-<li><p><a class="reference internal" href="#available-water-for-infiltration-and-runoff" id="id9">Available water for infiltration and runoff</a></p></li>
-<li><p><a class="reference internal" href="#soil-processes" id="id10">Soil processes</a></p></li>
+<li><p><a class="reference internal" href="#potential-evaporation" id="id7">Potential Evaporation</a></p></li>
+<li><p><a class="reference internal" href="#rain-and-snow-and-melt" id="id8">Rain and Snow and Melt</a></p></li>
+<li><p><a class="reference internal" href="#frost-index" id="id9">Frost Index</a></p></li>
+<li><p><a class="reference internal" href="#available-water-for-infiltration-and-runoff" id="id10">Available water for infiltration and runoff</a></p></li>
+<li><p><a class="reference internal" href="#soil-processes" id="id11">Soil processes</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id12">Groundwater</a></p></li>
+<li><p><a class="reference internal" href="#runoff-concentration" id="id13">Runoff concentration</a></p></li>
+<li><p><a class="reference internal" href="#river-routing" id="id14">River routing</a></p></li>
+<li><p><a class="reference internal" href="#missing-processes" id="id15">Missing processes</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#references" id="id11"><strong>References</strong></a></p></li>
+<li><p><a class="reference internal" href="#references" id="id16"><strong>References</strong></a></p></li>
 </ul>
 </li>
 </ul>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Under construction! Might contain writing errors and misspellings. Keep away from small children!</p>
 </div>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id3">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <a class="reference internal image-reference" href="_images/Hydrological-model2.jpg"><img alt="_images/Hydrological-model2.jpg" src="_images/Hydrological-model2.jpg" style="width: 800px;" /></a>
 <p>Figure 1: CWatM - Water-related processes included in the model</p>
 <div class="section" id="processes">
-<h3><a class="toc-backref" href="#id3">Processes</a><a class="headerlink" href="#processes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id4">Processes</a><a class="headerlink" href="#processes" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="calculation-of-potential-evaporation">
 <h4>Calculation of potential Evaporation<a class="headerlink" href="#calculation-of-potential-evaporation" title="Permalink to this headline">¶</a></h4>
 <p>Using Penman-Montheith equations based on FAO 56 (and other approaches)</p>
@@ -333,7 +338,7 @@ Including snow- and glacier melt.</p>
 </div>
 </div>
 <div class="section" id="adressing-sub-grid-variability-in-land-cover">
-<h3><a class="toc-backref" href="#id4">Adressing sub-grid variability in land cover</a><a class="headerlink" href="#adressing-sub-grid-variability-in-land-cover" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id5">Adressing sub-grid variability in land cover</a><a class="headerlink" href="#adressing-sub-grid-variability-in-land-cover" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <div class="line-block">
@@ -449,9 +454,9 @@ concentration time</p></td>
 </div>
 </div>
 <div class="section" id="detailed-description-of-processes">
-<h2><a class="toc-backref" href="#id5">Detailed description of processes</a><a class="headerlink" href="#detailed-description-of-processes" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id6">Detailed description of processes</a><a class="headerlink" href="#detailed-description-of-processes" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="potential-evaporation">
-<h3><a class="toc-backref" href="#id6">Potential Evaporation</a><a class="headerlink" href="#potential-evaporation" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Potential Evaporation</a><a class="headerlink" href="#potential-evaporation" title="Permalink to this headline">¶</a></h3>
 <p>Evaporation can be calculated with different approaches:</p>
 <ol class="arabic simple">
 <li><p>Penman Monteith:
@@ -473,7 +478,7 @@ Adjusted by Tamas Acs, Budapest University of Technology and Economics</p></li>
 <p>There are three very good guides to explain the approach of Penman Monteith, <a class="reference external" href="http://www.fao.org/docrep/X0490E/x0490e08.htm#penman%20monteith%20equation">FAO 56 Guidelines</a> , <a class="reference external" href="https://op.europa.eu/en/publication-detail/-/publication/1aa87e8f-8aa9-45f7-9524-6a98c0f495ce/language-en">LISVAP Documentation</a>  and <a class="reference external" href="https://wetlandscapes.github.io/blog/blog/penman-monteith-and-priestley-taylor/">Wetlandscapes</a>  . Therefore, we are here to lazy to explain this again.</p>
 </div>
 <div class="section" id="rain-and-snow-and-melt">
-<h3><a class="toc-backref" href="#id7">Rain and Snow and Melt</a><a class="headerlink" href="#rain-and-snow-and-melt" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id8">Rain and Snow and Melt</a><a class="headerlink" href="#rain-and-snow-and-melt" title="Permalink to this headline">¶</a></h3>
 <p>If the average temperatur is below 1°C, all precipitation is assumed to be snow. A snow correction factor is used to correct for undercatch of snow precipitation. Unlike rain, snow accumulates on the soil surface until it melts. The rate of snowmelt is estimated using a simple degree-day factor method. Degree-day factor type snow melt models usually take the following form (e.g. see WMO, 1986):</p>
 <p><img class="math" src="_images/math/5243652b633ebce4ae9c04742942f46436a58f04.png" alt="M = C_m (T_{avg} - T_m)"/></p>
 <p>where M  is the rate of snowmelt, Tavg is the average daily temperature, Tm is some critical temperature and Cm is a degree-day factor [mm °C-1 day-1]. Speers et al. (1979) developed an extension of this equation which accounts for accelerated snowmelt that takes place when it is raining (cited in Young, 1985). The equation is supposed to apply when rainfall is greater than 30 mm in 24 hours. Moreover, although the equation is reported to work sufficiently well in forested areas, it is not valid in areas that are above the tree line, where radiation is the main energy source for snowmelt).  CWatM uses a variation on the equation of Speers et al. The modified equation simply assumes that for each mm of rainfall, the rate of snowmelt increases with 1% (compared to a ‘dry’ situation). This yields the following equation:</p>
@@ -494,7 +499,7 @@ The division in elevation zones is done by calculating the percentiles of a high
 Depending on the elevetion zones (e.g. 0.0065 °C) per meter elevation difference. Snow, snowmelt and snow accumulation are subsequently modelled separately for each elevation zone.</p>
 </div>
 <div class="section" id="frost-index">
-<h3><a class="toc-backref" href="#id8">Frost Index</a><a class="headerlink" href="#frost-index" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id9">Frost Index</a><a class="headerlink" href="#frost-index" title="Permalink to this headline">¶</a></h3>
 <p>When the soil surface is frozen, this affects the hydrological processes occurring near the soil surface. To estimate whether the soil surface is frozen or not, a frost index F is calculated. The equation is based on Molnau &amp; Bissell (1983, cited in Maidment 1993), and adjusted for variable time steps. The rate at which the frost index changes is given by:</p>
 <p><img class="math" src="_images/math/67fb4db79458f35e9f36584dd956e6d016cc79b5.png" alt="\frac{dF}{dt} = -(1 - A_f)F - T_{av} \cdot e^{-0.04 \cdot K \cdot \frac{d_s}{we_s}}"/></p>
 <p>dF/dt  is expressed in [°C day-1 day-1 ].  Af is a decay coefficient [day-1], K is a a snow depth reduction coefficient [cm-1], ds is the (pixel-average) depth of the snow cover (expressed as mm equivalent water depth), and wes is a parameter called snow water equivalent, which is the equivalent water depth water of a snow cover (Maidment, 1993). In CWatM, Af and K are set to 0.97 and 0.57 cm-1 respectively, and wes is taken as 0.1, assuming an average snow density of 100 kg/m3 (Maidment, 1993). The soil is considered frozen when the frost index rises above a critical threshold of 56.  For each time step the value of F [°C day-1] is updated as:</p>
@@ -502,7 +507,7 @@ Depending on the elevetion zones (e.g. 0.0065 °C) per meter elevation differenc
 <p>F is not allowed to become less than 0. When the frost index rises above a threshold of 56, every soil process is frozen and transpiration, evaporation, infiltration and the outflow to the second soil layer and to upper groundwater layer is set to zero. Any rainfall is bypassing the soil and transformed into surface runoff till the frost index is equal or less than 56. To prevent that the soil is frozen for a too long period, a maximimum F can bedefined (e.g. 60) where F is not allowed to become more.</p>
 </div>
 <div class="section" id="available-water-for-infiltration-and-runoff">
-<h3><a class="toc-backref" href="#id9">Available water for infiltration and runoff</a><a class="headerlink" href="#available-water-for-infiltration-and-runoff" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id10">Available water for infiltration and runoff</a><a class="headerlink" href="#available-water-for-infiltration-and-runoff" title="Permalink to this headline">¶</a></h3>
 <p>Water available for infiltration or surface runoff is calculated for each cell and each landcover class:</p>
 <p><img class="math" src="_images/math/52d4cf9a6bee06b50105673c592bb511422d0641.png" alt="W_{av} = R + SM + D - Int"/></p>
 <div class="line-block">
@@ -526,7 +531,7 @@ Depending on the elevetion zones (e.g. 0.0065 °C) per meter elevation differenc
 <p>For the other land cover classes (forest, other, irrigated, paddy irrigated) W<sup>av</sup> is split into surface runoff and infiltration.</p>
 </div>
 <div class="section" id="soil-processes">
-<h3><a class="toc-backref" href="#id10">Soil processes</a><a class="headerlink" href="#soil-processes" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id11">Soil processes</a><a class="headerlink" href="#soil-processes" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="water-uptake-by-plant-roots-and-transpiration">
 <h4>Water uptake by plant roots and transpiration<a class="headerlink" href="#water-uptake-by-plant-roots-and-transpiration" title="Permalink to this headline">¶</a></h4>
 <p>Water uptake and transpiration by vegetation and direct evaporation from the soil surface are modelled as two separate processes. The approach used here is largely based on Supit et al. (1994) and Supit &amp; Van Der Goot (2000). The maximum transpiration per time step [m] is given by:</p>
@@ -632,13 +637,88 @@ Depending on the elevetion zones (e.g. 0.0065 °C) per meter elevation differenc
 <p><img class="math" src="_images/math/6ef3799333e2f36a52b66ba12206cac786cf8329.png" alt="w_1 = w_1 - D_{1,2}"/></p>
 <p><img class="math" src="_images/math/25fe2286b5933c47b0bc983093ded8e8842fc044.png" alt="w_2 = w_2 + D_{1,2} - D_{2,gw}"/></p>
 </div>
+<div class="section" id="interflow-and-groundwater-recharge">
+<h4>Interflow and groundwater recharge<a class="headerlink" href="#interflow-and-groundwater-recharge" title="Permalink to this headline">¶</a></h4>
+<p>Interflow is the lateral movement of water through the subsurface, above the groundwater table but below the surface, Interflow, together with surface runoff and baseflow from groundwater creates runoff.</p>
+<p>PercolationImp is the fraction of area where percolation to interflow is impeded. To calculate PercolationImp a simplified approach from from Sloan and Moore (1984) as in van Beek and Bierkens (2009) is used:</p>
+<p><img class="math" src="_images/math/2971ad26b547d020e821f03970c7f3f6221c8ed0.png" alt="p = (2 k_s \tan(\text{slope})) / (0.4 \theta_s)"/></p>
+<div class="line-block">
+<div class="line">where:</div>
+<div class="line">p: PercolationImp</div>
+<div class="line">ks: Saturated soil conductivity of the 2nd layer</div>
+<div class="line">tanslope: Tangens of the average slope</div>
+<div class="line">θ_s: Saturated soil moisture content</div>
+</div>
+<p>Interflow is calculated for each land cover class as:</p>
+<p><img class="math" src="_images/math/0197a96d5c6202894fa2835718758b4449e11a36.png" alt="Interflow = (p \times calibration\_factor) \times (D_{2,gw} + D_{pref,gw})"/></p>
+<p>and groundwater recharge as:</p>
+<p><img class="math" src="_images/math/3c76a5804c20ea1ed1ac0c50ff7577452d46dc6b.png" alt="GW_{recharge} = (1 - p * calibration_{factor}) * (D_{2,gw} + D_{pref,gw})"/></p>
+</div>
+</div>
+<div class="section" id="id1">
+<h3><a class="toc-backref" href="#id12">Groundwater</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Groundwater storage and transport are modelled using a linear reservoirs, the outflow of the storage represent baseflow.</p>
+<p><img class="math" src="_images/math/d9a918a64bb5b45447a2b598482364f442f9ec8a.png" alt="GW_{Storage} = GW_{Storage} + GW_{recharge,sum} - GW_{Abstraction}"/></p>
+<p><img class="math" src="_images/math/0a05913937d344fcb366e0913276215e3a93073a.png" alt="baseflow = recession\_Coeff \times GW\_Storage"/></p>
+<p>where recession_Coeff is a reservoir constant [1/days] and can be calculated like in Beck et al. 2013 as  base flow recession constant.</p>
+<p><img class="math" src="_images/math/477a6aa78560c525371311b24338f46db687dda0.png" alt="GW_{Storage} = GW_{Storage} - baseflow"/></p>
+</div>
+<div class="section" id="runoff-concentration">
+<h3><a class="toc-backref" href="#id13">Runoff concentration</a><a class="headerlink" href="#runoff-concentration" title="Permalink to this headline">¶</a></h3>
+<p>Runoff concentration is the intermediate process between runoff generation and channel routing. It is concentrating runoff from different land cover classes within each grid cell by using lag-time and diffusion processes based on topographic and land cover characteristics. Calculation is based on triangular weighting function concepts for temporal concentration.</p>
+<dl class="simple">
+<dt>The concentration process accounts for:</dt><dd><ul class="simple">
+<li><p>Variable lag times based on slope, length, and land cover</p></li>
+<li><p>Temporal diffusion using triangular weighting functions</p></li>
+<li><p>Different peak times for surface runoff, interflow, and baseflow</p></li>
+<li><p>Land cover-specific concentration parameters</p></li>
+</ul>
+</dd>
+</dl>
+<p>Mathematical formulation:</p>
+<p><img class="math" src="_images/math/168b8bb444aad622b1003613d79624569797a9c4.png" alt="Q_t = \sum_{i=0}^{\text{max}} c_i \cdot Q_{\text{source},t-i+1}"/></p>
+<p>where c(i) represents the triangular weighting coefficients:</p>
+<p><img class="math" src="_images/math/30171228036bcc2f592c6ea41fd43ade80b5f324.png" alt="c_i = \int_{min}^{\text{i}} \left(\frac{2}{\text{max}} - (u - \frac{\text{max}}{2}) \cdot \frac{4}{\text{max}^2}\right) du"/></p>
+</div>
+<div class="section" id="river-routing">
+<h3><a class="toc-backref" href="#id14">River routing</a><a class="headerlink" href="#river-routing" title="Permalink to this headline">¶</a></h3>
+<p>The river drainage map or local drain direction (LDD) defines the flow direction of each grid cell and forming a river channel network. See <a class="reference internal" href="81_data.html#rst-ldd"><span class="std std-ref">River drainage maps</span></a></p>
+<a class="reference internal image-reference" href="_images/ldd.jpg"><img alt="_images/ldd.jpg" src="_images/ldd.jpg" style="width: 400px;" /></a>
+<p>Figure 10: River network for the Rhine basin</p>
+<p>Flow through the river channel network is calculated using the kinematic wave equations. The basic equations and the numerical solution are identical to those used for the surface runoff routing:</p>
+<p><img class="math" src="_images/math/e5c6f7ec08ef96f327346d8fd8bfd6521c0fce9c.png" alt="q = \frac{\partial Q}{\partial x} + \frac{\partial A}{\partial t}"/></p>
+<p>where Q is the channel discharge [m3 s-1], A is the cross-sectional area of the flow [m2] and q is the amount of lateral inflow per unit flow length [m2 s-1]. The momentum equation then becomes:</p>
+<p><img class="math" src="_images/math/44404fda68f24d8c40ebaf946f45a02f8dc3b4fe.png" alt="\rho g A (S_0 - S_f) = 0"/></p>
+<p>where ρ is the density of the flow [kg m-3], g is the gravity acceleration [m s-2], S0 is the topographical gradient and Sf is the friction gradient. From the momentum equation it follows that S0= Sf, which means that for the kinematic wave equations it is assumed that the water surface is parallel to the topographical surface. The continuity equation can also be written in the following finite-difference form:</p>
+<p><img class="math" src="_images/math/838393232503875eb4221046c6f7f1cfbab9aa70.png" alt="\frac{Q_{i+1}^{j+1}-Q_i^{j+1}}{\Delta x}+\frac{A_{i+1}^{j+1}-A_{i+1}^j}{\Delta t}=\frac{q_{i+1}^{j+1}-q_{i+1}^j}{2}"/></p>
+<p>where j is a time index and i a space index. The momentum equation can also be expressed as (Chow et al., 1988)</p>
+<p><img class="math" src="_images/math/8a741bbde31b3aa3ac4824f54ea7d37ec3733494.png" alt="A = \alpha_k \cdot Q^{\beta_k}"/></p>
+<p>If αk,sr and βk are known, this non-linear equation can be solved for each cell and during each time step (here we us sub-daily timesteps) using an iterative procedure. This numerical solution scheme is programmed in CWatM as C++ function to decrease computational time. The coefficients αk and βk are calculated by substituting Manning’s equation:</p>
+<p><img class="math" src="_images/math/309a375a6a52e91828cceddca2eda5cf58409c0b.png" alt="A = \left(\frac{n \cdot P^{2/3}}{\sqrt{S_0}}\right)^{3/5} \cdot Q^{3/5}"/></p>
+<p>where n is Manning’s roughness coefficient and Psr is the wetted perimeter of a cross-section of the surface flow. Substituting the right-hand side of this equation for A gives:</p>
+<p><img class="math" src="_images/math/fa1104e9b79c7bad99b4298eac82c4edd81867c6.png" alt="\alpha_k = \left(\frac{n \cdot P^{2/3}}{\sqrt{S_0}}\right)^{0.6}"/> ; <img class="math" src="_images/math/cd64988e1f23612f1e62e66e8b0b602b7870d1a6.png" alt="\beta_k = 0.6"/></p>
+<p>CWatM uses values for αk,ch which are based on a static channel flow depth (half bankfull) and measured channel dimensions. The term q_ch (sideflow) represents the runoff that enters the channel per unit channel length:</p>
+<p><img class="math" src="_images/math/c069991a425cf65321b9084d6dd4fd269f3d7d41.png" alt="q_{ch} = (runoff_{surface} + interflow + baseflow + Q_{lake,res} + Q_{in}) / L_c"/></p>
+<p>where runoff is the results from runoff concentration of surface, interflow and baseflow, Q_lake,res is water thats flows in from lakes and reservoirs and Q_in is the inflow from an external inflow hydrograph.</p>
+</div>
+<div class="section" id="missing-processes">
+<h3><a class="toc-backref" href="#id15">Missing processes</a><a class="headerlink" href="#missing-processes" title="Permalink to this headline">¶</a></h3>
+<p>Not missing in the model, but in this description</p>
+<ul class="simple">
+<li><p>Lake, reservoirs, wetlands</p></li>
+<li><p>Water transfer</p></li>
+<li><p>Crop specific evaporation</p></li>
+<li><p>Water demand, consumption, withdrawal</p></li>
+<li><p>Waste water</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="references">
-<h2><a class="toc-backref" href="#id11"><strong>References</strong></a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16"><strong>References</strong></a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Anderson, E., 2006. Snow Accumulation and Ablation Model – SNOW-17. Technical report.</p></li>
 <li><p>Aston, A.R., 1979. Rainfall interception by eight small trees. Journal of Hydrology 42, 383-396.</p></li>
+<li><p>Beck, H. E., A. I. J. M. van Dijk, D. G. Miralles, R. A. M. de Jeu, L. A. Bruijnzeel, T. R. McVicar, and J. Schellekens (2013), Global patterns in base flow index and recession based on streamflow observations from 3394 catchments, Water Resour. Res., 49, 7843–7863, doi:10.1002/2013WR013918</p></li>
 <li><p>Bódis, K., 2009. Development of a data set for continental hydrologic modelling. Technical Report EUR 24087 EN JRC Catalogue number: LB-NA-24087-EN-C, Institute for Environment and Sustainability, Joint Research Centre of the European Commission Land Management and Natural Hazards Unit Action FLOOD. Input layers related to topography, channel geometry, land cover and soil characteristics of European and African river basins.</p></li>
 <li><p>Buck AL. 1981. New equations for computing vapor pressure and enhancement factor. Journal of Applied Meteorology 20 (12): 1527-1532 DOI: 10.1175/1520-0450(1981)020&lt;1527:NEFCVP&gt;2.0.CO;2</p></li>
 <li><p>Chow, V.T., Maidment, D.R., Mays, L.M., 1988. Applied Hydrology, McGraw-Hill, Singapore, 572 pp.</p></li>
@@ -653,12 +733,14 @@ Depending on the elevetion zones (e.g. 0.0065 °C) per meter elevation differenc
 <li><p>Merriam, R.A., 1960. A note on the interception loss equation. Journal of Geophysical Research 65, 3850-3851.</p></li>
 <li><p>Molnau, M., Bissell, V.C., 1983. A continuous frozen ground index for flood forecasting. In: Proceedings 51st Annual Meeting Western Snow Conference, 109-119.</p></li>
 <li><p>Rao, C.X. and Maurer, E.P., 1996. A simplified model for predicting daily transmission losses in a stream channel. Water Resources Bulletin, Vol. 31, No. 6., 1139-1146.</p></li>
+<li><p>Sloan, P.G. and I.D. Moore (1984), Modeling subsurface stormflow on steeply sloping forested watersheds, Water Resources Research 20, 1815–1822.</p></li>
 <li><p>Speers, D.D. , Versteeg, J.D., 1979. Runoff forecasting for reservoir operations – the past and the future. In: Proceedings 52nd Western Snow Conference, 149-156.</p></li>
 <li><p>Stroosnijder, L., 1982. Simulation of the soil water balance. In: Penning de Vries, F.W.T., Van Laar, H.H. (eds), Simulation of Plant Growth and Crop Production, Simulation Monographs, Pudoc, Wageningen, pp. 175-193.</p></li>
 <li><p>Stroosnijder, L., 1987. Soil evaporation: test of a practical approach under semi-arid conditions. Netherlands Journal of Agricultural Science 35, 417-426.</p></li>
 <li><p>Supit I., A.A. Hooijer, C.A. van Diepen (eds.), 1994. System Description of the WOFOST 6.0 Crop Simulation Model Implemented in CGMS. Volume 1: Theory and Algorithms. EUR 15956, Office for Official Publications of the European Communities, Luxembourg.</p></li>
 <li><p>Supit, I. , van der Goot, E. (eds.), 2003. Updated System Description of the WOFOST Crop Growth Simulation Model as Implemented in the Crop Growth Monitoring System Applied by the European Commission, Treemail, Heelsum, The Netherlands, 120 pp.</p></li>
 <li><p>Todini, E., 1996. The ARNO rainfall––runoff model. Journal of Hydrology 175,  339-382.</p></li>
+<li><p>van Beek, L. P. H., and Bierkens, M. F. P.: The global hydrological model PCR-GLOBWB: Conceptualization, parameterization and verification [Available at <a class="reference external" href="http://vanbeek.geo.uu.nl/suppinfo/vanbeekbierkens2009.pdf">http://vanbeek.geo.uu.nl/suppinfo/vanbeekbierkens2009.pdf</a>], Dep. of Phys. Geogr., Utrecht University, Utrecht, Netherlands, 2009.</p></li>
 <li><p>Van Der Knijff, J., De Roo, A., 2006. LISFLOOD – Distributed Water Balance and Flood Simulation Model, User Manual. EUR 22166 EN, Office for Official Publications of the European Communities, Luxembourg, 88 pp.</p></li>
 <li><p>Van Genuchten, M.Th., 1980. A closed-form equation for predicting the hydraulic conductivity of unsaturated soils. Soil Science Society of America Journal 44, 892-898.</p></li>
 <li><p>Viviroli, D., Zappa, M., Gurtz, J., &amp; Weingartner, R., 2009. An introduction to the hydrological modelling system PREVAH and its pre- and post-processing-tools. Environmental Modelling &amp; Software, 24(10), 1209–1222.</p></li>
