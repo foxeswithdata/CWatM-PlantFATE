@@ -1,3 +1,14 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   Water, water, every where,
+   And all the boards did shrink;
+   Water, water, every where,
+   Nor any drop to drink.
+   Samuel Taylor Coleridge
+   The Rime of the Ancient Mariner
+   </pre>
+
 
 ###########################
 **7. TUTORIALS** – Learning 

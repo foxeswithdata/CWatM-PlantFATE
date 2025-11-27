@@ -1,3 +1,12 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   古池や
+   蛙飛びこむ
+   水の音
+   Matsuo Bashō
+   </pre>
+
 
 ##################
 **4. Using CWatM**
@@ -22,6 +31,9 @@ Guillaumot, L., Smilovic, M., Burek, P., de Bruijn, J., Greve, P., Kahil, T., an
 
 Burek, P., Smilovic, M., Guillaumot, L., de Bruijn, J., Greve, P., Satoh, Y., Islaam, A., Virgen-Urcelay, A., Tang, T., Kahil, T., and Wada, Y.: Community Water Model CWatM Manual, Laxenburg, Austria, IIASA Report, 2020.
 
+If you use CWatM with wastewater or with pySnowClim (publication soon) please cite those publications, too.
+
+Fridman, D., Smilovic, M., Burek, P., Tramberend, S., and Kahil, T.: Wastewater matters: incorporating wastewater treatment and reuse into a process-based hydrological model (CWatM v1.08), Geosci. Model Dev., 18, 3735–3754, https://doi.org/10.5194/gmd-18-3735-2025
 
 
 Downloading CWatM
@@ -53,20 +65,20 @@ OGGM
 
 "OGGM is an open source modelling framework for glaciers. The model can simulate past and future mass-balance, volume and geometry of (almost) any glacier in the world in a fully automated and extensible workflow. OGGM is modular and supports novel modelling workflows: it loves to be remixed and reused! OGGM also brings together a vibrant and friendly community of scientists, modellers and educators." https://oggm.org/ (24/10/25)
 
-Sarah Hanus, University of Zurich, Switzerland, linked OGGM and CWatM:
+Sarah Hanus, University of Zurich, Switzerland, linked OGGM and CWatM (you run OGGM and postprocess the results with the tools from L. Schuster and S. Hanus and then you can load it into CWatM)
 
 Hanus, S., Schuster, L., Burek, P., Maussion, F., Wada, Y., and Viviroli, D.: Coupling a large-scale glacier and hydrological model (OGGM v1.5.3 and CWatM V1.08) – towards an improved representation of mountain water resources in global assessments, Geosci. Model Dev., 17, 5123–5144, https://doi.org/10.5194/gmd-17-5123-2024
 
 pySnowClim
 ----------
 
-Abby C. Lute and Aranildo Lima and her/his team coupled CWatM with a sophisticated energy-balanced snow model:
+Abby C. Lute, Aranildo Lima, Raj Shrestha and their team coupled CWatM with a sophisticated energy-balanced snow model:
 
 Lute, A. C., Abatzoglou, J., and Link, T.: SnowClim v1.0: high-resolution snow model and data for the western United States, Geosci. Model Dev., 15, 5045–5071, https://doi.org/10.5194/gmd-15-5045-202
 
-You now can choose if you want to use SnowClimPy or the degree-day approach.
+You now can choose if you want to use pySnowClim or the degree-day approach.
 
-.. note:: 24/10/25 Works but still testing
+.. attention:: 1/11/25 Works but still testing
 
 
 
@@ -79,7 +91,7 @@ Fork our code from https://github.com/iiasa/CWatM and create your own branch.
 
 .. note::  a good documention on this has: https://pandas.pydata.org/pandas-docs/stable/development/contributing.html and https://docs.oggm.org/en/stable/contributing.html
 
-We also have a pyTest framework
+We also have a pytest framework. See the :ref:`Testing framework <rst_testing>` for more information.
 
 .. _license:
 

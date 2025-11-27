@@ -32,7 +32,7 @@ class interception(object):
     interceptEvap                        Array         simulated evaporation from water intercepted by vegetation              m    
     minInterceptCap                      Array         Maximum interception read from file for forest and grassland land cove  m    
     interceptStor                        Array         simulated vegetation interception storage                               m    
-    twothird                             Number        2025-03-02 00:00:00                                                     --   
+    twothird                             Number        2/3                                                     --
     EWRef                                Array         potential evaporation rate from water surface                           m    
     availWaterInfiltration               Array         quantity of water reaching the soil after interception, more snowmelt   m    
     SnowMelt                             Array         total snow melt from all layers                                         m    

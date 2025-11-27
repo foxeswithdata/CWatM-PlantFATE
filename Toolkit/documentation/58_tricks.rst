@@ -8,6 +8,9 @@ Tips and Tricks
 
 Here we collect some tricks which may mentioned on other pages of the documentation, but are overseen and might be helpful.
 
+Settings file
+=============
+
 Notepad++ for settingsfile
 ---------------------------
 
@@ -31,9 +34,12 @@ of the basin and the upstream area
 .. note:: 
 
     | If you start with a basin defined by the outlet of a basin e.g. 6.25 51.75
-    | You can generate a new mask map for the following runs by:
-    | **savebasinmap = True** in [OPTIONS]
-    | a basin.tif is generated in the output folder, which you can copy and use next time as:
+    | You can generate a new mask map for the following runs by adding in:
+    | [OPTIONS]
+    | **savebasinmap = True** 
+
+    | a basin.tif and an upstream area map are generated in the output folder, which you can copy and use next time as:
+
     | **MaskMap = your_directory/basin.tif**
 	
 Placeholder in settingsfile

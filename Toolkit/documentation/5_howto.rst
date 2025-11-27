@@ -1,3 +1,15 @@
+.. raw:: html
+
+   <pre style="font-size: 0.7em;">
+   Des Menschen Seele gleicht dem Wasser:
+   Vom Himmel kommt es, zum Himmel steigt es,
+   und wieder nieder zur Erde muss es,
+   ewig wechselnd
+   Johann W. von Goethe
+   Gesang der Geister über dem Wasser 
+   </pre>
+
+
 
 #####################################
 **5. HOW-TO-GUIDE** Problem oriented

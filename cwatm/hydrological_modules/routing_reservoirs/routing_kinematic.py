@@ -472,7 +472,9 @@ class routing_kinematic(object):
 
         self.var.sumsideflow = 0
         self.var.prechannelStorage = self.var.channelAlpha * self.var.chanLength * self.var.discharge ** self.var.beta
-        avgDis = 0
+
+        self.var.avgdischarge = globals.inZero.copy()
+        self.var.maxdischarge = globals.inZero.copy()
 
         for subrouting in range(self.var.noRoutingSteps):
 
@@ -514,7 +516,9 @@ class routing_kinematic(object):
             self.var.discharge = Qnew.copy()
 
             self.var.sumsideflow = self.var.sumsideflow + sideflowChanM3
-            avgDis = avgDis + self.var.discharge / self.var.noRoutingSteps
+            # calculating average discharge during day and max discharge
+            self.var.avgdischarge = self.var.avgdischarge + self.var.discharge / self.var.noRoutingSteps
+            self.var.maxdischarge = np.where(self.var.discharge > self.var.maxdischarge, self.var.discharge , self.var.maxdischarge)
 
         # -- end substeping ---------------------
 
@@ -530,7 +534,7 @@ class routing_kinematic(object):
 
         # discharge only at the outlets to sea or endorheic lakes, otherwise value is 0.
         # as average discharge over timestep e.g. 1 day
-        self.var.dis_outlet = np.where(self.var.lddCompress == 5, avgDis, 0.)
+        self.var.dis_outlet = np.where(self.var.lddCompress == 5, self.var.avgdischarge, 0.)
 
         if checkOption('inflow'):
             self.var.QInM3Old = self.var.inflowM3.copy()

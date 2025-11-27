@@ -1,7 +1,7 @@
 
-#######
-Recover
-#######
+###################
+Recover former runs
+###################
 
 .. contents:: 
     :depth: 3
