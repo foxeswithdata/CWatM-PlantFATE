@@ -1,13 +1,29 @@
+# Purpose: MODFLOW coupling module integrating external groundwater simulation with CWatM.
+# Manages bidirectional data exchange between surface and groundwater models.
+# Supports transient groundwater simulation with dynamic surface-groundwater interaction.
 import numpy as np
 import os
 
 from cwatm.management_modules.data_handling import *
 from cwatm.hydrological_modules.groundwater_modflow.modflow6 import ModFlowSimulation
-# impotlib to install libraries on the fly if needed e.g. rasterio
+# importlib to install libraries on the fly if needed e.g. rasterio
 import importlib
 
 
 def is_float(s):
+    """
+    Check if a string can be converted to float.
+
+    Parameters
+    ----------
+    s : str
+        String to test for float conversion
+
+    Returns
+    -------
+    bool
+        True if string can be converted to float, False otherwise
+    """
     try:
         float(s)
         return True
@@ -17,10 +33,22 @@ def is_float(s):
 
 def decompress(map, nanvalue=None):
     """
-    Decompressing CWatM maps from 1D to 2D with missing values
+    Decompress CWatM maps from 1D to 2D with missing values.
 
-    :param map: compressed map
-    :return: decompressed 2D map
+    Converts compressed 1D arrays back to 2D spatial maps using
+    stored mask information and optionally replaces NaN values.
+
+    Parameters
+    ----------
+    map : array_like
+        Compressed 1D array to decompress
+    nanvalue : float, optional
+        Value to replace NaN entries with (default: None)
+
+    Returns
+    -------
+    numpy.ndarray
+        2D spatial map with missing values restored
     """
 
     dmap = maskinfo['maskall'].copy()
@@ -32,64 +60,107 @@ def decompress(map, nanvalue=None):
 
 
 class groundwater_modflow:
+    """
+    MODFLOW groundwater coupling module for CWatM.
+
+    This class provides the interface between CWatM and MODFLOW 6 for
+    coupled surface-groundwater modeling. It handles data conversion,
+    model initialization, and dynamic groundwater calculations.
+
+    Attributes
+    ----------
+    var : object
+        Model variables container
+    model : object
+        CWatM model instance
+    modflow : ModFlowSimulation
+        MODFLOW 6 simulation instance
+    domain : dict
+        Spatial domain parameters
+    indices : dict
+        Index arrays for CWatM-MODFLOW conversion
+
+    **Global variables**
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    modflow                              Flag          True if modflow_coupling = True in settings file                        bool 
+    sum_gwRecharge                       Array         groundwater recharge                                                    m    
+    gwdepth_observations                 Array         Input, gw_depth_observations, groundwater depth observations            m    
+    gwdepth_adjuster                     Array         Groundwater depth adjuster                                              m    
+    baseflow                             Array         simulated baseflow (= groundwater discharge to river)                   m    
+    capillar                             Array         Flow from groundwater to the third CWATM soil layer. Used with MODFLOW  m    
+    capriseindex                         Array                                                                                 --   
+    soildepth12                          Array         Total thickness of layer 2 and 3                                        m    
+    leakageriver_factor                  Array                                                                                 --   
+    leakagelake_factor                   Array                                                                                 --   
+    modflow_timestep                     Array         Chosen ModFlow model timestep (1day, 7days, 30days, etc.)               day  
+    head                                 Array         Simulated ModFlow water level [masl]                                    m    
+    gwdepth_adjusted                     Array         Adjusted depth to groundwater table                                     m    
+    gwdepth                              Array         Depth to groundwater table                                              m    
+    modflow_cell_area                    Array                                                                                 --   
+    modflowsteady                        Flag          True if modflow_steadystate = True in settings file                     bool 
+    Ndays_steady                         Flag          Number of steady state run before the transient simulation              bool 
+    channel_ratio                        Array                                                                                 --   
+    modflowtotalSoilThickness            Array         Array (nrows, ncol) used to compute water table depth in post-processi  m    
+    load_init_water_table                Flag                                                                                  --   
+    GW_pumping                           Flag          Input, True if Groundwater_pumping=True                                 bool 
+    use_complex_solver_for_modflow       Flag                                                                                  --   
+    use_super_complex_solver_for_modflo  Flag                                                                                  --   
+    availableGWStorageFraction           Array                                                                                 --   
+    wells_index                          Array                                                                                 --   
+    depth                                Array                                                                                 --   
+    sumed_sum_gwRecharge                 Array                                                                                 --   
+    modflow_compteur                     Number        Counts each day relatively to the chosen ModFlow timestep, allow to ru  day  
+    modflow_watertable                   Array                                                                                 --   
+    writeerror                           Flag                                                                                  --   
+    modflowdiscrepancy                   Array                                                                                 --   
+    groundwater_storage_top_layer        Array                                                                                 --   
+    groundwater_storage_available        Array         Groundwater storage. Used with MODFLOW.                                 m    
+    gwstorage_full                       Number        Groundwater storage at full capacity                                    m    
+    permeability                         Array                                                                                 --   
+    modfPumpingM_actual                  Array         Actual groundwater pumping. Used with MODFLOW.                          m    
+    gwdepth_difference_sim_obs           Array         Difference between simulated and observed groundwater table             m    
+    modflow_head_adjusted                Array                                                                                 --   
+    cellArea                             Array         Area of cell                                                            m2   
+    waterdemandFixed                     Array                                                                                 --   
+    modfPumpingM                         Array                                                                                 --   
+    ===================================  ==========    ======================================================================  =====
+
+    """
+
     def __init__(self, model):
+        """
+        Initialize the groundwater-MODFLOW coupling module.
+
+        Parameters
+        ----------
+        model : object
+            CWatM model instance containing variables and configuration
+        """
         self.var = model.var
         self.model = model
 
-    """
-
-    **Global variables**
-
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    modflow                                Flag: True if modflow_coupling = True in settings file                  --   
-    sum_gwRecharge                         groundwater recharge                                                    m    
-    cellArea                               Area of cell                                                            m2   
-    gwdepth_observations                   Input, gw_depth_observations, groundwater depth observations            m    
-    gwdepth_adjuster                       Groundwater depth adjuster                                              m    
-    baseflow                               simulated baseflow (= groundwater discharge to river)                   m    
-    capillar                               Flow from groundwater to the third CWATM soil layer. Used with MODFLOW  m    
-    capriseindex                                                                                                   --   
-    soildepth12                            Total thickness of layer 2 and 3                                        m    
-    leakageriver_factor                                                                                            --   
-    leakagelake_factor                                                                                             --   
-    modflow_timestep                       Chosen ModFlow model timestep (1day, 7days, 30days, etc.)               --   
-    head                                   Simulated ModFlow water level [masl]                                    m    
-    gwdepth_adjusted                       Adjusted depth to groundwater table                                     m    
-    gwdepth                                Depth to groundwater table                                              m    
-    modflow_cell_area                                                                                              --   
-    modflowsteady                          True if modflow_steadystate = True in settings file                     --   
-    Ndays_steady                           Number of steady state run before the transient simulation              --   
-    channel_ratio                                                                                                  --   
-    modflowtotalSoilThickness              Array (nrows, ncol) used to compute water table depth in post-processi  m    
-    load_init_water_table                                                                                          --   
-    GW_pumping                             Input, True if Groundwater_pumping=True                                 bool 
-    use_complex_solver_for_modflow                                                                                 --   
-    use_super_complex_solver_for_modflow                                                                           --   
-    availableGWStorageFraction                                                                                     --   
-    wells_index                                                                                                    --   
-    depth                                                                                                          --   
-    sumed_sum_gwRecharge                                                                                           --   
-    modflow_compteur                       Counts each day relatively to the chosen ModFlow timestep, allow to ru  --   
-    modflow_watertable                                                                                             --   
-    writeerror                                                                                                     --   
-    modflowdiscrepancy                                                                                             --   
-    groundwater_storage_top_layer                                                                                  --   
-    groundwater_storage_available          Groundwater storage. Used with MODFLOW.                                 m    
-    gwstorage_full                         Groundwater storage at full capacity                                    m    
-    permeability                                                                                                   --   
-    modfPumpingM_actual                    Actual groundwater pumping. Used with MODFLOW.                          m    
-    gwdepth_difference_sim_obs             Difference between simulated and observed groundwater table             m    
-    modflow_head_adjusted                                                                                          --   
-    waterdemandFixed                                                                                               --   
-    modfPumpingM                                                                                                   --   
-    =====================================  ======================================================================  =====
-
-    **Functions**
-    """
 
     def CWATM2modflow(self, variable, correct_boundary=False):
+        """
+        Convert CWatM 2D variables to MODFLOW 2D format.
+
+        Transforms flow variables from CWatM spatial resolution to MODFLOW
+        spatial resolution using area-weighted averaging.
+
+        Parameters
+        ----------
+        variable : array_like
+            CWatM variable to convert (flow rate L/T)
+        correct_boundary : bool, optional
+            Apply boundary correction (default: False)
+
+        Returns
+        -------
+        numpy.ndarray
+            Variable converted to MODFLOW 2D format
+        """
         # Converting flow [L/T] from 2D CWatM map to 2D ModFlow map
         if correct_boundary:
             self.var.modflow_cell_area = self.corrected_modflow_cell_area.ravel()
@@ -101,9 +172,28 @@ class groundwater_modflow:
             variable.ravel()[self.indices['CWatM_index']] * self.indices['area'],
             minlength=self.domain['nrow'] * self.domain['ncol']
         ) / self.var.modflow_cell_area).reshape((self.domain['nrow'], self.domain['ncol'])).astype(variable.dtype)
+
         return array
 
     def modflow2CWATM(self, variable, correct_boundary=False):
+        """
+        Convert MODFLOW 2D variables to CWatM 2D format.
+
+        Transforms flow variables from MODFLOW spatial resolution to CWatM
+        spatial resolution using area-weighted averaging.
+
+        Parameters
+        ----------
+        variable : array_like
+            MODFLOW variable to convert (flow rate L/T)
+        correct_boundary : bool, optional
+            Apply boundary correction (default: False)
+
+        Returns
+        -------
+        numpy.ndarray
+            Variable converted to CWatM 2D format
+        """
         # Converting flow [L/T] from 2D ModFLow map to 2D CWatM map
         variable_copy = variable.copy()
         variable_copy[self.modflow.basin == False] = 0
@@ -117,7 +207,8 @@ class groundwater_modflow:
         array = (np.bincount(
             self.indices['CWatM_index'],
             weights=variable_copy.ravel()[self.indices['ModFlow_index']] * self.indices['area'],
-            minlength=maskinfo['shape'][0] * maskinfo['shape'][1]) / decompress(cwatm_cell_area, nanvalue=0)).reshape(
+            minlength=maskinfo['shape'][0] * maskinfo['shape'][1]) / \
+                 decompress(cwatm_cell_area, nanvalue=0)).reshape(
             maskinfo['shape']).astype(variable_copy.dtype)
 
         array[maskinfo['mask'] == 1] = np.nan
@@ -149,9 +240,16 @@ class groundwater_modflow:
         return array
 
     def initial(self):
+        """
+        Initialize MODFLOW groundwater model setup.
 
-        # check if we we are using steady state option. Not yet implemented in this version, the user should provide an
-        # estimate of the initial water table ("head" variable in the initial part)
+        Sets up the MODFLOW 6 simulation including model domain, parameters,
+        initial conditions, and establishes the coupling interface with CWatM.
+        Configures aquifer properties, boundary conditions, and solver settings.
+        """
+
+        # check if we we are using steady state option. Not yet implemented in this version,
+        # the user should provide an estimate of the initial water table ("head" variable in the initial part)
 
         # ModFlow6 version is only daily currently
         self.var.modflowsteady = False  # returnBool('modflow_steadystate')
@@ -174,7 +272,7 @@ class groundwater_modflow:
             modflow_directory = cbinding('PathGroundwaterModflow')
             modflow_directory_output = cbinding('PathGroundwaterModflowOutput')
             directory_mf6dll = cbinding('path_mf6dll')
-            if not (os.path.isdir(directory_mf6dll)):
+            if not os.path.isdir(directory_mf6dll):
                 msg = "Error 222: Path to Modflow6 files does not exists "
                 raise CWATMDirError(directory_mf6dll, msg, sname='path_mf6dll')
             nlay = int(loadmap('nlay'))
@@ -197,11 +295,11 @@ class groundwater_modflow:
                 domain['nrow'] = int(src.profile['height'])
                 domain['ncol'] = int(src.profile['width'])
                 domain['west'] = src.profile['transform'].c
-                domain['east'] = src.profile['transform'].c + (src.profile['width'] - 1) * abs(
-                    src.profile['transform'].a)
+                domain['east'] = (src.profile['transform'].c +
+                                  (src.profile['width'] - 1) * abs(src.profile['transform'].a))
                 domain['north'] = src.profile['transform'].f
-                domain['south'] = src.profile['transform'].f - (src.profile['height'] - 1) * abs(
-                    src.profile['transform'].e)
+                domain['south'] = (src.profile['transform'].f -
+                                   (src.profile['height'] - 1) * abs(src.profile['transform'].e))
                 # domain variables will be used here, and in data handlind to save netcdf maps
 
             # Coef to multiply transmissivity and storage coefficient (because ModFlow convergence is better if
@@ -219,7 +317,7 @@ class groundwater_modflow:
                 self.var.waterdemandFixed = False
 
                 # if a correcting add river_percent_factor is in settingsfile add this to self.var.channel_ratio,
-                # but 0<= self.var.channel_ratio <= 1 correcting the channellratio from the value indicated in the
+                # but 0 <= self.var.channel_ratio <= 1 correcting the channelratio from the value indicated in the
                 # settings file
                 factor_channelratio = 0.
                 if "river_percent_factor" in binding:
@@ -572,6 +670,13 @@ class groundwater_modflow:
             # print('=> ModFlow coupling is not used')
 
     def dynamic(self):
+        """
+        Execute dynamic groundwater calculations for current time step.
+
+        Handles groundwater recharge input, pumping rates, runs MODFLOW simulation,
+        and processes results for feedback to CWatM. Manages temporal coupling
+        and data exchange between surface and groundwater models.
+        """
 
         # Sumed recharge is re-initialized here for water budget computing purpose
         self.var.modfPumpingM_actual = globals.inZero.copy()  # compressArray(self.modflow2CWATM(self.permeability[0]*0))

@@ -33,6 +33,7 @@ from cwatm import __author__, __version__, __date__, __copyright__, __maintainer
 
 # to work with some versions of Linux  - a workaround with pyexpat is needed
 from pyexpat import *
+import traceback
 
 import os
 import numpy as np
@@ -41,6 +42,9 @@ import glob
 import sys
 import time
 import datetime
+import subprocess
+from pathlib import Path
+
 
 import numpy
 import pandas
@@ -49,14 +53,14 @@ import netCDF4
 from osgeo import gdal
 from osgeo import osr
 
-
-
 from cwatm.management_modules.configuration import globalFlags, settingsfile, versioning, platform1, parse_configuration, read_metanetcdf, dateVar, CWATMRunInfo, outputDir, timeMesSum, timeMesString, globalclear, calibclear
 from cwatm.management_modules.data_handling import Flags, cbinding
 from cwatm.management_modules.timestep import checkifDate
 from cwatm.management_modules.dynamicModel import ModelFrame
+from cwatm.management_modules.checks import save_check
 from cwatm.cwatm_model import CWATModel
 from cwatm.management_modules.globals import *
+from cwatm.version import *
 
 if "modflow_coupling" in option:
     if checkOption('modflow_coupling'):
@@ -65,6 +69,7 @@ if "modflow_coupling" in option:
 
 #import xlrd
 #import openpyxl
+gdal.UseExceptions()
 
 # ---------------------------
 
@@ -77,15 +82,14 @@ def usage():
     * -v --veryquiet   no output progression is given
     * -l --loud        output progression given as time step, date and discharge
     * -c --check       input maps and stack maps are checked, output for each input map BUT no model run
-    * -h --noheader    .tss file have no header and start immediately with the time series
     * -t --printtime   the computation time for hydrological modules are printed
 
     """
-    print('CWatM - Community Water Model')
-    print('Authors: ', __author__)
-    print('Version: ', __version__)
-    print('Date: ', __date__)
-    print('Status: ', __status__)
+    #print('CWatM - Community Water Model')
+    #print('Authors: ', __author__)
+    #print('Version: ', __version__)
+    #print('Date: ', __date__)
+    #print('Status: ', __status__)
     print("""
     Arguments list:
     settings.ini     settings file
@@ -94,7 +98,6 @@ def usage():
     -v --veryquiet   no output progression is given
     -l --loud        output progression given as time step, date and discharge
     -c --check       input maps and stack maps are checked, output for each input map BUT no model run
-    -h --noheader    .tss file have no header and start immediately with the time series
     -t --printtime   the computation time for hydrological modules are printed
     -w --warranty    copyright and warranty information
     """)
@@ -115,14 +118,13 @@ def CWATMexe(settings):
 
 
     """
-
     parse_configuration(settings)
     # print option
     # print binding
     # read all the possible option for modelling and for generating output
     # read the settings file with all information about the catchments(s)
     # read the meta data information for netcdf outputfiles
-    read_metanetcdf(cbinding('metaNetcdfFile'), 'metaNetcdfFile')
+    read_metanetcdf('metaNetcdf.xml')
 
     # os.chdir(outputDir[0])
     # this prevent from using relative path in settings!
@@ -131,6 +133,9 @@ def CWATMexe(settings):
     # checks if end date is later than start date and puts both in modelSteps
     if Flags['check']:
         dateVar["intEnd"] = dateVar["intStart"]
+        versioning['check'] = ""
+        versioning['loadinput'] = True
+        versioning['refvalue'] = False
 
     CWATM = CWATModel()
     stCWATM = ModelFrame(CWATM, firstTimestep=dateVar["intStart"], lastTimeStep=dateVar["intEnd"])
@@ -187,7 +192,7 @@ def CWATMexe2(settings,meteo):
 
     """
     parse_configuration(settings)
-    read_metanetcdf(cbinding('metaNetcdfFile'), 'metaNetcdfFile')
+    read_metanetcdf('metaNetcdf.xml')
 
     checkifDate('StepStart', 'StepEnd', 'SpinUp', cbinding('PrecipitationMaps'))
     # checks if end date is later than start date and puts both in modelSteps
@@ -198,7 +203,10 @@ def CWATMexe2(settings,meteo):
 
 
     CWATM = CWATModel()
+    # if GUI calls to check the maskmap
+    if Flags['maskmap']:  return
     CWATM.var.meteo = meteo
+
     stCWATM = ModelFrame(CWATM, firstTimestep=dateVar["intStart"], lastTimeStep=dateVar["intEnd"])
 
     start_time = datetime.datetime.now().time()
@@ -255,7 +263,7 @@ def GNU():
     sys.exit(1)
 
 
-def headerinfo():
+def headerinfo(usage=0):
     """
     Print the information on top of each run
     
@@ -263,61 +271,113 @@ def headerinfo():
     in order to give more information of the settingsfile and the version of cwatm
     this information is put in the result files .tss and .nc
     """
-
+    versioning['git'] = get_version_info()
     versioning['exe'] = __file__
+    versioning['lastdate'] = versioning['git'] ['build_timestamp'][0:10]
+    __date__ = versioning['lastdate']
+    versioning['lastfile'] = "___"
+    # versioning all input files
+    versioning['input'] = ""
+
+
     realPath = os.path.dirname(os.path.realpath(versioning['exe']))
-    if Flags['calib'] or Flags['warm']:
-        versioning['lastdate'] = "01.06.2021"
-        __date__ = versioning['lastdate']
-        versioning['lastfile'] = "___"
-    else:
-        i = 0
-        for (dirpath, _, filenames) in os.walk(realPath):
-            for file in filenames:
-                if file[-3:] == ".py":
-                    i += 1
-                    file1 = dirpath + "/" + file
-                    if i == 1:
-                        lasttime = os.path.getmtime(file1)
-                        lastfile = file
-                    else:
-                        if os.path.getmtime(file1) > lasttime:
-                            lasttime = os.path.getmtime(file1)
-                            lastfile = file
-        versioning['lastdate'] = datetime.datetime.fromtimestamp(lasttime).strftime("%Y/%m/%d %H:%M")
-        __date__ = versioning['lastdate']
-        versioning['lastfile'] = lastfile
+
+
     versioning['version'] = __version__
     versioning['platform'] = platform1
+    hash = versioning['git']['git_branch'] + " " + versioning['git']['git_short_hash']
+
+    # test git hash agains current version
+    try:
+        repo_path = Path(__file__).parents[1]
+
+        result = subprocess.run(["git", "diff", "--name-only",
+                   versioning['git']['git_hash']],cwd=repo_path, capture_output=True, text=True, check=True)
+        all_files = [f.strip() for f in result.stdout.split('\n') if f.strip()]
+
+        # Filter for .py files and exclude version.py
+        python_files = []
+        for file_path in all_files:
+            path = Path(file_path)
+            if (path.suffix == '.py' and
+                    path.name != 'version.py' and
+                    'version.py' not in str(path)):
+                python_files.append(file_path)
+
+
+
+        if python_files !=[]:
+            veri = " dirty "
+        else:
+            veri = " verified "
+    except:
+        veri = " not checked "
+
+
+    s = "CWATM - Community Water Model Version: " + hash + veri +", Date: " + versioning['lastdate'] + "\n"
+    s += "International Institute of Applied Systems Analysis (IIASA)\n"
+    s += "Running under platform: " + platform1 + "\n"
+    s += "-----------------------------------------------------------"
+
+
+    if usage == 1:
+        if veri == " verified ":
+            s += "\nNo change to last git commit\n"
+        elif veri == " not checked ":
+            s += "\nGit cannot be checked\n"
+        else:
+            s += "\nChanged files to last git commit:\n"
+            for pyf in python_files:
+                s += pyf +"\n"
+
 
     if not (Flags['veryquiet']) and not (Flags['quiet']):
-        print("CWATM - Community Water Model ", __version__, " Date: ", versioning['lastdate'], " ")
-        print("International Institute of Applied Systems Analysis (IIASA)")
-        print("Running under platform: ", platform1)
-        print("-----------------------------------------------------------")
+        print (s)
+
+    return s
 
 def mainwarm(settings, args, meteo):
     success = False
     #print ("Warm start CWatM")
 
     calibclear()
+    if ("pytest" in sys.modules) or ("PySide6" in sys.modules):
+        globalclear()
+
     globalFlags(settings, args, settingsfile, Flags)
     Flags['warm'] = True
 
-    headerinfo()
-    if meteo.size == 0:
+    s = headerinfo()
+
+    if Flags['gui']:
+        Flags['warm'] = False
+        if Flags['maskmap']:
+            CWATMexe2(settingsfile[0], meteo)
+            return dateVar['maskmap']
+        else:
+            try:
+                success, last_dis = CWATMexe2(settingsfile[0], meteo)
+                return success, last_dis
+            except Exception as e:
+                # return in a controlled way with success = False
+                traceback.print_exc()
+                return False, 0
+
+    
+    if isinstance(meteo, np.ndarray):
+        success, last_dis = CWATMexe2(settingsfile[0],meteo)
+    else:
         Flags['warm'] = False
         success, last_dis = CWATMexe(settingsfile[0])
-    else:
-        success, last_dis = CWATMexe2(settingsfile[0],meteo)
-
     return success, last_dis
 
 
 
 def main(settings, args):
     success = False
-    if Flags['test']: globalclear()
+    # Check if excution comes from pytest or from GUi -> delete all info from previous runs
+    if ("pytest" in sys.modules) or ("PySide6" in sys.modules):
+        globalclear()
 
     globalFlags(settings, args, settingsfile, Flags)
     if Flags['use']:
@@ -329,14 +389,32 @@ def main(settings, args):
 
     if Flags['calib']:
         meteo,success, last_dis = CWATMexe(settingsfile[0])
+        Flags['calib'] = False
         return meteo,success, last_dis
     else:
-        success, last_dis = CWATMexe(settingsfile[0])
-        return success, last_dis
+        try:
+            if Flags['check']:
+                Flags['warm'] = False
+                versioning['checkargs'] = args
+                success, last_dis = CWATMexe(settingsfile[0])
+                save_check()
+                last_dis = versioning['check']
+                versioning.clear()
+                Flags['check'] = False
+                return success, last_dis
+
+            else:
+                success, last_dis = CWATMexe(settingsfile[0])
+                return success, last_dis
+        except Exception as e:
+            # return in a controlled way with success = False
+            traceback.print_exc()
+            return False, 0
 
 
 def parse_args():
     if len(sys.argv) < 2:
+        headerinfo(1)
         usage()
         sys.exit(0)
     else:

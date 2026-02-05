@@ -1,11 +1,12 @@
 # -------------------------------------------------------------------------
 # Name:        Lakes and reservoirs module
-# Purpose:
+# Purpose: Large lakes and reservoirs module for major water body simulation.
+# Handles complex reservoir operations, storage dynamics, and release scheduling.
+# Supports water management decisions for flood control and water supply.
 #
-# Author:      PB
-#
+# Author:      PB, MS, DF
 # Created:     01/08/2016
-# Copyright:   (c) PB 2016
+# CWatM is licensed under GNU GENERAL PUBLIC LICENSE Version 3.
 # -------------------------------------------------------------------------
 
 from cwatm.management_modules.data_handling import *
@@ -16,187 +17,181 @@ import importlib
 
 class lakes_reservoirs(object):
     """
-    LAKES AND RESERVOIRS
-
-    Note:
-
-        Calculate water retention in lakes and reservoirs
-
-        Using the **Modified Puls approach** to calculate retention of a lake
-        See also: LISFLOOD manual Annex 3 (Burek et al. 2013)
-
-        for Modified Puls Method the Q(inflow)1 has to be used. It is assumed that this is the same as Q(inflow)2 for the first timestep
-        has to be checked if this works in forecasting mode!
-
-        Lake Routine using Modified Puls Method (see Maniak, p.331ff)
-
-        .. math::
-             {Qin1 + Qin2 \\over{2}} - {Qout1 + Qout2 \\over{2}} = {S2 - S1 \\over{\\delta time}}
-
-        changed into:
-
-        .. math::
-             {S2 \\over{time + Qout2/2}} = {S1 \\over{dtime + Qout1/2}} - Qout1 + {Qin1 + Qin2 \\over{2}}
-
-        Outgoing discharge (Qout) are linked to storage (S) by elevation.
-
-        Now some assumption to make life easier:
-
-        1.) storage volume is increase proportional to elevation: S = A * H where: H: elevation, A: area of lake
-
-        2.) :math:`Q_{\\mathrm{out}} = c * b * H^{2.0}` (c: weir constant, b: width)
-
-             2.0 because it fits to a parabolic cross section see (Aigner 2008) (and it is much easier to calculate (that's the main reason)
-
-        c: for a perfect weir with mu=0.577 and Poleni: :math:`{2 \\over{3}} \\mu * \\sqrt{2*g} = 1.7`
-
-        c: for a parabolic weir: around 1.8
-
-        because it is a imperfect weir: :math:`C = c * 0.85 = 1.5`
-
-        results in formular: :math:`Q = 1.5 * b * H^2 = a*H^2 -> H = \\sqrt{Q/a}`
-
-        Solving the equation:
-
-        :math:`{S2 \\over{dtime + Qout2/2}} = {S1 \\over{dtime + Qout1/2}} - Qout1 + {Qin1 + Qin2 \\over{2}}`
-
-        :math:`SI = {S2 \\over{dtime}} + {Qout2 \\over{2}} = {A*H \\over{DtRouting}} + {Q \\over{2}} = {A \\over{DtRouting*\\sqrt{a}* \\sqrt{Q}}} + {Q \\over{2}}`
-
-        -> replacement: :math:`{A \\over{DtSec * \\sqrt{a}}} = Lakefactor, Y = \\sqrt{Q}`
-
-        :math:`Y^2 + 2 * Lakefactor *Y - 2 * SI=0`
-
-        solution of this quadratic equation:
-
-        :math:`Q = (-LakeFactor + \\sqrt{LakeFactor^2+2*SI})^2`
-
-
+    Lakes and reservoirs module for water retention and release calculations.
+    
+    Simulates water storage and outflow dynamics in natural lakes and artificial
+    reservoirs using modified Puls method for lakes and rule-based operations for
+    reservoirs. Handles different water body types including wetlands with variable
+    area characteristics.
+    
+    The module implements:
+    - Modified Puls approach for natural lake water balance
+    - Rule-based reservoir operations with multiple storage zones
+    - Wetland dynamics with seasonal area variations
+    - Water body initialization from spatial datasets and Excel configurations
+    - Reservoir transfers and water supply/demand management
+    
     **Global variables**
 
-    =====================================  ======================================================================  =====
-    Variable [self.var]                    Description                                                             Unit 
-    =====================================  ======================================================================  =====
-    modflow                                Flag: True if modflow_coupling = True in settings file                  --   
-    load_initial                           Settings initLoad holds initial conditions for variables                input
-    wastewater_to_reservoirs                                                                                       --   
-    saveInit                               Flag: if true initial conditions are saved                              --   
-    waterBodyID                            lakes/reservoirs map with a single ID for each lake/reservoir           --   
-    waterBodyOut                           biggest outlet (biggest accumulation of ldd network) of a waterbody     --   
-    dirUp                                  river network in upstream direction                                     --   
-    ldd_LR                                 change river network (put pits in where lakes are)                      --   
-    lddCompress_LR                         compressed river network lakes/reservoirs (without missing values)      --   
-    dirUp_LR                               river network direction upstream lake/reservoirs                        --   
-    dirupLen_LR                            number of bifurcation upstream lake/reservoir                           --   
-    dirupID_LR                             index river upstream lake/reservoir                                     --   
-    downstruct_LR                          river network downstream lake/reservoir                                 --   
-    catchment_LR                           catchments lake/reservoir                                               --   
-    dirDown_LR                             river network direktion downstream lake/reservoir                       --   
-    lendirDown_LR                          number of river network connections lake/reservoir                      --   
-    compress_LR                            boolean map as mask map for compressing lake/reservoir                  --   
-    decompress_LR                          boolean map as mask map for decompressing lake/reservoir                --   
-    waterBodyOutC                          compressed map biggest outlet of each lake/reservoir                    --   
-    waterBodyID_C                                                                                                  --   
-    resYear                                Settings waterBodyYear, with first operating year of reservoirs         map  
-    resYearC                               Compressed map of resYear                                               --   
-    waterBodyTyp                           Settings, waterBodyTyp, with waterbody type 1-4                         map  
-    waterBodyTyp_unchanged                                                                                         --   
-    includeType4                           True if there is a reservoir of waterbody type 4 in waterBodyTyp map    bool 
-    waterBodyTypC                          water body types 3 reservoirs and lakes (used as reservoirs but before  --   
-    resVolumeC                             compressed map of reservoir volume                                      Milli
-    resId_restricted                                                                                               --   
-    waterBodyBuffer                                                                                                --   
-    waterBodyBuffer_wwt                                                                                            --   
-    lakeArea                               area of each lake/reservoir                                             m2   
-    lakeAreaC                              compressed map of the area of each lake/reservoir                       m2   
-    lakeDis0                               compressed map average discharge at the outlet of a lake/reservoir      m3/s 
-    lakeDis0C                              average discharge at the outlet of a lake/reservoir                     m3/s 
-    lakeAC                                 compressed map of parameter of channel width, gravity and weir coeffic  --   
-    reservoir_transfers_net_M3             net reservoir transfers, after exports, transfers, and imports          m3   
-    reservoir_transfers_in_M3              water received into reservoirs                                          m3   
-    reservoir_transfers_out_M3             water given from reservoirs                                             m3   
-    reservoir_transfers_from_outside_M3    water received into reservoirs from Outside                             m3   
-    reservoir_transfers_to_outside_M3      water given from reservoirs to the Outside                              m3   
-    resVolumeOnlyReservoirs                                                                                        --   
-    resVolumeOnlyReservoirsC                                                                                       --   
-    resVolume                                                                                                      --   
-    lakeEvaFactorC                         compressed map of a factor which increases evaporation from lake becau  --   
-    reslakeoutflow                                                                                                 --   
-    lakeVolume                             volume of lakes                                                         m3   
-    outLake                                outflow from lakes                                                      m    
-    lakeInflow                                                                                                     --   
-    lakeOutflow                                                                                                    --   
-    reservoirStorage                                                                                               --   
-    MtoM3C                                 conversion factor from m to m3 (compressed map)                         --   
-    EvapWaterBodyM                         Evaporation from lakes and reservoirs                                   m    
-    lakeResInflowM                                                                                                 --   
-    lakeResOutflowM                                                                                                --   
-    lakedaycorrect                                                                                                 --   
-    lakeFactor                             factor for the Modified Puls approach to calculate retention of the la  --   
-    lakeFactorSqr                          square root factor for the Modified Puls approach to calculate retenti  --   
-    lakeInflowOldC                         inflow to the lake from previous days                                   m/3  
-    lakeOutflowC                           compressed map of lake outflow                                          m3/s 
-    lakeLevelC                             compressed map of lake level                                            m    
-    conLimitC                                                                                                      --   
-    normLimitC                                                                                                     --   
-    floodLimitC                                                                                                    --   
-    adjust_Normal_FloodC                                                                                           --   
-    norm_floodLimitC                                                                                               --   
-    minQC                                                                                                          --   
-    normQC                                                                                                         --   
-    nondmgQC                                                                                                       --   
-    deltaO                                                                                                         --   
-    deltaLN                                                                                                        --   
-    deltaLF                                                                                                        --   
-    deltaNFL                                                                                                       --   
-    reservoirFillC                                                                                                 --   
-    waterBodyTypCTemp                                                                                              --   
-    waterBodyTypTemp                                                                                               --   
-    sumEvapWaterBodyC                                                                                              --   
-    sumlakeResInflow                                                                                               --   
-    sumlakeResOutflow                                                                                              --   
-    lakeResStorage_release_ratio                                                                                   --   
-    lakeResStorage_release_ratioC                                                                                  --   
-    lakeIn                                                                                                         --   
-    lakeEvapWaterBodyC                                                                                             --   
-    resEvapWaterBodyC                                                                                              --   
-    lakeResInflowM_2                                                                                               --   
-    lakeResOutflowM_2                                                                                              --   
-    downstruct                                                                                                     --   
-    lakeStorage                                                                                                    --   
-    resStorage                                                                                                     --   
-    cellArea                               Area of cell                                                            m2   
-    DtSec                                  number of seconds per timestep (default = 86400)                        s    
-    MtoM3                                  Coefficient to change units                                             --   
-    InvDtSec                                                                                                       --   
-    UpArea1                                upstream area of a grid cell                                            m2   
-    lddCompress                            compressed river network (without missing values)                       --   
-    lakeEvaFactor                          a factor which increases evaporation from lake because of wind          --   
-    dtRouting                              number of seconds per routing timestep                                  s    
-    evapWaterBodyC                         Compressed version of EvapWaterBodyM                                    m    
-    sumLakeEvapWaterBodyC                                                                                          --   
-    noRoutingSteps                                                                                                 --   
-    sumResEvapWaterBodyC                                                                                           --   
-    discharge                              Channel discharge                                                       m3/s 
-    inflowDt                                                                                                       --   
-    prelakeResStorage                                                                                              --   
-    runoff                                                                                                         --   
-    includeWastewater                                                                                              --   
-    reservoir_transfers_net_M3C                                                                                    --   
-    reservoir_transfers_in_M3C                                                                                     --   
-    reservoir_transfers_out_M3C                                                                                    --   
-    reservoir_transfers_from_outside_M3C                                                                           --   
-    reservoir_transfers_to_outside_M3C                                                                             --   
-    lakeVolumeM3C                          compressed map of lake volume                                           m3   
-    lakeStorageC                                                                                                   --   
-    reservoirStorageM3C                                                                                            --   
-    lakeResStorageC                                                                                                --   
-    lakeResStorage                                                                                                 --   
-    =====================================  ======================================================================  =====
+    ===================================  ==========    ======================================================================  =====
+    Variable [self.var]                  Type          Description                                                             Unit 
+    ===================================  ==========    ======================================================================  =====
+    modflow                              Flag          True if modflow_coupling = True in settings file                        bool 
+    load_initial                         Flag          Settings initLoad holds initial conditions for variables                bool 
+    wastewater_to_reservoirs             Array                                                                                 --   
+    saveInit                             Flag          If true initial conditions are saved                                    bool 
+    reservoir_info                       List          Number of lakes and reservoirs in Excel                                 --   
+    reservoir_transfers                  Array         [['Giving reservoir'][i], ['Receiving reservoir'][i], ['Fraction of li  array
+    waterBodyID_C                        Array         ID of the waterbody - compressed                                        --   
+    compress_LR                          Array         boolean map as mask map for compressing lake/reservoir                  --   
+    waterBodyOut                         Array         biggest outlet (biggest accumulation of ldd network) of a waterbody     --   
+    dirUp                                Array         river network in upstream direction                                     --   
+    ldd_LR                               Array         change river network (put pits in where lakes are)                      --   
+    lddCompress                          Array         compressed river network (without missing values)                       --   
+    lddCompress_LR                       Array         compressed river network lakes/reservoirs (without missing values)      --   
+    dirUp_LR                             Array         river network direction upstream lake/reservoirs                        --   
+    dirupLen_LR                          Array         number of bifurcation upstream lake/reservoir                           --   
+    downstruct_LR                        Array         river network downstream lake/reservoir                                 --   
+    catchment_LR                         Array         catchments lake/reservoir                                               --   
+    dirDown_LR                           Array         river network direktion downstream lake/reservoir                       --   
+    lendirDown_LR                        Array         number of river network connections lake/reservoir                      --   
+    decompress_LR                        Array         boolean map as mask map for decompressing lake/reservoir                --   
+    waterBodyOutC                        Array         compressed map biggest outlet of each lake/reservoir                    --   
+    resYear                              Array         Settings waterBodyYear, with first operating year of reservoirs         map  
+    resYearC                             Array         Compressed map of resYear                                               --   
+    resVolumeC                           Array         compressed map of reservoir volume                                      Milli
+    waterBodyTyp                         Array         Settings, waterBodyTyp, with waterbody type 1-4                         map  
+    waterBodyTypC                        Array         water body types 3 reservoirs and lakes (used as reservoirs but before  --   
+    lakeArea                             Array         area of each lake/reservoir                                             m2   
+    lakeAreaC                            Array         compressed map of the area of each lake/reservoir                       m2   
+    lakeDis0                             Array         compressed map average discharge at the outlet of a lake/reservoir      m3/s 
+    lakeDis0C                            Array         average discharge at the outlet of a lake/reservoir                     m3/s 
+    lakeAC                               Array         compressed map of parameter of channel width, gravity and weir coeffic  --   
+    reservoir_transfers_net_M3C          Array         Net transfer from one point to the other                                m3   
+    reservoir_transfers_net_M3           Array         net reservoir transfers, after exports, transfers, and imports          m3   
+    reservoir_transfers_in_M3C           Array         Transfer - what goes into the receiving reservoir                       m3   
+    reservoir_transfers_in_M3            Array         water received into reservoirs                                          m3   
+    reservoir_transfers_out_M3C          Array         Transfer - what goes out from the giving reservoir                      m3   
+    reservoir_transfers_out_M3           Array         water given from reservoirs                                             m3   
+    lakeEvaFactorC                       Array         compressed map of a factor which increases evaporation from lake becau  --   
+    reslakeoutflow                       Array         outflow of lakes and reservoirs                                         m3   
+    lakeVolume                           Array         volume of lakes                                                         m3   
+    lakeLevel                            Array         Waterlevel of lakes                                                     m    
+    outLake                              Array         outflow from lakes                                                      m    
+    lakeInflow                           Array         Inflow into lakes                                                       m3   
+    lakeOutflow                          Array         lake outflow - uncompressed  for all basin cells                        m3   
+    reservoirStorage                     Array         Storage of reservoirs                                                   m3   
+    MtoM3C                               Array         conversion factor from m to m3 (compressed map)                         --   
+    EvapWaterBodyMOutlet                 Array         Evaporation from waterbodies - sum at the outlet                        m    
+    lakeResInflowM                       Array         lake reservoir inflow in [m]                                            m    
+    lakeResOutflowM                      Array         lake reservoiroutflow in [m]                                            m    
+    wetlands_variable_area               Array         variable area of wetlands per day                                       m2   
+    wetland_area                         Array         variable area of wetlands per day                                       m2   
+    wetland_maxlevel                     Array         maximum waterlevel of wetlands                                          m    
+    resVolume                            Array         Reservoir volume                                                        m3   
+    includeType4                         Flag          True if there is a reservoir of waterbody type 4 in waterBodyTyp map    bool 
+    resId_restricted                     Array         waterbody ID for waste water                                            --   
+    waterBodyBuffer                      Array         Create a buffer around water bodies as command areas for lakes and res  m2   
+    waterBodyBuffer_wwt                  Array         Create a buffer around water bodies as command areas for lakes and res  m2   
+    lakeFactor                           Array         factor for the Modified Puls approach to calculate retention of the la  --   
+    lakeFactorSqr                        Array         square root factor for the Modified Puls approach to calculate retenti  --   
+    lakeInflowOldC                       Array         inflow to the lake from previous days                                   m/3  
+    lakeLevelC                           Array         compressed map of lake level                                            m    
+    lakeOutflowC                         Array         compressed map of lake outflow                                          m3/s 
+    conLimitC                            Array         Reservoir calculation: conservativeStorageLimit                         --   
+    normLimitC                           Array         Reservoir calculation: normalStorageLimit                               --   
+    floodLimitC                          Array         Reservoir calculation:                                                  --   
+    minQC                                Array         Reservoir calculation:                                                  m3/s 
+    normQC                               Array         Reservoir calculation:                                                  m3/s 
+    nondmgQC                             Array         Reservoir calculation:                                                  m3/s 
+    adjust_Normal_FloodC                 Array         Reservoir calculation:                                                  --   
+    norm_floodLimitC                     Array         Reservoir calculation:                                                  --   
+    deltaO                               Array         Reservoir calculation:                                                  m3/s 
+    deltaLN                              Array         Reservoir calculation:                                                  --   
+    deltaLF                              Array         Reservoir calculation:                                                  --   
+    deltaNFL                             Array         Reservoir calculation:                                                  --   
+    reservoirFillC                       Array         actual filling fraction of a reservoir                                  --   
+    reservoir_releases_excel_option      Flag          If Excel file is used for addition reservoirs, watertransfer, release   bool 
+    reservoir_releases                   Array         Release of reservoirs                                                   --   
+    waterBodyTypTemp                     Array         waterbody temp e.g. lake, reservoir, wetlands                           --   
+    sumEvapWaterBodyC                    Array         evaporation from waterbodies - compressed                               m    
+    sumlakeResInflow                     Array         infow into waterbodies                                                  m3   
+    sumlakeResOutflow                    Array         outflow of waterbodies                                                  m3   
+    lakeResStorage_release_ratio         Array         daily release ration for reservoirs                                     --   
+    lakeResStorage_release_ratioC        Array         daily release ration for reservoirs - compressed                        --   
+    lakeIn                               Array         Inflow into lakes                                                       m3   
+    lakeEvapWaterBodyC                   Array         Evaporation from lakes and reservoirs                                   m3   
+    resEvapWaterBodyC                    Array         evaporation from reservoirs                                             m    
+    EvapWaterBodyM                       Array         Evaporation from lakes and reservoirs                                   m    
+    lakeResStorage_filled                Array          Puts the value of lakeResStorage into all cells covered by the waterb  m3   
+    lakeResStorage_buffer                Array                                                                                 --   
+    lakeStorage                          Array         Storage volume of lakes                                                 m3   
+    resStorage                           Array         Storage volume of reservoirs                                            m3   
+    DtSec                                Array         number of seconds per timestep (default = 86400)                        s    
+    MtoM3                                Array         Coefficient to change units                                             --   
+    InvDtSec                             Array         inversere of seconds per timestep (default 1/86400)                     1/s  
+    waterBodyID                          Array         lakes/reservoirs map with a single ID for each lake/reservoir           --   
+    UpArea1                              Array         upstream area of a grid cell                                            m2   
+    dirupID_LR                           Array         index river upstream lake/reservoir                                     --   
+    lakeEvaFactor                        Array         a factor which increases evaporation from lake because of wind          --   
+    dtRouting                            Array         number of seconds per routing timestep                                  s    
+    evapWaterBodyC                       Array         Compressed version of EvapWaterBodyM                                    m    
+    sumLakeEvapWaterBodyC                Array                                                                                 --   
+    noRoutingSteps                       Number        Number of routing step - how often the subroutine is run during a day   --   
+    sumResEvapWaterBodyC                 Array                                                                                 --   
+    discharge                            Array         Channel discharge                                                       m3/s 
+    inflowDt                             Number                                                                                --   
+    downstruct                           Array         structure of the river network in downstream direction                  --   
+    runoff                               Array         Total runoff from surface, interflow and groundwater                    m    
+    fracVegCover                         Array         Fraction of specific land covers (0=forest, 1=grasslands, etc.)         %    
+    cellArea                             Array         Area of cell                                                            m2   
+    includeWastewater                    Flag                                                                                  --   
+    waterBodyTyp_unchanged               Array                                                                                 --   
+    lakeVolumeM3C                        Array         compressed map of lake volume                                           m3   
+    lakeStorageC                         Array                                                                                 --   
+    reservoirStorageM3C                  Array                                                                                 --   
+    lakeResStorageC                      Array                                                                                 --   
+    lakeResStorage                       Array                                                                                 --   
+    reservoir_supply                     Array                                                                                 --   
+    waterBodyTypCTemp                    Array         waterbody temp e.g. lake, reservoir, wetlands -> compressed             --   
+    ===================================  ==========    ======================================================================  =====
 
-    **Functions**
+    Attributes
+    ----------
+    var : object
+        Reference to model variables object containing state variables
+    model : object
+        Reference to the main CWatM model instance
+        
+    Notes
+    -----
+    Lake calculations use the Modified Puls Method with assumptions:
+    1. Storage volume increases proportionally to elevation: S = A * H
+    2. Outflow follows parabolic weir relationship: Q = a * H^2
+    
+    Mathematical formulation:
+    (Qin1 + Qin2)/2 - (Qout1 + Qout2)/2 = (S2 - S1)/dt
+    
+    Solved as quadratic equation:
+    Q = (-LakeFactor + sqrt(LakeFactor^2 + 2*SI))^2
+    
+    References
+    ----------
+    LISFLOOD manual Annex 3 (Burek et al. 2013)
+    Maniak hydraulics textbook, p.331ff
+    Aigner (2008) for parabolic cross-section relationships
+
     """
 
     def __init__(self, model):
+        """
+        Initialize lakes and reservoirs module.
+        
+        Parameters
+        ----------
+        model : object
+            CWatM model instance providing access to variables and configuration
+        """
         self.var = model.var
         self.model = model
 
@@ -214,7 +209,7 @@ class lakes_reservoirs(object):
                     reservoir_release[day][res_index] = df[res][day]
 
         reservoir_supply = [[-1 for i in self.var.waterBodyID_C] for i in range(366)]
-        #reservoir_release.copy()
+        # reservoir_release.copy()
         if 'Reservoirs_supply' in pd.read_excel(xl_settings_file_path, None).keys():
             df2 = pd.read_excel(xl_settings_file_path, sheet_name='Reservoirs_supply')
             for res in list(df2)[2:]:
@@ -227,6 +222,36 @@ class lakes_reservoirs(object):
             reservoir_supply = reservoir_release.copy()
         
         return reservoir_release, reservoir_supply
+
+
+    def wetland_readarea(self, xl_settings_file_path):
+        pd = importlib.import_module("pandas", package=None)
+        df = pd.read_excel(xl_settings_file_path, sheet_name='Wetlands')
+        waterBodyID_C_tolist = self.var.waterBodyID_C.tolist()
+
+        # initialize wetlands for all lakes & reservoirs
+        wetland_area = [[-1 for i in self.var.waterBodyID_C] for i in range(366)]
+        wetland_maxlevel = np.zeros(len(self.var.waterBodyID_C))
+        # Excel sheet from column 5 ->
+        for res in list(df)[5:]:
+            if res in waterBodyID_C_tolist:
+                wet_index = waterBodyID_C_tolist.index(int(float(res)))
+
+                wetland_factor = loadmap('wetland_maxlevel')
+                if isinstance(wetland_factor, np.ndarray):
+                    # if wetland is a map
+                    wetland_factorC = np.compress(self.var.compress_LR, wetland_factor)
+                    # index of the reservoir in the lakes/reservoir list
+                    in1 = waterBodyID_C_tolist.index(res)
+                    wetland_factor = wetland_factorC [in1]
+
+                wetland_maxlevel[wet_index] = float(df[res][1]) *  wetland_factor
+
+
+                for day in range(366):
+                    wetland_area[day][wet_index] = df[res][day+3]
+
+        return np.array(wetland_area),wetland_maxlevel
 
 
     def initWaterbodies(self):
@@ -279,10 +304,57 @@ class lakes_reservoirs(object):
 
             # load lakes/reservoirs map with a single ID for each lake/reservoir
             self.var.waterBodyID = loadmap('waterBodyID').astype(np.int64)
-            
+
+            # look into the Excel to find if there are new reservoirs
+            if checkOption('reservoir_add_info_in_Excel',True):
+                resnew = decompress(globals.inZero.copy())
+                resnew1 = []
+                remove = []
+
+                for i in range(len(self.var.reservoir_info)):
+
+                    if self.var.reservoir_info[i][1]:
+                        # create new reservoir/lake
+                        col = int((float(self.var.reservoir_info[i][3]) - maskmapAttr['x']) * maskmapAttr['invcell'])
+                        row = int((maskmapAttr['y'] - float(self.var.reservoir_info[i][2])) * maskmapAttr['invcell'])
+                        if (col<0) or (row<0) or (col> (resnew.shape[1]-1)) or  (row> (resnew.shape[0]-1)):
+
+                            msg = "---- New lake/reservoir No: " + str(int(self.var.reservoir_info[i][0])) + " with coordinates:\n"
+                            msg +=  "lat or y: "+ str(self.var.reservoir_info[i][2]) + "  lon or x: " + str(self.var.reservoir_info[i][3]) + "\n"
+                            msg += "is not in Mask map (result in row/col " + str(row) + " " + str(col) + ")\n"
+                            if Flags['loud']: print (msg)
+                            remove.append(self.var.reservoir_info[i])
+
+                        else:
+                            resnew[row,col] = int(self.var.reservoir_info[i][0])
+                            resnew1.append(int(self.var.reservoir_info[i][0]))
+
+                if len(resnew1) > 0:
+                    resnewC = compressArray(resnew).astype(np.int64)
+                    # check if lakes/res is in map
+                    remove1 = []
+                    for i in resnew1:
+                        if not(i in resnewC):
+                            msg = "--- New lake/reservoir No: "+ str(i) + " is not in the Mask Map\n"
+                            if Flags['loud']: print (msg)
+
+                    # check if lake/res already exists
+                    index = np.where(resnewC>0)[0]
+                    for i in index:
+                        if self.var.waterBodyID[i] > 0:
+                            no = resnewC[i]
+                            msg = "New lake/reservoir No: "+ str(resnewC[i]) + \
+                                  " is at the place of an existing one No: "+ str(self.var.waterBodyID[i]) + "\n"
+                            raise CWATMError(msg)
+                    self.var.waterBodyID = np.where(self.var.waterBodyID == 0, resnewC, self.var.waterBodyID)
+
+                for i in remove:
+                    self.var.reservoir_info.remove(i)
+
+
             self.var.includeWastewater = False
-            if "includeWastewater" in option:
-                self.var.includeWastewater = checkOption('includeWastewater')
+            # if checkoption 2nd argument = True then check first for argument ,if False print an error if not in setttings
+            self.var.includeWastewater = checkOption('includeWastewater',True)
                 
             # calculate biggest outlet = biggest accumulation of ldd network
             lakeResmax = npareamaximum(self.var.UpArea1, self.var.waterBodyID)
@@ -310,58 +382,15 @@ class lakes_reservoirs(object):
             self.var.compress_LR = self.var.waterBodyOut > 0
             self.var.decompress_LR = np.nonzero(self.var.waterBodyOut)[0]
             self.var.waterBodyOutC = np.compress(self.var.compress_LR, self.var.waterBodyOut)
-
             self.var.waterBodyID_C = np.compress(self.var.compress_LR, self.var.waterBodyID)
 
             # First year that the reservoir is operating
             self.var.resYear = loadmap('waterBodyYear')
             self.var.resYearC = np.compress(self.var.compress_LR, self.var.resYear)
-
-            self.var.waterBodyTyp = loadmap('waterBodyTyp').astype(np.int64)
-            self.var.waterBodyTyp_unchanged = self.var.waterBodyTyp.copy()
-            # Flag if res type-4 are used
-            self.var.includeType4 = False
-            if (self.var.waterBodyTyp == 4).any():
-                self.var.includeType4 = True
-
-            self.var.waterBodyTypC = np.compress(self.var.compress_LR, self.var.waterBodyTyp)
-            self.var.waterBodyTypC = np.where(self.var.waterBodyOutC > 0, self.var.waterBodyTypC.astype(np.int64), 0)
-
             self.var.resVolumeC = np.compress(self.var.compress_LR, loadmap('waterBodyVolRes')) * 1000000
-            # changing reservoirs type 2 and 3 to lakes if volumes are zero:
-            self.var.waterBodyTypC = np.where(self.var.resVolumeC > 0., self.var.waterBodyTypC,
-                                              np.where(self.var.waterBodyTypC == 2, 1, self.var.waterBodyTypC))
-            self.var.waterBodyTypC = np.where(self.var.resVolumeC > 0., self.var.waterBodyTypC,
-                                              np.where(self.var.waterBodyTypC == 3, 1, self.var.waterBodyTypC))
+            self.var.waterBodyTyp = loadmap('waterBodyTyp').astype(np.int64)
+            self.var.waterBodyTypC = np.compress(self.var.compress_LR, self.var.waterBodyTyp)
 
-            np.put(self.var.waterBodyTyp, self.var.decompress_LR, self.var.waterBodyTypC)
-            
-            # needs to be changed - maybe update all reservoir to spreadsheet
-            self.var.resId_restricted = globals.inZero.copy()
-            if self.var.includeWastewater:
-                resIdList = np.unique(list(self.var.wastewater_to_reservoirs.values()))
-                for rid in resIdList:
-                    self.var.resId_restricted += np.where(self.var.waterBodyID == rid, rid, 0)
-            
-            # Create a buffer around water bodies as command areas for lakes and reservoirs
-            if checkOption('includeWaterDemand'):
-                waterBody_UnRestricted = self.var.waterBodyID.copy()
-                
-                if self.var.includeWastewater:
-                    waterBody_UnRestricted = np.where(np.in1d(waterBody_UnRestricted, self.var.resId_restricted), 0, waterBody_UnRestricted)
-                rectangular = 1
-                if "buffer_waterbodies" in binding:
-                    rectangular = int(loadmap('buffer_waterbodies'))
-                
-                self.var.waterBodyBuffer = buffer_waterbody(rectangular, decompress(waterBody_UnRestricted))
-                if self.var.includeWastewater:
-                    self.var.waterBodyBuffer_wwt = buffer_waterbody(rectangular, decompress(self.var.resId_restricted))
-                
-                #rectangular = 1
-                #if "buffer_waterbodies" in binding:
-                #    rectangular = int(loadmap('buffer_waterbodies'))
-                #self.var.waterBodyBuffer = buffer_waterbody(rectangular)
-                
             # ================================
             # Lakes
 
@@ -375,7 +404,6 @@ class lakes_reservoirs(object):
             self.var.lakeDis0 = np.maximum(loadmap('waterBodyDis'), 0.1)
             self.var.lakeDis0C = np.compress(self.var.compress_LR, self.var.lakeDis0)
             chanwidth = 7.1 * np.power(self.var.lakeDis0C, 0.539)
-
             lakeAFactor = globals.inZero + loadmap('lakeAFactor')
             lakeAFactorC = np.compress(self.var.compress_LR, lakeAFactor)
             self.var.lakeAC = lakeAFactorC * 0.612 * 2 / 3 * chanwidth * (2 * 9.81) ** 0.5
@@ -385,27 +413,10 @@ class lakes_reservoirs(object):
 
             self.var.reservoir_transfers_net_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
             self.var.reservoir_transfers_net_M3 = globals.inZero.copy()
-
             self.var.reservoir_transfers_in_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
             self.var.reservoir_transfers_in_M3 = globals.inZero.copy()
-
             self.var.reservoir_transfers_out_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
             self.var.reservoir_transfers_out_M3 = globals.inZero.copy()
-
-            self.var.reservoir_transfers_from_outside_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
-            self.var.reservoir_transfers_from_outside_M3 = globals.inZero.copy()
-
-            self.var.reservoir_transfers_to_outside_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
-            self.var.reservoir_transfers_to_outside_M3 = globals.inZero.copy()
-
-            self.var.resVolumeOnlyReservoirs = globals.inZero.copy()
-            self.var.resVolumeOnlyReservoirsC = np.where(self.var.resVolumeC > 0, self.var.resVolumeC, 0)
-            np.put(self.var.resVolumeOnlyReservoirs, self.var.decompress_LR, self.var.resVolumeOnlyReservoirsC)
-
-            # correcting reservoir volume for lakes, just to run them all as reservoirs
-            self.var.resVolume = globals.inZero.copy()
-            self.var.resVolumeC = np.where(self.var.resVolumeC > 0, self.var.resVolumeC, self.var.lakeAreaC * 10)
-            np.put(self.var.resVolume, self.var.decompress_LR, self.var.resVolumeC)
 
             # a factor which increases evaporation from lake because of wind
             self.var.lakeEvaFactor = globals.inZero + loadmap('lakeEvaFactor')
@@ -415,6 +426,7 @@ class lakes_reservoirs(object):
             # the  initial values are loaded inside the subroutines of lakes and reservoirs
             self.var.reslakeoutflow = globals.inZero.copy()
             self.var.lakeVolume = globals.inZero.copy()
+            self.var.lakeLevel = globals.inZero.copy()
             self.var.outLake = self.var.load_initial("outLake")
 
             self.var.lakeStorage = globals.inZero.copy()
@@ -425,24 +437,95 @@ class lakes_reservoirs(object):
             self.var.MtoM3C = np.compress(self.var.compress_LR, self.var.MtoM3)
 
             # init water balance [m]
-            self.var.EvapWaterBodyM = globals.inZero.copy()
+            self.var.EvapWaterBodyMOutlet = globals.inZero.copy()
             self.var.lakeResInflowM = globals.inZero.copy()
             self.var.lakeResOutflowM = globals.inZero.copy()
 
-            if checkOption('calcWaterBalance'):
-                self.var.lakedaycorrect = globals.inZero.copy()
 
-            self.var.reservoir_releases_excel_option = False
-            if 'reservoir_releases_in_Excel_settings' in option:
-                if checkOption('reservoir_releases_in_Excel_settings'):
-                    if 'Excel_settings_file' in binding:
-                        self.var.reservoir_releases_excel_option = True
-                        xl_settings_file_path = cbinding('Excel_settings_file')
-                        self.var.reservoir_releases, self.var.reservoir_supply = \
-                            self.reservoir_releases(xl_settings_file_path)
+            if 'reservoir_add_info_in_Excel' in option:
+                if checkOption('reservoir_add_info_in_Excel'):
+                    for i in range(len(self.var.reservoir_info)):
+                        resint = int(self.var.reservoir_info[i][0])
+                        resindex = np.where(self.var.waterBodyID_C == resint)
+                        # test if reservoir is found -> later on maqke a new one
+                        if resindex[0].size > 0:
+                            resindex = resindex[0].tolist()[0]
+                            if not np.isnan(self.var.reservoir_info[i][4]) and int(self.var.reservoir_info[i][4]) >0: self.var.waterBodyTypC[resindex] = int(self.var.reservoir_info[i][4])
 
-                        self.var.reservoir_releases = np.array(self.var.reservoir_releases)
-                        self.var.reservoir_supply = np.array(self.var.reservoir_supply)
+                            if float(self.var.reservoir_info[i][6]) >0: self.var.lakeAreaC[resindex] = float(self.var.reservoir_info[i][6]) * 1000 * 1000
+                            if float(self.var.reservoir_info[i][7]) > 0: self.var.lakeDis0C[resindex] = float(self.var.reservoir_info[i][7])
+                            if float(self.var.reservoir_info[i][8]) > 0: self.var.resVolumeC[resindex] = float(self.var.reservoir_info[i][8]) * 1000000
+                            if float(self.var.reservoir_info[i][9]) > 0:
+                                lakeAFactorC = float(self.var.reservoir_info[i][9])
+                                chanwidth = 7.1 * np.power(self.var.lakeDis0C[resindex], 0.539)
+                                self.var.lakeAC[resindex] = lakeAFactorC * 0.612 * 2 / 3 * chanwidth * (2 * 9.81) ** 0.5
+
+                            if float(self.var.reservoir_info[i][10]) >0: self.var.lakeEvaFactorC[resindex] = float(self.var.reservoir_info[i][10])
+                            if float(self.var.reservoir_info[i][11]) >0: self.var.resYearC[resindex] = int(self.var.reservoir_info[i][11])
+
+            if checkOption('wetlands_variable_area', True):
+                if 'Excel_settings_file' in binding:
+                    self.var.wetlands_variable_area = True
+                    self.var.wetland_area,self.var.wetland_maxlevel = self.wetland_readarea(cbinding('Excel_settings_file'))
+
+                # calculate the day of year for first lake area
+            
+                firstdoy = datetime.datetime(dateVar['currDate'].year, 1, 1)
+                doy = (dateVar['currDate'] - firstdoy).days
+                self.var.lakeAreaC = np.where(self.var.waterBodyTypC == 6, self.var.wetland_area[doy,:] * 1000000, self.var.lakeAreaC)
+                # back to lakeArea , because it is used in routing_kinematic
+                np.put(self.var.lakeArea, self.var.decompress_LR, self.var.lakeAreaC)
+            
+            # correcting reservoir volume for lakes, just to run them all as reservoirs
+            self.var.resVolumeC = np.where(self.var.resVolumeC > 0, self.var.resVolumeC, self.var.lakeAreaC * 10)
+            self.var.resVolume = globals.inZero.copy()
+            np.put(self.var.resVolume, self.var.decompress_LR, self.var.resVolumeC)
+
+            # Flag if res type-4 are used
+            self.var.includeType4 = False
+            if (self.var.waterBodyTypC == 4).any():
+                self.var.includeType4 = True
+
+            np.put(self.var.waterBodyTyp, self.var.decompress_LR, self.var.waterBodyTypC)
+            self.var.waterBodyTyp_unchanged = self.var.waterBodyTyp.copy()
+            self.var.waterBodyTypC = np.where(self.var.waterBodyOutC > 0, self.var.waterBodyTypC.astype(np.int64), 0)
+
+            # changing reservoirs type 2 and 3 to lakes if volumes are zero:
+            self.var.waterBodyTypC = np.where(self.var.resVolumeC > 0., self.var.waterBodyTypC,
+                                              np.where(self.var.waterBodyTypC == 2, 1, self.var.waterBodyTypC))
+            self.var.waterBodyTypC = np.where(self.var.resVolumeC > 0., self.var.waterBodyTypC,
+                                              np.where(self.var.waterBodyTypC == 3, 1, self.var.waterBodyTypC))
+
+            np.put(self.var.waterBodyTyp, self.var.decompress_LR, self.var.waterBodyTypC)
+
+            # needs to be changed - maybe update all reservoir to spreadsheet
+            self.var.resId_restricted = globals.inZero.copy()
+            if self.var.includeWastewater:
+                resIdList = np.unique(list(self.var.wastewater_to_reservoirs.values()))
+                for rid in resIdList:
+                    self.var.resId_restricted += np.where(self.var.waterBodyID == rid, rid, 0)
+
+            # Create a buffer around water bodies as command areas for lakes and reservoirs
+            if checkOption('includeWaterDemand'):
+                waterBody_UnRestricted = self.var.waterBodyID.copy()
+
+                if self.var.includeWastewater:
+                    waterBody_UnRestricted = np.where(np.in1d(waterBody_UnRestricted, self.var.resId_restricted), 0, waterBody_UnRestricted)
+                rectangular = 1
+                if "buffer_waterbodies" in binding:
+                    rectangular = int(loadmap('buffer_waterbodies'))
+
+                self.var.waterBodyBuffer = buffer_waterbody(rectangular, decompress(waterBody_UnRestricted))
+                if self.var.includeWastewater:
+                    self.var.waterBodyBuffer_wwt = buffer_waterbody(rectangular, decompress(self.var.resId_restricted))
+
+                # rectangular = 1
+                # if "buffer_waterbodies" in binding:
+                #    rectangular = int(loadmap('buffer_waterbodies'))
+                # self.var.waterBodyBuffer = buffer_waterbody(rectangular)
+            else:
+                self.var.waterBodyBuffer = self.var.waterBodyID.copy()
+
 
 
     def initial_lakes(self):
@@ -459,7 +542,6 @@ class lakes_reservoirs(object):
         # Does this work in forecasting mode?
 
         self.var.lakeFactor = self.var.lakeAreaC / (self.var.dtRouting * np.sqrt(self.var.lakeAC))
-
         self.var.lakeFactorSqr = np.square(self.var.lakeFactor)
         # for faster calculation inside dynamic section
 
@@ -468,29 +550,53 @@ class lakes_reservoirs(object):
             self.var.lakeInflowOldC = self.var.lakeDis0C.copy()
         else:
             self.var.lakeInflowOldC = np.compress(self.var.compress_LR, lakeInflowIni)
+        # if a new lake is not initialized use assumption calculation
+        self.var.lakeInflowOldC = np.where(self.var.lakeInflowOldC > 0,self.var.lakeInflowOldC,self.var.lakeDis0C)
 
         lakeVolumeIni = self.var.load_initial("lakeStorage")
         if not (isinstance(lakeVolumeIni, np.ndarray)):
             self.var.lakeVolumeM3C = self.var.lakeAreaC * np.sqrt(self.var.lakeInflowOldC / self.var.lakeAC)
         else:
             self.var.lakeVolumeM3C = np.compress(self.var.compress_LR, lakeVolumeIni)
+
+        # if a new lake ist not initialized use assumption
+        self.var.lakeVolumeM3C = np.where(self.var.lakeVolumeM3C > 0, self.var.lakeVolumeM3C,self.var.lakeAreaC * np.sqrt(self.var.lakeInflowOldC / self.var.lakeAC))
         self.var.lakeStorageC = self.var.lakeVolumeM3C.copy()
 
         lakeOutflowIni = self.var.load_initial("lakeOutflow")
+        lakeStorageIndicator = np.maximum(0.0, self.var.lakeVolumeM3C / self.var.dtRouting + 0.5 * self.var.lakeInflowOldC)
+        # SI = S/dt + Q/2
+        lakeOutflowC1 = np.square(-self.var.lakeFactor + np.sqrt(self.var.lakeFactorSqr + 2 * lakeStorageIndicator))
+        # solution of quadratic equation
+        #  it is as easy as this because:
+        # 1. storage volume is increase proportional to elevation
+        #  2. Q= a *H **2.0  (if you choose Q= a *H **1.5 you have to solve the formula of Cardano)
+
+        # # if wetland lakes are not rectagular but have a triangular shape
+        # therefore the equation is a bit different
+        lakeOutflowC2 = np.square(-0.5 * self.var.lakeFactor + np.sqrt(0.25 * self.var.lakeFactorSqr + 2 * lakeStorageIndicator))
+        # replace lakeOutflow if lake type = 6
+        lakeOutflowC1 = np.where(self.var.waterBodyTypC == 6,lakeOutflowC2,lakeOutflowC1)
+
+        # lake level is average lake level = 1/2 of  max level for a triangular lake
+        self.var.lakeLevelC = self.var.lakeVolumeM3C / self.var.lakeAreaC
+        np.put(self.var.lakeLevel, self.var.decompress_LR, self.var.lakeLevelC)
+
+        if checkOption('wetlands_variable_area', True):
+            #  lakelevel should be at wetland_maxlevel (e.g. =1.0 m) -> rest goes to outflow
+            # if lakelevel >= 1.0 sea level is kept constant and equation is changing
+            lakeOutflowC3 = np.maximum(0.0, (self.var.lakeVolumeM3C - self.var.lakeAreaC * self.var.wetland_maxlevel) / self.var.DtSec)
+            lakeOutflowC1 = np.where((self.var.waterBodyTypC == 6) & (self.var.lakeLevelC >= self.var.wetland_maxlevel), lakeOutflowC3,lakeOutflowC1)
+
         if not (isinstance(lakeOutflowIni, np.ndarray)):
-            lakeStorageIndicator = np.maximum(0.0,
-                                              self.var.lakeVolumeM3C / self.var.dtRouting + self.var.lakeInflowOldC / 2)
-            # SI = S/dt + Q/2
-            self.var.lakeOutflowC = np.square(
-                -self.var.lakeFactor + np.sqrt(self.var.lakeFactorSqr + 2 * lakeStorageIndicator))
-            # solution of quadratic equation
-            #  it is as easy as this because:
-            # 1. storage volume is increase proportional to elevation
-            #  2. Q= a *H **2.0  (if you choose Q= a *H **1.5 you have to solve the formula of Cardano)
+            self.var.lakeOutflowC = lakeOutflowC1.copy()
         else:
             self.var.lakeOutflowC = np.compress(self.var.compress_LR, lakeOutflowIni)
         # lake storage ini
-        self.var.lakeLevelC = self.var.lakeVolumeM3C / self.var.lakeAreaC
+        self.var.lakeOutflowC = np.where(self.var.lakeOutflowC>0,self.var.lakeOutflowC,lakeOutflowC1)
+
+        ii =1
+
 
     def initial_reservoirs(self):
         """
@@ -504,16 +610,33 @@ class lakes_reservoirs(object):
         self.var.conLimitC = np.compress(self.var.compress_LR, loadmap('conservativeStorageLimit') + globals.inZero)
         self.var.normLimitC = np.compress(self.var.compress_LR, loadmap('normalStorageLimit') + globals.inZero)
         self.var.floodLimitC = np.compress(self.var.compress_LR, loadmap('floodStorageLimit') + globals.inZero)
-        self.var.adjust_Normal_FloodC = np.compress(self.var.compress_LR,
-                                                    loadmap('adjust_Normal_Flood') + globals.inZero)
-        self.var.norm_floodLimitC = self.var.normLimitC + self.var.adjust_Normal_FloodC * (
-                    self.var.floodLimitC - self.var.normLimitC)
 
         # Minimum, Normal and Non-damaging reservoir outflow  (fraction of average discharge, [-])
         # multiplied with the given discharge at the outlet from Hydrolakes database
         self.var.minQC = np.compress(self.var.compress_LR, loadmap('MinOutflowQ') * self.var.lakeDis0)
         self.var.normQC = np.compress(self.var.compress_LR, loadmap('NormalOutflowQ') * self.var.lakeDis0)
         self.var.nondmgQC = np.compress(self.var.compress_LR, loadmap('NonDamagingOutflowQ') * self.var.lakeDis0)
+        self.var.adjust_Normal_FloodC = np.compress(self.var.compress_LR,loadmap('adjust_Normal_Flood') + globals.inZero)
+
+        if 'reservoir_add_info_in_Excel' in option:
+            if checkOption('reservoir_add_info_in_Excel'):
+               for i in range(len(self.var.reservoir_info)):
+                    resint = int(self.var.reservoir_info[i][0])
+                    resindex = np.where(self.var.waterBodyID_C == resint)
+                    # test if reservoir is found -> later on maqke a new one
+                    if resindex[0].size > 0:
+                        resindex = resindex[0].tolist()[0]
+                        if float(self.var.reservoir_info[i][12]) > 0: self.var.conLimitC[resindex] = float(self.var.reservoir_info[i][12])
+                        if float(self.var.reservoir_info[i][13]) > 0: self.var.normLimitC[resindex] = float(self.var.reservoir_info[i][13])
+                        if float(self.var.reservoir_info[i][14]) > 0: self.var.floodLimitC[resindex] = float(self.var.reservoir_info[i][14])
+                        if float(self.var.reservoir_info[i][15]) > 0: self.var.adjust_Normal_FloodC[resindex] = float(self.var.reservoir_info[i][15])
+
+                        if float(self.var.reservoir_info[i][16]) > 0: self.var.minQC[resindex] = float(self.var.reservoir_info[i][16]) * self.var.lakeDis0C[resindex]
+                        if float(self.var.reservoir_info[i][17]) > 0: self.var.normQC[resindex] = float(self.var.reservoir_info[i][17]) * self.var.lakeDis0C[resindex]
+                        if float(self.var.reservoir_info[i][18]) > 0: self.var.nondmgQC[resindex] = float(self.var.reservoir_info[i][18]) * self.var.lakeDis0C[resindex]
+
+        self.var.norm_floodLimitC = self.var.normLimitC + self.var.adjust_Normal_FloodC * (
+                    self.var.floodLimitC - self.var.normLimitC)
 
         # Repeatedly used expressions in reservoirs routine
         self.var.deltaO = self.var.normQC - self.var.minQC
@@ -522,28 +645,68 @@ class lakes_reservoirs(object):
         self.var.deltaNFL = self.var.floodLimitC - self.var.norm_floodLimitC
 
         reservoirStorageIni = self.var.load_initial("reservoirStorage")
-        if not (isinstance(reservoirStorageIni, np.ndarray)):
-            self.var.reservoirFillC = self.var.normLimitC.copy()
-            # Initial reservoir fill (fraction of total storage, [-])
-            self.var.reservoirStorageM3C = self.var.reservoirFillC * self.var.resVolumeC
-            # set initial fill of distribution reservoir to zero (res. type-4)
-            self.var.reservoirStorageM3C = np.where(self.var.waterBodyTypC == 4, 0., self.var.reservoirStorageM3C)
-        else:
-            self.var.reservoirStorageM3C = np.compress(self.var.compress_LR, reservoirStorageIni)
-            self.var.reservoirFillC = self.var.reservoirStorageM3C / self.var.resVolumeC
 
-        # water balance
+        self.var.reservoirFillC = self.var.normLimitC.copy()
+        # Initial reservoir fill (fraction of total storage, [-])
+        self.var.reservoirStorageM3C = self.var.reservoirFillC * self.var.resVolumeC
+        # set initial fill of distribution reservoir to zero (res. type-4)
+        loadres = self.var.reservoirStorageM3C * 0.
+
+        if isinstance(reservoirStorageIni, np.ndarray):
+            loadres = np.compress(self.var.compress_LR, reservoirStorageIni)
+
+        self.var.reservoirStorageM3C = np.where(loadres == 0., self.var.reservoirStorageM3C, loadres)
+        # for waterbodytyp 4 and 5
+        self.var.reservoirStorageM3C = np.where((self.var.waterBodyTypC > 3) & (self.var.waterBodyTypC < 6), 0., self.var.reservoirStorageM3C)
+        self.var.reservoirFillC = self.var.reservoirStorageM3C / self.var.resVolumeC
+
+        # water balance # put lakes and wetland together
+        typLake = np.where((self.var.waterBodyTypC == 1)| (self.var.waterBodyTypC == 6), True, False)
+
         self.var.lakeResStorageC = np.where(self.var.waterBodyTypC == 0, 0.,
-                                            np.where(self.var.waterBodyTypC == 1, self.var.lakeStorageC,
+                                            np.where(typLake, self.var.lakeStorageC,
                                                      self.var.reservoirStorageM3C))
-        lakeStorageC = np.where(self.var.waterBodyTypC == 1, self.var.lakeStorageC, 0.)
-        resStorageC = np.where(self.var.waterBodyTypC > 1, self.var.reservoirStorageM3C, 0.)
+        lakeStorageC = np.where(typLake, self.var.lakeStorageC, 0.)
+        resStorageC = np.where(typLake == False, self.var.reservoirStorageM3C, 0.)
         self.var.lakeResStorage = globals.inZero.copy()
         self.var.lakeStorage = globals.inZero.copy()
         self.var.resStorage = globals.inZero.copy()
         np.put(self.var.lakeResStorage, self.var.decompress_LR, self.var.lakeResStorageC)
         np.put(self.var.lakeStorage, self.var.decompress_LR, lakeStorageC)
         np.put(self.var.resStorage, self.var.decompress_LR, resStorageC)
+
+        self.var.reservoir_releases_excel_option = False
+        if checkOption('reservoir_releases_in_Excel_settings', True):
+            if 'Excel_settings_file' in binding:
+                self.var.reservoir_releases_excel_option = True
+                xl_settings_file_path = cbinding('Excel_settings_file')
+                self.var.reservoir_releases, self.var.reservoir_supply = self.reservoir_releases(xl_settings_file_path)
+
+                self.var.reservoir_releases = np.array(self.var.reservoir_releases)
+                self.var.reservoir_supply = np.array(self.var.reservoir_supply)
+
+        #  check if transfer has a valid receiver or giver
+        if checkOption('reservoir_transfers', True):
+            remove = []
+            for trans in self.var.reservoir_transfers:
+                if not(trans[1] in self.var.waterBodyID):
+                    msg = "Reservoir transfer: giving reservoir is missing in Excel: " + str(trans[1])
+                    if Flags['loud']: print (msg)
+                    remove.append(trans)
+
+            for trans in self.var.reservoir_transfers:
+                if not(trans[2] in self.var.waterBodyID):
+                    msg = "Reservoir transfer: receiving reservoir is missing in Excel: " + str(trans[1])
+                    if Flags['loud']: print (msg)
+                    remove.append(trans)
+
+            for i in remove:
+                try:
+                    self.var.reservoir_transfers.remove(i)
+                except:
+                    ii =0  # transfer seems to be in both receiving and giving missing
+            ii =1
+
 
     # ------------------ End init ------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------
@@ -553,11 +716,19 @@ class lakes_reservoirs(object):
         Dynamic part set lakes and reservoirs for each year
         """
         if checkOption('includeWaterBodies'):
+
+            if checkOption('wetlands_variable_area', True):
+                # for wetland get new wetland area
+                self.var.lakeAreaC = np.where(self.var.waterBodyTypC == 6, self.var.wetland_area[dateVar['doy']-1,:] * 1000000, self.var.lakeAreaC)
+                # back to lakeArea , because it is used in routing_kinematic
+                np.put(self.var.lakeArea, self.var.decompress_LR, self.var.lakeAreaC)
+
             # check years
             if dateVar['newStart'] or dateVar['newYear']:
                 year = dateVar['currDate'].year
 
                 # water body types:
+                # - 5 = Fake reservoir: outflow = inflow, no evaporation -> used for water transfer
                 # - 4 = water distribution reservoirs, input = output; only allows input from specified sources,
                 #       e.g., inter-basin transfers, wastewater treatment, desalination, etc.
                 # - 3 = reservoirs and lakes (used as reservoirs but before the year of construction as lakes)
@@ -573,7 +744,7 @@ class lakes_reservoirs(object):
 
                     self.var.waterBodyTypCTemp = np.where((self.var.resYearC > year) & (self.var.waterBodyTypC == 2), 0,
                                                           self.var.waterBodyTypC)
-                    self.var.waterBodyTypCTemp = np.where((self.var.resYearC > year) & (self.var.waterBodyTypC == 4), 0,
+                    self.var.waterBodyTypCTemp = np.where((self.var.resYearC > year) & (self.var.waterBodyTypC > 3) & (self.var.waterBodyTypC < 6), 0,
                                                           self.var.waterBodyTypCTemp)
                     self.var.waterBodyTypCTemp = np.where((self.var.resYearC > year) & (self.var.waterBodyTypC == 3), 1,
                                                           self.var.waterBodyTypCTemp)
@@ -581,18 +752,18 @@ class lakes_reservoirs(object):
                     if self.var.modflow or self.var.includeType4:
                         self.var.waterBodyTypTemp = np.where((self.var.resYear > year) & (self.var.waterBodyTyp == 2),
                                                              0, self.var.waterBodyTyp)
-                        self.var.waterBodyTypTemp = np.where((self.var.resYear > year) & (self.var.waterBodyTyp == 4),
+                        self.var.waterBodyTypTemp = np.where((self.var.resYear > year) & (self.var.waterBodyTyp > 3),
                                                              0, self.var.waterBodyTypTemp)
                         self.var.waterBodyTypTemp = np.where((self.var.resYear > year) & (self.var.waterBodyTyp == 3),
                                                              1, self.var.waterBodyTypTemp)
                 else:
                     self.var.waterBodyTypCTemp = np.where(self.var.waterBodyTypC == 2, 0, self.var.waterBodyTypC)
-                    self.var.waterBodyTypCTemp = np.where(self.var.waterBodyTypC == 4, 0, self.var.waterBodyTypCTemp)
+                    self.var.waterBodyTypCTemp = np.where((self.var.waterBodyTypC > 3) & (self.var.waterBodyTypC < 6), 0, self.var.waterBodyTypCTemp)
                     self.var.waterBodyTypCTemp = np.where(self.var.waterBodyTypC == 3, 1, self.var.waterBodyTypCTemp)
 
                     if self.var.modflow or self.var.includeType4:
                         self.var.waterBodyTypTemp = np.where(self.var.waterBodyTyp == 2, 0, self.var.waterBodyTyp)
-                        self.var.waterBodyTypTemp = np.where(self.var.waterBodyTyp == 4, 0, self.var.waterBodyTypTemp)
+                        self.var.waterBodyTypTemp = np.where((self.var.waterBodyTyp > 3) & (self.var.waterBodyTypC < 6), 0, self.var.waterBodyTypTemp)
                         self.var.waterBodyTypTemp = np.where(self.var.waterBodyTyp == 3, 1, self.var.waterBodyTypTemp)
 
             self.var.sumEvapWaterBodyC = 0
@@ -644,20 +815,13 @@ class lakes_reservoirs(object):
             # ***** LAKE
             # ************************************************************
 
-            if checkOption('calcWaterBalance'):
-                #    ii = 3
-                oldlake = self.var.lakeStorageC.copy()
-
-            # if (dateVar['curr'] == 3):
-
             # Lake inflow in [m3/s]
             lakeInflowC = inflowC / self.var.dtRouting
 
             # just for day to day waterbalance -> get X as difference
             # lakeIn = in + X ->  (in + old) * 0.5 = in + X  ->   in + old = 2in + 2X -> in - 2in +old = 2x
             # -> (old - in) * 0.5 = X
-            lakedaycorrectC = 0.5 * (
-                        inflowC / self.var.dtRouting - self.var.lakeInflowOldC) * self.var.dtRouting  # [m3]
+            lakedaycorrectC = 0.5 * (inflowC / self.var.dtRouting - self.var.lakeInflowOldC) * self.var.dtRouting  # [m3]
 
             self.var.lakeIn = (lakeInflowC + self.var.lakeInflowOldC) * 0.5
             # for Modified Puls Method: (S2/dtime + Qout2/2) = (S1/dtime + Qout1/2) - Qout1 + (Qin1 + Qin2)/2
@@ -672,12 +836,26 @@ class lakes_reservoirs(object):
             self.var.lakeInflowOldC = lakeInflowC.copy()
             # Qin2 becomes Qin1 for the next time step [m3/s]
 
-            lakeStorageIndicator = np.maximum(0.0,
-                                              self.var.lakeVolumeM3C / self.var.dtRouting - 0.5 * self.var.lakeOutflowC + self.var.lakeIn)
+            lakeStorageIndicator = np.maximum(0.0, self.var.lakeVolumeM3C / self.var.dtRouting - 0.5 * self.var.lakeOutflowC + self.var.lakeIn)
             # here S1/dtime - Qout1/2 + LakeIn , so that is the right part of the equation above
 
-            self.var.lakeOutflowC = np.square(
-                -self.var.lakeFactor + np.sqrt(self.var.lakeFactorSqr + 2 * lakeStorageIndicator))
+            # calculation if var.waterBodyTyp = 1 and lake is assumed to be rectangular
+            self.var.lakeOutflowC = np.square(-self.var.lakeFactor + np.sqrt(self.var.lakeFactorSqr + 2 * lakeStorageIndicator))
+            # calculation if var.waterBodyTyp = 6 and lake is assumed to be triangular
+            # and therefore the equation is a bit different
+            lakeOutflowC2 = np.square(-0.5 * self.var.lakeFactor + np.sqrt(0.25 * self.var.lakeFactorSqr + 2 * lakeStorageIndicator))
+            # replace lakeOutflow if lake type = 6
+            self.var.lakeOutflowC = np.where(self.var.waterBodyTypC == 6, lakeOutflowC2, self.var.lakeOutflowC)
+
+            if checkOption('wetlands_variable_area', True):
+                #  lakelevel should be at 1.0 m -> rest goes to outflow
+                # if lakelevel >= 1.0 sea level is kept constant and equation is changing
+                #lakeOutflowC3 = np.maximum(0.0,(self.var.lakeVolumeM3C - self.var.lakeAreaC * self.var.wetland_maxlevel)/self.var.DtSec)
+
+                # if lakelevel >= maxlevel sea level is kept constant and equation is changing
+                testlevel = ((lakeStorageIndicator - self.var.lakeOutflowC * 0.5) * self.var.dtRouting) / self.var.lakeAreaC
+                lakeOutflowC3 = np.maximum(0, 2 * (lakeStorageIndicator - self.var.wetland_maxlevel * self.var.lakeAreaC / self.var.dtRouting))
+                self.var.lakeOutflowC = np.where((self.var.waterBodyTypC == 6) & (testlevel  >= self.var.wetland_maxlevel), lakeOutflowC3, self.var.lakeOutflowC)
 
             QLakeOutM3DtC = self.var.lakeOutflowC * self.var.dtRouting
             # Outflow in [m3] per timestep
@@ -688,8 +866,15 @@ class lakes_reservoirs(object):
 
             self.var.lakeStorageC += self.var.lakeIn * self.var.dtRouting - QLakeOutM3DtC - self.var.lakeEvapWaterBodyC
 
+            # lakelevel is average of the trigangular part + the rectangular part above
+            self.var.lakeLevelC = self.var.lakeVolumeM3C / self.var.lakeAreaC
+
             if self.var.noRoutingSteps == (NoRoutingExecuted + 1):
-                self.var.lakeLevelC = self.var.lakeVolumeM3C / self.var.lakeAreaC
+                np.put(self.var.lakeLevel, self.var.decompress_LR, self.var.lakeLevelC)
+                #print (self.var.lakeLevelC[11],self.var.lakeOutflowC[11])
+                #if self.var.lakeLevelC[11] >1.0:
+                #    iiii =1
+
 
             # expanding the size
             # self.var.QLakeOutM3Dt = globals.inZero.copy()
@@ -704,33 +889,6 @@ class lakes_reservoirs(object):
             if self.var.noRoutingSteps == (NoRoutingExecuted + 1):
                 np.put(self.var.lakeStorage, self.var.decompress_LR, self.var.lakeStorageC)
 
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [self.var.lakeIn],  # In [m3/s]
-                    [self.var.lakeOutflowC, self.var.lakeEvapWaterBodyC / self.var.dtRouting],
-                    # Out  self.var.evapWaterBodyC
-                    [oldlake / self.var.dtRouting],  # prev storage
-                    [self.var.lakeStorageC / self.var.dtRouting],
-                    "lake", False)
-
-            if checkOption('calcWaterBalance'):
-                np.put(self.var.lakedaycorrect, self.var.decompress_LR, lakedaycorrectC)
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [inflowC / self.var.dtRouting],  # In [m3/s]
-                    [self.var.lakeOutflowC, self.var.lakeEvapWaterBodyC / self.var.dtRouting,
-                     lakedaycorrectC / self.var.dtRouting],  # Out  self.var.evapWaterBodyC
-                    [oldlake / self.var.dtRouting],  # prev storage
-                    [self.var.lakeStorageC / self.var.dtRouting],
-                    "lake2", False)
-
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [inflowC],  # In [m3/s]
-                    [QLakeOutM3DtC, self.var.lakeEvapWaterBodyC, lakedaycorrectC],  # Out  self.var.evapWaterBodyC
-                    [oldlake],  # prev storage
-                    [self.var.lakeStorageC],
-                    "lake3", False)
-
             return QLakeOutM3DtC
 
         # ---------------------------------------------------------------------------------------------
@@ -740,7 +898,7 @@ class lakes_reservoirs(object):
             """
             Reservoir outflow
 
-            :param inflowC: inflow to reservoirs
+            :param inflowC: inflow to reservoirs [m3] per subtime step
             :param NoRoutingExecuted: actual number of routing substep
             :return: qResOutM3DtC - reservoir outflow in [m3] per subtime step
             """
@@ -749,21 +907,21 @@ class lakes_reservoirs(object):
             # ***** Reservoirs
             # ************************************************************
 
-            if checkOption('calcWaterBalance'):
-                oldres = self.var.reservoirStorageM3C.copy()
-
             # QResInM3Dt = inflowC
             # Reservoir inflow in [m3] per timestep
-            self.var.reservoirStorageM3C += inflowC
+            #self.var.reservoirStorageM3C += inflowC
             # New reservoir storage [m3] = plus inflow for this sub step
+            # if reservoirtype = 4 -> no inflow
+            self.var.reservoirStorageM3C = np.where(self.var.waterBodyTypC == 4, self.var.reservoirStorageM3C, self.var.reservoirStorageM3C + inflowC)
 
             # check that reservoir storage - evaporation > 0
-            # Evaporation from res type-4 is not applied for inflowC
-            reservoirStorageM3C_type4Res = np.where(self.var.waterBodyTypC == 4, self.var.reservoirStorageM3C - inflowC,
-                                                    self.var.reservoirStorageM3C)
-            self.var.resEvapWaterBodyC = np.where(reservoirStorageM3C_type4Res - self.var.evapWaterBodyC > 0.,
-                                                  self.var.evapWaterBodyC, reservoirStorageM3C_type4Res)
+            self.var.resEvapWaterBodyC = np.where(self.var.reservoirStorageM3C - self.var.evapWaterBodyC > 0.,
+                                                  self.var.evapWaterBodyC, self.var.reservoirStorageM3C)
+
+            # Reservoir type 5 is only in for water transfer without a reservoir retention without ET
+            self.var.resEvapWaterBodyC = np.where(self.var.waterBodyTypC == 5, 0., self.var.resEvapWaterBodyC)
             self.var.sumResEvapWaterBodyC += self.var.resEvapWaterBodyC
+
             self.var.reservoirStorageM3C = self.var.reservoirStorageM3C - self.var.resEvapWaterBodyC
 
             self.var.reservoirFillC = self.var.reservoirStorageM3C / self.var.resVolumeC
@@ -795,8 +953,9 @@ class lakes_reservoirs(object):
                         (self.var.reservoirFillC - self.var.norm_floodLimitC) / self.var.deltaNFL) * (
                                             self.var.nondmgQC - self.var.normQC)
             # Reservoir outflow [m3/s] if FloodStorageLimit le ReservoirFill gt NormalStorageLimit
+            inflowCQ = inflowC * self.var.InvDtSec * self.var.noRoutingSteps
 
-            temp = np.minimum(self.var.nondmgQC, np.maximum(inflowC * 1.2, self.var.normQC))
+            temp = np.minimum(self.var.nondmgQC,np.maximum(inflowCQ, self.var.normQC))
             reservoirOutflow4 = np.maximum(
                 (self.var.reservoirFillC - self.var.floodLimitC - 0.01) * self.var.resVolumeC * self.var.InvDtSec, temp)
 
@@ -815,9 +974,9 @@ class lakes_reservoirs(object):
             reservoirOutflow = np.where(self.var.reservoirFillC > self.var.floodLimitC, reservoirOutflow4,
                                         reservoirOutflow)
 
-            temp = np.minimum(reservoirOutflow, np.maximum(inflowC, self.var.normQC))
+            temp = np.minimum(reservoirOutflow, np.maximum(inflowCQ, self.var.normQC))
 
-            reservoirOutflow = np.where((reservoirOutflow > 1.2 * inflowC) &
+            reservoirOutflow = np.where((reservoirOutflow > 1.2 * inflowCQ) &
                                         (reservoirOutflow > self.var.normQC) &
                                         (self.var.reservoirFillC < self.var.floodLimitC), temp, reservoirOutflow)
 
@@ -830,14 +989,14 @@ class lakes_reservoirs(object):
             if 'Reservoir_releases' in binding:
                 reservoirOutflow = np.where(self.var.reservoirFillC > self.var.floodLimitC, reservoirOutflow,
                                             np.where(self.var.lakeResStorage_release_ratioC > 0,
-                                                     self.var.lakeResStorage_release_ratioC * self.var.reservoirStorageM3C * (
-                                                             1 / (60 * 60 * 24)), 0))
+                                            self.var.lakeResStorage_release_ratioC * self.var.reservoirStorageM3C *
+                                            self.var.InvDtSec, 0))
 
             if self.var.reservoir_releases_excel_option:
                 reservoirOutflow = np.where(self.var.reservoirFillC > self.var.floodLimitC, reservoirOutflow,
                                             np.where(self.var.lakeResStorage_release_ratioC > -1,
                                             self.var.lakeResStorage_release_ratioC * self.var.reservoirStorageM3C *
-                                            (1 / (60 * 60 * 24)), reservoirOutflow))
+                                            self.var.InvDtSec, reservoirOutflow))
 
             # Apply reservoirOutflowLimitMask to limit resOutflows based on storagre relative to threshold volume
             # This may override the reservoir_releases behaviour - ATTENTION FROM MIKHAIL/DOR
@@ -851,39 +1010,176 @@ class lakes_reservoirs(object):
             # check if storage would go < 0 if outflow is used
             qResOutM3DtC = np.maximum(qResOutM3DtC, self.var.reservoirStorageM3C - self.var.resVolumeC)
             # Check to prevent reservoir storage from exceeding total capacity
+            # for watertyp 4: In = Out
             qResOutM3DtC = np.where(self.var.waterBodyTypC == 4, inflowC, qResOutM3DtC)
-            # In type-4 res. outflow = inflowC
+            # for watertyp 4: No inflow (lines 951-952); no outflow
+            qResOutM3DtC = np.where(self.var.waterBodyTypC == 4, 0., qResOutM3DtC)
+            # for watertyp 5: In = Out. Outflow = inflow + water that is transferred
+            qResOutM3DtC = np.where(self.var.waterBodyTypC == 5, self.var.reservoirStorageM3C, qResOutM3DtC)
 
             self.var.reservoirStorageM3C -= qResOutM3DtC
 
-            self.var.reservoirStorageM3C = np.maximum(0.0, self.var.reservoirStorageM3C)
+            # Transfer water between reservoirs
+            # Send storage between reservoirs using the Excel sheet reservoir_transfers within cwatm_settings.xlsx
+            # Using the waterBodyIDs defined in the settings, designate
+            # the Giver, the Receiver, and the daily fraction of live storage the Giver sends to the Receiver.
+            # If the Receiver is already at capacity, the Giver does not send any storage.
+            # Reservoirs can only send to one reservoir. Reservoirs can receive from several reservoirs.
+
+            # for in and out rewservoirs the old storage volume is stored. The difference between new and old is added to outflow
+            #self.var.oldReservoirStM3C = self.var.reservoirStorageM3C.copy()
+
+            if checkOption('reservoir_transfers',True):
+
+                inZero_C = np.compress(self.var.compress_LR, globals.inZero.copy())
+                for transfer in self.var.reservoir_transfers:
+
+                    if returnBool('dynamicLakesRes'):
+                        year = dateVar['currDate'].year
+                    else:
+                        year = loadmap('fixLakesResYear')
+
+                    if transfer[1] > 0:
+                        # using Giving reservoir ID from Excel - if this is 0 it is from outside
+                        giver = np.where(self.var.waterBodyID_C == transfer[1])[0][0]
+                        giver_already_constructed = self.var.resYearC[giver] <= year
+                    else:
+                        giver_already_constructed = True
+
+                    if transfer[2] > 0:
+                        # using the Receiving reservoir from Excel
+                        receiver = np.where(self.var.waterBodyID_C == transfer[2])[0][0]
+                        receiver_already_constructed = self.var.resYearC[receiver] <= year
+                    else:
+                        receiver_already_constructed = True
+
+
+                    if receiver_already_constructed and giver_already_constructed:
+                        # if giving and receiving station already exist (is build before the year which is modelled)
+                        if (transfer[2] == 0) or ((self.var.waterBodyTypC[receiver] > 3) & (self.var.waterBodyTypC[receiver] > 6)):
+                            # if receiver is outside OR the receiving is a reservoir type > 3
+                            reservoir_unused_receiver = 10e12
+                        else:
+                            # check if there is space for the water in the receiving reservoir
+                            reservoir_unused_receiver = self.var.resVolumeC[receiver] - self.var.reservoirStorageM3C[receiver]
+
+                        if transfer[1] > 0:
+                            reservoir_storage_giver = self.var.reservoirStorageM3C[giver]
+                        else:
+                            # In this case, the fraction refers to the fraction of the receiver,
+                            # as the giver is infinite
+                            reservoir_storage_giver = self.var.resVolumeC[receiver]
+
+
+
+                        # --- Rulesets -------------------
+                        # use different rulesets:
+                        limit =  transfer[3]
+                        # Rule 1: Fraction of live storage (values  â‰¤ 1) (default)
+                        if transfer[0] == 1:
+                            reservoir_transfer_actual = reservoir_storage_giver * transfer[4][dateVar['doy'] - 1] / self.var.noRoutingSteps
+
+                        # Rule 2: Fraction of live storage (values  â‰¤ 1) e, LIMIT: miminum reservoir volume which should be preserved
+                        if transfer[0] == 2:
+                            reservoir_transfer_actual = reservoir_storage_giver * transfer[4][dateVar['doy'] - 1] / self.var.noRoutingSteps
+                            if (self.var.reservoirStorageM3C[giver] - reservoir_transfer_actual) < limit:
+                                reservoir_transfer_actual = np.maximum(0, self.var.reservoirStorageM3C[giver] - limit)
+
+                        # Rule 3: m3 of storage volume, LIMIT: miminum reservoir volume which should be preserved
+                        if transfer[0] == 3:
+                            reservoir_transfer_actual = transfer[4][dateVar['doy'] - 1] / self.var.noRoutingSteps
+                            if (self.var.reservoirStorageM3C[giver] - reservoir_transfer_actual) < limit:
+                                reservoir_transfer_actual = np.maximum(0, self.var.reservoirStorageM3C[giver] - limit)
+
+
+                        # if rule is based on volume:
+                        if transfer[0] < 4:
+                            reservoir_transfer_actual = np.minimum(reservoir_unused_receiver * 0.95,reservoir_transfer_actual)
+
+                        # --- Outflow -------------------------------
+                        # Outflow based rules
+                        # Rule 4: Fraction of outflow (values  â‰¤ 1) Limit: minimum discharge
+                        if transfer[0] == 4:
+                            limit = limit * self.var.dtRouting
+                            if transfer[1] == 0:  # giver is outside
+                                limit = 0
+                            # to get from m3/s to m3 of the substep routing poeriod
+                            qnew = qResOutM3DtC[giver] * (1 - transfer[4][dateVar['doy'] - 1])  # [m3]
+                            if qnew < limit:
+                                qnew = np.minimum(qResOutM3DtC[giver], limit)
+                            reservoir_transfer_actual = qResOutM3DtC[giver] - qnew
+                            qResOutM3DtC[giver] = qnew
+
+                        # Rule 5: Fraction of outflow (v alues  â‰¤ 1)
+                        # Limit: minimum discharge, maximum discharge to receiving reservoir [m3/s]
+                        if transfer[0] == 5:
+                            limit= transfer[3].split(",")
+                            limit1 = float(limit[0]) * self.var.dtRouting  # m3/s to m3 in the routing substep period
+                            limit2 = float(limit[1]) * self.var.dtRouting
+                            if transfer[1] == 0:  # giver is outside
+                                limit1 = 0
+                            # to get to m3 from m3/s but including routing steps
+                            #mult = self.var.DtSec / self.var.noRoutingSteps
+                            qnew = qResOutM3DtC[giver]  * (1 - transfer[4][dateVar['doy'] - 1]) # in m3
+                            if qnew < limit1:
+                                qnew = np.minimum(qResOutM3DtC[giver] , limit1)
+                            if (qResOutM3DtC[giver] - qnew) < limit2:
+                                reservoir_transfer_actual = qResOutM3DtC[giver] - qnew
+                            else:
+                                reservoir_transfer_actual = limit2
+                                qnew = qResOutM3DtC[giver] - reservoir_transfer_actual
+                            qResOutM3DtC[giver] = qnew
+
+
+                        # Rule 6: Fix of outflow, [m3/s]
+                        # Limit: minimum discharge [m3/s]
+                        if transfer[0] == 6:
+                            limit = limit * self.var.dtRouting
+                            if transfer[1] == 0:  # giver is outside
+                                limit = 0
+                            reservoir_transfer_actual = transfer[4][dateVar['doy'] - 1]  * self.var.dtRouting
+                            # from m3/s to m3
+                            qnew = qResOutM3DtC[giver] - reservoir_transfer_actual
+                            if qnew < limit:
+                                qnew = np.minimum(qResOutM3DtC[giver], limit)
+                            reservoir_transfer_actual = qResOutM3DtC[giver] - qnew
+                            qResOutM3DtC[giver] = qnew
+
+
+                        # -----------------------------------------
+                        if transfer[1] > 0:
+                            # There is a giver, not the ocean
+                            inZero_C[giver] = -reservoir_transfer_actual
+                            self.var.reservoir_transfers_out_M3C[giver] += reservoir_transfer_actual
+
+                            if transfer[0] < 4:
+                                # if given from storage than (not if split from outflow)
+                                self.var.reservoirStorageM3C[giver] = self.var.reservoirStorageM3C[giver] - reservoir_transfer_actual
+
+                        if transfer[2] > 0:  # There is a receiver, not the ocean
+                            inZero_C[receiver] = reservoir_transfer_actual  # receiver
+                            self.var.reservoirStorageM3C[receiver] = self.var.reservoirStorageM3C[receiver] + reservoir_transfer_actual
+                            self.var.reservoir_transfers_in_M3C[receiver] += reservoir_transfer_actual
+
+                self.var.reservoir_transfers_net_M3C += inZero_C 
+            #--------------------
+
 
             # New reservoir storage [m3]
-            self.var.reservoirFillC = self.var.reservoirStorageM3C / self.var.resVolumeC
+            self.var.reservoirStorageM3C = np.maximum(0.0, self.var.reservoirStorageM3C)
             # New reservoir fill
-
+            self.var.reservoirFillC = self.var.reservoirStorageM3C / self.var.resVolumeC
             # if  (self.var.noRoutingSteps == (NoRoutingExecuted + 1)):
             if self.var.noRoutingSteps == (NoRoutingExecuted + 1):
                 np.put(self.var.reservoirStorage, self.var.decompress_LR, self.var.reservoirStorageM3C)
 
-            if checkOption('calcWaterBalance'):
-                self.model.waterbalance_module.waterBalanceCheck(
-                    [inflowC / self.var.dtRouting],  # In
-                    [qResOutM3DtC / self.var.dtRouting, self.var.resEvapWaterBodyC / self.var.dtRouting],
-                    # Out  self.var.evapWaterBodyC
-                    [oldres / self.var.dtRouting],  # prev storage
-                    [self.var.reservoirStorageM3C / self.var.dtRouting],
-                    "res1", False)
-
             return qResOutM3DtC
 
-        # ---------------------------------------------------------------------------------------------
-        # ---------------------------------------------------------------------------------------------
-        # lake and reservoirs
 
-        if checkOption('calcWaterBalance'):
-            prereslake = self.var.lakeResStorageC.copy()
-            prelake = self.var.lakeStorageC.copy()
+
+
+        # -------------------------- Lakes and reservoirs -------------------------------------------------------------------
+        # ---------------------------------------------------------------------------------------------
 
         # ----------
         # inflow lakes
@@ -920,9 +1216,10 @@ class lakes_reservoirs(object):
         self.var.resEvapWaterBodyC = globals.inZero.copy()
         outflowLakesC = dynamic_inloop_lakes(inflowC, NoRoutingExecuted)
         outflowResC = dynamic_inloop_reservoirs(inflowC, NoRoutingExecuted)
-        outflow0C = inflowC.copy()  # no retention
-        outflowC = np.where(self.var.waterBodyTypCTemp == 0, outflow0C,
-                            np.where(self.var.waterBodyTypCTemp == 1, outflowLakesC, outflowResC))
+        outflow0C = inflowC.copy()     # no retention
+
+        typLake = np.where((self.var.waterBodyTypCTemp == 1) | (self.var.waterBodyTypCTemp == 6), True, False)
+        outflowC = np.where(self.var.waterBodyTypCTemp == 0, outflow0C, np.where(typLake, outflowLakesC, outflowResC))
 
         # outflowC =  outflowLakesC        # only lakes
         # outflowC = outflowResC
@@ -930,17 +1227,13 @@ class lakes_reservoirs(object):
         # outflowC = inflowC.copy()
 
         # waterbalance
-        inflowCorrC = np.where(self.var.waterBodyTypCTemp == 1, self.var.lakeIn * self.var.dtRouting, inflowC)
+        inflowCorrC = np.where(typLake, self.var.lakeIn * self.var.dtRouting, inflowC)
         # EvapWaterBodyC = np.where( self.var.waterBodyTypCTemp == 0, 0. , np.where( self.var.waterBodyTypCTemp == 1, self.var.sumLakeEvapWaterBodyC, self.var.sumResEvapWaterBodyC))
-        EvapWaterBodyC = np.where(self.var.waterBodyTypCTemp == 0, 0.,
-                                  np.where(self.var.waterBodyTypCTemp == 1, self.var.lakeEvapWaterBodyC,
-                                           self.var.resEvapWaterBodyC))
+        EvapWaterBodyC = np.where(self.var.waterBodyTypCTemp == 0, 0., np.where(typLake, self.var.lakeEvapWaterBodyC,self.var.resEvapWaterBodyC))
 
-        self.var.lakeResStorageC = np.where(self.var.waterBodyTypCTemp == 0, 0.,
-                                            np.where(self.var.waterBodyTypCTemp == 1, self.var.lakeStorageC,
-                                                     self.var.reservoirStorageM3C))
-        lakeStorageC = np.where(self.var.waterBodyTypCTemp == 1, self.var.lakeStorageC, 0.)
-        resStorageC = np.where(self.var.waterBodyTypCTemp > 1, self.var.reservoirStorageM3C, 0.)
+        self.var.lakeResStorageC = np.where(self.var.waterBodyTypCTemp == 0, 0., np.where(typLake, self.var.lakeStorageC,self.var.reservoirStorageM3C))
+        lakeStorageC = np.where(typLake, self.var.lakeStorageC, 0.)
+        resStorageC = np.where(typLake == False, self.var.reservoirStorageM3C, 0.)
 
         self.var.sumEvapWaterBodyC += EvapWaterBodyC  # in [m3]
         self.var.sumlakeResInflow += inflowCorrC
@@ -949,24 +1242,40 @@ class lakes_reservoirs(object):
 
         # decompress to normal maskarea size waterbalance
         if self.var.noRoutingSteps == (NoRoutingExecuted + 1):
-            np.put(self.var.EvapWaterBodyM, self.var.decompress_LR, self.var.sumEvapWaterBodyC)
-            self.var.EvapWaterBodyM = self.var.EvapWaterBodyM / self.var.cellArea
+            np.put(self.var.EvapWaterBodyMOutlet, self.var.decompress_LR, self.var.sumEvapWaterBodyC)
+            self.var.EvapWaterBodyMOutlet = self.var.EvapWaterBodyMOutlet / self.var.cellArea
             np.put(self.var.lakeResInflowM, self.var.decompress_LR, self.var.sumlakeResInflow)
             self.var.lakeResInflowM = self.var.lakeResInflowM / self.var.cellArea
             np.put(self.var.lakeResOutflowM, self.var.decompress_LR, self.var.sumlakeResOutflow)
             self.var.lakeResOutflowM = self.var.lakeResOutflowM / self.var.cellArea
 
-            # Output maps for lakeResInflow and lakeResOutflow when using type-4 res.
-            # The standard map inflate the overall res. water volumes
-            
-            self.var.lakeResInflowM_2 = np.where(self.var.waterBodyTyp == 4,
-                                                self.var.lakeResInflowM - self.var.lakeResOutflowM,
-                                                self.var.lakeResInflowM)
-            self.var.lakeResOutflowM_2 = np.where(self.var.waterBodyTyp == 4, 0., self.var.lakeResOutflowM)
+            # --------------- correction PB May 2024
+            # calculate evaporation for each cell of the lake
+            # each lake cell fraction of the total lake area
+            # a lake cell has at minimum 5% water
+            fracwatermin = np.where(self.var.waterBodyID > 0, np.maximum(self.var.fracVegCover[5],0.05),0)
+            wlakefracsum = npareatotal(fracwatermin, self.var.waterBodyID)
+            # -> part of each cell of the total lake -> sum for each lake = 1
+            wlakefrac = divideValues(self.var.fracVegCover[5], wlakefracsum)
+            # all lake id cells get the evaporation of the outlet cell
+            ebody = npareatotal(self.var.EvapWaterBodyMOutlet, self.var.waterBodyID)
+            # 3) step evoporation is distributed by the water frac of each lake
+            self.var.EvapWaterBodyM = ebody * wlakefrac
+            self.var.EvapWaterBodyM[np.isnan(self.var.EvapWaterBodyM)] = 0.
 
             np.put(self.var.lakeResStorage, self.var.decompress_LR, self.var.lakeResStorageC)
             np.put(self.var.lakeStorage, self.var.decompress_LR, lakeStorageC)
             np.put(self.var.resStorage, self.var.decompress_LR, resStorageC)
+
+            #water transfer
+            if checkOption('reservoir_transfers', True):
+                np.put(self.var.reservoir_transfers_net_M3, self.var.decompress_LR, self.var.reservoir_transfers_net_M3C)
+                np.put(self.var.reservoir_transfers_out_M3, self.var.decompress_LR, self.var.reservoir_transfers_out_M3C)
+                np.put(self.var.reservoir_transfers_in_M3, self.var.decompress_LR, self.var.reservoir_transfers_in_M3C)
+                self.var.reservoir_transfers_net_M3C = np.compress(self.var.compress_LR,globals.inZero.copy())
+                self.var.reservoir_transfers_out_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
+                self.var.reservoir_transfers_in_M3C = np.compress(self.var.compress_LR, globals.inZero.copy())
+
 
         # ------------------------------------------------------------
 
@@ -985,31 +1294,9 @@ class lakes_reservoirs(object):
         # use only the value of the outflow point
         self.var.outLake = np.where(self.var.waterBodyOut > 0, outLakein, 0.)
 
-        if checkOption('calcWaterBalance'):
-            self.model.waterbalance_module.waterBalanceCheck(
-                [inflowCorrC],  # In
-                [outflowC, EvapWaterBodyC],  # Out  EvapWaterBodyC
-                [prereslake],  # prev storage
-                [self.var.lakeResStorageC],
-                "lake1", False)
-
-        if checkOption('calcWaterBalance'):
-            self.model.waterbalance_module.waterBalanceCheck(
-                [self.var.sumlakeResInflow],  # In
-                [self.var.sumlakeResOutflow, self.var.sumEvapWaterBodyC],  # Out  self.var.evapWaterBodyC
-                [np.compress(self.var.compress_LR, self.var.prelakeResStorage)],  # prev storage
-                [self.var.lakeStorageC],
-                "lake2", False)
-
-        if checkOption('calcWaterBalance'):
-            self.model.waterbalance_module.waterBalanceCheck(
-                [self.var.lakeResInflowM],  # In
-                [self.var.lakeResOutflowM, self.var.EvapWaterBodyM],  # Out  self.var.evapWaterBodyC
-                [self.var.prelakeResStorage / self.var.cellArea],  # prev storage
-                [self.var.lakeResStorage / self.var.cellArea],
-                "lake3", False)
-
-        # report(decompress(runoff_LR), "C:\work\output3/run.map")
+        # Puts the value of lakeResStorage into all cells covered by the waterbody
+        self.var.lakeResStorage_filled = npareamaximum(self.var.lakeResStorage, self.var.waterBodyID)
+        self.var.lakeResStorage_buffer = npareamaximum(self.var.lakeResStorage, self.var.waterBodyBuffer)
 
         return outLdd, lakeResOutflowDis
 
