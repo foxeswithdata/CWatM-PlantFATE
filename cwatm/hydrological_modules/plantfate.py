@@ -9,45 +9,38 @@ from pypfate import Clim
 # Module will be moved to plantFATE package eventually and called from there
 
 class PFatePatch:
-    def __init__(self, param_file, acclim_forcing_file, use_acclim):
-        self.patch = patch(str(param_file))
+    def __init__(
+            self, param_file: str | Path, acclim_forcing_file: str | Path, use_acclim: bool
+    ) -> None:
+        self.plantFATE_model = patch(str(param_file))
         self.time_unit_base = self.process_time_units()
         self.tcurrent = 0
-        self.time = []
-        self.swp = [] # Soil Water Potential Output for testing
-        self.swc = [] # Soil Water Content for testing
-        self.smi = [] # Soil Moisture Index for testing
-        self.se = [] # Soil evaporation for testing
-        self.trans = [] # Transpiration for testing
-        self.gpp = []
-        self.npp = []
-        self.gs = []
-        self.leaf_mass = []
-        self.stem_mass = []
-        self.croot_mass = []
-        self.froot_mass = []
-        self.biomass_tot = []
-        self.basal_area = []
-        self.lai = []
-        self.temp = []
-        self.rel_hum = []
-        self.swrd = []
-        self.lwrn = []
-        self.vpd = []
-        self.ppfd = []
-        self.nr = []
 
         self.use_acclim = use_acclim
-        if(use_acclim):
+        if use_acclim:
             self.acclimation_forcing = self.read_acclimation_file(acclim_forcing_file)
             self.use_acclim = use_acclim
 
+        self.first_step_was_run = False
+
     def read_acclimation_file(self, file):
         df = pd.read_csv(file)
-        alldates = df['date'].map(lambda x: datetime.strptime(x, "%Y-%m-%d") - self.time_unit_base)
+        alldates = df["date"].map(
+            lambda x: datetime.strptime(x, "%Y-%m-%d") - self.time_unit_base
+        )
         alldates = alldates.map(lambda x: x.days - 1)
-        df['date_jul'] = alldates
+        df["date_jul"] = alldates
         return df
+
+    def process_time_units(self):
+        time_unit = self.plantFATE_model.config.time_unit
+        time_unit = time_unit.split()
+        if time_unit[0] != "days" or time_unit[1] != "since":
+            raise ValueError(
+                "incorrect plantFATE time unit; cwatm coupling supports only daily timescale"
+            )
+        time_unit = time_unit[2].split("-")
+        return datetime(int(time_unit[0]), int(time_unit[1]), int(time_unit[2]))
 
     def runstep(
         self,
@@ -56,33 +49,19 @@ class PFatePatch:
         photosynthetic_photon_flux_density,
         temperature,
         net_radiation,
+        co2_forcing,
         topsoil_volumetric_water_content,
-        topsoil_moisture_wilting_point,
-        topsoil_fieldcapacity,
-        albedo
     ):
-        self.patch.update_climate(
-            368.9, # co2 - need to make it better
+
+        assert self.first_step_was_run, "first step must be run before running a step"
+        self.plantFATE_model.update_climate(
+            co2_forcing,  # co2
             temperature,
-            vapour_pressure_deficit * 1000,
+            vapour_pressure_deficit,  # kPa -> Pa
             photosynthetic_photon_flux_density,
             soil_water_potential,
             net_radiation,
         )
-
-        self.temp.append(temperature)
-        self.vpd.append(vapour_pressure_deficit * 1000)
-        self.ppfd.append(photosynthetic_photon_flux_density)
-        self.nr.append(net_radiation)
-
-        if(self.use_acclim):
-            index_acclim = self.acclimation_forcing.index[self.acclimation_forcing['date_jul'] == self.tcurrent].tolist()
-            self.patch.update_climate_acclim(self.tcurrent,
-                                         368.9,
-                                         self.acclimation_forcing.loc[index_acclim, 'temp.C.'],
-                                         self.acclimation_forcing.loc[index_acclim, 'vpd'],
-                                         self.calculate_photosynthetic_photon_flux_density(self.acclimation_forcing.loc[index_acclim, 'shortwave.W.m2.'], albedo),
-                                         soil_water_potential)
 
         self.patch.simulate_to(self.tcurrent)
         trans = self.patch.props.fluxes.trans
@@ -92,117 +71,130 @@ class PFatePatch:
                                                                   topsoil_moisture_wilting_point,
                                                                   topsoil_fieldcapacity)
         evapotranspiration = trans + soil_evaporation
-        self.trans.append(trans)
-        self.se.append(soil_evaporation)
-        self.smi.append((topsoil_volumetric_water_content - topsoil_moisture_wilting_point)/(topsoil_fieldcapacity - topsoil_moisture_wilting_point))
-        self.gpp.append(self.patch.props.fluxes.gpp)
-        self.npp.append(self.patch.props.fluxes.npp)
-        self.gs.append(self.patch.props.fluxes.gs)
-        self.leaf_mass.append(self.patch.props.structure.leaf_mass)
-        self.stem_mass.append(self.patch.props.structure.stem_mass)
-        self.croot_mass.append(self.patch.props.structure.croot_mass)
-        self.froot_mass.append(self.patch.props.structure.froot_mass)
-        self.biomass_tot.append(self.patch.props.structure.biomass)
-        self.basal_area.append(self.patch.props.structure.basal_area)
-        self.lai.append(self.patch.props.structure.lai)
 
-        # return evapotranspiration, soil_specific_depletion_1, soil_specific_depletion_2, soil_specific_depletion_3
+        self.plantFATE_model.simulate_to(self.tcurrent)
+        trans = self.plantFATE_model.props.fluxes.trans
+        # trans = trans/365
+        potential_soil_evaporation = self.plantFATE_model.props.fluxes.pe_soil
+        # print('potential soil evap')
+        # print(potential_soil_evaporation)
+        # print('plantFate transpiration')
+        # print(trans)
+        soil_evaporation = potential_soil_evaporation * topsoil_volumetric_water_content
+
+        # return transpiration, soil_evaporation, soil_specific_depletion_1, soil_specific_depletion_2, soil_specific_depletion_3
         return trans, soil_evaporation, 0, 0, 0
-
 
     def first_step(
         self,
         tstart,
-        soil_moisture_layer_1,  # ratio [0-1]
-        soil_moisture_layer_2,  # ratio [0-1]
-        soil_moisture_layer_3,  # ratio [0-1]
-        soil_tickness_layer_1,  # m
-        soil_tickness_layer_2,  # m
-        soil_tickness_layer_3,  # m
-        soil_moisture_wilting_point_1,  # ratio [0-1]print(type(time_unit_base))
-        soil_moisture_wilting_point_2,  # ratio [0-1]
-        soil_moisture_wilting_point_3,  # ratio [0-1]
-        soil_moisture_field_capacity_1,  # ratio [0-1]
-        soil_moisture_field_capacity_2,  # ratio [0-1]
-        soil_moisture_field_capacity_3,  # ratio [0-1]
+        soil_water_potential,
+        vapour_pressure_deficit,
+        photosynthetic_photon_flux_density,
         temperature,  # degrees Celcius, mean temperature
-        relative_humidity,  # percentage [0-100]
-        shortwave_radiation_downwelling,  # W/m2, daily mean
-        longwave_radiation_net,
-        albedo
+        co2_forcing,
+        net_radiation,
+        topsoil_volumetric_water_content,
+    ) -> None:
+        datestart = datetime(tstart.year, tstart.month, tstart.day)
+        datediff = datestart - self.time_unit_base
+        datediff = datediff.days - 1
+        # print("Running first step")
+        self.tcurrent = datediff
+
+        self.plantFATE_model.init(datediff, datediff + 1000)
+
+        self.plantFATE_model.reset_time(datediff)
+
+        # print("Running first step - after init")
+
+        self.plantFATE_model.update_climate(
+            co2_forcing,
+            temperature,
+            vapour_pressure_deficit,
+            photosynthetic_photon_flux_density,
+            soil_water_potential,
+            net_radiation,
+        )
+        # 250)
+        # print("finished running first step")
+        # if (self.use_acclim):
+        #     index_acclim = self.acclimation_forcing.index[
+        #         self.acclimation_forcing['date_jul'] == self.tcurrent].tolist()
+        #     self.patch.update_climate_acclim(self.tcurrent,
+        #                                      368.9,
+        #                                      self.acclimation_forcing.loc[index_acclim, 'temp.C.'],
+        #                                      self.acclimation_forcing.loc[index_acclim, 'vpd'],
+        #                                      self.calculate_photosynthetic_photon_flux_density(
+        #                                          self.acclimation_forcing.loc[index_acclim, 'shortwave.W.m2.'], albedo),
+        #                                      soil_water_potential)
+
+        self.first_step_was_run = True
+
+    def step(
+        self,
+        soil_water_potential,
+        vapour_pressure_deficit,
+        photosynthetic_photon_flux_density,
+        temperature,  # degrees Celcius, mean temperature
+        net_radiation,
+        co2_forcing,
+        topsoil_volumetric_water_content,
     ):
+        self.tcurrent += 1
+
         (
+            transpiration,
+            soil_evaporation,
+            soil_specific_depletion_1,
+            soil_specific_depletion_2,
+            soil_specific_depletion_3,
+        ) = self.runstep(
             soil_water_potential,
             vapour_pressure_deficit,
             photosynthetic_photon_flux_density,
             temperature,
-            net_radiation
-        ) = self.get_plantFATE_input(
-            soil_moisture_layer_1,  # ratio [0-1]
-            soil_moisture_layer_2,  # ratio [0-1]
-            soil_moisture_layer_3,  # ratio [0-1]
-            soil_tickness_layer_1,  # m
-            soil_tickness_layer_2,  # m
-            soil_tickness_layer_3,  # m
-            soil_moisture_wilting_point_1,  # ratio [0-1]
-            soil_moisture_wilting_point_2,  # ratio [0-1]
-            soil_moisture_wilting_point_3,  # ratio [0-1]
-            soil_moisture_field_capacity_1,  # ratio [0-1]
-            soil_moisture_field_capacity_2,  # ratio [0-1]
-            soil_moisture_field_capacity_3,  # ratio [0-1]
-            temperature,  # degrees Celcius, mean temperature
-            relative_humidity,  # percentage [0-100]
-            shortwave_radiation_downwelling,
-            longwave_radiation_net,
-            albedo)  # W/m2, daily mean
+            net_radiation,
+            co2_forcing,
+            topsoil_volumetric_water_content,
+        )
 
-        # Convert time to proper units according to the time unit base
-        datestart = datetime(tstart.year, tstart.month, tstart.day)
-        datediff = datestart - self.time_unit_base
-        datediff = datediff.days - 1
+        soil_specific_depletion_1 = np.nan  # this is currently not calculated in plantFATE, so just setting to np.nan to avoid confusion
+        soil_specific_depletion_2 = np.nan  # this is currently not calculated in plantFATE, so just setting to np.nan to avoid confusion
+        soil_specific_depletion_3 = np.nan  # this is currently not calculated in plantFATE, so just setting to np.nan to avoid confusion
+
+        transpiration = transpiration / 1000  # kg H2O/m2/day to m/day
+
+        return (
+            transpiration,
+            soil_evaporation,
+            soil_specific_depletion_1,
+            soil_specific_depletion_2,
+            soil_specific_depletion_3,
+        )
+
+    def finalize(self) -> None:
+        import os
+
+        print(os.getcwd())
+        self.plantFATE_model.close()
+
+    @property
+    def n_individuals(self):
+        return sum(self.plantFATE_model.props.species.n_ind_vec)
+
+    @property
+    def biomass(self):
+        return self.plantFATE_model.props.structure.biomass  # kgC / m2
+
+    @property
+    def npp(self):
+        return self.plantFATE_model.props.fluxes.npp
 
 
-
-        # self.swp.append(soil_water_potential)
-        # self.swc.append(soil_moisture_layer_1 + soil_moisture_layer_2 + soil_moisture_layer_3)
-        # # self.smi.append(self.calculate)
-        # self.se.append(0)
-        # self.trans.append(0)
-        # self.time.append(datestart)
-        self.patch.init(datediff, datediff + 1000)
-        self.tcurrent = datediff
-        self.patch.update_climate(368.9,
-                                  temperature,
-                                  vapour_pressure_deficit * 1000,
-                                  photosynthetic_photon_flux_density,
-                                  soil_water_potential,
-                                  net_radiation)
-        if(self.use_acclim):
-            index_acclim = self.acclimation_forcing.index[self.acclimation_forcing['date_jul'] == self.tcurrent].tolist()
-            self.patch.update_climate_acclim(self.tcurrent,
-                                         368.9,
-                                         self.acclimation_forcing.loc[index_acclim, 'temp.C.'],
-                                         self.acclimation_forcing.loc[index_acclim, 'vpd'],
-                                         self.calculate_photosynthetic_photon_flux_density(self.acclimation_forcing.loc[index_acclim, 'shortwave.W.m2.'], albedo),
-                                         soil_water_potential)
-
-    def process_time_units(self):
-        time_unit = self.patch.config.time_unit
-        time_unit = time_unit.split()
-        if time_unit[0] != 'days' or time_unit[1] != 'since':
-            print("wrong plantfate unit; cwatm supports only daily timescale")
-            return
-        else:
-            time_unit = time_unit[2].split("-")
-            return datetime(int(time_unit[0]),
-                            int(time_unit[1]),
-                            int(time_unit[2]))
-
-    # def read_acclimation_file(self):
-    #     acclimation_file = self.patch.config.
-
-    def simulate(self):
-        self.patch.simulate()
+    #
+    # def simulate(self):
+    #     self.patch.simulate()
 
     def calculate_soil_water_potential_MPa(
         self,
@@ -344,146 +336,3 @@ class PFatePatch:
             temperature,
             net_radiation
         )
-
-    def step(
-        self,
-        curr_time,
-        soil_moisture_layer_1,  # ratio [0-1]
-        soil_moisture_layer_2,  # ratio [0-1]
-        soil_moisture_layer_3,  # ratio [0-1]
-        soil_tickness_layer_1,  # m
-        soil_tickness_layer_2,  # m
-        soil_tickness_layer_3,  # m
-        soil_moisture_wilting_point_1,  # ratio [0-1]
-        soil_moisture_wilting_point_2,  # ratio [0-1]
-        soil_moisture_wilting_point_3,  # ratio [0-1]
-        soil_moisture_field_capacity_1,  # ratio [0-1]
-        soil_moisture_field_capacity_2,  # ratio [0-1]
-        soil_moisture_field_capacity_3,  # ratio [0-1]
-        temperature,  # degrees Celcius, mean temperature
-        relative_humidity,  # percentage [0-100]
-        shortwave_radiation_downwelling,  # W/m2, daily mean
-        longwave_radiation_net,
-        albedo
-    ):
-        (
-            soil_water_potential,
-            vapour_pressure_deficit,
-            photosynthetic_photon_flux_density,
-            temperature,
-            net_radiation
-        ) = self.get_plantFATE_input(
-            soil_moisture_layer_1,  # ratio [0-1]
-            soil_moisture_layer_2,  # ratio [0-1]
-            soil_moisture_layer_3,  # ratio [0-1]
-            soil_tickness_layer_1,  # m
-            soil_tickness_layer_2,  # m
-            soil_tickness_layer_3,  # m
-            soil_moisture_wilting_point_1,  # ratio [0-1]
-            soil_moisture_wilting_point_2,  # ratio [0-1]
-            soil_moisture_wilting_point_3,  # ratio [0-1]
-            soil_moisture_field_capacity_1,  # ratio [0-1]
-            soil_moisture_field_capacity_2,  # ratio [0-1]
-            soil_moisture_field_capacity_3,  # ratio [0-1]
-            temperature,  # degrees Celcius, mean temperature
-            relative_humidity,  # percentage [0-100]
-            shortwave_radiation_downwelling,  # W/m2, daily mean
-            longwave_radiation_net,
-            albedo
-        )
-
-        curr_time_dt = datetime(curr_time.year, curr_time.month, curr_time.day)
-        timediff = curr_time_dt - self.time_unit_base
-        self.tcurrent = timediff.days - 1
-
-
-        (
-            transpiration,
-            soil_evaporation,
-            soil_specific_depletion_1,
-            soil_specific_depletion_2,
-            soil_specific_depletion_3,
-        ) = self.runstep(
-            soil_water_potential,
-            vapour_pressure_deficit,
-            photosynthetic_photon_flux_density,
-            temperature,
-            net_radiation,
-            soil_moisture_layer_1,
-            soil_moisture_wilting_point_1,
-            soil_moisture_field_capacity_1,
-            albedo
-        )
-
-        self.swp.append(soil_water_potential)
-        self.swc.append(soil_moisture_layer_1 + soil_moisture_layer_2 + soil_moisture_layer_3)
-        self.time.append(curr_time_dt)
-
-
-        soil_specific_depletion_1 = (
-            np.nan
-        )  # this is currently not calculated in plantFATE, so just setting to np.nan to avoid confusion
-        soil_specific_depletion_2 = (
-            np.nan
-        )  # this is currently not calculated in plantFATE, so just setting to np.nan to avoid confusion
-        soil_specific_depletion_3 = (
-            np.nan
-        )  # this is currently not calculated in plantFATE, so just setting to np.nan to avoid confusion
-
-        if curr_time.month == 12 and curr_time.day == 31:
-            df = pd.DataFrame(data={'Time': self.time,
-                                    'SWP': self.swp,
-                                    'SWC': self.swc,
-                                    'Trans': self.trans})
-            # write the DataFrame to a CSV file
-            df.to_csv('Soil_Water.csv')
-
-        transpiration = transpiration / 1000  # kg H2O/m2/day to m/day
-
-        return (
-            transpiration,
-            soil_evaporation,
-            soil_specific_depletion_1,
-            soil_specific_depletion_2,
-            soil_specific_depletion_3,
-        )
-
-    def finalize(self):
-
-        # create a Pandas DataFrame from the dictionary
-
-        if(len(self.swp) > 0):
-            df = pd.DataFrame(data={'Time': list(range(1, len(self.swp) + 1)),
-                                    'SWP': self.swp,
-                                    'SWC': self.swc,
-                                    'SE': self.se,
-                                    'trans': self.trans,
-                                    'SMI': self.smi,
-                                    'GPP': self.gpp,
-                                    'NPP': self.npp,
-                                    'gs': self.gs,
-                                    'leaf_mass' : self.leaf_mass,
-                                    'stem_mass' : self.stem_mass,
-                                    'croot_mass': self.croot_mass,
-                                    'froot_mass': self.froot_mass,
-                                    'biomass' : self.biomass_tot,
-                                    'basal_area': self.basal_area,
-                                    'LAI': self.lai,
-                                    'temp' : self.temp,
-                                    'VPD' : self.vpd,
-                                    'PPFD' : self.ppfd,
-                                    'NR' : self.nr,
-                                    })
-            # write the DataFrame to a CSV file
-            df.to_csv('data_out.csv')
-
-        print("closing patch")
-        self.patch.close()
-
-    @property
-    def n_individuals(self):
-        return sum(self.patch.props.structure.n_ind_vec)
-
-    @property
-    def biomass(self):
-        return sum(self.patch.cwm.biomass_vec)  # kgC / m2
