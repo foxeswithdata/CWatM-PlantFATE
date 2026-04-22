@@ -260,44 +260,8 @@ class soil(object):
             if 'plantFATE_use_acclim_forcing' in option:
                 self.use_PF_acclim =checkOption('plantFATE_use_acclim_forcing')
 
-        def create_ini(idx, plantFATE_cluster, biodiversity_scenario):
-
-            # not currently called
-            out_dir = cbinding("PathOut")+'/plantFATE/fcell_'+str(idx)
-            #os.mkdir(out_dir)
-            ini_file = out_dir+"/p_daily.ini"
-
-            f = open(cbinding('plantFATE_init_file'), "r")
-
-            dirname = os.path.dirname(ini_file)
-            if not os.path.exists(dirname):
-                os.makedirs(dirname)
-
-            copy = open(ini_file, "w")
-            for line in f:
-                copy.write(line)
-            f.close()
-
-            return copy
-
         if self.use_PF:
-            
-            self.model.plantFATE = []
-            for i in range(len(self.var.transpiration_plantFATE)): 
-                
-                #plantFATE_cluster = 7
-                #biodiversity_scenario = 'low'
-
-                #ini_path = create_ini(
-                #    i,
-                #    plantFATE_cluster,
-                #    biodiversity_scenario,
-                #)
-
-                # Using the same input plantFATE ini file for all CWatM-cells
-                self.model.plantFATE.append(pf.PFatePatch(cbinding('plantFATE_init_file'),
-                                                          cbinding('plantFATE_acclim_file'),
-                                                          checkOption('plantFATE_use_acclim_forcing')))
+            self.initiate_plantfate()
 
         return None
 
@@ -1077,5 +1041,74 @@ class soil(object):
             self.var.gwRecharge[No] = self.var.gwRecharge[No] - testgw
             self.var.capRiseFromGW[No] = self.var.capRiseFromGW[No] + testgw
 
+    def initiate_plantfate(self) -> None:
+        # plantFATE only runs on Linux, so we check if the system is Linux
+        assert platform.system() == "Linux", (
+            "plantFATE only runs on Linux. Please run the model on a Linux system."
+        )
 
+        from . import plantFATE
 
+        self.model.plantFATE = []
+        for i in range(len(self.var.transpiration_plantFATE)):
+
+            # Using the same input plantFATE ini file for all CWatM-cells
+            self.model.plantFATE.append(pf.PFatePatch(cbinding('plantFATE_init_file'),
+                                                      cbinding('plantFATE_acclim_file'),
+                                                      checkOption('plantFATE_use_acclim_forcing')))
+            print(i)
+            print("latlong ")
+            # print(self.HRU.lonlat[i,:])
+
+            if self.model.in_spinup:
+                PFconfig_ini = Path(
+                    cbinding('plantFATE_spinup_ini_file')
+                )
+            else:
+                PFconfig_ini = cbinding('plantFATE_run_ini_file')
+
+            if not PFconfig_ini.exists():
+                raise FileNotFoundError(
+                    f"plantFATE spinup config file {PFconfig_ini} not found."
+                )
+
+            PFconfig_ini.parent.mkdir(parents=True, exist_ok=True)
+
+            pfModel = plantFATE.Model(PFconfig_ini, None, False)
+            pfModel.plantFATE_model.config.parent_dir = (
+                    self.model.simulation_root / "plantFATE"
+            ).as_posix()
+            pfModel.plantFATE_model.config.expt_dir = f"cell_{i}"
+
+            out_dir = Path(self.model.simulation_root / "plantFATE" / f"cell_{i}")
+            out_dir.mkdir(parents=True, exist_ok=True)
+
+            pfModel.plantFATE_model.config.out_dir = out_dir.as_posix()
+            pfModel.plantFATE_model.config.save_state = False
+
+            if self.model.in_spinup:
+                pfModel.plantFATE_model.config.save_state = True
+            else:
+                pfModel.plantFATE_model.config.continuePrevious = True
+                pfModel.plantFATE_model.config.continueFrom_stateFile = str(
+                    self.model.simulation_root
+                    / ".."
+                    / self.model.config["general"]["spinup_name"]
+                    / "plantFATE"
+                    / f"cell_{i}"
+                    / "pf_saved_state.txt"
+                )
+                pfModel.plantFATE_model.config.continueFrom_configFile = str(
+                    self.model.simulation_root
+                    / ".."
+                    / "spinup"
+                    / "plantFATE"
+                    / f"cell_{i}"
+                    / "pf_saved_config.ini"
+                )
+            # pfModel.plantFATE_model.config.traits_file = "traits_file_for_cluster"
+            self.model.plantFATE.append(pfModel)
+        # print(len(self.model.plantFATE))
+        # print(self.model.plantFATE[0])
+        # print(self.model.plantFATE[0:10])
+        # print(all(v is None for v in self.model.plantFATE))
